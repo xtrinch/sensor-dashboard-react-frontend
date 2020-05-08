@@ -45,11 +45,14 @@ class SensorsPage extends React.Component<
         {sensors.map((s: Sensor) => (
           <SensorCanvas sensor={s} key={s.id} />
         ))}
-        {new Array(4 - sensors.length).fill(0).map((num, index) => (
-          <div key={index} className={classes.placeholder}>
-            <Typography variant="h5">Sensor {index + 1} placeholder</Typography>
-          </div>
-        ))}
+        {4 - sensors.length > 0 &&
+          new Array(4 - sensors.length).fill(0).map((num, index) => (
+            <div key={index} className={classes.placeholder}>
+              <Typography variant="h5">
+                Sensor {index + 1} placeholder
+              </Typography>
+            </div>
+          ))}
       </div>
     );
   }

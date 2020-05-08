@@ -107,7 +107,7 @@ export const Chart: React.FunctionComponent<ChartProps> = (props) => {
                 size={4}
                 style={{
                   data: {
-                    fill: (x) => (x.datum ? x.datum.color : "red"),
+                    fill: ColorsEnum.GRAY,
                   },
                 }}
               />
