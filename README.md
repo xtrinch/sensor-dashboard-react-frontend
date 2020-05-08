@@ -1,7 +1,10 @@
 # Ark blockhain sensors browser
 
-This repo will pull data from ARK devnet blockhain, interpret its `vendor data` field as a sensor measurement and display it on a 4-sensor dashboard. You can add as many sensors as your want to the dashboard, displaying only those you want visible with the visibility toggle.
+This repo will pull data from ARK devnet blockhain, interpret its `vendor data` field as a sensor measurement and display it on a 4-sensor dashboard. One wallet address represents one sensor and its transactions represent its measurements. You can add as many sensors as your want to the dashboard, displaying only those you want visible with the visibility toggle.
+
 Read more about the ARK blockchain and how to send your own sensor data to it at [Ark](https://ark.io/) pages.
+
+For a quick look, check out the [dashboard screenshot](https://github.com/xtrinch/ark-blockchain-sensors-browser/blob/master/screenshots/screenshot1.png).
 
 ## Technology stack:
 
