@@ -10,6 +10,7 @@ import { observable } from "mobx";
 import SensorTypesEnum from "types/SensorTypesEnum";
 import * as uuid from "uuid";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import { AxisDomain } from "recharts";
 
 class Sensor {
   constructor(s?: Sensor) {
@@ -48,6 +49,25 @@ class Sensor {
   public expanded: boolean;
 
   public measurementTypes: MeasurementTypeEnum[];
+
+  public static getDomainForType(
+    type: MeasurementTypeEnum
+  ): [AxisDomain, AxisDomain] {
+    switch (type) {
+      case MeasurementTypeEnum.ALTITUDE:
+        return [0, 2000];
+      case MeasurementTypeEnum.GAS:
+        return [0, 100];
+      case MeasurementTypeEnum.HUMIDITY:
+        return [0, 100];
+      case MeasurementTypeEnum.PRESSURE:
+        return [0, 1500];
+      case MeasurementTypeEnum.TEMPERATURE:
+        return [-20, 40];
+      default:
+        return [0, 0];
+    }
+  }
 }
 
 export default Sensor;

@@ -9,6 +9,7 @@ import {
   ZAxis,
   CartesianGrid,
   Tooltip,
+  AxisDomain,
 } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -18,17 +19,11 @@ interface ChartData {
 }
 interface TimeSeriesChartInterface {
   dotSize: number;
-  ticks: any;
+  ticks: number[];
   chartData: ChartData[];
+  domain: [AxisDomain, AxisDomain];
+  tickFormatter: (value: any) => any;
 }
-
-const dataMin = (chartData: ChartData[]) => {
-  return 0; //Math.floor(Math.min(...chartData.map(c => c.value))) - 5;
-};
-
-const dataMax = (chartData: ChartData[]) => {
-  return Math.floor(Math.max(...chartData.map((c) => c.value))) + 5;
-};
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
   <ResponsiveContainer width="95%" height="90%">
@@ -37,17 +32,21 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         dataKey="time"
         name="Time"
         ticks={props.ticks}
-        tickFormatter={(t) => t}
+        tickFormatter={props.tickFormatter}
         type="number"
         minTickGap={0}
-        tick={{ fontSize: 15 }}
+        tick={{ fontSize: 13 }}
         allowDataOverflow={false}
+        interval={0}
+        domain={[props.ticks[0] - 1, props.ticks[props.ticks.length - 1] + 1]}
       />
       <YAxis
         dataKey="value"
         name="Value"
-        domain={[dataMin(props.chartData), dataMax(props.chartData)]}
+        // domain={[dataMin(props.chartData), dataMax(props.chartData)]}
+        domain={props.domain}
         allowDataOverflow={false}
+        type="number"
       />
       <ZAxis range={[props.dotSize, props.dotSize]} />
       <Tooltip />

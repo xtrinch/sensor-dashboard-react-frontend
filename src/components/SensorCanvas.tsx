@@ -7,7 +7,14 @@ import Sensor from "types/Sensor";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import { DateRange } from "utils/date.range";
 import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
-import { getDaysInMonth } from "date-fns";
+import {
+  getDaysInMonth,
+  format,
+  addDays,
+  addMonths,
+  startOfYear,
+  startOfWeek,
+} from "date-fns";
 import TimeSeriesChart from "components/TimeSeriesChart";
 import Measurement from "types/Measurement";
 
@@ -40,6 +47,10 @@ interface SensorCanvasProps {
   measurements: Measurement[];
 }
 
+export const getZeroPaddedNumber = (num: number) => {
+  return `${num < 10 ? "0" : ""}${num}`;
+};
+
 const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
@@ -49,24 +60,21 @@ const SensorCanvas: React.FunctionComponent<
     return null;
   }
 
-  const getTickValues = (): {
-    x?: number[];
-    y?: number[];
-  } => {
+  const getTickValues = (): number[] => {
     // const y: number[] = Array.from({ length: 1000 });
     let x: number[];
 
     switch (groupBy) {
       case GroupMeasurementByEnum.day:
-        x = Array.from({ length: 24 }, (data, i) => (i % 2 === 0 ? i : 0));
+        x = Array.from({ length: 25 }, (data, i) => i + 1);
         break;
       case GroupMeasurementByEnum.week:
         x = Array.from({ length: 7 }, (data, i) => i);
         break;
       case GroupMeasurementByEnum.month:
         x = Array.from(
-          { length: getDaysInMonth(DateRange.parse(date).from) + 1 },
-          (data, i) => i
+          { length: getDaysInMonth(DateRange.parse(date).from) },
+          (data, i) => i + 1
         );
         break;
       case GroupMeasurementByEnum.year:
@@ -76,38 +84,28 @@ const SensorCanvas: React.FunctionComponent<
         break;
     }
 
-    return { x };
+    return x;
   };
 
-  // const getTickFormat = (): {
-  //   x?: any[] | { (tick: any, index: number, ticks: any[]): string | number };
-  //   y?: any[] | { (tick: any, index: number, ticks: any[]): string | number };
-  // } => {
-  //   switch (groupBy) {
-  //     case GroupMeasurementByEnum.day:
-  //       return { x: (d) => `${d}h` };
-  //     // case GroupMeasurementByEnum.week:
-  //     //   return {
-  //     //     x: d =>
-  //     //       `${format(
-  //     //         addDays(startOfWeek(this.selectedDate), d),
-  //     //         'EE'
-  //     //       )}`
-  //     //   };
-  //     case GroupMeasurementByEnum.month:
-  //       return { x: (d) => `${d + 1}` };
-  //     case GroupMeasurementByEnum.year:
-  //       return {
-  //         x: (d) =>
-  //           `${format(addMonths(startOfYear(this.selectedDate), d), "LLL")}`,
-  //       };
-  //     default:
-  //       return {};
-  //   }
-  // };
+  const getTickFormat = (): ((value: any) => any) => {
+    switch (groupBy) {
+      case GroupMeasurementByEnum.day:
+        return (d) => `${getZeroPaddedNumber(d - 1)}h`;
+      case GroupMeasurementByEnum.week:
+        return (d) =>
+          `${format(addDays(startOfWeek(this.selectedDate), d), "EE")}`;
+      case GroupMeasurementByEnum.month:
+        return (d) => `${d}.`;
+      case GroupMeasurementByEnum.year:
+        return (d) =>
+          `${format(addMonths(startOfYear(this.selectedDate), d), "LLL")}`;
+      default:
+        return () => ``;
+    }
+  };
 
   const tickValues = getTickValues();
-  // const tickFormat = getTickFormat();
+  const tickFormat = getTickFormat();
 
   const getTimeDomain = (date: string) => {
     const { day, hour, month, minute } = DateRange.getRegexGroups(date);
@@ -123,6 +121,10 @@ const SensorCanvas: React.FunctionComponent<
     }
   };
 
+  if (!measurements) {
+    return null;
+  }
+
   return (
     <>
       <Card className={classes.root}>
@@ -136,8 +138,10 @@ const SensorCanvas: React.FunctionComponent<
               value: m.measurement,
             })),
           ]}
-          ticks={tickValues.x}
+          ticks={tickValues}
+          tickFormatter={tickFormat}
           dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
+          domain={Sensor.getDomainForType(type)}
         />
       </Card>
     </>
