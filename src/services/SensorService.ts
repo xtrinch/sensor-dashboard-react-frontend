@@ -1,4 +1,4 @@
-import { getUrl, getHeaders, processServerResponse } from "utils/http";
+import { getUrl, getHeaders, processResponse } from "utils/http";
 import Sensor from "types/Sensor";
 
 export default class SensorService {
@@ -11,7 +11,7 @@ export default class SensorService {
       headers: getHeaders({ contentType: "application/json" }),
     });
 
-    const result = await processServerResponse(resp);
+    const result = await processResponse(resp);
     const sensors: Sensor[] = [];
     for (const item of result.items) {
       sensors.push(new Sensor(item));

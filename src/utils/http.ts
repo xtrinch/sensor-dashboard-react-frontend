@@ -38,24 +38,7 @@ export const getHeaders = (params: {
   ...(params.contentType ? { "Content-Type": params.contentType } : undefined),
 });
 
-export const processServerResponse = async (
-  response,
-  silent: boolean = false
-) => {
-  let responseData;
-  if (
-    response.headers.get("content-type") &&
-    response.headers.get("content-type").includes("json")
-  ) {
-    responseData = await response.json();
-  } else {
-    responseData = await response.text();
-  }
-  if (response.status >= 200 && response.status <= 399) {
-    return responseData;
-  }
-  // if (response.status !== 400 && setServerError && !silent) {
-  //   setServerError(responseData);
-  // }
-  throw responseData;
+export const processResponse = async (response) => {
+  const responseData = await response.json();
+  return responseData;
 };

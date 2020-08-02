@@ -1,4 +1,4 @@
-import { getUrl, getHeaders, processServerResponse } from "utils/http";
+import { getUrl, getHeaders, processResponse } from "utils/http";
 import Measurement from "types/Measurement";
 
 export default class MeasurementService {
@@ -11,7 +11,7 @@ export default class MeasurementService {
       headers: getHeaders({ contentType: "application/json" }),
     });
 
-    const result = await processServerResponse(resp);
+    const result = await processResponse(resp);
     for (const key of Object.keys(result)) {
       result[key] = result[key].map((m) => new Measurement(m));
     }
