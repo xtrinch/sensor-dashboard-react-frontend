@@ -70,9 +70,7 @@ const SensorsPage: React.FunctionComponent<
     GroupMeasurementByEnum.month
   );
 
-  const [date, setDate] = useState(
-    `${new Date().getFullYear()}/${new Date().getMonth() + 1}`
-  );
+  const [date, setDate] = useState(null);
 
   const [measurements, setMeasurements] = useState(null);
 
@@ -85,33 +83,22 @@ const SensorsPage: React.FunctionComponent<
   }, [date, sensors]);
 
   useEffect(() => {
+    if (!date) {
+      return;
+    }
+
     getMeasurements();
   }, [date, getMeasurements]);
 
-  useEffect(() => {
-    if (groupByState === GroupMeasurementByEnum.day) {
-      setDate(
-        `${new Date().getFullYear()}/${
-          new Date().getMonth() + 1
-        }/${new Date().getDate()}`
-      );
-    }
-    getMeasurements();
-  }, [groupByState, getMeasurements]);
-
-  if (!measurements) {
-    return null;
-  }
+  const onChange = useCallback((val) => {
+    setDate(val);
+  }, []);
 
   return (
     <div style={{ width: "100%" }}>
       <div className={classes.timePicker}>
         <div style={{ marginRight: "70px" }}>
-          <DateInput
-            groupBy={groupByState}
-            date={date}
-            onChange={(val) => setDate(val)}
-          />
+          <DateInput groupBy={groupByState} date={date} onChange={onChange} />
         </div>
         <div>
           <ButtonGroup color="secondary" size="large">
@@ -173,7 +160,7 @@ const SensorsPage: React.FunctionComponent<
               type={params.type}
               date={date}
               groupBy={groupByState}
-              measurements={measurements[params.type] || []}
+              measurements={measurements ? measurements[params.type] : []}
             />
           ))}
         {/* {4 - sensors.length > 0 &&

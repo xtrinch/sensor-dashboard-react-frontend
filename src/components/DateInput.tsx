@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { IconButton, makeStyles } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
@@ -23,6 +23,7 @@ import {
   getYear,
   getMonth,
   getDate,
+  isFuture,
 } from "date-fns";
 import ArrowForward from "@material-ui/icons/ArrowForward";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -43,39 +44,38 @@ export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2018
 export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2018
 
 export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
-  const { date, groupBy, onChange } = props;
-
-  const [internalValue, setInternalValue] = useState(new Date());
+  const { groupBy, onChange, date } = props;
 
   const onChangeDate = useCallback(
     (d: Date) => {
       const date = new Date(d);
+      let dateString = "";
 
       switch (groupBy) {
         case GroupMeasurementByEnum.month:
-          onChange(`${getYear(date)}/${getMonth(date) + 1}`);
-          return;
+          dateString = `${getYear(date)}/${getMonth(date) + 1}`;
+          break;
         case GroupMeasurementByEnum.year:
-          onChange(`${getYear(date)}`);
-          return;
+          dateString = `${getYear(date)}`;
+          break;
         case GroupMeasurementByEnum.day:
-          onChange(`${getYear(date)}/${getMonth(date) + 1}/${getDate(date)}`);
-          return;
+          dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(
+            date
+          )}`;
+          break;
         default:
           break;
       }
+
+      onChange(dateString);
     },
     [groupBy, onChange]
   );
 
   useEffect(() => {
-    if (!date) {
-      return;
-    }
-    const d = DateRange.parse(date).from;
-    setInternalValue(d);
-    onChangeDate(d);
-  }, [groupBy, date, onChangeDate]);
+    // reset date on group change
+    onChangeDate(new Date());
+  }, [groupBy, onChangeDate]);
 
   const useStyles = makeStyles((theme) => ({
     datepicker: {
@@ -215,7 +215,7 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
   const changeDate = (multiplier: number) => {
     let func: Function;
 
-    let date = internalValue;
+    let d = DateRange.parse(date).from;
     switch (props.groupBy) {
       case GroupMeasurementByEnum.day:
         func = addDays;
@@ -233,8 +233,10 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
         break;
     }
 
-    date = func(date, multiplier * 1);
-    onChangeDate(date);
+    d = func(d, multiplier * 1);
+    if (!isFuture(d)) {
+      onChangeDate(d);
+    }
   };
 
   return (
@@ -261,7 +263,7 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
             views={getView()}
             label=""
             format="MM/dd/yyyy"
-            value={internalValue}
+            value={DateRange.parse(date).from}
             onChange={(e: Date) => onChangeDate(e)}
             inputVariant="filled"
             disabled={props.disabled ? props.disabled : false}
@@ -271,6 +273,7 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
             renderDay={renderDate}
             labelFunc={renderLabel}
             margin={"none"}
+            disableFuture={true}
           />
         </MuiPickersUtilsProvider>
         <IconButton

@@ -129,24 +129,16 @@ const SensorCanvas: React.FunctionComponent<
         <Typography variant="h6" style={{ marginBottom: "15px" }}>
           {sensor.name} ({type})
         </Typography>
-        {measurements.length ? (
-          <TimeSeriesChart
-            chartData={[
-              ...measurements.map((m) => ({
-                time: getTimeDomain(m.createdAt),
-                value: m.measurement,
-              })),
-            ]}
-            ticks={tickValues.x}
-            dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
-          />
-        ) : (
-          <div className={classes.noResults}>
-            <Typography variant="h5" style={{ marginBottom: "15px" }}>
-              No results
-            </Typography>
-          </div>
-        )}
+        <TimeSeriesChart
+          chartData={[
+            ...(measurements || []).map((m) => ({
+              time: getTimeDomain(m.createdAt),
+              value: m.measurement,
+            })),
+          ]}
+          ticks={tickValues.x}
+          dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
+        />
       </Card>
     </>
   );

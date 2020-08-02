@@ -58,6 +58,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         lineType="joint"
         name="Values"
         strokeWidth={1}
+        isAnimationActive={false}
       />
       <CartesianGrid stroke={ColorsEnum.BGDARK} />
     </ScatterChart>
