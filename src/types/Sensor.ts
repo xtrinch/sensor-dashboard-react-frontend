@@ -9,14 +9,17 @@ import {
 import { observable } from "mobx";
 import SensorTypesEnum from "types/SensorTypesEnum";
 import * as uuid from "uuid";
+import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 
 class Sensor {
   constructor(s?: Sensor) {
     this.name = s?.name || "";
     this.address = s?.address || "";
     this.type = s?.type || undefined;
-    this.visible = s?.visible || false;
+    this.visible = s?.visible || true;
+    this.expanded = s?.visible || true;
     this.id = uuid.v4();
+    this.measurementTypes = s?.measurementTypes;
   }
 
   @observable
@@ -40,6 +43,11 @@ class Sensor {
   @observable
   @IsBoolean()
   public visible: boolean;
+
+  @observable
+  public expanded: boolean;
+
+  public measurementTypes: MeasurementTypeEnum[];
 }
 
 export default Sensor;

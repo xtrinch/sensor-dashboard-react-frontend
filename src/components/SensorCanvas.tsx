@@ -1,32 +1,27 @@
 import { createStyles, Card, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import React from "react";
-import { observer, Provider } from "mobx-react";
-import ArkStore, { ArkStoreProps } from "stores/ArkStore";
+import { observer } from "mobx-react";
 import ColorsEnum from "types/ColorsEnum";
-import { Chart } from "./Chart";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import Sensor from "types/Sensor";
-import { observable } from "mobx";
+import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import { DateRange } from "utils/date.range";
+import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
+import { getDaysInMonth } from "date-fns";
+import TimeSeriesChart from "components/TimeSeriesChart";
+import Measurement from "types/Measurement";
 
 const styles = () =>
   createStyles({
     root: {
       //border: '1px solid #000',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "10px",
+      padding: "20px",
     },
     picker: {
       marginRight: "10px",
       marginBottom: "10px",
       width: "170px",
-    },
-    chart: {
-      height: "calc(50vh - 140px)",
     },
     noResults: {
       width: "100%",
@@ -39,94 +34,122 @@ const styles = () =>
 
 interface SensorCanvasProps {
   sensor: Sensor;
+  type: MeasurementTypeEnum;
+  date: string;
+  groupBy: GroupMeasurementByEnum;
+  measurements: Measurement[];
 }
 
-@observer
-class SensorCanvas extends React.Component<
-  SensorCanvasProps & WithStyles<typeof styles> & ArkStoreProps
-> {
-  @observable
-  private arkStore: ArkStore;
+const SensorCanvas: React.FunctionComponent<
+  SensorCanvasProps & WithStyles<typeof styles>
+> = (props) => {
+  const { sensor, type, classes, date, groupBy, measurements } = props;
 
-  constructor(props) {
-    super(props);
-    this.arkStore = new ArkStore(props.sensor);
+  if (!sensor.visible) {
+    return null;
   }
 
-  render() {
-    const { classes } = this.props;
+  const getTickValues = (): {
+    x?: number[];
+    y?: number[];
+  } => {
+    // const y: number[] = Array.from({ length: 1000 });
+    let x: number[];
 
-    const {
-      arkStore: {
-        sensor,
-        changeFromDate,
-        changeToDate,
-        fromDate,
-        toDate,
-        measurements,
-      },
-    } = this;
-
-    if (!sensor.visible) {
-      return null;
+    switch (groupBy) {
+      case GroupMeasurementByEnum.day:
+        x = Array.from({ length: 24 }, (data, i) => (i % 2 === 0 ? i : 0));
+        break;
+      case GroupMeasurementByEnum.week:
+        x = Array.from({ length: 7 }, (data, i) => i);
+        break;
+      case GroupMeasurementByEnum.month:
+        x = Array.from(
+          { length: getDaysInMonth(DateRange.parse(date).from) + 1 },
+          (data, i) => i
+        );
+        break;
+      case GroupMeasurementByEnum.year:
+        x = Array.from({ length: 12 }, (data, i) => i);
+        break;
+      default:
+        break;
     }
 
-    return (
-      <Provider arkStore={this.arkStore}>
-        <Card className={classes.root}>
-          <Typography variant="h6" style={{ marginBottom: "15px" }}>
-            {sensor.name} ({sensor.address})
-          </Typography>
-          <div>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                clearable
-                className={classes.picker}
-                value={fromDate}
-                onChange={(date) => changeFromDate(date)}
-                format="MM/dd/yyyy"
-                inputVariant="outlined"
-                label="From"
-              />
-            </MuiPickersUtilsProvider>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                clearable
-                className={classes.picker}
-                value={toDate}
-                onChange={(date) => changeToDate(date)}
-                format="MM/dd/yyyy"
-                inputVariant="outlined"
-                label="To"
-              />
-            </MuiPickersUtilsProvider>
-          </div>
-          {measurements.length ? (
-            <Chart
-              className={classes.chart}
-              chartType="line"
-              graphData={[
-                ...measurements.map((m) => ({
-                  x: m.date,
-                  y: m.value,
-                })),
-              ]}
-              domain={{
-                xMin: fromDate,
-                xMax: toDate,
-              }}
-            />
-          ) : (
-            <div className={classes.noResults}>
-              <Typography variant="h5" style={{ marginBottom: "15px" }}>
-                No results
-              </Typography>
-            </div>
-          )}
-        </Card>
-      </Provider>
-    );
-  }
-}
+    return { x };
+  };
 
-export default withStyles(styles)(SensorCanvas);
+  // const getTickFormat = (): {
+  //   x?: any[] | { (tick: any, index: number, ticks: any[]): string | number };
+  //   y?: any[] | { (tick: any, index: number, ticks: any[]): string | number };
+  // } => {
+  //   switch (groupBy) {
+  //     case GroupMeasurementByEnum.day:
+  //       return { x: (d) => `${d}h` };
+  //     // case GroupMeasurementByEnum.week:
+  //     //   return {
+  //     //     x: d =>
+  //     //       `${format(
+  //     //         addDays(startOfWeek(this.selectedDate), d),
+  //     //         'EE'
+  //     //       )}`
+  //     //   };
+  //     case GroupMeasurementByEnum.month:
+  //       return { x: (d) => `${d + 1}` };
+  //     case GroupMeasurementByEnum.year:
+  //       return {
+  //         x: (d) =>
+  //           `${format(addMonths(startOfYear(this.selectedDate), d), "LLL")}`,
+  //       };
+  //     default:
+  //       return {};
+  //   }
+  // };
+
+  const tickValues = getTickValues();
+  // const tickFormat = getTickFormat();
+
+  const getTimeDomain = (date: string) => {
+    const { day, hour, month, minute } = DateRange.getRegexGroups(date);
+    switch (groupBy) {
+      case GroupMeasurementByEnum.year:
+        return month;
+      case GroupMeasurementByEnum.month:
+        return day;
+      case GroupMeasurementByEnum.week:
+        return day;
+      case GroupMeasurementByEnum.day:
+        return hour + minute / 60.0;
+    }
+  };
+
+  return (
+    <>
+      <Card className={classes.root}>
+        <Typography variant="h6" style={{ marginBottom: "15px" }}>
+          {sensor.name} ({type})
+        </Typography>
+        {measurements.length ? (
+          <TimeSeriesChart
+            chartData={[
+              ...measurements.map((m) => ({
+                time: getTimeDomain(m.createdAt),
+                value: m.measurement,
+              })),
+            ]}
+            ticks={tickValues.x}
+            dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
+          />
+        ) : (
+          <div className={classes.noResults}>
+            <Typography variant="h5" style={{ marginBottom: "15px" }}>
+              No results
+            </Typography>
+          </div>
+        )}
+      </Card>
+    </>
+  );
+};
+
+export default withStyles(styles)(observer(SensorCanvas));

@@ -1,16 +1,19 @@
 import { observable } from "mobx";
+import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 
 class Measurement {
   constructor(m?: Measurement) {
-    this.date = m?.date || undefined;
-    this.value = m?.value || 0;
+    this.createdAt = m?.createdAt || undefined;
+    this.measurement = m?.measurement || 0;
   }
 
   @observable
-  public date: Date;
+  public createdAt: string; // partial date
 
   @observable
-  public value: number;
+  public measurement: number;
+
+  public measurementType: MeasurementTypeEnum;
 }
 
 export default Measurement;

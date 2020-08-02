@@ -4,19 +4,12 @@ import {
   List,
   ListItem,
   ListItemText,
-  TextField,
-  Fab,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
   ListSubheader,
+  ListItemIcon,
+  Fab,
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import React from "react";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Close";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -26,18 +19,16 @@ import { observer, inject } from "mobx-react";
 import { observable } from "mobx";
 import Sensor from "types/Sensor";
 import { validateAndTransform, FieldErrors } from "utils/validation";
-import SensorTypesEnum from "types/SensorTypesEnum";
-import ColorsEnum from "types/ColorsEnum";
 import { Collapse } from "@material-ui/core";
-import { ListItemIcon } from "@material-ui/core";
 import { Fragment } from "react";
+import ColorsEnum from "types/ColorsEnum";
 
 const styles = () =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
       borderRight: "1px solid rgb(35,40,44)",
-      width: "330px",
+      width: "270px",
     },
     sensorInputForm: {
       margin: "30px 10px",
@@ -124,7 +115,7 @@ class SideMenu extends React.Component<
 
     return (
       <div className={classes.root}>
-        <div className={classes.logoContainer}>
+        {/* <div className={classes.logoContainer}>
           <img alt="logo" src="/logo.svg" />
         </div>
         <form className={classes.sensorInputForm} onSubmit={this.addSensor}>
@@ -170,7 +161,7 @@ class SideMenu extends React.Component<
               <AddIcon />
             </Fab>
           </div>
-        </form>
+        </form> */}
 
         <ListSubheader>Added sensors</ListSubheader>
         <Divider />
@@ -196,23 +187,22 @@ class SideMenu extends React.Component<
                 >
                   {sensor.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </Fab>
-                <Fab
+                {/* <Fab
                   color="secondary"
                   size="small"
                   className={classes.sensorFab}
                   onClick={() => this.removeSensor(sensor)}
                 >
                   <RemoveIcon />
-                </Fab>
+                </Fab> */}
               </ListItem>
               <Collapse in={sensor.expanded} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button>
-                    <ListItemText primary={`Address: ${sensor.address}`} />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemText primary={`Type: ${sensor.type}`} />
-                  </ListItem>
+                  {sensor.measurementTypes.map((m, index) => (
+                    <ListItem button key={index}>
+                      <ListItemText primary={`${m}`} />
+                    </ListItem>
+                  ))}
                 </List>
               </Collapse>
             </Fragment>

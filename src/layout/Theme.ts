@@ -15,7 +15,7 @@ const theme = createMuiTheme({
     // divider: ColorsEnum.BGDARK,
     error: { main: "#ff8a65" },
     secondary: {
-      main: ColorsEnum.VIOLET,
+      main: ColorsEnum.GRAY,
     },
     text: {
       primary: ColorsEnum.GRAY,

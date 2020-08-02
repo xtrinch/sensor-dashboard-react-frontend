@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import SideMenu from "components/SideMenu";
-import { Provider } from "mobx-react";
+import { Provider, observer } from "mobx-react";
 import SensorStore from "stores/SensorStore";
 import SensorsPage from "pages/SensorsPage";
 import theme from "layout/Theme";
@@ -24,23 +24,25 @@ const styles = () =>
     },
   });
 
+@observer
 class App extends React.Component<WithStyles<typeof styles>> {
   private sensorStore: SensorStore;
 
   constructor(props: any) {
     super(props);
     this.sensorStore = new SensorStore();
+    this.sensorStore.listSensors();
   }
 
   render() {
     const { classes } = this.props;
-
+    const { sensors } = this.sensorStore;
     return (
       <MuiThemeProvider theme={theme}>
         <Provider sensorStore={this.sensorStore}>
           <div className={classes.app}>
-            <SideMenu />
-            <SensorsPage />
+            {sensors && <SideMenu />}
+            {sensors && <SensorsPage />}
           </div>
         </Provider>
       </MuiThemeProvider>
