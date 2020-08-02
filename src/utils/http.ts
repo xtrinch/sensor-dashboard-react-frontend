@@ -24,7 +24,7 @@ export const serializeQuery = (params, prefix = ""): string => {
 };
 
 export const getUrl = (urlString: string, queryParams: object = {}): string => {
-  const url = `${urlString}`;
+  const url = `/api${urlString}`;
   const p = serializeQuery(queryParams);
   return `${url}${p ? `?${p}` : ""}`;
 };
