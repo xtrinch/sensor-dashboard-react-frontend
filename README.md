@@ -1,6 +1,8 @@
 # Sensor dashboard - react frontend
 
-This is the frontend repo for the sensor dashboard.
+This is the frontend repo for the environmetal sensor dashboard.
+
+See also [backend](https://github.com/xtrinch/sensor-dashboard-nestjs-backend) and [sensor board code](https://github.com/xtrinch/sensor-dashboard-ESP32-BME680-reader), or [see it live](http://sensor-dashboard.trina.si/) with some sensor data from my living room.
 
 ## Technology stack:
 
