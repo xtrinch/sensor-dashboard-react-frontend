@@ -68,5 +68,5 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "proxy": "http://sensor-dashboard.trina.si"
+  "proxy": "http://localhost:3001/"
 }

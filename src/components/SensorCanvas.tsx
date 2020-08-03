@@ -116,7 +116,7 @@ const SensorCanvas: React.FunctionComponent<
       case GroupMeasurementByEnum.week:
         return getDay(DateRange.parse(date).from) + 1;
       case GroupMeasurementByEnum.day:
-        return hour + minute / 60.0;
+        return hour + minute / 60.0 + 1;
     }
   };
 
