@@ -19,7 +19,7 @@ class Sensor {
     this.type = s?.type || undefined;
     this.visible = s?.visible || true;
     this.expanded = s?.visible || true;
-    this.id = uuid.v4();
+    this.id = s?.id;
     this.measurementTypes = s?.measurementTypes;
   }
 

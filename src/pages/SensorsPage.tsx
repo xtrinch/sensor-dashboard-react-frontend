@@ -77,7 +77,10 @@ const SensorsPage: React.FunctionComponent<
   const getMeasurements = useCallback(async () => {
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: date,
-      measurementTypes: sensors[0].measurementTypes,
+      measurementTypes: sensors.reduce((acc, sensor: Sensor) => {
+        return [...acc, ...sensor.measurementTypes];
+      }, []),
+      sensorIds: sensors.map((s) => s.id),
     });
     setMeasurements(resp);
   }, [date, sensors]);
