@@ -24,6 +24,7 @@ import {
   getMonth,
   getDate,
   isFuture,
+  getWeek,
 } from "date-fns";
 import ArrowForward from "@material-ui/icons/ArrowForward";
 import ArrowBack from "@material-ui/icons/ArrowBack";
@@ -62,6 +63,9 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
           dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(
             date
           )}`;
+          break;
+        case GroupMeasurementByEnum.week:
+          dateString = `${getYear(date)}/w${getWeek(date)}`;
           break;
         default:
           break;
@@ -270,6 +274,7 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
             InputProps={{
               className: classes.datepicker,
             }}
+            style={{ flex: "1" }}
             renderDay={renderDate}
             labelFunc={renderLabel}
             margin={"none"}

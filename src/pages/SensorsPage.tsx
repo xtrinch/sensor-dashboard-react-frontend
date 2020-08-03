@@ -98,50 +98,26 @@ const SensorsPage: React.FunctionComponent<
     <div style={{ width: "100%" }}>
       <div className={classes.timePicker}>
         <div style={{ marginRight: "70px" }}>
-          <DateInput groupBy={groupByState} date={date} onChange={onChange} />
+          <DateInput
+            groupBy={groupByState}
+            date={date}
+            onChange={onChange}
+            style={{ width: "300px" }}
+          />
         </div>
         <div>
           <ButtonGroup color="secondary" size="large">
-            <Button
-              onClick={() => setGroupByState(GroupMeasurementByEnum.day)}
-              className={
-                groupByState === GroupMeasurementByEnum.day
-                  ? classes.activeButton
-                  : classes.button
-              }
-            >
-              Day
-            </Button>
-            {/* <Button
-              onClick={() => groupByState = GroupMeasurementByEnum.week}
-              className={
-                groupByState === GroupMeasurementByEnum.week
-                  ? classes.activeButton
-                  : classes.button
-              }
-            >
-              Week
-            </Button> */}
-            <Button
-              onClick={() => setGroupByState(GroupMeasurementByEnum.month)}
-              className={
-                groupByState === GroupMeasurementByEnum.month
-                  ? classes.activeButton
-                  : classes.button
-              }
-            >
-              Month
-            </Button>
-            {/* <Button
-              onClick={() => groupByState = GroupMeasurementByEnum.year}
-              className={
-                groupByState === GroupMeasurementByEnum.year
-                  ? classes.activeButton
-                  : classes.button
-              }
-            >
-              Year
-            </Button> */}
+            {Object.values(GroupMeasurementByEnum).map((val) => (
+              <Button
+                onClick={() => setGroupByState(val)}
+                className={
+                  groupByState === val ? classes.activeButton : classes.button
+                }
+                key={val}
+              >
+                {val}
+              </Button>
+            ))}
           </ButtonGroup>
         </div>
       </div>

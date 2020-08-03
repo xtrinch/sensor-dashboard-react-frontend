@@ -14,6 +14,7 @@ import {
   addMonths,
   startOfYear,
   startOfWeek,
+  getDay,
 } from "date-fns";
 import TimeSeriesChart from "components/TimeSeriesChart";
 import Measurement from "types/Measurement";
@@ -69,7 +70,7 @@ const SensorCanvas: React.FunctionComponent<
         x = Array.from({ length: 25 }, (data, i) => i + 1);
         break;
       case GroupMeasurementByEnum.week:
-        x = Array.from({ length: 7 }, (data, i) => i);
+        x = Array.from({ length: 7 }, (data, i) => i + 1);
         break;
       case GroupMeasurementByEnum.month:
         x = Array.from(
@@ -78,7 +79,7 @@ const SensorCanvas: React.FunctionComponent<
         );
         break;
       case GroupMeasurementByEnum.year:
-        x = Array.from({ length: 12 }, (data, i) => i);
+        x = Array.from({ length: 12 }, (data, i) => i + 1);
         break;
       default:
         break;
@@ -92,13 +93,11 @@ const SensorCanvas: React.FunctionComponent<
       case GroupMeasurementByEnum.day:
         return (d) => `${getZeroPaddedNumber(d - 1)}h`;
       case GroupMeasurementByEnum.week:
-        return (d) =>
-          `${format(addDays(startOfWeek(this.selectedDate), d), "EE")}`;
+        return (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`;
       case GroupMeasurementByEnum.month:
         return (d) => `${d}.`;
       case GroupMeasurementByEnum.year:
-        return (d) =>
-          `${format(addMonths(startOfYear(this.selectedDate), d), "LLL")}`;
+        return (d) => `${format(addMonths(startOfYear(d), d - 1), "LLL")}`;
       default:
         return () => ``;
     }
@@ -115,15 +114,11 @@ const SensorCanvas: React.FunctionComponent<
       case GroupMeasurementByEnum.month:
         return day;
       case GroupMeasurementByEnum.week:
-        return day;
+        return getDay(DateRange.parse(date).from) + 1;
       case GroupMeasurementByEnum.day:
         return hour + minute / 60.0;
     }
   };
-
-  if (!measurements) {
-    return null;
-  }
 
   return (
     <>

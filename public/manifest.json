@@ -1,6 +1,6 @@
 {
-  "short_name": "Ark sensors",
-  "name": "Ark sensors",
+  "short_name": "Sensor dashboard",
+  "name": "Sensor dashboard",
   "icons": [
     {
       "src": "favicon.ico",

@@ -8,6 +8,9 @@ import {
   setDate,
   setMonth,
   setYear,
+  setWeek,
+  startOfWeek,
+  endOfWeek,
 } from "date-fns";
 
 export interface DateRegexGroupsInterface {
@@ -16,6 +19,7 @@ export interface DateRegexGroupsInterface {
   day?: number;
   hour?: number;
   minute?: number;
+  week?: number;
 }
 
 export interface DateRangeInterface {
@@ -32,7 +36,7 @@ export enum RangeGroupByEnum {
 export type DateRegex = string;
 
 export class DateRange {
-  public static regex = /^(?<year>[0-9]{4})(\/(?<month>[0-9]{1,2})(\/(?<day>[0-9]{1,2})(\/(?<hour>[0-9]{1,2})(\/(?<minute>[0-9]{1,2}))?)?)?)?$/;
+  public static regex = /^(?<year>[0-9]{4})(\/((?<month>[0-9]{1,2})|(w(?<week>[0-9]{1,2})))(\/(?<day>[0-9]{1,2})(\/(?<hour>[0-9]{1,2})(\/(?<minute>[0-9]{1,2}))?)?)?)?$/;
 
   public static parse(input: string): DateRangeInterface {
     const ranges = this.getRegexGroups(input);
@@ -52,7 +56,7 @@ export class DateRange {
     if (!match) {
       return {};
     }
-    const { month, day, year, hour, minute } = match.groups;
+    const { month, day, year, hour, minute, week } = match.groups;
 
     const ranges: DateRegexGroupsInterface = {
       year: year ? parseInt(year, 10) : undefined,
@@ -60,6 +64,7 @@ export class DateRange {
       day: day ? parseInt(day, 10) : undefined,
       hour: hour ? parseInt(hour, 10) : undefined,
       minute: minute ? parseInt(minute, 10) : undefined,
+      week: week ? parseInt(week, 10) : undefined,
     };
 
     return ranges;
@@ -69,7 +74,7 @@ export class DateRange {
     range: DateRegexGroupsInterface
   ): RangeGroupByEnum | null {
     let groupBy: RangeGroupByEnum = null;
-    if (!range.month) {
+    if (!range.month && !range.week) {
       groupBy = RangeGroupByEnum.MONTH;
     } else if (!range.day) {
       groupBy = RangeGroupByEnum.DAY;
@@ -98,6 +103,11 @@ export class DateRange {
       start = setYear(start, range.year);
       from = startOfMonth(start);
       to = endOfMonth(start);
+    } else if (range.week) {
+      start = setYear(start, range.year);
+      start = setWeek(start, range.week);
+      from = startOfWeek(start);
+      to = endOfWeek(start);
     } else {
       from = startOfYear(start);
       to = endOfYear(start);
