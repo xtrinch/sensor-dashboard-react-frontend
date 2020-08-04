@@ -50,24 +50,28 @@ class Sensor {
 
   public measurementTypes: MeasurementTypeEnum[];
 
-  public static getDomainForType(
-    type: MeasurementTypeEnum
-  ): [AxisDomain, AxisDomain] {
-    switch (type) {
-      case MeasurementTypeEnum.ALTITUDE:
-        return [0, 2000];
-      case MeasurementTypeEnum.GAS:
-        return [0, 100];
-      case MeasurementTypeEnum.HUMIDITY:
-        return [0, 100];
-      case MeasurementTypeEnum.PRESSURE:
-        return [0, 1500];
-      case MeasurementTypeEnum.TEMPERATURE:
-        return [-20, 40];
-      default:
-        return [0, 0];
-    }
-  }
+  public static measurementTypeProperties = {
+    [MeasurementTypeEnum.ALTITUDE]: {
+      domain: [0, 2000],
+      unit: "m",
+    },
+    [MeasurementTypeEnum.GAS]: {
+      domain: [0, 100],
+      unit: "kΩ",
+    },
+    [MeasurementTypeEnum.HUMIDITY]: {
+      domain: [0, 100],
+      unit: "%",
+    },
+    [MeasurementTypeEnum.PRESSURE]: {
+      domain: [0, 1500],
+      unit: "hPa",
+    },
+    [MeasurementTypeEnum.TEMPERATURE]: {
+      domain: [-20, 40],
+      unit: "°C",
+    },
+  };
 }
 
 export default Sensor;

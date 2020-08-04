@@ -16,6 +16,7 @@ import ColorsEnum from "types/ColorsEnum";
 interface ChartData {
   time: number;
   value: number;
+  labelTime: string;
 }
 interface TimeSeriesChartInterface {
   dotSize: number;
@@ -23,6 +24,10 @@ interface TimeSeriesChartInterface {
   chartData: ChartData[];
   domain: [AxisDomain, AxisDomain];
   tickFormatter: (value: any) => any;
+  unit: {
+    x: string;
+    y: string;
+  };
 }
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
@@ -35,10 +40,12 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         tickFormatter={props.tickFormatter}
         type="number"
         minTickGap={0}
-        tick={{ fontSize: 13 }}
+        tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
+        stroke={ColorsEnum.GRAY}
         allowDataOverflow={false}
         interval={0}
         domain={[props.ticks[0] - 1, props.ticks[props.ticks.length - 1] + 1]}
+        //unit={props.unit.x}
       />
       <YAxis
         dataKey="value"
@@ -47,9 +54,19 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         domain={props.domain}
         allowDataOverflow={false}
         type="number"
+        unit={props.unit.y}
+        tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
+        stroke={ColorsEnum.GRAY}
       />
       <ZAxis range={[props.dotSize, props.dotSize]} />
-      <Tooltip />
+      <Tooltip
+        formatter={(value, unit, prps, index) =>
+          unit === "Time" ? `${props.chartData[index]?.labelTime}` : `${value}`
+        }
+        isAnimationActive={false}
+
+        //cursor={{ stroke: 'red', strokeWidth: 2 }}
+      />
       <Scatter
         data={props.chartData}
         line={{ stroke: "#eee" }}
@@ -58,6 +75,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         name="Values"
         strokeWidth={1}
         isAnimationActive={false}
+        fill={ColorsEnum.GRAY} // dot color
       />
       <CartesianGrid stroke={ColorsEnum.BGDARK} />
     </ScatterChart>

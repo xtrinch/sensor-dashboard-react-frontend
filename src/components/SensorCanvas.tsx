@@ -4,7 +4,9 @@ import React from "react";
 import { observer } from "mobx-react";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
-import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import MeasurementTypeEnum, {
+  MeasurementTypeLabelsEnum,
+} from "types/MeasurementTypeEnum";
 import { DateRange } from "utils/date.range";
 import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 import {
@@ -18,6 +20,7 @@ import {
 } from "date-fns";
 import TimeSeriesChart from "components/TimeSeriesChart";
 import Measurement from "types/Measurement";
+import { AxisDomain } from "recharts";
 
 const styles = () =>
   createStyles({
@@ -61,50 +64,32 @@ const SensorCanvas: React.FunctionComponent<
     return null;
   }
 
-  const getTickValues = (): number[] => {
-    // const y: number[] = Array.from({ length: 1000 });
-    let x: number[];
-
-    switch (groupBy) {
-      case GroupMeasurementByEnum.day:
-        x = Array.from({ length: 25 }, (data, i) => i + 1);
-        break;
-      case GroupMeasurementByEnum.week:
-        x = Array.from({ length: 7 }, (data, i) => i + 1);
-        break;
-      case GroupMeasurementByEnum.month:
-        x = Array.from(
-          { length: getDaysInMonth(DateRange.parse(date).from) },
-          (data, i) => i + 1
-        );
-        break;
-      case GroupMeasurementByEnum.year:
-        x = Array.from({ length: 12 }, (data, i) => i + 1);
-        break;
-      default:
-        break;
-    }
-
-    return x;
+  const groupByProperties = {
+    [GroupMeasurementByEnum.day]: {
+      unit: "h",
+      tickFormatter: (d) => `${getZeroPaddedNumber(d - 1)}`,
+      ticks: Array.from({ length: 25 }, (data, i) => i + 1),
+    },
+    [GroupMeasurementByEnum.week]: {
+      unit: "",
+      tickFormatter: (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`,
+      ticks: Array.from({ length: 7 }, (data, i) => i + 1),
+    },
+    [GroupMeasurementByEnum.month]: {
+      unit: ".",
+      tickFormatter: (d) => `${d}`,
+      ticks: Array.from(
+        { length: getDaysInMonth(DateRange.parse(date).from) },
+        (data, i) => i + 1
+      ),
+    },
+    [GroupMeasurementByEnum.year]: {
+      unit: "",
+      tickFormatter: (d) =>
+        `${format(addMonths(startOfYear(d), d - 1), "LLL")}`,
+      ticks: Array.from({ length: 12 }, (data, i) => i + 1),
+    },
   };
-
-  const getTickFormat = (): ((value: any) => any) => {
-    switch (groupBy) {
-      case GroupMeasurementByEnum.day:
-        return (d) => `${getZeroPaddedNumber(d - 1)}h`;
-      case GroupMeasurementByEnum.week:
-        return (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`;
-      case GroupMeasurementByEnum.month:
-        return (d) => `${d}.`;
-      case GroupMeasurementByEnum.year:
-        return (d) => `${format(addMonths(startOfYear(d), d - 1), "LLL")}`;
-      default:
-        return () => ``;
-    }
-  };
-
-  const tickValues = getTickValues();
-  const tickFormat = getTickFormat();
 
   const getTimeDomain = (date: string) => {
     const { day, hour, month, minute } = DateRange.getRegexGroups(date);
@@ -123,20 +108,33 @@ const SensorCanvas: React.FunctionComponent<
   return (
     <>
       <Card className={classes.root}>
-        <Typography variant="h6" style={{ marginBottom: "15px" }}>
-          {sensor.name} ({type})
+        <Typography
+          variant="h6"
+          style={{ marginBottom: "15px", fontWeight: "normal" }}
+        >
+          {MeasurementTypeLabelsEnum[type]}
         </Typography>
         <TimeSeriesChart
           chartData={[
             ...(measurements || []).map((m) => ({
               time: getTimeDomain(m.createdAt),
               value: m.measurement,
+              labelTime: m.createdAt,
             })),
           ]}
-          ticks={tickValues}
-          tickFormatter={tickFormat}
+          ticks={groupByProperties[groupBy].ticks}
+          tickFormatter={groupByProperties[groupBy].tickFormatter}
           dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
-          domain={Sensor.getDomainForType(type)}
+          domain={
+            Sensor.measurementTypeProperties[type].domain as [
+              AxisDomain,
+              AxisDomain
+            ]
+          }
+          unit={{
+            y: Sensor.measurementTypeProperties[type].unit,
+            x: groupByProperties[groupBy].unit,
+          }}
         />
       </Card>
     </>

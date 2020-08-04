@@ -40,7 +40,7 @@ const styles = () =>
       backgroundColor: ColorsEnum.BGDARK,
       gridGap: "5px",
       padding: "5px",
-      gridAutoRows: "calc(50vh - 15px)",
+      gridAutoRows: "calc(50vh - 40px)",
       width: "100%",
       boxSizing: "border-box",
       height: "calc(100vh - 60px)",

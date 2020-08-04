@@ -6,4 +6,12 @@ enum MeasurementTypeEnum {
   ALTITUDE = "altitude",
 }
 
+export enum MeasurementTypeLabelsEnum {
+  "humidity" = "Humidity",
+  "temperature" = "Temperature",
+  "gas" = "Gas",
+  "pressure" = "Pressure",
+  "altitude" = "Altitude",
+}
+
 export default MeasurementTypeEnum;
