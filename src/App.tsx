@@ -6,10 +6,9 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import SideMenu from "components/SideMenu";
-import { Provider, observer } from "mobx-react";
 import SensorsPage from "pages/SensorsPage";
 import theme from "layout/Theme";
-import { SensorContext, SensorContextProvider } from "context/SensorContext";
+import { SensorContextProvider } from "context/SensorContext";
 
 const styles = () =>
   createStyles({
@@ -24,7 +23,6 @@ const styles = () =>
     },
   });
 
-@observer
 class App extends React.Component<WithStyles<typeof styles>> {
   render() {
     const { classes } = this.props;

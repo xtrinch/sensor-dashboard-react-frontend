@@ -6,7 +6,6 @@ import {
   IsBoolean,
   IsUUID,
 } from "class-validator";
-import { observable } from "mobx";
 import SensorTypesEnum from "types/SensorTypesEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 
@@ -21,29 +20,23 @@ class Sensor {
     this.measurementTypes = s?.measurementTypes;
   }
 
-  @observable
   @IsUUID()
   public id: string;
 
-  @observable
   @IsString()
   @MinLength(2)
   public name: string;
 
-  @observable
   @IsString()
   @Length(34, 34)
   public address: string;
 
-  @observable
   @IsEnum(SensorTypesEnum)
   public type: SensorTypesEnum;
 
-  @observable
   @IsBoolean()
   public visible: boolean;
 
-  @observable
   public expanded: boolean;
 
   public measurementTypes: MeasurementTypeEnum[];

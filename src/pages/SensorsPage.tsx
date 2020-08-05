@@ -6,7 +6,6 @@ import {
   ButtonGroup,
 } from "@material-ui/core";
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { inject } from "mobx-react";
 import SensorCanvas from "components/SensorCanvas";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
@@ -63,7 +62,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const { sensors } = useContext(SensorContext);
+  const [{ sensors }] = useContext(SensorContext);
 
   // default view of dashboard
   const [groupByState, setGroupByState] = useState(GroupMeasurementByEnum.day);

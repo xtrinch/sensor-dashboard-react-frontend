@@ -1,7 +1,6 @@
 import { createStyles, Card, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import React from "react";
-import { observer } from "mobx-react";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
 import MeasurementTypeEnum, {
@@ -139,4 +138,4 @@ const SensorCanvas: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(observer(SensorCanvas));
+export default withStyles(styles)(SensorCanvas);

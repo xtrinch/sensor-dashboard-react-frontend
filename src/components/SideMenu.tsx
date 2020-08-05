@@ -9,15 +9,12 @@ import {
   Fab,
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { observer, inject } from "mobx-react";
-import { observable } from "mobx";
 import Sensor from "types/Sensor";
-import { validateAndTransform, FieldErrors } from "utils/validation";
 import { Collapse } from "@material-ui/core";
 import { Fragment } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -74,11 +71,11 @@ interface SideMenuProps {}
 const SideMenu: React.FunctionComponent<
   SideMenuProps & WithStyles<typeof styles>
 > = (props) => {
-  const { sensors } = useContext(SensorContext);
+  const [{ sensors }] = useContext(SensorContext);
 
-  let [validationErrors, setValidationErrors] = useState({});
+  // let [validationErrors, setValidationErrors] = useState({});
 
-  let [sensorToAdd, setSensorToAdd] = useState(new Sensor());
+  // let [sensorToAdd, setSensorToAdd] = useState(new Sensor());
 
   // const addSensor = async (e) => {
   //   e.preventDefault();

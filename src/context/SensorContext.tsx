@@ -3,12 +3,14 @@ import SensorService from "services/SensorService";
 import Sensor from "types/Sensor";
 
 type InitialStateType = {
+  sensorsLoaded: boolean;
   sensors: Sensor[];
   reload: (dispatch: React.Dispatch<any>) => {};
 };
 
 const initialState: InitialStateType = {
   sensors: [],
+  sensorsLoaded: false,
   reload: async (dispatch: React.Dispatch<any>) => {
     const sensorData = await reloadSensors();
     dispatch({
@@ -18,12 +20,14 @@ const initialState: InitialStateType = {
   },
 };
 
-const SensorContext = createContext<InitialStateType>(initialState);
+const SensorContext = createContext<[InitialStateType, React.Dispatch<any>]>(
+  null
+);
 
-let reducer = (state, action): InitialStateType => {
+let reducer = (state: InitialStateType, action): InitialStateType => {
   switch (action.type) {
     case "sensorReady":
-      return { ...state, sensors: action.payload };
+      return { ...state, sensors: action.payload, sensorsLoaded: true };
     default: {
       return { ...state, sensors: [] };
     }
@@ -42,11 +46,13 @@ const reloadSensors = async () => {
 function SensorContextProvider(props) {
   let [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
-    state.reload(dispatch);
-  }, []); // The empty array causes this effect to only run on mount
+    if (!state.sensorsLoaded) {
+      state.reload(dispatch);
+    }
+  }, [state.sensorsLoaded]); // The empty array causes this effect to only run on mount
 
   return (
-    <SensorContext.Provider value={state}>
+    <SensorContext.Provider value={[state, dispatch]}>
       {props.children}
     </SensorContext.Provider>
   );
