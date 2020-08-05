@@ -49,7 +49,7 @@ function SensorContextProvider(props) {
     if (!state.sensorsLoaded) {
       state.reload(dispatch);
     }
-  }, [state.sensorsLoaded]); // The empty array causes this effect to only run on mount
+  }, [state]); // The empty array causes this effect to only run on mount
 
   return (
     <SensorContext.Provider value={[state, dispatch]}>
