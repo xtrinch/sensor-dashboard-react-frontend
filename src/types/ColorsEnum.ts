@@ -6,6 +6,8 @@ enum ColorsEnum {
   GRAY = "rgb(193,195,196)",
   BGLIGHT = "rgb(58,65,73)",
   BGDARK = "rgb(47,53,58)",
+  WHITE = "white",
+  BLACK = "black",
 }
 
 export default ColorsEnum;

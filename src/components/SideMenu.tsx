@@ -9,12 +9,11 @@ import {
   Fab,
 } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import React from "react";
+import React, { useContext, useState } from "react";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { SensorStoreProps } from "stores/SensorStore";
 import { observer, inject } from "mobx-react";
 import { observable } from "mobx";
 import Sensor from "types/Sensor";
@@ -22,6 +21,7 @@ import { validateAndTransform, FieldErrors } from "utils/validation";
 import { Collapse } from "@material-ui/core";
 import { Fragment } from "react";
 import ColorsEnum from "types/ColorsEnum";
+import { SensorContext } from "context/SensorContext";
 
 const styles = () =>
   createStyles({
@@ -71,146 +71,139 @@ const styles = () =>
 
 interface SideMenuProps {}
 
-@inject("sensorStore")
-@observer
-class SideMenu extends React.Component<
-  SideMenuProps & WithStyles<typeof styles> & SensorStoreProps
-> {
-  @observable
-  private validationErrors: FieldErrors = {};
+const SideMenu: React.FunctionComponent<
+  SideMenuProps & WithStyles<typeof styles>
+> = (props) => {
+  const { sensors } = useContext(SensorContext);
 
-  @observable
-  private sensorToAdd: Sensor = new Sensor();
+  let [validationErrors, setValidationErrors] = useState({});
 
-  addSensor = async (e) => {
-    e.preventDefault();
+  let [sensorToAdd, setSensorToAdd] = useState(new Sensor());
 
-    this.validationErrors = await validateAndTransform(this.sensorToAdd);
-    if (Object.keys(this.validationErrors).length > 0) {
-      return;
-    }
+  // const addSensor = async (e) => {
+  //   e.preventDefault();
 
-    const { sensorStore } = this.props;
-    sensorStore.addSensor(this.sensorToAdd);
-    this.sensorToAdd = new Sensor();
-  };
+  //   setValidationErrors(await validateAndTransform(sensorToAdd));
+  //   if (Object.keys(validationErrors).length > 0) {
+  //     return;
+  //   }
 
-  removeSensor = async (sensor: Sensor) => {
-    const { sensorStore } = this.props;
-    sensorStore.removeSensor(sensor);
-  };
+  //   const { sensorStore } = props;
+  //   sensorStore.addSensor(sensorToAdd);
+  //   setSensorToAdd(new Sensor());
+  // };
 
-  toggleVisibility = async (e: any, sensor: Sensor) => {
-    e.stopPropagation();
+  // const removeSensor = async (sensor: Sensor) => {
+  //   const { sensorStore } = props;
+  //   sensorStore.removeSensor(sensor);
+  // };
 
-    const { sensorStore } = this.props;
-    sensorStore.toggleVisibility(sensor);
-  };
+  // const toggleVisibility = async (e: any, sensor: Sensor) => {
+  //   e.stopPropagation();
 
-  render() {
-    const {
-      classes,
-      sensorStore: { sensors },
-    } = this.props;
+  //   const { sensorStore } = props;
+  //   sensorStore.toggleVisibility(sensor);
+  // };
 
-    return (
-      <div className={classes.root}>
-        {/* <div className={classes.logoContainer}>
-          <img alt="logo" src="/logo.svg" />
-        </div>
-        <form className={classes.sensorInputForm} onSubmit={this.addSensor}>
-          <TextField
-            id="outlined-basic"
-            label="Sensor address"
-            variant="outlined"
-            value={this.sensorToAdd.address}
-            onChange={(e) => (this.sensorToAdd.address = e.target.value)}
-            error={!!this.validationErrors.address}
-            helperText={this.validationErrors.address?.message}
-          />
-          <FormControl variant="outlined" error={!!this.validationErrors.type}>
-            <InputLabel>Type</InputLabel>
-            <Select
-              value={this.sensorToAdd.type || ""}
-              onChange={(e) =>
-                (this.sensorToAdd.type = e.target.value as SensorTypesEnum)
-              }
-            >
-              {Object.values(SensorTypesEnum).map((st, index) => (
-                <MenuItem value={st} key={index}>
-                  {st}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>
-              {this.validationErrors.type?.message}
-            </FormHelperText>
-          </FormControl>
-          <div className={classes.inputFabLower}>
-            <TextField
-              style={{ width: "calc(100% - 75px)" }}
-              id="outlined-basic"
-              label="Sensor name"
-              variant="outlined"
-              value={this.sensorToAdd.name}
-              onChange={(e) => (this.sensorToAdd.name = e.target.value)}
-              error={!!this.validationErrors.name}
-              helperText={this.validationErrors.name?.message}
-            />
-            <Fab type="submit" color="primary" className={classes.fab}>
-              <AddIcon />
-            </Fab>
-          </div>
-        </form> */}
+  const { classes } = props;
 
-        <ListSubheader>Added sensors</ListSubheader>
-        <Divider />
-        <List disablePadding>
-          {sensors.map((sensor: Sensor & { expanded: boolean }, index) => (
-            <Fragment key={index}>
-              <ListItem
-                divider
-                button
-                onClick={() => (sensor.expanded = !sensor.expanded)}
-              >
-                <ListItemIcon>
-                  {sensor.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                </ListItemIcon>
-                <ListItemText primary={sensor.name} />
-                <Fab
-                  color="secondary"
-                  size="small"
-                  className={classes.sensorFab}
-                  onClick={(e) => {
-                    this.toggleVisibility(e, sensor);
-                  }}
-                >
-                  {sensor.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </Fab>
-                {/* <Fab
-                  color="secondary"
-                  size="small"
-                  className={classes.sensorFab}
-                  onClick={() => this.removeSensor(sensor)}
-                >
-                  <RemoveIcon />
-                </Fab> */}
-              </ListItem>
-              <Collapse in={sensor.expanded} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {sensor.measurementTypes.map((m, index) => (
-                    <ListItem button key={index}>
-                      <ListItemText primary={`${m}`} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            </Fragment>
-          ))}
-        </List>
+  return (
+    <div className={classes.root}>
+      {/* <div className={classes.logoContainer}>
+        <img alt="logo" src="/logo.svg" />
       </div>
-    );
-  }
-}
+      <form className={classes.sensorInputForm} onSubmit={addSensor}>
+        <TextField
+          id="outlined-basic"
+          label="Sensor address"
+          variant="outlined"
+          value={sensorToAdd.address}
+          onChange={(e) => (sensorToAdd.address = e.target.value)}
+          error={!!validationErrors.address}
+          helperText={validationErrors.address?.message}
+        />
+        <FormControl variant="outlined" error={!!validationErrors.type}>
+          <InputLabel>Type</InputLabel>
+          <Select
+            value={sensorToAdd.type || ""}
+            onChange={(e) =>
+              (sensorToAdd.type = e.target.value as SensorTypesEnum)
+            }
+          >
+            {Object.values(SensorTypesEnum).map((st, index) => (
+              <MenuItem value={st} key={index}>
+                {st}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>
+            {validationErrors.type?.message}
+          </FormHelperText>
+        </FormControl>
+        <div className={classes.inputFabLower}>
+          <TextField
+            style={{ width: "calc(100% - 75px)" }}
+            id="outlined-basic"
+            label="Sensor name"
+            variant="outlined"
+            value={sensorToAdd.name}
+            onChange={(e) => (sensorToAdd.name = e.target.value)}
+            error={!!validationErrors.name}
+            helperText={validationErrors.name?.message}
+          />
+          <Fab type="submit" color="primary" className={classes.fab}>
+            <AddIcon />
+          </Fab>
+        </div>
+      </form> */}
+
+      <ListSubheader>Added sensors</ListSubheader>
+      <Divider />
+      <List disablePadding>
+        {sensors.map((sensor: Sensor & { expanded: boolean }, index) => (
+          <Fragment key={index}>
+            <ListItem
+              divider
+              button
+              onClick={() => (sensor.expanded = !sensor.expanded)}
+            >
+              <ListItemIcon>
+                {sensor.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </ListItemIcon>
+              <ListItemText primary={sensor.name} />
+              <Fab
+                color="secondary"
+                size="small"
+                className={classes.sensorFab}
+                // onClick={(e) => {
+                //   toggleVisibility(e, sensor);
+                // }}
+              >
+                {sensor.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </Fab>
+              {/* <Fab
+                color="secondary"
+                size="small"
+                className={classes.sensorFab}
+                onClick={() => removeSensor(sensor)}
+              >
+                <RemoveIcon />
+              </Fab> */}
+            </ListItem>
+            <Collapse in={sensor.expanded} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {sensor.measurementTypes.map((m, index) => (
+                  <ListItem button key={index}>
+                    <ListItemText primary={`${m}`} />
+                  </ListItem>
+                ))}
+              </List>
+            </Collapse>
+          </Fragment>
+        ))}
+      </List>
+    </div>
+  );
+};
 
 export default withStyles(styles)(SideMenu);

@@ -30,19 +30,19 @@ import ArrowForward from "@material-ui/icons/ArrowForward";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
-import { DateRange } from "utils/date.range";
+import { DateRange, DateRegex } from "utils/date.range";
 
 export interface DateInputProps {
   style?: CSSProperties;
   label?: string;
   disabled?: boolean;
   onChange?: (e: string) => void;
-  date?: string;
+  date?: DateRegex;
   groupBy?: GroupMeasurementByEnum; // date selector input state
 }
 
-export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2018
-export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2018
+export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
+export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
 
 export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
   const { groupBy, onChange, date } = props;

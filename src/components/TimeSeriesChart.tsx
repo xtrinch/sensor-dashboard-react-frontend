@@ -67,17 +67,17 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
 
         //cursor={{ stroke: 'red', strokeWidth: 2 }}
       />
+      <CartesianGrid stroke={ColorsEnum.BGDARK} />
       <Scatter
         data={props.chartData}
-        line={{ stroke: "#eee" }}
+        line={{ stroke: ColorsEnum.GRAY }}
         lineJointType="monotoneX"
         lineType="joint"
         name="Values"
         strokeWidth={1}
         isAnimationActive={false}
-        fill={ColorsEnum.GRAY} // dot color
+        fill={ColorsEnum.WHITE} // dot color
       />
-      <CartesianGrid stroke={ColorsEnum.BGDARK} />
     </ScatterChart>
   </ResponsiveContainer>
 );

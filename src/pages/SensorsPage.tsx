@@ -5,9 +5,8 @@ import {
   Button,
   ButtonGroup,
 } from "@material-ui/core";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { inject } from "mobx-react";
-import { SensorStoreProps } from "stores/SensorStore";
 import SensorCanvas from "components/SensorCanvas";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
@@ -15,6 +14,7 @@ import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 import { DateInput } from "components/DateInput";
 import MeasurementService from "services/MeasurementService";
+import { SensorContext } from "context/SensorContext";
 
 const styles = () =>
   createStyles({
@@ -58,17 +58,15 @@ const styles = () =>
     },
   });
 
-const SensorsPage: React.FunctionComponent<
-  SensorStoreProps & WithStyles<typeof styles>
-> = (props) => {
-  const {
-    classes,
-    sensorStore: { sensors },
-  } = props;
+const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
+  props
+) => {
+  const { classes } = props;
 
-  const [groupByState, setGroupByState] = useState(
-    GroupMeasurementByEnum.month
-  );
+  const { sensors } = useContext(SensorContext);
+
+  // default view of dashboard
+  const [groupByState, setGroupByState] = useState(GroupMeasurementByEnum.day);
 
   const [date, setDate] = useState(null);
 
@@ -86,12 +84,13 @@ const SensorsPage: React.FunctionComponent<
   }, [date, sensors]);
 
   useEffect(() => {
-    if (!date) {
+    console.log(sensors);
+    if (!date || sensors.length === 0) {
       return;
     }
 
     getMeasurements();
-  }, [date, getMeasurements]);
+  }, [date, getMeasurements, sensors]);
 
   const onChange = useCallback((val) => {
     setDate(val);
@@ -155,4 +154,4 @@ const SensorsPage: React.FunctionComponent<
   );
 };
 
-export default inject("sensorStore")(withStyles(styles)(SensorsPage));
+export default withStyles(styles)(SensorsPage);

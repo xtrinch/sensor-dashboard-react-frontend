@@ -7,9 +7,9 @@ import {
 import React from "react";
 import SideMenu from "components/SideMenu";
 import { Provider, observer } from "mobx-react";
-import SensorStore from "stores/SensorStore";
 import SensorsPage from "pages/SensorsPage";
 import theme from "layout/Theme";
+import { SensorContext, SensorContextProvider } from "context/SensorContext";
 
 const styles = () =>
   createStyles({
@@ -26,25 +26,16 @@ const styles = () =>
 
 @observer
 class App extends React.Component<WithStyles<typeof styles>> {
-  private sensorStore: SensorStore;
-
-  constructor(props: any) {
-    super(props);
-    this.sensorStore = new SensorStore();
-    this.sensorStore.listSensors();
-  }
-
   render() {
     const { classes } = this.props;
-    const { sensors } = this.sensorStore;
     return (
       <MuiThemeProvider theme={theme}>
-        <Provider sensorStore={this.sensorStore}>
+        <SensorContextProvider>
           <div className={classes.app}>
-            {sensors && <SideMenu />}
-            {sensors && <SensorsPage />}
+            <SideMenu />
+            <SensorsPage />
           </div>
-        </Provider>
+        </SensorContextProvider>
       </MuiThemeProvider>
     );
   }

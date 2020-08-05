@@ -8,9 +8,7 @@ import {
 } from "class-validator";
 import { observable } from "mobx";
 import SensorTypesEnum from "types/SensorTypesEnum";
-import * as uuid from "uuid";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import { AxisDomain } from "recharts";
 
 class Sensor {
   constructor(s?: Sensor) {
