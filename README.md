@@ -7,7 +7,7 @@ See also [backend](https://github.com/xtrinch/sensor-dashboard-nestjs-backend) a
 ## Technology stack:
 
 - React
-- MobX for state management
+- React context for state management
 - Eslint for linting
 - ReCharts for chart display
 
