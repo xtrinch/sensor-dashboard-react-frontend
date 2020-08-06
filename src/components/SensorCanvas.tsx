@@ -1,29 +1,29 @@
-import { createStyles, Card, Typography } from "@material-ui/core";
+import { Card, createStyles, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
+import TimeSeriesChart from "components/TimeSeriesChart";
+import {
+  addDays,
+  addMonths,
+  format,
+  getDate,
+  getDaysInMonth,
+  startOfWeek,
+  startOfYear,
+} from "date-fns";
 import React from "react";
+import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
-import Sensor from "types/Sensor";
+import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
+import Measurement from "types/Measurement";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
+import Sensor from "types/Sensor";
 import {
   DateRange,
-  DateRegexGroupsInterface,
   DateRegex,
+  DateRegexGroupsInterface,
 } from "utils/date.range";
-import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
-import {
-  getDaysInMonth,
-  format,
-  addDays,
-  addMonths,
-  startOfYear,
-  startOfWeek,
-  getDate,
-} from "date-fns";
-import TimeSeriesChart from "components/TimeSeriesChart";
-import Measurement from "types/Measurement";
-import { AxisDomain } from "recharts";
 
 const styles = () =>
   createStyles({
@@ -47,7 +47,6 @@ const styles = () =>
   });
 
 interface SensorCanvasProps {
-  sensor: Sensor;
   type: MeasurementTypeEnum;
   date: DateRegex;
   groupBy: GroupMeasurementByEnum;
@@ -61,11 +60,7 @@ export const getZeroPaddedNumber = (num: number) => {
 const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
-  const { sensor, type, classes, date, groupBy, measurements } = props;
-
-  if (!sensor.visible) {
-    return null;
-  }
+  const { type, classes, date, groupBy, measurements } = props;
 
   const groupByProperties = {
     [GroupMeasurementByEnum.day]: {
@@ -109,30 +104,32 @@ const SensorCanvas: React.FunctionComponent<
         >
           {MeasurementTypeLabelsEnum[type]}
         </Typography>
-        <TimeSeriesChart
-          chartData={[
-            ...(measurements || []).map((m) => ({
-              time: groupByProperties[groupBy].getTimeDomain(
-                DateRange.getRegexGroups(m.createdAt)
-              ),
-              value: m.measurement,
-              labelTime: m.createdAt,
-            })),
-          ]}
-          ticks={groupByProperties[groupBy].ticks}
-          tickFormatter={groupByProperties[groupBy].tickFormatter}
-          dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
-          domain={
-            Sensor.measurementTypeProperties[type].domain as [
-              AxisDomain,
-              AxisDomain
-            ]
-          }
-          unit={{
-            y: Sensor.measurementTypeProperties[type].unit,
-            x: groupByProperties[groupBy].unit,
-          }}
-        />
+        {measurements && (
+          <TimeSeriesChart
+            chartData={Object.keys(measurements).map((key) => ({
+              data: measurements[key].map((m) => ({
+                time: groupByProperties[groupBy].getTimeDomain(
+                  DateRange.getRegexGroups(m.createdAt)
+                ),
+                value: m.measurement,
+                labelTime: m.createdAt,
+              })),
+            }))}
+            ticks={groupByProperties[groupBy].ticks}
+            tickFormatter={groupByProperties[groupBy].tickFormatter}
+            dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
+            domain={
+              Sensor.measurementTypeProperties[type].domain as [
+                AxisDomain,
+                AxisDomain
+              ]
+            }
+            unit={{
+              y: Sensor.measurementTypeProperties[type].unit,
+              x: groupByProperties[groupBy].unit,
+            }}
+          />
+        )}
       </Card>
     </>
   );

@@ -1,5 +1,5 @@
-import { getUrl, getHeaders, processResponse } from "utils/http";
 import Measurement from "types/Measurement";
+import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class MeasurementService {
   public static listMeasurements = async (queryParams) => {
@@ -12,8 +12,12 @@ export default class MeasurementService {
     });
 
     const result = await processResponse(resp);
-    for (const key of Object.keys(result)) {
-      result[key] = result[key].map((m) => new Measurement(m));
+    for (const sensor of Object.keys(result)) {
+      for (const measureType of Object.keys(result[sensor])) {
+        result[sensor][measureType] = result[sensor][measureType].map(
+          (m) => new Measurement(m)
+        );
+      }
     }
 
     return result;

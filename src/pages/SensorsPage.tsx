@@ -1,19 +1,19 @@
 import {
-  WithStyles,
-  createStyles,
-  withStyles,
   Button,
   ButtonGroup,
+  createStyles,
+  WithStyles,
+  withStyles,
 } from "@material-ui/core";
-import React, { useState, useEffect, useCallback, useContext } from "react";
-import SensorCanvas from "components/SensorCanvas";
-import ColorsEnum from "types/ColorsEnum";
-import Sensor from "types/Sensor";
-import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 import { DateInput } from "components/DateInput";
-import MeasurementService from "services/MeasurementService";
+import SensorCanvas from "components/SensorCanvas";
 import { SensorContext } from "context/SensorContext";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import MeasurementService from "services/MeasurementService";
+import ColorsEnum from "types/ColorsEnum";
+import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
+import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import Sensor from "types/Sensor";
 
 const styles = () =>
   createStyles({
@@ -95,6 +95,24 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
     setDate(val);
   }, []);
 
+  const sensorTypes = (): MeasurementTypeEnum[] => {
+    // collect all returned measurement types
+    let sensorTypes: MeasurementTypeEnum[] = sensors.reduce(
+      (acc, sensor: Sensor) => {
+        return [...acc, ...sensor.measurementTypes];
+      },
+      []
+    );
+
+    // filter duplicates
+    sensorTypes = sensorTypes.filter(
+      (item: MeasurementTypeEnum, pos: number) =>
+        sensorTypes.findIndex((d: MeasurementTypeEnum) => d === item) === pos
+    );
+
+    return sensorTypes;
+  };
+
   return (
     <div style={{ width: "100%" }}>
       <div className={classes.timePicker}>
@@ -122,33 +140,19 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
           </ButtonGroup>
         </div>
       </div>
-      <div className={classes.root}>
-        {sensors
-          .reduce((acc, sensor: Sensor) => {
-            return [
-              ...acc,
-              ...sensor.measurementTypes.map((m) => ({ type: m, s: sensor })),
-            ];
-          }, [])
-          .map((params: { s: Sensor; type: MeasurementTypeEnum }) => (
+      {measurements && (
+        <div className={classes.root}>
+          {sensorTypes().map((type: MeasurementTypeEnum) => (
             <SensorCanvas
-              sensor={params.s}
-              key={`${params.s.id}${params.type}`}
-              type={params.type}
+              key={type}
+              type={type}
               date={date}
               groupBy={groupByState}
-              measurements={measurements ? measurements[params.type] : []}
+              measurements={measurements[type] || []}
             />
           ))}
-        {/* {4 - sensors.length > 0 &&
-          new Array(4 - sensors.length).fill(0).map((num, index) => (
-            <div key={index} className={classes.placeholder}>
-              <Typography variant="h5">
-                Sensor {index + 1} placeholder
-              </Typography>
-            </div>
-          ))} */}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

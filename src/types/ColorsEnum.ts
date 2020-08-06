@@ -10,4 +10,12 @@ enum ColorsEnum {
   BLACK = "black",
 }
 
+export const GraphColors = [
+  "#E5BC76",
+  "#8ABABE",
+  "#E45558",
+  "#16B5A7",
+  "#63BE9C",
+];
+
 export default ColorsEnum;

@@ -1,19 +1,18 @@
 import React from "react";
-
 import {
+  AxisDomain,
+  CartesianGrid,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
+  Tooltip,
   XAxis,
   YAxis,
   ZAxis,
-  CartesianGrid,
-  Tooltip,
-  AxisDomain,
 } from "recharts";
-import ColorsEnum from "types/ColorsEnum";
+import ColorsEnum, { GraphColors } from "types/ColorsEnum";
 
-interface ChartData {
+interface ChartPoint {
   time: number;
   value: number;
   labelTime: string;
@@ -21,7 +20,9 @@ interface ChartData {
 interface TimeSeriesChartInterface {
   dotSize: number;
   ticks: number[];
-  chartData: ChartData[];
+  chartData: {
+    data: ChartPoint[];
+  }[];
   domain: [AxisDomain, AxisDomain];
   tickFormatter: (value: any) => any;
   unit: {
@@ -60,24 +61,25 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
       />
       <ZAxis range={[props.dotSize, props.dotSize]} />
       <Tooltip
-        formatter={(value, unit, prps, index) =>
-          unit === "Time" ? `${props.chartData[index]?.labelTime}` : `${value}`
+        formatter={(value, unit, payload, index) =>
+          unit === "Time" ? `${payload.payload.labelTime}` : `${value}`
         }
         isAnimationActive={false}
-
-        //cursor={{ stroke: 'red', strokeWidth: 2 }}
       />
       <CartesianGrid stroke={ColorsEnum.BGDARK} />
-      <Scatter
-        data={props.chartData}
-        line={{ stroke: ColorsEnum.GRAY }}
-        lineJointType="monotoneX"
-        lineType="joint"
-        name="Values"
-        strokeWidth={1}
-        isAnimationActive={false}
-        fill={ColorsEnum.WHITE} // dot color
-      />
+      {props.chartData.map((line, index) => (
+        <Scatter
+          data={line.data}
+          line={{ stroke: GraphColors[index] }}
+          lineJointType="monotoneX"
+          lineType="joint"
+          name="Values"
+          strokeWidth={2}
+          isAnimationActive={false}
+          fill={ColorsEnum.WHITE} // dot color
+          id={`${index}`}
+        />
+      ))}
     </ScatterChart>
   </ResponsiveContainer>
 );
