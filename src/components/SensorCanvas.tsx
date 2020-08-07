@@ -31,6 +31,9 @@ const styles = () =>
       //border: '1px solid #000',
       backgroundColor: ColorsEnum.BGLIGHT,
       padding: "20px",
+      "& svg": {
+        overflow: "visible",
+      },
     },
     picker: {
       marginRight: "10px",

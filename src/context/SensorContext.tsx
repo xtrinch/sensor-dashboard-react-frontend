@@ -1,14 +1,14 @@
-import React, { useReducer, createContext, useEffect } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor from "types/Sensor";
 
-type InitialStateType = {
+type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
   reload: (dispatch: React.Dispatch<any>) => {};
 };
 
-const initialState: InitialStateType = {
+const initialState: SensorContextState = {
   sensors: [],
   sensorsLoaded: false,
   reload: async (dispatch: React.Dispatch<any>) => {
@@ -20,11 +20,11 @@ const initialState: InitialStateType = {
   },
 };
 
-const SensorContext = createContext<[InitialStateType, React.Dispatch<any>]>(
+const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
 );
 
-let reducer = (state: InitialStateType, action): InitialStateType => {
+let reducer = (state: SensorContextState, action): SensorContextState => {
   switch (action.type) {
     case "sensorReady":
       return { ...state, sensors: action.payload, sensorsLoaded: true };

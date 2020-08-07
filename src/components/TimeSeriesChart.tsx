@@ -45,7 +45,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         stroke={ColorsEnum.GRAY}
         allowDataOverflow={false}
         interval={0}
-        domain={[props.ticks[0] - 1, props.ticks[props.ticks.length - 1] + 1]}
+        domain={[props.ticks[0], props.ticks[props.ticks.length - 1]]}
         //unit={props.unit.x}
       />
       <YAxis

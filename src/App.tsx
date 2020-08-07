@@ -1,14 +1,15 @@
 import {
-  WithStyles,
   createStyles,
-  withStyles,
   MuiThemeProvider,
+  WithStyles,
+  withStyles,
 } from "@material-ui/core";
-import React from "react";
-import SideMenu from "components/SideMenu";
-import SensorsPage from "pages/SensorsPage";
-import theme from "layout/Theme";
+import SideMenuWrapper from "components/SideMenuWrapper";
+import { AppContextProvider } from "context/AppContext";
 import { SensorContextProvider } from "context/SensorContext";
+import theme from "layout/Theme";
+import SensorsPage from "pages/SensorsPage";
+import React from "react";
 
 const styles = () =>
   createStyles({
@@ -28,12 +29,14 @@ class App extends React.Component<WithStyles<typeof styles>> {
     const { classes } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
-        <SensorContextProvider>
-          <div className={classes.app}>
-            <SideMenu />
-            <SensorsPage />
-          </div>
-        </SensorContextProvider>
+        <AppContextProvider>
+          <SensorContextProvider>
+            <div className={classes.app}>
+              <SideMenuWrapper />
+              <SensorsPage />
+            </div>
+          </SensorContextProvider>
+        </AppContextProvider>
       </MuiThemeProvider>
     );
   }

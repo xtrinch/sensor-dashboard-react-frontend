@@ -1,31 +1,30 @@
 import {
+  Collapse,
   createStyles,
   Divider,
+  Fab,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
   ListSubheader,
-  ListItemIcon,
-  Fab,
 } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
-import React, { useContext } from "react";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import Sensor from "types/Sensor";
-import { Collapse } from "@material-ui/core";
-import { Fragment } from "react";
-import ColorsEnum from "types/ColorsEnum";
+import { withStyles, WithStyles } from "@material-ui/styles";
 import { SensorContext } from "context/SensorContext";
+import React, { Fragment, useContext } from "react";
+import ColorsEnum from "types/ColorsEnum";
+import Sensor from "types/Sensor";
 
 const styles = () =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      borderRight: "1px solid rgb(35,40,44)",
       width: "270px",
+      height: "100%",
     },
     sensorInputForm: {
       margin: "30px 10px",
