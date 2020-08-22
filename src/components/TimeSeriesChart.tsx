@@ -44,7 +44,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
         stroke={ColorsEnum.GRAY}
         allowDataOverflow={false}
-        interval={0}
+        interval={"preserveStartEnd"}
         domain={[props.ticks[0], props.ticks[props.ticks.length - 1]]}
         //unit={props.unit.x}
       />

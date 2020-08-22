@@ -43,7 +43,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       measurementTypes: sensors.reduce((acc, sensor: Sensor) => {
         return [...acc, ...sensor.measurementTypes];
       }, []),
-      sensorIds: sensors.map((s) => s.id),
+      sensorIds: sensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
   }, [date, sensors]);

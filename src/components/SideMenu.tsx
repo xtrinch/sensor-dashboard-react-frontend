@@ -14,6 +14,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { withStyles, WithStyles } from "@material-ui/styles";
+import Logo from "assets/transistor.svg"; // with import
+import Link from "components/Link";
+import { AccountContext } from "context/AccountContext";
 import { SensorContext } from "context/SensorContext";
 import React, { Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -46,15 +49,14 @@ const styles = () =>
       marginLeft: "20px",
     },
     logoContainer: {
-      backgroundColor: ColorsEnum.RED,
-      borderRadius: "10px",
-      height: "80px",
-      width: "80px",
-      marginLeft: "10px",
-      marginTop: "20px",
+      //height: "80px",
+      //width: "80px",
+      display: "flex",
+      justifyContent: "center",
+      width: "40px",
+      height: "70px",
       "& img": {
-        height: "80px",
-        width: "80px",
+        width: "70px",
       },
     },
     sensorFab: {
@@ -63,6 +65,13 @@ const styles = () =>
       color: "white",
       marginLeft: "10px",
     },
+    userContainer: {
+      padding: "15px",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "flex-end",
+      justifyContent: "space-between",
+    },
   });
 
 interface SideMenuProps {}
@@ -70,7 +79,10 @@ interface SideMenuProps {}
 const SideMenu: React.FunctionComponent<
   SideMenuProps & WithStyles<typeof styles>
 > = (props) => {
-  const [{ sensors }] = useContext(SensorContext);
+  const [{ sensors }, dispatch] = useContext(SensorContext);
+  const [{ loginState, user, logout }, dispatchAccount] = useContext(
+    AccountContext
+  );
 
   // let [validationErrors, setValidationErrors] = useState({});
 
@@ -94,17 +106,38 @@ const SideMenu: React.FunctionComponent<
   //   sensorStore.removeSensor(sensor);
   // };
 
-  // const toggleVisibility = async (e: any, sensor: Sensor) => {
-  //   e.stopPropagation();
-
-  //   const { sensorStore } = props;
-  //   sensorStore.toggleVisibility(sensor);
-  // };
+  const toggleVisibility = async (e: any, sensor: Sensor) => {
+    e.stopPropagation();
+    sensor.visible = !sensor.visible;
+    dispatch({
+      type: "updateSensor",
+      payload: sensor,
+    });
+  };
 
   const { classes } = props;
 
   return (
     <div className={classes.root}>
+      <div className={classes.userContainer}>
+        <div className={classes.logoContainer}>
+          <Link to="/">
+            <img alt="logo" src={Logo} />
+          </Link>
+        </div>
+        {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
+          <div>
+            <Link to="/login">Login</Link> &nbsp; | &nbsp;
+            <Link to="/register">Register</Link>
+          </div>
+        )}
+        {loginState === "LOGGED_IN" && (
+          <div>
+            Welcome, {user.username}.{" "}
+            <Link onClick={() => logout(dispatchAccount)}>Logout</Link>
+          </div>
+        )}
+      </div>
       {/* <div className={classes.logoContainer}>
         <img alt="logo" src="/logo.svg" />
       </div>
@@ -171,9 +204,9 @@ const SideMenu: React.FunctionComponent<
                 color="secondary"
                 size="small"
                 className={classes.sensorFab}
-                // onClick={(e) => {
-                //   toggleVisibility(e, sensor);
-                // }}
+                onClick={(e) => {
+                  toggleVisibility(e, sensor);
+                }}
               >
                 {sensor.visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
               </Fab>

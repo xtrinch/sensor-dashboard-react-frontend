@@ -40,5 +40,9 @@ export const getHeaders = (params: {
 
 export const processResponse = async (response) => {
   const responseData = await response.json();
-  return responseData;
+
+  if (response.status >= 200 && response.status <= 399) {
+    return responseData;
+  }
+  throw responseData;
 };

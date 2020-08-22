@@ -35,11 +35,6 @@ const styles = (theme) =>
         marginTop: "10px",
       },
     },
-    picker: {
-      marginRight: "10px",
-      marginBottom: "10px",
-      width: "170px",
-    },
     menuIcon: {
       [theme.breakpoints.up("md")]: {
         display: "none",
@@ -100,7 +95,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           groupBy={groupBy}
           date={date}
           onChange={onChangeDate}
-          style={{ width: "300px" }}
+          style={{ width: "260px" }}
         />
       </div>
       <div>

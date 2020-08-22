@@ -10,7 +10,7 @@ const theme = createMuiTheme({
   palette: {
     type: "dark",
     primary: {
-      main: ColorsEnum.VIOLET,
+      main: ColorsEnum.BLUE,
     },
     // divider: ColorsEnum.BGDARK,
     error: { main: "#ff8a65" },
@@ -48,6 +48,11 @@ const theme = createMuiTheme({
     MuiListItem: {
       root: {
         color: ColorsEnum.GRAY,
+      },
+    },
+    MuiDrawer: {
+      paperAnchorDockedLeft: {
+        borderRight: "0px",
       },
     },
   },

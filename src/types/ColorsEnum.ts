@@ -8,6 +8,7 @@ enum ColorsEnum {
   BGDARK = "rgb(47,53,58)",
   WHITE = "white",
   BLACK = "black",
+  BLUE = "rgb(61,152,247)",
 }
 
 export const GraphColors = [

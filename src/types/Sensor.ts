@@ -1,13 +1,14 @@
 import {
-  IsString,
-  MinLength,
-  Length,
-  IsEnum,
   IsBoolean,
-  IsUUID,
+  IsEnum,
+  IsString,
+  Length,
+  MinLength,
 } from "class-validator";
-import SensorTypesEnum from "types/SensorTypesEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import SensorTypesEnum from "types/SensorTypesEnum";
+
+export type SensorId = number;
 
 class Sensor {
   constructor(s?: Sensor) {
@@ -20,8 +21,7 @@ class Sensor {
     this.measurementTypes = s?.measurementTypes;
   }
 
-  @IsUUID()
-  public id: string;
+  public id: SensorId;
 
   @IsString()
   @MinLength(2)

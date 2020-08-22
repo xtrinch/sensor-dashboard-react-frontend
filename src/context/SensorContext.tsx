@@ -20,14 +20,34 @@ const initialState: SensorContextState = {
   },
 };
 
+interface SensorReadyAction {
+  type: "sensorReady";
+  payload: Sensor[];
+}
+
+interface UpdateSensorAction {
+  type: "updateSensor";
+  payload: Sensor;
+}
+
+export type SensorActionTypes = SensorReadyAction | UpdateSensorAction;
+
 const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
 );
 
-let reducer = (state: SensorContextState, action): SensorContextState => {
+let reducer = (
+  state: SensorContextState,
+  action: SensorActionTypes
+): SensorContextState => {
   switch (action.type) {
     case "sensorReady":
       return { ...state, sensors: action.payload, sensorsLoaded: true };
+    case "updateSensor":
+      const sensors = state.sensors;
+      const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);
+      sensors[sensorIndex] = action.payload;
+      return { ...state, sensors: [...sensors] };
     default: {
       return { ...state, sensors: [] };
     }
