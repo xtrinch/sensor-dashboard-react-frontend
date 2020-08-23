@@ -44,19 +44,36 @@ const LoginPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const errs: { [key: string]: string } = {};
+  const [errors, setErrors] = useState(errs);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
 
   const [accountState, dispatch] = useContext(AccountContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
-    const success = await accountState.login(dispatch, email, password);
-    if (success) {
-      console.log("Logged in");
-      history.push("/");
+    try {
+      const success = await accountState.login(
+        dispatch,
+        data.email,
+        data.password
+      );
+      if (success) {
+        console.log("Logged in");
+        history.push("/");
+      }
+    } catch (e) {
+      setErrors(e);
     }
+  };
+
+  const fieldChange = (val, fieldName) => {
+    data[fieldName] = val;
+    setData({ ...data });
   };
 
   return (
@@ -80,8 +97,10 @@ const LoginPage: React.FunctionComponent<
             name="email"
             autoComplete="email"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={data.email}
+            onChange={(e) => fieldChange(e.target.value, "email")}
+            error={!!errors.email}
+            helperText={errors.email}
           />
           <TextField
             variant="outlined"
@@ -93,8 +112,10 @@ const LoginPage: React.FunctionComponent<
             type="password"
             id="password"
             autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={data.password}
+            onChange={(e) => fieldChange(e.target.value, "password")}
+            error={!!errors.password}
+            helperText={errors.password}
           />
           <div style={{ color: ColorsEnum.RED }}>
             {accountState.loginState === "LOGIN_ERROR" &&

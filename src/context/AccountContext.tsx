@@ -7,21 +7,23 @@ const login = async (
   email: string,
   password: string
 ) => {
-  const { accessToken, user } = await UserService.login(email, password);
-
-  if (accessToken) {
-    dispatch({
-      type: "loggedIn",
-      payload: {
-        accessToken,
-        user,
-      },
-    });
-    return true;
-  } else {
+  try {
+    const { accessToken, user } = await UserService.login(email, password);
+    if (accessToken) {
+      dispatch({
+        type: "loggedIn",
+        payload: {
+          accessToken,
+          user,
+        },
+      });
+      return true;
+    }
+  } catch (e) {
     dispatch({
       type: "loginError",
     });
+    throw e;
   }
 
   return false;

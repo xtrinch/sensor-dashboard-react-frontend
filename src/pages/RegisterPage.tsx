@@ -42,6 +42,7 @@ const RegisterPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
   const [accountContext, dispatch] = useContext(AccountContext);
+  const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const [data, setData] = useState({
     name: "",
@@ -67,7 +68,10 @@ const RegisterPage: React.FunctionComponent<
       const user = await accountContext.register(dispatch, data);
 
       if (user) {
-        history.push("/");
+        setRegisterSuccess(true);
+        setTimeout(() => {
+          history.push("/");
+        }, 4000);
       }
     } catch (e) {
       setErrors(e);
@@ -78,115 +82,130 @@ const RegisterPage: React.FunctionComponent<
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form
-          onSubmit={submitForm}
-          className={classes.form}
-          noValidate
-          style={{ padding: "15px 0 0 0" }}
-        >
+        {!registerSuccess && (
+          <>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign up
+            </Typography>
+            <form
+              onSubmit={submitForm}
+              className={classes.form}
+              noValidate
+              style={{ padding: "15px 0 0 0" }}
+            >
+              <Grid container spacing={10}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    autoComplete="fname"
+                    name="firstName"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="First Name"
+                    autoFocus
+                    value={data.name}
+                    error={!!errors.name}
+                    helperText={errors.name}
+                    onChange={(e) => fieldChange(e.target.value, "name")}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Last Name"
+                    name="lastName"
+                    autoComplete="lname"
+                    value={data.surname}
+                    error={!!errors.surname}
+                    helperText={errors.surname}
+                    onChange={(e) => fieldChange(e.target.value, "surname")}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    value={data.username}
+                    error={!!errors.username}
+                    helperText={errors.username}
+                    onChange={(e) => fieldChange(e.target.value, "username")}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    value={data.email}
+                    error={!!errors.email}
+                    helperText={errors.email}
+                    onChange={(e) => fieldChange(e.target.value, "email")}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    value={data.password}
+                    error={!!errors.password}
+                    onChange={(e) => fieldChange(e.target.value, "password")}
+                    helperText={errors.password}
+                  />
+                </Grid>
+                {errors.message && (
+                  <Grid item style={{ color: "red" }}>
+                    {errors.message}
+                  </Grid>
+                )}
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                style={{ marginTop: "20px" }}
+              >
+                Sign Up
+              </Button>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
+              </Grid>
+            </form>
+          </>
+        )}
+        {registerSuccess && (
           <Grid container spacing={10}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-                value={data.name}
-                error={!!errors.name}
-                helperText={errors.name}
-                onChange={(e) => fieldChange(e.target.value, "name")}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={data.surname}
-                error={!!errors.surname}
-                helperText={errors.surname}
-                onChange={(e) => fieldChange(e.target.value, "surname")}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                value={data.username}
-                error={!!errors.username}
-                helperText={errors.username}
-                onChange={(e) => fieldChange(e.target.value, "username")}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={data.email}
-                error={!!errors.email}
-                helperText={errors.email}
-                onChange={(e) => fieldChange(e.target.value, "email")}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={data.password}
-                error={!!errors.password}
-                onChange={(e) => fieldChange(e.target.value, "password")}
-                helperText={errors.password}
-              />
-            </Grid>
+            <Grid item>Registration successful! You can now login.</Grid>
+            <Grid item>Redirecting to home page...</Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            style={{ marginTop: "20px" }}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+        )}
       </div>
     </Container>
   );
