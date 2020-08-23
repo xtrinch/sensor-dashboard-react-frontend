@@ -100,7 +100,7 @@ let reducer = (state: AccountContextState, action): AccountContextState => {
     ? localStorage.setItem("user", JSON.stringify(newState.user))
     : localStorage.removeItem("user");
   newState.accessToken
-    ? localStorage.setItem("accessToken", JSON.stringify(newState.accessToken))
+    ? localStorage.setItem("accessToken", newState.accessToken)
     : localStorage.removeItem("accessToken");
 
   return newState;

@@ -15,8 +15,8 @@ const styles = (theme) =>
       display: "grid",
       gridTemplateColumns: "repeat(1, 1fr)",
       backgroundColor: ColorsEnum.BGDARK,
-      gridGap: "5px",
-      padding: "5px",
+      gridGap: "0px",
+      padding: "0px",
       gridAutoRows: "calc(50vh - 40px)",
       width: "100%",
       boxSizing: "border-box",
@@ -38,6 +38,10 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
+    if (sensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+      setMeasurements({});
+      return;
+    }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: date,
       measurementTypes: sensors.reduce((acc, sensor: Sensor) => {

@@ -30,10 +30,9 @@ export const getUrl = (urlString: string, queryParams: object = {}): string => {
 };
 
 export const getHeaders = (params: {
-  authToken?: string;
   contentType?: string;
 }): { [key: string]: string } => ({
-  Authorization: params.authToken,
+  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
   Accept: "application/json",
   ...(params.contentType ? { "Content-Type": params.contentType } : undefined),
 });

@@ -2,10 +2,18 @@ import React, { createContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor from "types/Sensor";
 
+const addSensor = async (
+  dispatch: React.Dispatch<any>,
+  sensor: Partial<Sensor>
+) => {
+  await SensorService.addSensor(sensor);
+};
+
 type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
   reload: (dispatch: React.Dispatch<any>) => {};
+  addSensor: (dispatch: React.Dispatch<any>, sensor: Partial<Sensor>) => {};
 };
 
 const initialState: SensorContextState = {
@@ -18,6 +26,7 @@ const initialState: SensorContextState = {
       payload: sensorData,
     });
   },
+  addSensor: addSensor,
 };
 
 interface SensorReadyAction {

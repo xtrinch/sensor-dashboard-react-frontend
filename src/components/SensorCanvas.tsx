@@ -28,11 +28,16 @@ import {
 const styles = () =>
   createStyles({
     root: {
-      //border: '1px solid #000',
-      backgroundColor: ColorsEnum.BGLIGHT,
+      borderBottom: `4px solid ${ColorsEnum.BGLIGHT}`,
+      boxShadow: "none",
+      borderRadius: "0px",
+      backgroundColor: ColorsEnum.BGDARK,
       padding: "20px",
       "& svg": {
         overflow: "visible",
+      },
+      "&:nth-of-type(2n + 1)": {
+        borderRight: `4px solid ${ColorsEnum.BGLIGHT}`,
       },
     },
     picker: {

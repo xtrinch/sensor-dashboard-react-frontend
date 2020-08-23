@@ -3,12 +3,14 @@ import {
   createStyles,
   Divider,
   Fab,
+  Grid,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListSubheader,
 } from "@material-ui/core";
+import PlusIcon from "@material-ui/icons/Add";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -186,7 +188,27 @@ const SideMenu: React.FunctionComponent<
         </div>
       </form> */}
 
-      <ListSubheader>Added sensors</ListSubheader>
+      <ListSubheader>
+        <Grid container>
+          <Grid item xs>
+            Added sensors
+          </Grid>
+          {loginState === "LOGGED_IN" && (
+            <Grid item>
+              <Link to="/add-sensor">
+                <Fab
+                  color="primary"
+                  size="small"
+                  className={classes.sensorFab}
+                  onClick={(e) => {}}
+                >
+                  <PlusIcon />
+                </Fab>
+              </Link>
+            </Grid>
+          )}
+        </Grid>
+      </ListSubheader>
       <Divider />
       <List disablePadding>
         {sensors.map((sensor: Sensor & { expanded: boolean }, index) => (

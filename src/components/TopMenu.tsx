@@ -17,8 +17,9 @@ import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 const styles = (theme) =>
   createStyles({
     activeButton: {
-      backgroundColor: ColorsEnum.GRAY,
-      color: ColorsEnum.BGDARK,
+      backgroundColor: ColorsEnum.BLUE,
+      color: ColorsEnum.WHITE,
+      border: `1px solid ${ColorsEnum.BLUE}`,
     },
     timePicker: {
       backgroundColor: ColorsEnum.BGLIGHT,
@@ -26,7 +27,7 @@ const styles = (theme) =>
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "row",
-      borderBottom: "1px solid rgb(35,40,44)",
+      //borderBottom: "1px solid rgb(35,40,44)",
       flexWrap: "wrap",
       [theme.breakpoints.up("md")]: {
         left: "270px",
@@ -34,6 +35,7 @@ const styles = (theme) =>
       "& > *": {
         marginTop: "10px",
       },
+      boxShadow: "none",
     },
     menuIcon: {
       [theme.breakpoints.up("md")]: {

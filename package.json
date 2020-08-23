@@ -26,6 +26,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "recharts": "^1.8.5",
+    "timezone-support": "^2.0.2",
     "typescript": "~3.7.2",
     "uuid": "^8.0.0"
   },

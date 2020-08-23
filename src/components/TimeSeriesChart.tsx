@@ -66,7 +66,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         }
         isAnimationActive={false}
       />
-      <CartesianGrid stroke={ColorsEnum.BGDARK} />
+      <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
       {props.chartData.map((line, index) => (
         <Scatter
           data={line.data}

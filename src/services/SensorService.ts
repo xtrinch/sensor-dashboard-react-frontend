@@ -1,5 +1,5 @@
-import { getUrl, getHeaders, processResponse } from "utils/http";
 import Sensor from "types/Sensor";
+import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class SensorService {
   public static listSensors = async () => {
@@ -21,5 +21,20 @@ export default class SensorService {
       meta: result.meta,
       items: sensors,
     };
+  };
+
+  public static addSensor = async (sensor: Partial<Sensor>) => {
+    const url = getUrl("/sensors");
+
+    const resp = await fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+      body: JSON.stringify(sensor),
+    });
+
+    const result = await processResponse(resp);
+
+    return result;
   };
 }
