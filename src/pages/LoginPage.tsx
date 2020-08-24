@@ -63,7 +63,6 @@ const LoginPage: React.FunctionComponent<
         data.password
       );
       if (success) {
-        console.log("Logged in");
         history.push("/");
       }
     } catch (e) {

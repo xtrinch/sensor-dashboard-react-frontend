@@ -13,6 +13,7 @@ import {
 import PlusIcon from "@material-ui/icons/Add";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import SettingsIcon from "@material-ui/icons/Settings";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import { withStyles, WithStyles } from "@material-ui/styles";
@@ -27,9 +28,20 @@ import Sensor from "types/Sensor";
 const styles = () =>
   createStyles({
     root: {
-      backgroundColor: ColorsEnum.BGLIGHT,
       width: "270px",
       height: "100%",
+    },
+    subheader: {
+      textTransform: "none",
+      fontSize: "12px",
+      backgroundColor: ColorsEnum.BGLIGHT,
+      lineHeight: "19px",
+      textAlign: "right",
+    },
+    listTitle: {
+      textTransform: "uppercase",
+      alignItems: "center",
+      padding: "0px 16px 10px 16px",
     },
     sensorInputForm: {
       margin: "30px 10px",
@@ -62,8 +74,10 @@ const styles = () =>
       },
     },
     sensorFab: {
-      width: "35px",
-      height: "35px",
+      width: "30px",
+      height: "30px",
+      minHeight: "30px",
+      maxHeight: "30px",
       color: "white",
       marginLeft: "10px",
     },
@@ -71,7 +85,7 @@ const styles = () =>
       padding: "15px",
       display: "flex",
       flexDirection: "row",
-      alignItems: "flex-end",
+      alignItems: "flex-start",
       justifyContent: "space-between",
     },
   });
@@ -111,6 +125,18 @@ const SideMenu: React.FunctionComponent<
   const toggleVisibility = async (e: any, sensor: Sensor) => {
     e.stopPropagation();
     sensor.visible = !sensor.visible;
+    if (!sensor.visible) {
+      sensor.expanded = false;
+    }
+    dispatch({
+      type: "updateSensor",
+      payload: sensor,
+    });
+  };
+
+  const toggleExpand = async (e: any, sensor: Sensor) => {
+    e.stopPropagation();
+    sensor.expanded = !sensor.expanded;
     dispatch({
       type: "updateSensor",
       payload: sensor,
@@ -121,25 +147,6 @@ const SideMenu: React.FunctionComponent<
 
   return (
     <div className={classes.root}>
-      <div className={classes.userContainer}>
-        <div className={classes.logoContainer}>
-          <Link to="/">
-            <img alt="logo" src={Logo} />
-          </Link>
-        </div>
-        {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
-          <div>
-            <Link to="/login">Login</Link> &nbsp; | &nbsp;
-            <Link to="/register">Register</Link>
-          </div>
-        )}
-        {loginState === "LOGGED_IN" && (
-          <div>
-            Welcome, {user.username}.{" "}
-            <Link onClick={() => logout(dispatchAccount)}>Logout</Link>
-          </div>
-        )}
-      </div>
       {/* <div className={classes.logoContainer}>
         <img alt="logo" src="/logo.svg" />
       </div>
@@ -187,28 +194,46 @@ const SideMenu: React.FunctionComponent<
           </Fab>
         </div>
       </form> */}
-
-      <ListSubheader>
-        <Grid container>
-          <Grid item xs>
-            Added sensors
-          </Grid>
-          {loginState === "LOGGED_IN" && (
-            <Grid item>
-              <Link to="/add-sensor">
-                <Fab
-                  color="primary"
-                  size="small"
-                  className={classes.sensorFab}
-                  onClick={(e) => {}}
-                >
-                  <PlusIcon />
-                </Fab>
-              </Link>
-            </Grid>
+      <ListSubheader disableGutters className={classes.subheader}>
+        <div className={classes.userContainer}>
+          <div className={classes.logoContainer}>
+            <Link to="/">
+              <img alt="logo" src={Logo} />
+            </Link>
+          </div>
+          {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
+            <div>
+              <Link to="/login">Login</Link> &nbsp; | &nbsp;
+              <Link to="/register">Register</Link>
+            </div>
           )}
-        </Grid>
+          {loginState === "LOGGED_IN" && (
+            <div>
+              <div>Logged in as {user.username}</div>
+              <Link onClick={() => logout(dispatchAccount)}>Logout</Link>
+            </div>
+          )}
+        </div>
       </ListSubheader>
+      <Grid container className={classes.listTitle}>
+        <Grid item xs>
+          Added sensors
+        </Grid>
+        {loginState === "LOGGED_IN" && (
+          <Grid item>
+            <Link to="/add-sensor">
+              <Fab
+                color="primary"
+                size="small"
+                className={classes.sensorFab}
+                onClick={(e) => {}}
+              >
+                <PlusIcon />
+              </Fab>
+            </Link>
+          </Grid>
+        )}
+      </Grid>
       <Divider />
       <List disablePadding>
         {sensors.map((sensor: Sensor & { expanded: boolean }, index) => (
@@ -216,12 +241,30 @@ const SideMenu: React.FunctionComponent<
             <ListItem
               divider
               button
-              onClick={() => (sensor.expanded = !sensor.expanded)}
+              onClick={(e) => {
+                toggleExpand(e, sensor);
+              }}
             >
               <ListItemIcon>
                 {sensor.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </ListItemIcon>
-              <ListItemText primary={sensor.name} />
+              <ListItemText>
+                {sensor.name}, {sensor.location}
+                <br />({sensor.user?.username})
+              </ListItemText>
+              {sensor.user?.username === user?.username && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Link to={`/sensor/${sensor.id}`}>
+                    <Fab
+                      color="secondary"
+                      size="small"
+                      className={classes.sensorFab}
+                    >
+                      <SettingsIcon />
+                    </Fab>
+                  </Link>
+                </div>
+              )}
               <Fab
                 color="secondary"
                 size="small"

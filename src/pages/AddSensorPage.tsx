@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -40,7 +40,7 @@ const styles = (theme) =>
   });
 
 const AddSensorPage: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{}>
+  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
 
@@ -49,25 +49,25 @@ const AddSensorPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
-    boardType: "",
+    boardType: "" as SensorBoardTypesEnum,
     timezone: "",
   });
 
   const [accountState, dispatch] = useContext(AccountContext);
   const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
+  const [success, setSuccess] = useState(false);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const success = await sensorContext.addSensor(
-        sensorContextDispatch,
-        data
-      );
-      // if (success) {
-      //   console.log("Logged in");
-      //   history.push("/");
-      // }
+      const sensor = await sensorContext.addSensor(sensorContextDispatch, data);
+      if (sensor) {
+        setSuccess(true);
+        setTimeout(() => {
+          history.push(`/sensor/${sensor.id}`);
+        }, 3000);
+      }
     } catch (e) {
       setErrors(e);
     }
@@ -82,87 +82,99 @@ const AddSensorPage: React.FunctionComponent<
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <SettingsInputAntennaIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Add sensor board
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={submitForm}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Sensor name"
-            name="name"
-            autoFocus
-            value={data.name}
-            onChange={(e) => fieldChange(e.target.value, "name")}
-            error={!!errors.name}
-            helperText={errors.name}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="location"
-            label="Location description"
-            type="location"
-            id="location"
-            autoComplete="current-location"
-            value={data.location}
-            onChange={(e) => fieldChange(e.target.value, "location")}
-            error={!!errors.location}
-            helperText={errors.location}
-          />
-          <FormControl variant="outlined" fullWidth margin="normal">
-            <InputLabel id="boardType">Board type</InputLabel>
-            <Select
-              labelId="boardType"
-              value={data.boardType}
-              onChange={(e) => fieldChange(e.target.value, "boardType")}
-              fullWidth
-            >
-              {Object.keys(SensorBoardTypesEnum).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {SensorBoardTypesEnum[key]}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl variant="outlined" fullWidth margin="normal">
-            <InputLabel id="timezone">Timezone</InputLabel>
-            <Select
-              labelId="timezone"
-              value={data.timezone}
-              onChange={(e) => fieldChange(e.target.value, "timezone")}
-              fullWidth
-            >
-              {listTimeZones().map((item) => (
-                <MenuItem key={item} value={item}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <div style={{ color: ColorsEnum.RED }}>
-            {accountState.loginState === "LOGIN_ERROR" &&
-              "Invalid email or location"}
-          </div>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            style={{ marginTop: "20px" }}
-          >
-            Add
-          </Button>
-        </form>
+        {!success && (
+          <>
+            <Avatar className={classes.avatar}>
+              <SettingsInputAntennaIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Add sensor board
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={submitForm}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                id="name"
+                label="Sensor name"
+                name="name"
+                value={data.name}
+                autoFocus
+                onChange={(e) => fieldChange(e.target.value, "name")}
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                name="location"
+                label="Location description"
+                type="location"
+                id="location"
+                autoComplete="current-location"
+                value={data.location}
+                onChange={(e) => fieldChange(e.target.value, "location")}
+                error={!!errors.location}
+                helperText={errors.location}
+              />
+              <TextField
+                select
+                id="select"
+                label="Board type"
+                variant="outlined"
+                margin="normal"
+                value={data.boardType}
+                onChange={(e) => fieldChange(e.target.value, "boardType")}
+                fullWidth
+                error={!!errors.boardType}
+                helperText={errors.boardType}
+              >
+                {Object.keys(SensorBoardTypesEnum).map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {SensorBoardTypesEnum[key]}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                select
+                id="timezone"
+                variant="outlined"
+                margin="normal"
+                label="Timezone"
+                value={data.timezone}
+                onChange={(e) => fieldChange(e.target.value, "timezone")}
+                fullWidth
+              >
+                {listTimeZones().map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <div style={{ color: ColorsEnum.RED }}>
+                {accountState.loginState === "LOGIN_ERROR" &&
+                  "Invalid email or location"}
+              </div>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                style={{ marginTop: "20px" }}
+              >
+                Add
+              </Button>
+            </form>
+          </>
+        )}
+        {success && (
+          <Grid container spacing={10} direction={"column"}>
+            <Grid item>Sensor successfully added.</Grid>
+            <Grid item>Redirecting to sensor info page...</Grid>
+          </Grid>
+        )}
       </div>
     </Container>
   );

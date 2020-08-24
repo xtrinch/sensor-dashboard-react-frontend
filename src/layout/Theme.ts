@@ -15,7 +15,7 @@ const theme = createMuiTheme({
     // divider: ColorsEnum.BGDARK,
     error: { main: "#ff8a65" },
     secondary: {
-      main: ColorsEnum.GRAY,
+      main: ColorsEnum.GRAYDARK,
     },
     text: {
       primary: ColorsEnum.GRAY,
@@ -23,6 +23,19 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiTypography: {
+      body1: {
+        fontSize: "12px",
+      },
+      h5: {
+        color: ColorsEnum.GRAY,
+      },
+    },
+    MuiFab: {
+      root: {
+        boxShadow: "none",
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: "35px",
@@ -33,11 +46,6 @@ const theme = createMuiTheme({
         fontSize: "13px",
         textTransform: "uppercase",
         fontWeight: "normal",
-      },
-    },
-    MuiTypography: {
-      h5: {
-        color: ColorsEnum.GRAY,
       },
     },
     MuiButtonBase: {
@@ -53,6 +61,20 @@ const theme = createMuiTheme({
     MuiDrawer: {
       paperAnchorDockedLeft: {
         borderRight: "0px",
+      },
+    },
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderRadius: "0px",
+        borderColor: ColorsEnum.GRAYDARK,
+        opacity: 1,
+        // backgroundColor: ColorsEnum.BGLIGHTER,
+        // color: 'white!important',
+      },
+      input: {
+        "&:disabled": {
+          backgroundColor: ColorsEnum.BGLIGHTER,
+        },
       },
     },
   },

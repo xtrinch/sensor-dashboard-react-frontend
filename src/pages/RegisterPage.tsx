@@ -201,7 +201,7 @@ const RegisterPage: React.FunctionComponent<
           </>
         )}
         {registerSuccess && (
-          <Grid container spacing={10}>
+          <Grid container spacing={10} direction={"column"}>
             <Grid item>Registration successful! You can now login.</Grid>
             <Grid item>Redirecting to home page...</Grid>
           </Grid>

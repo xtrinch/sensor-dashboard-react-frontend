@@ -6,7 +6,9 @@ import {
   MinLength,
 } from "class-validator";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
 import SensorTypesEnum from "types/SensorTypesEnum";
+import User, { UserId } from "types/User";
 
 export type SensorId = number;
 
@@ -16,9 +18,15 @@ class Sensor {
     this.address = s?.address || "";
     this.type = s?.type || undefined;
     this.visible = s?.visible || true;
-    this.expanded = s?.visible || true;
+    this.expanded = false;
     this.id = s?.id;
     this.measurementTypes = s?.measurementTypes;
+    this.userId = s?.userId;
+    this.user = s?.user ? new User(s.user) : null;
+    this.timezone = s?.timezone;
+    this.boardType = s?.boardType;
+    this.location = s?.location;
+    this.sensorAccessToken = s?.sensorAccessToken;
   }
 
   public id: SensorId;
@@ -40,6 +48,18 @@ class Sensor {
   public expanded: boolean;
 
   public measurementTypes: MeasurementTypeEnum[];
+
+  public userId: UserId;
+
+  public user: User;
+
+  public location: string;
+
+  public boardType: SensorBoardTypesEnum;
+
+  public timezone: string;
+
+  public sensorAccessToken: string;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {

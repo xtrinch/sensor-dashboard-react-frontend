@@ -28,7 +28,7 @@ import {
 const styles = () =>
   createStyles({
     root: {
-      borderBottom: `4px solid ${ColorsEnum.BGLIGHT}`,
+      borderBottom: `1px solid ${ColorsEnum.BGLIGHTER}`,
       boxShadow: "none",
       borderRadius: "0px",
       backgroundColor: ColorsEnum.BGDARK,
@@ -37,7 +37,7 @@ const styles = () =>
         overflow: "visible",
       },
       "&:nth-of-type(2n + 1)": {
-        borderRight: `4px solid ${ColorsEnum.BGLIGHT}`,
+        borderRight: `1px solid ${ColorsEnum.BGLIGHTER}`,
       },
     },
     picker: {

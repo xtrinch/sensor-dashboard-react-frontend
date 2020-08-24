@@ -1,34 +1,35 @@
-import React, { useEffect, useCallback } from "react";
+import DateFnsUtils from "@date-io/date-fns";
 import { IconButton, makeStyles } from "@material-ui/core";
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import ArrowForward from "@material-ui/icons/ArrowForward";
 import {
-  MuiPickersUtilsProvider,
   DatePicker,
   DatePickerView,
+  MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 import {
-  isValid,
   addDays,
   addMonths,
-  addYears,
-  startOfMonth,
-  startOfYear,
-  startOfWeek,
   addWeeks,
-  format,
-  isWithinInterval,
+  addYears,
   endOfWeek,
-  isSameDay,
-  getYear,
-  getMonth,
+  format,
   getDate,
-  isFuture,
+  getMonth,
   getWeek,
+  getYear,
+  isFuture,
+  isSameDay,
+  isValid,
+  isWithinInterval,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
 } from "date-fns";
-import ArrowForward from "@material-ui/icons/ArrowForward";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import React, { useCallback, useEffect } from "react";
+import ColorsEnum from "types/ColorsEnum";
 import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 import { DateRange, DateRegex } from "utils/date.range";
 
@@ -92,6 +93,15 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
         },
         paddingTop: "11px",
         paddingBottom: "11px",
+      },
+      backgroundColor: ColorsEnum.BGLIGHTER,
+      border: `1px solid ${ColorsEnum.GRAYDARK}`,
+      borderRadius: "0px",
+      "&:hover:before": {
+        borderBottom: "0px",
+      },
+      "&:before": {
+        borderBottom: "0px",
       },
     },
     dayWrapper: {

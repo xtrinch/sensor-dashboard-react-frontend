@@ -12,6 +12,7 @@ import theme from "layout/Theme";
 import AddSensorPage from "pages/AddSensorPage";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
+import SensorInfoPage from "pages/SensorInfoPage";
 import SensorsPage from "pages/SensorsPage";
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
@@ -27,7 +28,7 @@ const styles = () =>
         "-webkit-box-shadow": `inset 0 0 6px ${ColorsEnum.BGDARK}`,
       },
       "*::-webkit-scrollbar-thumb": {
-        backgroundColor: ColorsEnum.GRAY,
+        backgroundColor: ColorsEnum.BGLIGHTER,
         outline: "0px solid slategrey",
       },
     },
@@ -35,6 +36,7 @@ const styles = () =>
       display: "flex",
       flexDirection: "row",
       minHeight: "100vh",
+      backgroundColor: ColorsEnum.BGDARK,
     },
     main: {
       flex: "1",
@@ -63,6 +65,9 @@ class App extends React.Component<WithStyles<typeof styles>> {
                   </Route>
                   <Route exact path="/add-sensor">
                     <AddSensorPage />
+                  </Route>
+                  <Route exact path="/sensor/:id">
+                    <SensorInfoPage />
                   </Route>
                 </div>
               </SensorContextProvider>

@@ -9,6 +9,7 @@ import {
 import SideMenu from "components/SideMenu";
 import { AppContext } from "context/AppContext";
 import React, { useContext } from "react";
+import ColorsEnum from "types/ColorsEnum";
 
 const menuWidth = 270;
 
@@ -19,6 +20,9 @@ const styles = (theme) =>
         width: menuWidth,
         flexShrink: 0,
       },
+    },
+    drawerPaper: {
+      backgroundColor: ColorsEnum.BGLIGHT,
     },
   });
 
@@ -41,11 +45,9 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
           variant="permanent"
           anchor="left"
           className={`${classes.drawer}`}
-          classes={
-            {
-              //paper: classes.drawerPaper
-            }
-          }
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
           <SideMenu />
         </Drawer>
@@ -56,11 +58,9 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
           anchor="left"
           open={menuOpen}
           onClose={handleDrawerToggle}
-          classes={
-            {
-              //paper: classes.drawerPaper
-            }
-          }
+          classes={{
+            paper: classes.drawerPaper,
+          }}
           ModalProps={{
             keepMounted: true,
           }}

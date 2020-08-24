@@ -1,19 +1,49 @@
 import React, { createContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
-import Sensor from "types/Sensor";
+import Sensor, { SensorId } from "types/Sensor";
 
 const addSensor = async (
   dispatch: React.Dispatch<any>,
   sensor: Partial<Sensor>
-) => {
-  await SensorService.addSensor(sensor);
+): Promise<Sensor> => {
+  const s = await SensorService.addSensor(sensor);
+
+  dispatch({
+    type: "addSensor",
+    payload: s,
+  });
+
+  return s;
+};
+
+const updateSensor = async (
+  dispatch: React.Dispatch<any>,
+  id: SensorId,
+  sensor: Partial<Sensor>
+): Promise<Sensor> => {
+  const s = await SensorService.updateSensor(id, sensor);
+
+  dispatch({
+    type: "updateSensor",
+    payload: s,
+  });
+
+  return s;
 };
 
 type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
   reload: (dispatch: React.Dispatch<any>) => {};
-  addSensor: (dispatch: React.Dispatch<any>, sensor: Partial<Sensor>) => {};
+  addSensor: (
+    dispatch: React.Dispatch<any>,
+    sensor: Partial<Sensor>
+  ) => Promise<Sensor>;
+  updateSensor: (
+    dispatch: React.Dispatch<any>,
+    id: SensorId,
+    sensor: Partial<Sensor>
+  ) => Promise<Sensor>;
 };
 
 const initialState: SensorContextState = {
@@ -27,7 +57,13 @@ const initialState: SensorContextState = {
     });
   },
   addSensor: addSensor,
+  updateSensor: updateSensor,
 };
+
+interface SensorAddAction {
+  type: "addSensor";
+  payload: Sensor;
+}
 
 interface SensorReadyAction {
   type: "sensorReady";
@@ -39,7 +75,10 @@ interface UpdateSensorAction {
   payload: Sensor;
 }
 
-export type SensorActionTypes = SensorReadyAction | UpdateSensorAction;
+export type SensorActionTypes =
+  | SensorReadyAction
+  | UpdateSensorAction
+  | SensorAddAction;
 
 const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
@@ -57,6 +96,8 @@ let reducer = (
       const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);
       sensors[sensorIndex] = action.payload;
       return { ...state, sensors: [...sensors] };
+    case "addSensor":
+      return { ...state, sensors: [...state.sensors, action.payload] };
     default: {
       return { ...state, sensors: [] };
     }

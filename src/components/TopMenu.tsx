@@ -16,10 +16,24 @@ import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 
 const styles = (theme) =>
   createStyles({
+    dateButtonGroup: {
+      backgroundColor: ColorsEnum.BGLIGHTER,
+      "& button": {
+        borderRadius: "0px",
+        border: `1px solid ${ColorsEnum.GRAYDARK}`,
+        "&:hover": {
+          border: `1px solid ${ColorsEnum.GRAYDARK}`,
+        },
+        color: ColorsEnum.GRAY,
+      },
+    },
     activeButton: {
       backgroundColor: ColorsEnum.BLUE,
       color: ColorsEnum.WHITE,
       border: `1px solid ${ColorsEnum.BLUE}`,
+      "&:hover": {
+        backgroundColor: ColorsEnum.BLUE,
+      },
     },
     timePicker: {
       backgroundColor: ColorsEnum.BGLIGHT,
@@ -101,7 +115,14 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
         />
       </div>
       <div>
-        <ButtonGroup color="secondary" size="large">
+        <ButtonGroup
+          disableElevation
+          disableFocusRipple
+          disableRipple
+          color="secondary"
+          size="large"
+          className={classes.dateButtonGroup}
+        >
           {Object.values(GroupMeasurementByEnum).map((val) => (
             <Button
               onClick={() => onChangeGroupBy(val)}

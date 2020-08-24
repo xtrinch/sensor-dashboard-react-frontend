@@ -1,4 +1,4 @@
-import Sensor from "types/Sensor";
+import Sensor, { SensorId } from "types/Sensor";
 import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class SensorService {
@@ -23,7 +23,9 @@ export default class SensorService {
     };
   };
 
-  public static addSensor = async (sensor: Partial<Sensor>) => {
+  public static addSensor = async (
+    sensor: Partial<Sensor>
+  ): Promise<Sensor> => {
     const url = getUrl("/sensors");
 
     const resp = await fetch(url, {
@@ -34,7 +36,39 @@ export default class SensorService {
     });
 
     const result = await processResponse(resp);
+    const s = new Sensor(result);
+    return s;
+  };
 
-    return result;
+  public static updateSensor = async (
+    id: SensorId,
+    sensor: Partial<Sensor>
+  ): Promise<Sensor> => {
+    const url = getUrl(`/sensors/${id}`);
+
+    const resp = await fetch(url, {
+      method: "PUT",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+      body: JSON.stringify(sensor),
+    });
+
+    const result = await processResponse(resp);
+    const s = new Sensor(result);
+    return s;
+  };
+
+  public static getSensor = async (id: SensorId): Promise<Sensor> => {
+    const url = getUrl(`/sensors/${id}`);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new Sensor(result);
+    return s;
   };
 }
