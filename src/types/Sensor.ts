@@ -5,6 +5,7 @@ import {
   Length,
   MinLength,
 } from "class-validator";
+import { parseISO } from "date-fns";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
 import SensorTypesEnum from "types/SensorTypesEnum";
@@ -13,7 +14,7 @@ import User, { UserId } from "types/User";
 export type SensorId = number;
 
 class Sensor {
-  constructor(s?: Sensor) {
+  constructor(s) {
     this.name = s?.name || "";
     this.address = s?.address || "";
     this.type = s?.type || undefined;
@@ -27,6 +28,7 @@ class Sensor {
     this.boardType = s?.boardType;
     this.location = s?.location;
     this.sensorAccessToken = s?.sensorAccessToken;
+    this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
   }
 
   public id: SensorId;
@@ -60,6 +62,8 @@ class Sensor {
   public timezone: string;
 
   public sensorAccessToken: string;
+
+  public lastSeenAt: Date;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {

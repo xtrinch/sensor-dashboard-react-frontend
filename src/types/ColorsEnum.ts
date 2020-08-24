@@ -11,6 +11,7 @@ enum ColorsEnum {
   WHITE = "white",
   BLACK = "black",
   BLUE = "rgb(61,152,247)",
+  OLIVE = "#3D9970",
 }
 
 export const GraphColors = [

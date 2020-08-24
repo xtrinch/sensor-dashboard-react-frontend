@@ -22,6 +22,7 @@ import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
 import { ConfirmationContext } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
+import { differenceInMinutes } from "date-fns";
 import React, { Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
@@ -88,6 +89,22 @@ const styles = () =>
       flexDirection: "row",
       alignItems: "flex-start",
       justifyContent: "space-between",
+    },
+    active: {
+      position: "relative",
+      "&::before": {
+        borderLeft: `15px solid transparent`,
+        borderRight: `15px solid  ${ColorsEnum.OLIVE}`,
+        borderTop: "15px solid transparent",
+        height: 0,
+        width: 0,
+        position: "absolute",
+        right: "0px",
+        bottom: 0,
+        zIndex: 2,
+        content: '""',
+        display: "block",
+      },
     },
   });
 
@@ -236,6 +253,11 @@ const SideMenu: React.FunctionComponent<
               onClick={(e) => {
                 toggleExpand(e, sensor);
               }}
+              className={
+                differenceInMinutes(sensor.lastSeenAt, new Date()) > -60
+                  ? classes.active
+                  : undefined
+              }
             >
               <ListItemIcon>
                 {sensor.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
