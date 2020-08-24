@@ -53,6 +53,11 @@ const theme = createMuiTheme({
         color: ColorsEnum.GRAY,
       },
     },
+    MuiButton: {
+      outlinedSecondary: {
+        color: ColorsEnum.GRAY,
+      },
+    },
     MuiListItem: {
       root: {
         color: ColorsEnum.GRAY,

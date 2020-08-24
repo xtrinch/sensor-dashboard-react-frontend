@@ -4,9 +4,11 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core";
+import ConfirmationBox from "components/ConfirmationBox";
 import SideMenuWrapper from "components/SideMenuWrapper";
 import { AccountContextProvider } from "context/AccountContext";
 import { AppContextProvider } from "context/AppContext";
+import { ConfirmationContextProvider } from "context/ConfirmationContext";
 import { SensorContextProvider } from "context/SensorContext";
 import theme from "layout/Theme";
 import AddSensorPage from "pages/AddSensorPage";
@@ -52,24 +54,28 @@ class App extends React.Component<WithStyles<typeof styles>> {
           <AccountContextProvider>
             <AppContextProvider>
               <SensorContextProvider>
-                <div className={classes.app}>
-                  <SideMenuWrapper />
-                  <Route exact path="/">
-                    <SensorsPage />
-                  </Route>
-                  <Route exact path="/login">
-                    <LoginPage />
-                  </Route>
-                  <Route exact path="/register">
-                    <RegisterPage />
-                  </Route>
-                  <Route exact path="/add-sensor">
-                    <AddSensorPage />
-                  </Route>
-                  <Route exact path="/sensor/:id">
-                    <SensorInfoPage />
-                  </Route>
-                </div>
+                <ConfirmationContextProvider>
+                  <ConfirmationBox />
+
+                  <div className={classes.app}>
+                    <SideMenuWrapper />
+                    <Route exact path="/">
+                      <SensorsPage />
+                    </Route>
+                    <Route exact path="/login">
+                      <LoginPage />
+                    </Route>
+                    <Route exact path="/register">
+                      <RegisterPage />
+                    </Route>
+                    <Route exact path="/add-sensor">
+                      <AddSensorPage />
+                    </Route>
+                    <Route exact path="/sensor/:id">
+                      <SensorInfoPage />
+                    </Route>
+                  </div>
+                </ConfirmationContextProvider>
               </SensorContextProvider>
             </AppContextProvider>
           </AccountContextProvider>

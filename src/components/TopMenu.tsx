@@ -29,7 +29,7 @@ const styles = (theme) =>
     },
     activeButton: {
       backgroundColor: ColorsEnum.BLUE,
-      color: ColorsEnum.WHITE,
+      color: `${ColorsEnum.WHITE}!important`,
       border: `1px solid ${ColorsEnum.BLUE}`,
       "&:hover": {
         backgroundColor: ColorsEnum.BLUE,

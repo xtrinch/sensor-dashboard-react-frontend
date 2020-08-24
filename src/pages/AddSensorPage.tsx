@@ -53,7 +53,7 @@ const AddSensorPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [accountState, dispatch] = useContext(AccountContext);
+  const [accountState] = useContext(AccountContext);
   const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
   const [success, setSuccess] = useState(false);
 

@@ -20,6 +20,7 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
+import { ConfirmationContext } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
 import React, { Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -99,28 +100,9 @@ const SideMenu: React.FunctionComponent<
   const [{ loginState, user, logout }, dispatchAccount] = useContext(
     AccountContext
   );
-
-  // let [validationErrors, setValidationErrors] = useState({});
-
-  // let [sensorToAdd, setSensorToAdd] = useState(new Sensor());
-
-  // const addSensor = async (e) => {
-  //   e.preventDefault();
-
-  //   setValidationErrors(await validateAndTransform(sensorToAdd));
-  //   if (Object.keys(validationErrors).length > 0) {
-  //     return;
-  //   }
-
-  //   const { sensorStore } = props;
-  //   sensorStore.addSensor(sensorToAdd);
-  //   setSensorToAdd(new Sensor());
-  // };
-
-  // const removeSensor = async (sensor: Sensor) => {
-  //   const { sensorStore } = props;
-  //   sensorStore.removeSensor(sensor);
-  // };
+  const [confirmationContext, dispatchConfirmationContext] = useContext(
+    ConfirmationContext
+  );
 
   const toggleVisibility = async (e: any, sensor: Sensor) => {
     e.stopPropagation();
@@ -143,6 +125,16 @@ const SideMenu: React.FunctionComponent<
     });
   };
 
+  const logoutWithConfirmation = () => {
+    const onConfirm = () => logout(dispatchAccount);
+    confirmationContext.openModal(
+      dispatchConfirmationContext,
+      "test",
+      onConfirm,
+      null,
+      "Are you sure you want to logout?"
+    );
+  };
   const { classes } = props;
 
   return (
@@ -210,7 +202,7 @@ const SideMenu: React.FunctionComponent<
           {loginState === "LOGGED_IN" && (
             <div>
               <div>Logged in as {user.username}</div>
-              <Link onClick={() => logout(dispatchAccount)}>Logout</Link>
+              <Link onClick={() => logoutWithConfirmation()}>Logout</Link>
             </div>
           )}
         </div>

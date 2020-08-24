@@ -2,6 +2,20 @@ import React, { createContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 
+const reload = async (dispatch: React.Dispatch<any>) => {
+  try {
+    const resp = await SensorService.listSensors();
+    const sensorData = resp.items;
+
+    dispatch({
+      type: "sensorReady",
+      payload: sensorData,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const addSensor = async (
   dispatch: React.Dispatch<any>,
   sensor: Partial<Sensor>
@@ -34,6 +48,7 @@ const updateSensor = async (
 type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
+
   reload: (dispatch: React.Dispatch<any>) => {};
   addSensor: (
     dispatch: React.Dispatch<any>,
@@ -49,13 +64,7 @@ type SensorContextState = {
 const initialState: SensorContextState = {
   sensors: [],
   sensorsLoaded: false,
-  reload: async (dispatch: React.Dispatch<any>) => {
-    const sensorData = await reloadSensors();
-    dispatch({
-      type: "sensorReady",
-      payload: sensorData,
-    });
-  },
+  reload: reload,
   addSensor: addSensor,
   updateSensor: updateSensor,
 };
@@ -101,15 +110,6 @@ let reducer = (
     default: {
       return { ...state, sensors: [] };
     }
-  }
-};
-
-const reloadSensors = async () => {
-  try {
-    const resp = await SensorService.listSensors();
-    return resp.items;
-  } catch (error) {
-    console.log(error);
   }
 };
 
