@@ -8,6 +8,7 @@ import MeasurementService from "services/MeasurementService";
 import ColorsEnum from "types/ColorsEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import Sensor from "types/Sensor";
+import { uniq } from "utils/array";
 
 const styles = (theme) =>
   createStyles({
@@ -44,9 +45,11 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: date,
-      measurementTypes: sensors.reduce((acc, sensor: Sensor) => {
-        return [...acc, ...sensor.measurementTypes];
-      }, []),
+      measurementTypes: uniq(
+        sensors.reduce((acc, sensor: Sensor) => {
+          return [...acc, ...sensor.measurementTypes];
+        }, [])
+      ),
       sensorIds: sensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
