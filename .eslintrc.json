@@ -19,7 +19,8 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "no-restricted-syntax": ["error", "LabeledStatement", "WithStatement"],
-    "no-unused-vars": "off" // see https://github.com/typescript-eslint/typescript-eslint/issues/1197
+    "no-unused-vars": "off", // see https://github.com/typescript-eslint/typescript-eslint/issues/1197
+    "import/prefer-default-export": "off"
   },
   "settings": {
     "import/resolver": {

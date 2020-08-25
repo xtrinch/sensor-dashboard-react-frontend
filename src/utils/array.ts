@@ -1,13 +1,19 @@
 export const uniq = (a: Array<any>) => {
-  var prims = { boolean: {}, number: {}, string: {} },
-    objs = [];
+  const prims = { boolean: {}, number: {}, string: {} };
+  const objs = [];
 
-  return a.filter(function (item) {
-    var type = typeof item;
-    if (type in prims)
-      return prims[type].hasOwnProperty(item)
+  const retVal = a.filter((item) => {
+    const type = typeof item;
+    let arr;
+    if (type in prims) {
+      arr = Object.prototype.hasOwnProperty.call(prims[type], item)
         ? false
         : (prims[type][item] = true);
-    else return objs.indexOf(item) >= 0 ? false : objs.push(item);
+      return arr;
+    }
+    arr = objs.indexOf(item) >= 0 ? false : objs.push(item);
+    return arr;
   });
+
+  return retVal;
 };

@@ -1,6 +1,7 @@
 import { Card, createStyles, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import TimeSeriesChart from "components/TimeSeriesChart";
+import { SensorContext } from "context/SensorContext";
 import {
   addDays,
   addMonths,
@@ -10,7 +11,7 @@ import {
   startOfWeek,
   startOfYear,
 } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
 import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
 import Measurement from "types/Measurement";
@@ -66,6 +67,7 @@ const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
   const { type, classes, date, groupBy, measurements } = props;
+  const [{ sensors }] = useContext(SensorContext);
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {
@@ -111,7 +113,7 @@ const SensorCanvas: React.FunctionComponent<
       <Card className={classes.root}>
         <Typography
           variant="h6"
-          style={{ marginBottom: "15px", fontWeight: "normal" }}
+          style={{ marginBottom: "7px", fontWeight: "normal" }}
         >
           {MeasurementTypeLabelsEnum[type]}
         </Typography>
@@ -125,10 +127,11 @@ const SensorCanvas: React.FunctionComponent<
                 value: m.measurement,
                 labelTime: m.createdAt,
               })),
+              name: sensors.find((s) => s.id === parseInt(key, 10))?.name,
             }))}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}
-            dotSize={groupBy === DateRangeEnum.day ? 10 : 55}
+            dotSize={groupBy === DateRangeEnum.day ? 10 : 35}
             domain={
               Sensor.measurementTypeProperties[type].domain as [
                 AxisDomain,

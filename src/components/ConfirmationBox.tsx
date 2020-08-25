@@ -33,7 +33,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <Dialog
       onClose={() =>
-        confirmationContext.containerClose(
+        confirmationContext.close(
           dispatchConfirmationContext,
           confirmationContext
         )
@@ -54,7 +54,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
         <Grid item>
           <Button
             onClick={() =>
-              confirmationContext.containerClose(
+              confirmationContext.close(
                 dispatchConfirmationContext,
                 confirmationContext
               )
@@ -70,7 +70,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
           <Button
             variant="outlined"
             onClick={() =>
-              confirmationContext.containerConfirm(
+              confirmationContext.confirm(
                 dispatchConfirmationContext,
                 confirmationContext
               )

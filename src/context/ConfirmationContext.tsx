@@ -22,7 +22,7 @@ const closeModal = (dispatch: React.Dispatch<any>) => {
   });
 };
 
-const containerConfirm = async (
+const confirm = async (
   dispatch: React.Dispatch<any>,
   state: ConfirmationContextState
 ) => {
@@ -39,7 +39,7 @@ const containerConfirm = async (
   });
 };
 
-const containerClose = async (
+const close = async (
   dispatch: React.Dispatch<any>,
   state: ConfirmationContextState
 ) => {
@@ -64,11 +64,11 @@ type ConfirmationContextState = {
     content?: string
   ) => void;
   closeModal: (dispatch: React.Dispatch<any>) => void;
-  containerConfirm: (
+  confirm: (
     dispatch: React.Dispatch<any>,
     state: ConfirmationContextState
   ) => void;
-  containerClose: (
+  close: (
     dispatch: React.Dispatch<any>,
     state: ConfirmationContextState
   ) => void;
@@ -83,8 +83,8 @@ type ConfirmationContextState = {
 const initialState: ConfirmationContextState = {
   openModal,
   closeModal,
-  containerConfirm,
-  containerClose,
+  confirm,
+  close,
 
   onConfirm: null,
   onClose: null,

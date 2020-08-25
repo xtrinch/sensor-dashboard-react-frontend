@@ -3,6 +3,8 @@ import {
   AxisDomain,
   CartesianGrid,
   Label,
+  Legend,
+  Line,
   ReferenceLine,
   ResponsiveContainer,
   Scatter,
@@ -24,6 +26,7 @@ interface TimeSeriesChartInterface {
   ticks: number[];
   chartData: {
     data: ChartPoint[];
+    name: string;
   }[];
   domain: [AxisDomain, AxisDomain];
   tickFormatter: (value: any) => any;
@@ -63,6 +66,8 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         stroke={ColorsEnum.GRAY}
       />
       <ZAxis range={[props.dotSize, props.dotSize]} />
+      <Legend verticalAlign="top" height={25} />
+
       <Tooltip
         formatter={(value, unit, payload, index) =>
           unit === "Time" ? `${payload.payload.labelTime}` : `${value}`
@@ -70,6 +75,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         isAnimationActive={false}
       />
       <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
+      <Line name="pv of pages" type="monotone" dataKey="pv" stroke="#8884d8" />
       {props.chartData.map((line, index) => (
         <Scatter
           key={index}
@@ -77,7 +83,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
           line={{ stroke: GraphColors[index] }}
           lineJointType="monotoneX"
           lineType="joint"
-          name="Values"
+          name={line.name}
           strokeWidth={1}
           isAnimationActive={false}
           fill={GraphColors[index]} // dot color
