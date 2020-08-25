@@ -78,16 +78,16 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
           lineJointType="monotoneX"
           lineType="joint"
           name="Values"
-          strokeWidth={2}
+          strokeWidth={1}
           isAnimationActive={false}
-          fill={ColorsEnum.WHITE} // dot color
+          fill={GraphColors[index]} // dot color
           id={`${index}`}
         />
       ))}
       <ReferenceLine
         x={props.nowX}
         stroke={ColorsEnum.OLIVE}
-        strokeWidth={2}
+        strokeWidth={1}
         label={
           <Label
             value="now"
