@@ -2,6 +2,8 @@ import React from "react";
 import {
   AxisDomain,
   CartesianGrid,
+  Label,
+  ReferenceLine,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -29,6 +31,7 @@ interface TimeSeriesChartInterface {
     x: string;
     y: string;
   };
+  nowX: number;
 }
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
@@ -80,6 +83,19 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
           id={`${index}`}
         />
       ))}
+      <ReferenceLine
+        x={props.nowX}
+        stroke={ColorsEnum.OLIVE}
+        strokeWidth={2}
+        label={
+          <Label
+            value="now"
+            offset={5}
+            position="insideTopLeft"
+            fill={ColorsEnum.GRAY}
+          />
+        }
+      />
     </ScatterChart>
   </ResponsiveContainer>
 );

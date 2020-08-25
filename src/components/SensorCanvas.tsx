@@ -139,6 +139,7 @@ const SensorCanvas: React.FunctionComponent<
               y: Sensor.measurementTypeProperties[type].unit,
               x: groupByProperties[groupBy].unit,
             }}
+            nowX={DateRange.getNowDomain(date, groupBy)}
           />
         )}
       </Card>

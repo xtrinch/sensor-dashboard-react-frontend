@@ -13,6 +13,7 @@ import { addHours, getHours, isFuture } from "date-fns";
 import React from "react";
 import ColorsEnum from "types/ColorsEnum";
 import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
+import { getZeroPaddedNumber } from "utils/number";
 
 const styles = (theme) =>
   createStyles({
@@ -73,7 +74,9 @@ const TimeInput: React.FunctionComponent<
             size="small"
             views={["hours"]}
             labelFunc={(date) =>
-              `${getHours(date)}:00 - ${getHours(date) + 1}:00`
+              `${getZeroPaddedNumber(
+                getHours(date)
+              )}:00 - ${getZeroPaddedNumber(getHours(date) + 1)}:00`
             }
             autoOk
           />

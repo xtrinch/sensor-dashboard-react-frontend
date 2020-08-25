@@ -114,15 +114,17 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
             size="large"
             className={classes.dateButtonGroup}
           >
-            {Object.values(DateRangeEnum).map((val) => (
-              <Button
-                onClick={() => onChangeGroupBy(val)}
-                className={groupBy === val ? classes.activeButton : undefined}
-                key={val}
-              >
-                {val}
-              </Button>
-            ))}
+            {Object.values(DateRangeEnum)
+              .filter((v) => v !== DateRangeEnum.minute)
+              .map((val) => (
+                <Button
+                  onClick={() => onChangeGroupBy(val)}
+                  className={groupBy === val ? classes.activeButton : undefined}
+                  key={val}
+                >
+                  {val}
+                </Button>
+              ))}
           </ButtonGroup>
         </Grid>
         {groupBy === DateRangeEnum.hour && (
