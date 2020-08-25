@@ -10,13 +10,15 @@ const reload = async (
   try {
     const resp = await SensorService.listSensors();
     const sensorData = resp.items;
-    sensorData.map((s) => {
-      s.visible = false;
-      if (s.userId === accountContext.user?.id) {
-        s.visible = true;
-      }
-      return s;
-    });
+    if (accountContext.loginState === "LOGGED_IN") {
+      sensorData.map((s) => {
+        s.visible = false;
+        if (s.userId === accountContext.user?.id) {
+          s.visible = true;
+        }
+        return s;
+      });
+    }
 
     dispatch({
       type: "sensorReady",
