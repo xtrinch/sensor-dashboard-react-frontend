@@ -60,7 +60,7 @@ const SensorInfoPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [accountState, dispatch] = useContext(AccountContext);
+  const [accountState] = useContext(AccountContext);
   const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
   const [sensor, setSensor] = useState(null);
 
@@ -84,15 +84,11 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const success = await sensorContext.updateSensor(
+      await sensorContext.updateSensor(
         sensorContextDispatch,
         (id as unknown) as SensorId,
         data
       );
-      // if (success) {
-      //   console.log("Logged in");
-      //   history.push("/");
-      // }
     } catch (e) {
       setErrors(e);
     }

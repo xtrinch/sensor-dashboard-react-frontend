@@ -1,6 +1,9 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { IconButton, makeStyles } from "@material-ui/core";
-import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import { createStyles, Grid, IconButton } from "@material-ui/core";
+import withStyles, {
+  CSSProperties,
+  WithStyles,
+} from "@material-ui/core/styles/withStyles";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import ArrowForward from "@material-ui/icons/ArrowForward";
 import {
@@ -16,10 +19,6 @@ import {
   addYears,
   endOfWeek,
   format,
-  getDate,
-  getMonth,
-  getWeek,
-  getYear,
   isFuture,
   isSameDay,
   isValid,
@@ -30,59 +29,10 @@ import {
 } from "date-fns";
 import React, { useCallback, useEffect } from "react";
 import ColorsEnum from "types/ColorsEnum";
-import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
-import { DateRange, DateRegex } from "utils/date.range";
+import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
 
-export interface DateInputProps {
-  style?: CSSProperties;
-  label?: string;
-  disabled?: boolean;
-  onChange?: (e: string) => void;
-  date?: DateRegex;
-  groupBy?: GroupMeasurementByEnum; // date selector input state
-}
-
-export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
-export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
-
-export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
-  const { groupBy, onChange, date } = props;
-
-  const onChangeDate = useCallback(
-    (d: Date) => {
-      const date = new Date(d);
-      let dateString = "";
-
-      switch (groupBy) {
-        case GroupMeasurementByEnum.month:
-          dateString = `${getYear(date)}/${getMonth(date) + 1}`;
-          break;
-        case GroupMeasurementByEnum.year:
-          dateString = `${getYear(date)}`;
-          break;
-        case GroupMeasurementByEnum.day:
-          dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(
-            date
-          )}`;
-          break;
-        case GroupMeasurementByEnum.week:
-          dateString = `${getYear(date)}/w${getWeek(date)}`;
-          break;
-        default:
-          break;
-      }
-
-      onChange(dateString);
-    },
-    [groupBy, onChange]
-  );
-
-  useEffect(() => {
-    // reset date on group change
-    onChangeDate(new Date());
-  }, [groupBy, onChangeDate]);
-
-  const useStyles = makeStyles((theme) => ({
+const styles = (theme) =>
+  createStyles({
     datepicker: {
       "& fieldset": {},
       "& input": {
@@ -92,7 +42,7 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
           //color: 'blue'
         },
         paddingTop: "11px",
-        paddingBottom: "11px",
+        paddingBottom: "10px",
       },
       backgroundColor: ColorsEnum.BGLIGHTER,
       border: `1px solid ${ColorsEnum.GRAYDARK}`,
@@ -143,9 +93,38 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
       borderTopRightRadius: "50%",
       borderBottomRightRadius: "50%",
     },
-  }));
+  });
+export interface DateInputProps {
+  style?: CSSProperties;
+  label?: string;
+  disabled?: boolean;
+  onChange?: (e: string) => void;
+  date?: DateRegex;
+  groupBy?: DateRangeEnum; // date selector input state
+}
 
-  const classes = useStyles(props);
+export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
+export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
+
+const DateInput: React.FunctionComponent<
+  DateInputProps & WithStyles<typeof styles>
+> = (props) => {
+  const { groupBy, onChange, date, classes } = props;
+
+  const onChangeDate = useCallback(
+    (d: Date) => {
+      const date = new Date(d);
+      let dateString = DateRange.getDateString(date, groupBy);
+
+      onChange(dateString);
+    },
+    [groupBy, onChange]
+  );
+
+  useEffect(() => {
+    // reset date on group change
+    onChangeDate(new Date());
+  }, [groupBy, onChangeDate]);
 
   const renderLabel = (date, invalidLabel) => {
     if (!isValid(date)) {
@@ -153,13 +132,14 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
     }
 
     switch (props.groupBy) {
-      case GroupMeasurementByEnum.day:
+      case DateRangeEnum.day:
+      case DateRangeEnum.hour:
         return `${format(date, DATE_REGEX)}`;
-      case GroupMeasurementByEnum.month:
+      case DateRangeEnum.month:
         return `${format(startOfMonth(date), MONTH_YEAR_REGEX)}`;
-      case GroupMeasurementByEnum.week:
+      case DateRangeEnum.week:
         return `Week of ${format(startOfWeek(date), DATE_REGEX)}`;
-      case GroupMeasurementByEnum.year:
+      case DateRangeEnum.year:
         return `${format(startOfYear(date), "yyyy")}`;
       default:
         return "";
@@ -173,13 +153,14 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
     let end;
 
     switch (props.groupBy) {
-      case GroupMeasurementByEnum.day:
-      case GroupMeasurementByEnum.month:
-      case GroupMeasurementByEnum.year:
+      case DateRangeEnum.hour:
+      case DateRangeEnum.day:
+      case DateRangeEnum.month:
+      case DateRangeEnum.year:
         start = selectedDateClone;
         end = selectedDateClone;
         break;
-      case GroupMeasurementByEnum.week:
+      case DateRangeEnum.week:
         start = startOfWeek(selectedDateClone);
         end = endOfWeek(selectedDateClone);
         break;
@@ -213,13 +194,14 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
 
   const getView = (): DatePickerView[] => {
     switch (props.groupBy) {
-      case GroupMeasurementByEnum.day:
+      case DateRangeEnum.day:
+      case DateRangeEnum.hour:
         return ["year", "month", "date"];
-      case GroupMeasurementByEnum.month:
+      case DateRangeEnum.month:
         return ["month", "year"];
-      case GroupMeasurementByEnum.week:
+      case DateRangeEnum.week:
         return ["year", "month", "date"];
-      case GroupMeasurementByEnum.year:
+      case DateRangeEnum.year:
         return ["year"];
       default:
         return ["year", "month", "date"];
@@ -231,16 +213,17 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
 
     let d = DateRange.parse(date).from;
     switch (props.groupBy) {
-      case GroupMeasurementByEnum.day:
+      case DateRangeEnum.day:
+      case DateRangeEnum.hour:
         func = addDays;
         break;
-      case GroupMeasurementByEnum.month:
+      case DateRangeEnum.month:
         func = addMonths;
         break;
-      case GroupMeasurementByEnum.week:
+      case DateRangeEnum.week:
         func = addWeeks;
         break;
-      case GroupMeasurementByEnum.year:
+      case DateRangeEnum.year:
         func = addYears;
         break;
       default:
@@ -256,49 +239,43 @@ export const DateInput: React.FunctionComponent<DateInputProps> = (props) => {
   return (
     <div style={{ ...props.style }}>
       <div>{props.label}</div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-        }}
-      >
-        <IconButton
-          size="small"
-          style={{ marginRight: "10px" }}
-          onClick={() => changeDate(-1)}
-        >
-          <ArrowBack style={{ cursor: "pointer" }} />
-        </IconButton>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <DatePicker
-            size="small"
-            views={getView()}
-            label=""
-            format="MM/dd/yyyy"
-            value={DateRange.parse(date).from}
-            onChange={(e: Date) => onChangeDate(e)}
-            inputVariant="filled"
-            disabled={props.disabled ? props.disabled : false}
-            InputProps={{
-              className: classes.datepicker,
-            }}
-            style={{ flex: "1" }}
-            renderDay={renderDate}
-            labelFunc={renderLabel}
-            margin={"none"}
-            disableFuture={true}
-          />
-        </MuiPickersUtilsProvider>
-        <IconButton
-          size="small"
-          style={{ marginLeft: "10px" }}
-          onClick={() => changeDate(1)}
-        >
-          <ArrowForward style={{ cursor: "pointer" }} />
-        </IconButton>
-      </div>
+      <Grid container alignItems="center" spacing={4}>
+        <Grid item>
+          <IconButton size="small" onClick={() => changeDate(-1)}>
+            <ArrowBack style={{ cursor: "pointer" }} />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <DatePicker
+              size="small"
+              views={getView()}
+              label=""
+              format="MM/dd/yyyy"
+              value={DateRange.parse(date).from}
+              onChange={(e: Date) => onChangeDate(e)}
+              inputVariant="filled"
+              disabled={props.disabled ? props.disabled : false}
+              InputProps={{
+                className: classes.datepicker,
+              }}
+              style={{ flex: "1" }}
+              renderDay={renderDate}
+              labelFunc={renderLabel}
+              margin={"none"}
+              disableFuture={true}
+              autoOk
+            />
+          </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item>
+          <IconButton size="small" onClick={() => changeDate(1)}>
+            <ArrowForward style={{ cursor: "pointer" }} />
+          </IconButton>
+        </Grid>
+      </Grid>
     </div>
   );
 };
+
+export default withStyles(styles)(DateInput);

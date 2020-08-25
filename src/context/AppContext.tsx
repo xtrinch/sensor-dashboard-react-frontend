@@ -1,17 +1,16 @@
 import React, { createContext, useReducer } from "react";
-import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
-import { DateRegex } from "utils/date.range";
+import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
 
 type AppContextState = {
   menuOpen: boolean;
-  groupBy: GroupMeasurementByEnum;
+  groupBy: DateRangeEnum;
   date: DateRegex;
 };
 
 const initialState: AppContextState = {
   menuOpen: false,
-  groupBy: GroupMeasurementByEnum.day,
-  date: null,
+  groupBy: DateRangeEnum.day,
+  date: DateRange.getDateString(new Date(), DateRangeEnum.day),
 };
 
 const AppContext = createContext<[AppContextState, React.Dispatch<any>]>(null);

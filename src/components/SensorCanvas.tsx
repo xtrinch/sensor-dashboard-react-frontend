@@ -13,7 +13,6 @@ import {
 import React from "react";
 import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
-import GroupMeasurementByEnum from "types/GroupMeasurementByEnum";
 import Measurement from "types/Measurement";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
@@ -21,9 +20,11 @@ import MeasurementTypeEnum, {
 import Sensor from "types/Sensor";
 import {
   DateRange,
+  DateRangeEnum,
   DateRegex,
   DateRegexGroupsInterface,
 } from "utils/date.range";
+import { getSpacePaddedNumber, getZeroPaddedNumber } from "utils/number";
 
 const styles = () =>
   createStyles({
@@ -57,13 +58,9 @@ const styles = () =>
 interface SensorCanvasProps {
   type: MeasurementTypeEnum;
   date: DateRegex;
-  groupBy: GroupMeasurementByEnum;
+  groupBy: DateRangeEnum;
   measurements: Measurement[];
 }
-
-export const getZeroPaddedNumber = (num: number) => {
-  return `${num < 10 ? "0" : ""}${num}`;
-};
 
 const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
@@ -71,21 +68,27 @@ const SensorCanvas: React.FunctionComponent<
   const { type, classes, date, groupBy, measurements } = props;
 
   const groupByProperties = {
-    [GroupMeasurementByEnum.day]: {
+    [DateRangeEnum.hour]: {
+      unit: "",
+      tickFormatter: (d) => `${getSpacePaddedNumber(d)}`,
+      ticks: Array.from({ length: 61 }, (data, i) => i),
+      getTimeDomain: (params: DateRegexGroupsInterface) => params.minute,
+    },
+    [DateRangeEnum.day]: {
       unit: "h",
       tickFormatter: (d) => `${getZeroPaddedNumber(d - 1)}`,
       ticks: Array.from({ length: 25 }, (data, i) => i + 1),
       getTimeDomain: (params: DateRegexGroupsInterface) =>
         params.hour + params.minute / 60.0 + 1,
     },
-    [GroupMeasurementByEnum.week]: {
+    [DateRangeEnum.week]: {
       unit: "",
       tickFormatter: (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`,
       ticks: Array.from({ length: 7 }, (data, i) => i + 1),
       getTimeDomain: (params: DateRegexGroupsInterface) =>
         params.day - getDate(DateRange.parse(date).from) + 1,
     },
-    [GroupMeasurementByEnum.month]: {
+    [DateRangeEnum.month]: {
       unit: ".",
       tickFormatter: (d) => `${d}`,
       ticks: Array.from(
@@ -94,7 +97,7 @@ const SensorCanvas: React.FunctionComponent<
       ),
       getTimeDomain: (params: DateRegexGroupsInterface) => params.day,
     },
-    [GroupMeasurementByEnum.year]: {
+    [DateRangeEnum.year]: {
       unit: "",
       tickFormatter: (d) =>
         `${format(addMonths(startOfYear(d), d - 1), "LLL")}`,
@@ -125,7 +128,7 @@ const SensorCanvas: React.FunctionComponent<
             }))}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}
-            dotSize={groupBy === GroupMeasurementByEnum.day ? 5 : 55}
+            dotSize={groupBy === DateRangeEnum.day ? 5 : 55}
             domain={
               Sensor.measurementTypeProperties[type].domain as [
                 AxisDomain,

@@ -81,6 +81,10 @@ const theme = createMuiTheme({
           backgroundColor: ColorsEnum.BGLIGHTER,
         },
       },
+      inputMarginDense: {
+        paddingTop: "11px",
+        paddingBottom: "11px",
+      },
     },
   },
 });
