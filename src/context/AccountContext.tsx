@@ -39,7 +39,7 @@ const logout = async (dispatch: React.Dispatch<any>) => {
   });
 };
 
-type AccountContextState = {
+export type AccountContextState = {
   user: User;
   accessToken: string;
   loginState: "LOGGED_OUT" | "LOGGED_IN" | "LOGIN_ERROR";

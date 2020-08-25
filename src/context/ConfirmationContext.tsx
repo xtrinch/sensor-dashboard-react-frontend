@@ -2,7 +2,6 @@ import React, { createContext, useReducer } from "react";
 
 const openModal = (
   dispatch: React.Dispatch<any>,
-  confirmation: string,
   onConfirm: Function,
   onClose?: Function,
   content?: string
@@ -10,7 +9,6 @@ const openModal = (
   dispatch({
     type: "openModal",
     payload: {
-      confirmation,
       onConfirm,
       onClose,
       content,
@@ -61,7 +59,6 @@ const containerClose = async (
 type ConfirmationContextState = {
   openModal: (
     dispatch: React.Dispatch<any>,
-    confirmation: string,
     onConfirm: Function,
     onClose?: Function,
     content?: string
@@ -76,7 +73,6 @@ type ConfirmationContextState = {
     state: ConfirmationContextState
   ) => void;
 
-  confirmation: string;
   onConfirm: Function;
   onClose: Function;
   loading: boolean;
@@ -90,7 +86,6 @@ const initialState: ConfirmationContextState = {
   containerConfirm,
   containerClose,
 
-  confirmation: null,
   onConfirm: null,
   onClose: null,
   loading: false,
@@ -101,7 +96,6 @@ const initialState: ConfirmationContextState = {
 interface OpenModalAction {
   type: "openModal";
   payload: {
-    confirmation: string;
     onConfirm: Function;
     onClose?: Function;
     content?: string;
@@ -139,7 +133,6 @@ let reducer = (
     case "closeModal":
       return {
         ...state,
-        confirmation: undefined,
         onConfirm: undefined,
         onClose: undefined,
         loading: false,

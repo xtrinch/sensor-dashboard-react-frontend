@@ -1,11 +1,22 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import { AccountContext, AccountContextState } from "context/AccountContext";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 
-const reload = async (dispatch: React.Dispatch<any>) => {
+const reload = async (
+  dispatch: React.Dispatch<any>,
+  accountContext: AccountContextState
+) => {
   try {
     const resp = await SensorService.listSensors();
     const sensorData = resp.items;
+    sensorData.map((s) => {
+      s.visible = false;
+      if (s.userId === accountContext.user?.id) {
+        s.visible = true;
+      }
+      return s;
+    });
 
     dispatch({
       type: "sensorReady",
@@ -49,7 +60,10 @@ type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
 
-  reload: (dispatch: React.Dispatch<any>) => {};
+  reload: (
+    dispatch: React.Dispatch<any>,
+    accountContext: AccountContextState
+  ) => {};
   addSensor: (
     dispatch: React.Dispatch<any>,
     sensor: Partial<Sensor>
@@ -115,11 +129,13 @@ let reducer = (
 
 function SensorContextProvider(props) {
   let [state, dispatch] = useReducer(reducer, initialState);
+  let [accountContext] = useContext(AccountContext);
+
   useEffect(() => {
     if (!state.sensorsLoaded) {
-      state.reload(dispatch);
+      state.reload(dispatch, accountContext);
     }
-  }, [state]); // The empty array causes this effect to only run on mount
+  }, [state, accountContext]); // The empty array causes this effect to only run on mount
 
   return (
     <SensorContext.Provider value={[state, dispatch]}>

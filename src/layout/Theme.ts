@@ -26,6 +26,7 @@ const theme = createMuiTheme({
     MuiTypography: {
       body1: {
         fontSize: "12px",
+        color: ColorsEnum.GRAY,
       },
       h5: {
         color: ColorsEnum.GRAY,
@@ -34,6 +35,7 @@ const theme = createMuiTheme({
     MuiFab: {
       root: {
         boxShadow: "none",
+        color: ColorsEnum.WHITE,
       },
     },
     MuiListItemIcon: {

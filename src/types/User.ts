@@ -6,6 +6,9 @@ class User {
   constructor(s?: User) {
     this.username = s?.username || "";
     this.email = s?.email || "";
+    this.id = s?.id;
+    this.name = s?.name;
+    this.surname = s?.surname;
   }
 
   public id: UserId;
@@ -17,6 +20,10 @@ class User {
   @IsString()
   @IsEmail()
   public email: string;
+
+  public name: string;
+
+  public surname: string;
 }
 
 export default User;

@@ -72,6 +72,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
       <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
       {props.chartData.map((line, index) => (
         <Scatter
+          key={index}
           data={line.data}
           line={{ stroke: GraphColors[index] }}
           lineJointType="monotoneX"
