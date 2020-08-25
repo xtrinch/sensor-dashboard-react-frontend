@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import { AccountContext } from "context/AccountContext";
 import { SensorContext } from "context/SensorContext";
+import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import SensorService from "services/SensorService";
@@ -16,6 +17,7 @@ import { listTimeZones } from "timezone-support";
 import ColorsEnum from "types/ColorsEnum";
 import { SensorId } from "types/Sensor";
 import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
+import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme) =>
   createStyles({
@@ -127,6 +129,20 @@ const SensorInfoPage: React.FunctionComponent<
             label="Sensor access token"
             disabled
             value={sensor?.sensorAccessToken || ""}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            id="accessToken"
+            name="accessToken"
+            label="Last seen at"
+            disabled
+            value={
+              sensor?.lastSeenAt
+                ? format(sensor?.lastSeenAt, DATETIME_REGEX)
+                : "Never"
+            }
           />
           <TextField
             variant="outlined"

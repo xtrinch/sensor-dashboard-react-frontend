@@ -54,6 +54,10 @@ export enum DateRangeEnum {
 
 export type DateRegex = string;
 
+export const DATETIME_REGEX = "MMMM d, yyyy HH:mm"; // August 31, 2020
+export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
+export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
+
 export class DateRange {
   public static regex = /^(?<year>[0-9]{4})(\/((?<month>[0-9]{1,2})|(w(?<week>[0-9]{1,2})))(\/(?<day>[0-9]{1,2})( (?<hour>[0-9]{1,2})(:(?<minute>[0-9]{1,2}))?)?)?)?$/;
 

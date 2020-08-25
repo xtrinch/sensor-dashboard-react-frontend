@@ -29,7 +29,13 @@ import {
 } from "date-fns";
 import React, { useCallback, useEffect } from "react";
 import ColorsEnum from "types/ColorsEnum";
-import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
+import {
+  DateRange,
+  DateRangeEnum,
+  DateRegex,
+  DATE_REGEX,
+  MONTH_YEAR_REGEX,
+} from "utils/date.range";
 
 const styles = (theme) =>
   createStyles({
@@ -102,9 +108,6 @@ export interface DateInputProps {
   date?: DateRegex;
   groupBy?: DateRangeEnum; // date selector input state
 }
-
-export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
-export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
 
 const DateInput: React.FunctionComponent<
   DateInputProps & WithStyles<typeof styles>
