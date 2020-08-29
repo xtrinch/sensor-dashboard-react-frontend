@@ -132,7 +132,11 @@ const SensorCanvas: React.FunctionComponent<
             }))}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}
-            dotSize={groupBy === DateRangeEnum.month ? 35 : 10}
+            dotSize={
+              groupBy === DateRangeEnum.month || groupBy === DateRangeEnum.hour
+                ? 35
+                : 10
+            }
             domain={
               Sensor.measurementTypeProperties[type].domain as [
                 AxisDomain,

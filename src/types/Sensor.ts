@@ -71,7 +71,7 @@ class Sensor {
       unit: "m",
     },
     [MeasurementTypeEnum.GAS]: {
-      domain: [0, 100],
+      domain: [0, 30],
       unit: "kΩ",
     },
     [MeasurementTypeEnum.HUMIDITY]: {
@@ -79,7 +79,7 @@ class Sensor {
       unit: "%",
     },
     [MeasurementTypeEnum.PRESSURE]: {
-      domain: [0, 1500],
+      domain: [900, 1050],
       unit: "hPa",
     },
     [MeasurementTypeEnum.TEMPERATURE]: {
