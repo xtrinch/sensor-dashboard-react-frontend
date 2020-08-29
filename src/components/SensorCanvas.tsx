@@ -86,9 +86,9 @@ const SensorCanvas: React.FunctionComponent<
     [DateRangeEnum.week]: {
       unit: "",
       tickFormatter: (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`,
-      ticks: Array.from({ length: 7 }, (data, i) => i + 1),
+      ticks: Array.from({ length: 8 }, (data, i) => i + 1),
       getTimeDomain: (params: DateRegexGroupsInterface) =>
-        params.day - getDate(DateRange.parse(date).from) + 1,
+        params.day - getDate(DateRange.parse(date).from) + 1 + params.hour / 24,
     },
     [DateRangeEnum.month]: {
       unit: ".",
@@ -104,7 +104,8 @@ const SensorCanvas: React.FunctionComponent<
       tickFormatter: (d) =>
         `${format(addMonths(startOfYear(d), d - 1), "LLL")}`,
       ticks: Array.from({ length: 12 }, (data, i) => i + 1),
-      getTimeDomain: (params: DateRegexGroupsInterface) => params.month,
+      getTimeDomain: (params: DateRegexGroupsInterface) =>
+        params.month + params.day / getDaysInMonth(params.month),
     },
   };
 

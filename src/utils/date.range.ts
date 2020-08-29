@@ -6,6 +6,7 @@ import {
   endOfYear,
   getDate,
   getDay,
+  getDaysInMonth,
   getHours,
   getMinutes,
   getMonth,
@@ -41,6 +42,7 @@ export interface DateRangeInterface {
 export enum RangeGroupByEnum {
   MONTH = "month",
   DAY = "day",
+  HOUR = "hour",
 }
 
 export enum DateRangeEnum {
@@ -98,7 +100,9 @@ export class DateRange {
   ): RangeGroupByEnum | null {
     let groupBy: RangeGroupByEnum = null;
     if (!range.month && !range.week) {
-      groupBy = RangeGroupByEnum.MONTH;
+      groupBy = RangeGroupByEnum.DAY;
+    } else if (range.week) {
+      groupBy = RangeGroupByEnum.HOUR;
     } else if (!range.day) {
       groupBy = RangeGroupByEnum.DAY;
     }
@@ -226,12 +230,12 @@ export class DateRange {
           nowWeekGroups.week === groups.week &&
           nowWeekGroups.year === groups.year
         ) {
-          return getDay(now) + 1;
+          return getDay(now) + 1 + nowGroups.hour / 24;
         }
         break;
       case DateRangeEnum.year:
         if (nowGroups.year === groups.year) {
-          return nowGroups.month;
+          return nowGroups.month + nowGroups.day / getDaysInMonth(now);
         }
         break;
       default:
