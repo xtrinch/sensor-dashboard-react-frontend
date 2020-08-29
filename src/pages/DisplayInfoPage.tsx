@@ -8,15 +8,14 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import { AccountContext } from "context/AccountContext";
-import { SensorContext } from "context/SensorContext";
+import { DisplayContext } from "context/DisplayContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import SensorService from "services/SensorService";
-import { listTimeZones } from "timezone-support";
+import DisplayService from "services/DisplayService";
 import ColorsEnum from "types/ColorsEnum";
-import { SensorId } from "types/Sensor";
-import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
+import { DisplayId } from "types/Display";
+import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
 import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme) =>
@@ -43,7 +42,7 @@ const styles = (theme) =>
     },
   });
 
-const SensorInfoPage: React.FunctionComponent<
+const DisplayInfoPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const {
@@ -58,37 +57,36 @@ const SensorInfoPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
-    boardType: "" as SensorBoardTypesEnum,
+    boardType: "" as DisplayBoardTypesEnum,
     timezone: "",
   });
 
   const [accountState] = useContext(AccountContext);
-  const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
-  const [sensor, setSensor] = useState(null);
+  const [sensorContext, sensorContextDispatch] = useContext(DisplayContext);
+  const [sensor, setDisplay] = useState(null);
 
   useEffect(() => {
-    const getSensor = async () => {
-      const s = await SensorService.getSensor((id as unknown) as SensorId);
-      setSensor(s);
+    const getDisplay = async () => {
+      const s = await DisplayService.getDisplay((id as unknown) as DisplayId);
+      setDisplay(s);
       setData((d) => ({
         ...d,
         name: s.name,
         location: s.location,
         boardType: s.boardType,
-        timezone: s.timezone,
       }));
     };
 
-    getSensor();
+    getDisplay();
   }, [id]);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      await sensorContext.updateSensor(
+      await sensorContext.updateDisplay(
         sensorContextDispatch,
-        (id as unknown) as SensorId,
+        (id as unknown) as DisplayId,
         data
       );
     } catch (e) {
@@ -109,7 +107,7 @@ const SensorInfoPage: React.FunctionComponent<
           <SettingsInputAntennaIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sensor board info
+          Display board info
         </Typography>
         <form className={classes.form} noValidate onSubmit={submitForm}>
           <TextField
@@ -118,7 +116,7 @@ const SensorInfoPage: React.FunctionComponent<
             fullWidth
             id="accessToken"
             name="accessToken"
-            label="Sensor access token"
+            label="Display access token"
             disabled
             value={sensor?.sensorAccessToken || ""}
           />
@@ -141,7 +139,7 @@ const SensorInfoPage: React.FunctionComponent<
             margin="normal"
             fullWidth
             id="name"
-            label="Sensor name"
+            label="Display name"
             name="name"
             value={data.name}
             onChange={(e) => fieldChange(e.target.value, "name")}
@@ -174,25 +172,9 @@ const SensorInfoPage: React.FunctionComponent<
             error={!!errors.boardType}
             helperText={errors.boardType}
           >
-            {Object.keys(SensorBoardTypesEnum).map((key) => (
+            {Object.keys(DisplayBoardTypesEnum).map((key) => (
               <MenuItem key={key} value={key}>
-                {SensorBoardTypesEnum[key]}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            id="timezone"
-            variant="outlined"
-            margin="normal"
-            label="Timezone"
-            value={data.timezone}
-            onChange={(e) => fieldChange(e.target.value, "timezone")}
-            fullWidth
-          >
-            {listTimeZones().map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+                {DisplayBoardTypesEnum[key]}
               </MenuItem>
             ))}
           </TextField>
@@ -212,4 +194,4 @@ const SensorInfoPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(SensorInfoPage));
+export default withRouter(withStyles(styles)(DisplayInfoPage));

@@ -106,7 +106,7 @@ const SensorItem: React.FunctionComponent<
         </ListItemText>
         {sensor.user?.username === user?.username && (
           <div onClick={(e) => e.stopPropagation()}>
-            <Link to={`/sensor/${sensor.id}`}>
+            <Link to={`/sensors/${sensor.id}`}>
               <Fab color="secondary" size="small" className={classes.sensorFab}>
                 <SettingsIcon />
               </Fab>

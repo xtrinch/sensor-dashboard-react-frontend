@@ -8,12 +8,11 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import { AccountContext } from "context/AccountContext";
-import { SensorContext } from "context/SensorContext";
+import { DisplayContext } from "context/DisplayContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import { listTimeZones } from "timezone-support";
 import ColorsEnum from "types/ColorsEnum";
-import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
+import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
 
 const styles = (theme) =>
   createStyles({
@@ -39,7 +38,7 @@ const styles = (theme) =>
     },
   });
 
-const AddSensorPage: React.FunctionComponent<
+const AddDisplayPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
@@ -49,23 +48,26 @@ const AddSensorPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
-    boardType: "" as SensorBoardTypesEnum,
+    boardType: "" as DisplayBoardTypesEnum,
     timezone: "",
   });
 
   const [accountState] = useContext(AccountContext);
-  const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
+  const [displayContext, displayContextDispatch] = useContext(DisplayContext);
   const [success, setSuccess] = useState(false);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const sensor = await sensorContext.addSensor(sensorContextDispatch, data);
-      if (sensor) {
+      const display = await displayContext.addDisplay(
+        displayContextDispatch,
+        data
+      );
+      if (display) {
         setSuccess(true);
         setTimeout(() => {
-          history.push(`/sensors/${sensor.id}`);
+          history.push(`/display/${display.id}`);
         }, 3000);
       }
     } catch (e) {
@@ -88,7 +90,7 @@ const AddSensorPage: React.FunctionComponent<
               <SettingsInputAntennaIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Add sensor board
+              Add display board
             </Typography>
             <form className={classes.form} noValidate onSubmit={submitForm}>
               <TextField
@@ -96,7 +98,7 @@ const AddSensorPage: React.FunctionComponent<
                 margin="normal"
                 fullWidth
                 id="name"
-                label="Sensor name"
+                label="Display name"
                 name="name"
                 value={data.name}
                 autoFocus
@@ -130,25 +132,9 @@ const AddSensorPage: React.FunctionComponent<
                 error={!!errors.boardType}
                 helperText={errors.boardType}
               >
-                {Object.keys(SensorBoardTypesEnum).map((key) => (
+                {Object.keys(DisplayBoardTypesEnum).map((key) => (
                   <MenuItem key={key} value={key}>
-                    {SensorBoardTypesEnum[key]}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                id="timezone"
-                variant="outlined"
-                margin="normal"
-                label="Timezone"
-                value={data.timezone}
-                onChange={(e) => fieldChange(e.target.value, "timezone")}
-                fullWidth
-              >
-                {listTimeZones().map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
+                    {DisplayBoardTypesEnum[key]}
                   </MenuItem>
                 ))}
               </TextField>
@@ -167,8 +153,8 @@ const AddSensorPage: React.FunctionComponent<
         )}
         {success && (
           <Grid container spacing={10} direction={"column"}>
-            <Grid item>Sensor successfully added.</Grid>
-            <Grid item>Redirecting to sensor info page...</Grid>
+            <Grid item>Display successfully added.</Grid>
+            <Grid item>Redirecting to display info page...</Grid>
           </Grid>
         )}
       </div>
@@ -176,4 +162,4 @@ const AddSensorPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(AddSensorPage));
+export default withRouter(withStyles(styles)(AddDisplayPage));

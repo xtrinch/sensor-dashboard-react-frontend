@@ -4,6 +4,7 @@ import {
   Fab,
   Grid,
   List,
+  ListItem,
   ListSubheader,
 } from "@material-ui/core";
 import PlusIcon from "@material-ui/icons/Add";
@@ -15,6 +16,7 @@ import { AccountContext } from "context/AccountContext";
 import { ConfirmationContext } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
 
@@ -56,8 +58,10 @@ const styles = () =>
 interface SideMenuProps {}
 
 const SideMenu: React.FunctionComponent<
-  SideMenuProps & WithStyles<typeof styles>
+  SideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
+  const { history } = props;
+
   const [{ sensors }] = useContext(SensorContext);
   const [{ loginState, user, logout }, dispatchAccount] = useContext(
     AccountContext
@@ -102,6 +106,32 @@ const SideMenu: React.FunctionComponent<
       </ListSubheader>
       {loginState === "LOGGED_IN" && (
         <>
+          <List disablePadding>
+            <ListItem
+              button
+              className={classes.listTitle}
+              alignItems="center"
+              onClick={() => history.push("/displays")}
+            >
+              <Grid container alignItems="center" justify="space-between">
+                <Grid item>My display devices</Grid>
+                <Grid item>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Link to={`/add-display`}>
+                      <Fab
+                        color="primary"
+                        size="small"
+                        className={classes.sensorFab}
+                      >
+                        <PlusIcon />
+                      </Fab>
+                    </Link>
+                  </div>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </List>
+          <Divider />
           <Grid container className={classes.listTitle} alignItems="center">
             <Grid item xs>
               My sensors
@@ -141,4 +171,4 @@ const SideMenu: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(SideMenu);
+export default withStyles(styles)(withRouter(SideMenu));

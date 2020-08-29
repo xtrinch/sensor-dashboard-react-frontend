@@ -9,9 +9,13 @@ import SideMenuWrapper from "components/SideMenuWrapper";
 import { AccountContextProvider } from "context/AccountContext";
 import { AppContextProvider } from "context/AppContext";
 import { ConfirmationContextProvider } from "context/ConfirmationContext";
+import { DisplayContextProvider } from "context/DisplayContext";
 import { SensorContextProvider } from "context/SensorContext";
 import theme from "layout/Theme";
+import AddDisplayPage from "pages/AddDisplayPage";
 import AddSensorPage from "pages/AddSensorPage";
+import DisplayInfoPage from "pages/DisplayInfoPage";
+import DisplayListPage from "pages/DisplayListPage";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
 import SensorInfoPage from "pages/SensorInfoPage";
@@ -55,26 +59,37 @@ class App extends React.Component<WithStyles<typeof styles>> {
             <AppContextProvider>
               <SensorContextProvider>
                 <ConfirmationContextProvider>
-                  <ConfirmationBox />
+                  <DisplayContextProvider>
+                    <ConfirmationBox />
 
-                  <div className={classes.app}>
-                    <SideMenuWrapper />
-                    <Route exact path="/">
-                      <SensorsPage />
-                    </Route>
-                    <Route exact path="/login">
-                      <LoginPage />
-                    </Route>
-                    <Route exact path="/register">
-                      <RegisterPage />
-                    </Route>
-                    <Route exact path="/add-sensor">
-                      <AddSensorPage />
-                    </Route>
-                    <Route exact path="/sensor/:id">
-                      <SensorInfoPage />
-                    </Route>
-                  </div>
+                    <div className={classes.app}>
+                      <SideMenuWrapper />
+                      <Route exact path="/">
+                        <SensorsPage />
+                      </Route>
+                      <Route exact path="/login">
+                        <LoginPage />
+                      </Route>
+                      <Route exact path="/register">
+                        <RegisterPage />
+                      </Route>
+                      <Route exact path="/add-sensor">
+                        <AddSensorPage />
+                      </Route>
+                      <Route exact path="/add-display">
+                        <AddDisplayPage />
+                      </Route>
+                      <Route exact path="/sensors/:id">
+                        <SensorInfoPage />
+                      </Route>
+                      <Route exact path="/displays/:id">
+                        <DisplayInfoPage />
+                      </Route>
+                      <Route exact path="/displays">
+                        <DisplayListPage />
+                      </Route>
+                    </div>
+                  </DisplayContextProvider>
                 </ConfirmationContextProvider>
               </SensorContextProvider>
             </AppContextProvider>

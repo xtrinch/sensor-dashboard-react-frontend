@@ -1,11 +1,6 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsString,
-  Length,
-  MinLength,
-} from "class-validator";
+import { IsBoolean, IsEnum, IsString, MinLength } from "class-validator";
 import { parseISO } from "date-fns";
+import { AbstractEntity } from "types/AbstractEntity";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
 import SensorTypesEnum from "types/SensorTypesEnum";
@@ -13,10 +8,11 @@ import User, { UserId } from "types/User";
 
 export type SensorId = number;
 
-class Sensor {
+class Sensor extends AbstractEntity {
   constructor(s) {
+    super(s);
+
     this.name = s?.name || "";
-    this.address = s?.address || "";
     this.type = s?.type || undefined;
     this.visible = s?.visible || true;
     this.expanded = false;
@@ -36,10 +32,6 @@ class Sensor {
   @IsString()
   @MinLength(2)
   public name: string;
-
-  @IsString()
-  @Length(34, 34)
-  public address: string;
 
   @IsEnum(SensorTypesEnum)
   public type: SensorTypesEnum;

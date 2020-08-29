@@ -1,9 +1,12 @@
 import { IsEmail, IsString, MinLength } from "class-validator";
+import { AbstractEntity } from "types/AbstractEntity";
 
 export type UserId = number;
 
-class User {
+class User extends AbstractEntity {
   constructor(s?: User) {
+    super(s);
+
     this.username = s?.username || "";
     this.email = s?.email || "";
     this.id = s?.id;
