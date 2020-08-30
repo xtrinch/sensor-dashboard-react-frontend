@@ -7,7 +7,6 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { AccountContext } from "context/AccountContext";
 import { SensorContext } from "context/SensorContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
@@ -62,7 +61,6 @@ const SensorInfoPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [accountState] = useContext(AccountContext);
   const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
   const [sensor, setSensor] = useState(null);
 

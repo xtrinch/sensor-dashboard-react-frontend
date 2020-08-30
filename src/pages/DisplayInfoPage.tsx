@@ -1,4 +1,10 @@
-import { MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -7,8 +13,8 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { AccountContext } from "context/AccountContext";
 import { DisplayContext } from "context/DisplayContext";
+import { SensorContext } from "context/SensorContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -16,6 +22,9 @@ import DisplayService from "services/DisplayService";
 import ColorsEnum from "types/ColorsEnum";
 import { DisplayId } from "types/Display";
 import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
+import MeasurementTypeEnum, {
+  MeasurementTypeLabelsEnum,
+} from "types/MeasurementTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme) =>
@@ -59,10 +68,13 @@ const DisplayInfoPage: React.FunctionComponent<
     location: "",
     boardType: "" as DisplayBoardTypesEnum,
     timezone: "",
+    measurementTypes: [],
+    sensorIds: [],
   });
 
-  const [accountState] = useContext(AccountContext);
-  const [sensorContext, sensorContextDispatch] = useContext(DisplayContext);
+  const [displayContext, displayContextDispatch] = useContext(DisplayContext);
+  const [sensorContext] = useContext(SensorContext);
+
   const [sensor, setDisplay] = useState(null);
 
   useEffect(() => {
@@ -74,6 +86,8 @@ const DisplayInfoPage: React.FunctionComponent<
         name: s.name,
         location: s.location,
         boardType: s.boardType,
+        measurementTypes: s.measurementTypes,
+        sensorIds: s.sensorIds,
       }));
     };
 
@@ -84,8 +98,8 @@ const DisplayInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await sensorContext.updateDisplay(
-        sensorContextDispatch,
+      await displayContext.updateDisplay(
+        displayContextDispatch,
         (id as unknown) as DisplayId,
         data
       );
@@ -178,6 +192,52 @@ const DisplayInfoPage: React.FunctionComponent<
               </MenuItem>
             ))}
           </TextField>
+          <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel id="demo-mutiple-name-label">
+              Measurement types
+            </InputLabel>
+            <Select
+              labelId="demo-mutiple-name-label"
+              id="demo-mutiple-name"
+              multiple
+              value={data.measurementTypes}
+              onChange={(e) => fieldChange(e.target.value, "measurementTypes")}
+              error={!!errors.measurementTypes}
+            >
+              {Object.values(MeasurementTypeEnum).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {MeasurementTypeLabelsEnum[key]}
+                </MenuItem>
+              ))}
+            </Select>
+            {!!errors.measurementTypes && (
+              <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                {errors.measurementTypes}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <FormControl variant="outlined" fullWidth margin="normal">
+            <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
+            <Select
+              labelId="demo-mutiple-name-label"
+              id="demo-mutiple-name"
+              multiple
+              value={data.sensorIds}
+              onChange={(e) => fieldChange(e.target.value, "sensorIds")}
+              error={!!errors.sensorIds}
+            >
+              {sensorContext.sensors.map((sensor) => (
+                <MenuItem key={sensor.id} value={sensor.id}>
+                  {sensor.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {!!errors.sensorIds && (
+              <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                {errors.sensorIds}
+              </FormHelperText>
+            )}
+          </FormControl>
           <Button
             type="submit"
             fullWidth

@@ -62,7 +62,7 @@ const SideMenu: React.FunctionComponent<
 > = (props) => {
   const { history } = props;
 
-  const [{ sensors }] = useContext(SensorContext);
+  const [{ sensors, mySensors }] = useContext(SensorContext);
   const [{ loginState, user, logout }, dispatchAccount] = useContext(
     AccountContext
   );
@@ -148,7 +148,7 @@ const SideMenu: React.FunctionComponent<
         </>
       )}
       <List disablePadding>
-        {sensors
+        {mySensors
           .filter((s) => s.userId === user?.id)
           .map((sensor: Sensor) => (
             <SensorItem sensor={sensor} key={sensor.id} />

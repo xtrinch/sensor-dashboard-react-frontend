@@ -13,15 +13,13 @@ const styles = (theme) => createStyles({});
 const DisplayListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
-  const { classes, history } = props;
-
-  const [displayContext, displayContextDispatch] = useContext(DisplayContext);
+  const [displayContext] = useContext(DisplayContext);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       {displayContext.displays.map((display: Display) => (
-        <DisplayItem display={display} />
+        <DisplayItem display={display} key={display.id} />
       ))}
       {displayContext.displays.length === 0 && (
         <Typography variant="body2" component="p">

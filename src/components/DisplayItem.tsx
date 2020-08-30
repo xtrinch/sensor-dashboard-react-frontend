@@ -46,11 +46,6 @@ export default function DisplayItem(props: { display: Display }) {
   const { display } = props;
 
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   return (
     <Card className={classes.root}>
@@ -66,6 +61,12 @@ export default function DisplayItem(props: { display: Display }) {
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           Access token: {display.displayAccessToken}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Sensors:{" "}
+          {display.sensors?.length > 0
+            ? display.sensors.map((s) => s.name).join(", ")
+            : "No sensors"}
         </Typography>
       </CardContent>
       <CardActions disableSpacing style={{ justifyContent: "flex-end" }}>

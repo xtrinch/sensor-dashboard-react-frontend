@@ -7,7 +7,6 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { AccountContext } from "context/AccountContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -53,7 +52,6 @@ const AddSensorPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [accountState] = useContext(AccountContext);
   const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
   const [success, setSuccess] = useState(false);
 

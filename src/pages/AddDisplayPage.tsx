@@ -1,4 +1,11 @@
-import { Grid, MenuItem } from "@material-ui/core";
+import {
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -7,12 +14,15 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { AccountContext } from "context/AccountContext";
 import { DisplayContext } from "context/DisplayContext";
+import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
+import MeasurementTypeEnum, {
+  MeasurementTypeLabelsEnum,
+} from "types/MeasurementTypeEnum";
 
 const styles = (theme) =>
   createStyles({
@@ -50,9 +60,11 @@ const AddDisplayPage: React.FunctionComponent<
     location: "",
     boardType: "" as DisplayBoardTypesEnum,
     timezone: "",
+    measurementTypes: [],
+    sensorIds: [],
   });
 
-  const [accountState] = useContext(AccountContext);
+  const [sensorState] = useContext(SensorContext);
   const [displayContext, displayContextDispatch] = useContext(DisplayContext);
   const [success, setSuccess] = useState(false);
 
@@ -67,7 +79,7 @@ const AddDisplayPage: React.FunctionComponent<
       if (display) {
         setSuccess(true);
         setTimeout(() => {
-          history.push(`/display/${display.id}`);
+          history.push(`/displays/${display.id}`);
         }, 3000);
       }
     } catch (e) {
@@ -138,6 +150,54 @@ const AddDisplayPage: React.FunctionComponent<
                   </MenuItem>
                 ))}
               </TextField>
+              <FormControl variant="outlined" fullWidth margin="normal">
+                <InputLabel id="demo-mutiple-name-label">
+                  Measurement types
+                </InputLabel>
+                <Select
+                  labelId="demo-mutiple-name-label"
+                  id="demo-mutiple-name"
+                  multiple
+                  value={data.measurementTypes}
+                  onChange={(e) =>
+                    fieldChange(e.target.value, "measurementTypes")
+                  }
+                  error={!!errors.measurementTypes}
+                >
+                  {Object.values(MeasurementTypeEnum).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {MeasurementTypeLabelsEnum[key]}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {!!errors.measurementTypes && (
+                  <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                    {errors.measurementTypes}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl variant="outlined" fullWidth margin="normal">
+                <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
+                <Select
+                  labelId="demo-mutiple-name-label"
+                  id="demo-mutiple-name"
+                  multiple
+                  value={data.sensorIds}
+                  onChange={(e) => fieldChange(e.target.value, "sensorIds")}
+                  error={!!errors.sensorIds}
+                >
+                  {sensorState.sensors.map((sensor) => (
+                    <MenuItem key={sensor.id} value={sensor.id}>
+                      {sensor.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {!!errors.sensorIds && (
+                  <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                    {errors.sensorIds}
+                  </FormHelperText>
+                )}
+              </FormControl>
               <Button
                 type="submit"
                 fullWidth

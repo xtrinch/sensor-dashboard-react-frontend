@@ -23,6 +23,27 @@ export default class SensorService {
     };
   };
 
+  public static listMySensors = async () => {
+    const url = getUrl("/sensors/my");
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const sensors: Sensor[] = [];
+    for (const item of result.items) {
+      sensors.push(new Sensor(item));
+    }
+
+    return {
+      meta: result.meta,
+      items: sensors,
+    };
+  };
+
   public static addSensor = async (
     sensor: Partial<Sensor>
   ): Promise<Sensor> => {

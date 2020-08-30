@@ -8,8 +8,9 @@ const reload = async (
   accountContext: AccountContextState
 ) => {
   try {
-    const resp = await SensorService.listSensors();
-    const sensorData = resp.items;
+    let resp = await SensorService.listSensors();
+    let sensorData = resp.items;
+    let mySensorData;
     if (accountContext.loginState === "LOGGED_IN") {
       sensorData.map((s) => {
         s.visible = false;
@@ -19,9 +20,22 @@ const reload = async (
         return s;
       });
     }
+    if (accountContext.loginState === "LOGGED_IN") {
+      resp = await SensorService.listMySensors();
+      resp.items.map((s) => {
+        s.visible = true;
+        return s;
+      });
+      mySensorData = resp.items;
+
+      dispatch({
+        type: "mySensorsReady",
+        payload: mySensorData,
+      });
+    }
 
     dispatch({
-      type: "sensorReady",
+      type: "sensorsReady",
       payload: sensorData,
     });
   } catch (error) {
@@ -61,6 +75,7 @@ const updateSensor = async (
 type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
+  mySensors: Sensor[];
 
   reload: (
     dispatch: React.Dispatch<any>,
@@ -79,6 +94,7 @@ type SensorContextState = {
 
 const initialState: SensorContextState = {
   sensors: [],
+  mySensors: [],
   sensorsLoaded: false,
   reload: reload,
   addSensor: addSensor,
@@ -91,7 +107,12 @@ interface SensorAddAction {
 }
 
 interface SensorReadyAction {
-  type: "sensorReady";
+  type: "sensorsReady";
+  payload: Sensor[];
+}
+
+interface MySensorsReadyAction {
+  type: "mySensorsReady";
   payload: Sensor[];
 }
 
@@ -103,7 +124,8 @@ interface UpdateSensorAction {
 export type SensorActionTypes =
   | SensorReadyAction
   | UpdateSensorAction
-  | SensorAddAction;
+  | SensorAddAction
+  | MySensorsReadyAction;
 
 const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
@@ -114,8 +136,10 @@ let reducer = (
   action: SensorActionTypes
 ): SensorContextState => {
   switch (action.type) {
-    case "sensorReady":
+    case "sensorsReady":
       return { ...state, sensors: action.payload, sensorsLoaded: true };
+    case "mySensorsReady":
+      return { ...state, mySensors: action.payload, sensorsLoaded: true };
     case "updateSensor":
       const sensors = state.sensors;
       const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);

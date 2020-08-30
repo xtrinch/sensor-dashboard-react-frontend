@@ -1,6 +1,8 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
 import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
+import MeasurementTypeEnum from "types/MeasurementTypeEnum";
+import Sensor, { SensorId } from "types/Sensor";
 import User, { UserId } from "types/User";
 
 export type DisplayId = number;
@@ -17,6 +19,11 @@ class Display extends AbstractEntity {
     this.location = s?.location;
     this.displayAccessToken = s?.displayAccessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
+    this.sensors = s?.sensors
+      ? s.sensors.map((sensor) => new Sensor(sensor))
+      : [];
+    this.sensorIds = s?.sensorIds || [];
+    this.measurementTypes = s?.measurementTypes || [];
   }
 
   public id: DisplayId;
@@ -34,6 +41,12 @@ class Display extends AbstractEntity {
   public displayAccessToken: string;
 
   public lastSeenAt: Date;
+
+  public sensors: Sensor[];
+
+  public sensorIds: SensorId[];
+
+  public measurementTypes: MeasurementTypeEnum[];
 }
 
 export default Display;
