@@ -75,7 +75,7 @@ const DisplayInfoPage: React.FunctionComponent<
   const [displayContext, displayContextDispatch] = useContext(DisplayContext);
   const [sensorContext] = useContext(SensorContext);
 
-  const [sensor, setDisplay] = useState(null);
+  const [display, setDisplay] = useState(null);
 
   useEffect(() => {
     const getDisplay = async () => {
@@ -132,7 +132,7 @@ const DisplayInfoPage: React.FunctionComponent<
             name="accessToken"
             label="Display access token"
             disabled
-            value={sensor?.sensorAccessToken || ""}
+            value={display?.displayAccessToken || ""}
           />
           <TextField
             variant="outlined"
@@ -143,8 +143,8 @@ const DisplayInfoPage: React.FunctionComponent<
             label="Last seen at"
             disabled
             value={
-              sensor?.lastSeenAt
-                ? format(sensor?.lastSeenAt, DATETIME_REGEX)
+              display?.lastSeenAt
+                ? format(display?.lastSeenAt, DATETIME_REGEX)
                 : "Never"
             }
           />

@@ -87,8 +87,16 @@ const SensorCanvas: React.FunctionComponent<
       unit: "",
       tickFormatter: (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`,
       ticks: Array.from({ length: 8 }, (data, i) => i + 1),
-      getTimeDomain: (params: DateRegexGroupsInterface) =>
-        params.day - getDate(DateRange.parse(date).from) + 1 + params.hour / 24,
+      getTimeDomain: (params: DateRegexGroupsInterface) => {
+        const dateFrom = DateRange.parse(date).from;
+        let dayInWeek = params.day - (getDate(dateFrom) + 1) + params.hour / 24;
+
+        // if week spans two different months
+        if (dayInWeek < 0) {
+          dayInWeek += getDaysInMonth(dateFrom);
+        }
+        return dayInWeek;
+      },
     },
     [DateRangeEnum.month]: {
       unit: ".",
@@ -121,7 +129,7 @@ const SensorCanvas: React.FunctionComponent<
         {measurements && (
           <TimeSeriesChart
             chartData={Object.keys(measurements).map((key) => ({
-              data: measurements[key].map((m) => ({
+              data: measurements[key].map((m: Measurement) => ({
                 time: groupByProperties[groupBy].getTimeDomain(
                   DateRange.getRegexGroups(m.createdAt)
                 ),

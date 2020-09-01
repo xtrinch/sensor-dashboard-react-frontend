@@ -1,4 +1,3 @@
-import { CardContent, Typography } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -17,27 +16,21 @@ import { DATETIME_REGEX } from "utils/date.range";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: "30px 0px",
+      margin: "0px 0px",
       backgroundColor: ColorsEnum.BGLIGHT,
       borderRadius: 0,
       boxShadow: "none",
+      borderBottom: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
-    media: {
-      height: 0,
-      paddingTop: "56.25%", // 16:9
-    },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: "rotate(180deg)",
+    action: {
+      marginTop: "0px",
     },
     avatar: {
       backgroundColor: ColorsEnum.BLUE,
+      color: "white",
+    },
+    cardHeader: {
+      padding: "10px",
     },
   })
 );
@@ -50,6 +43,7 @@ export default function DisplayItem(props: { display: Display }) {
   return (
     <Card className={classes.root}>
       <CardHeader
+        className={classes.cardHeader}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
             {display.name[0]}
@@ -57,8 +51,21 @@ export default function DisplayItem(props: { display: Display }) {
         }
         title={`${display.name}, ${display.boardType}`}
         subheader={`${format(display.createdAt, DATETIME_REGEX)}`}
+        classes={{ action: classes.action }}
+        action={
+          <CardActions style={{ justifyContent: "flex-end" }}>
+            <Link to={`/displays/${display.id}`}>
+              <IconButton aria-label="add to favorites" size="small">
+                <SettingsIcon />
+              </IconButton>
+            </Link>
+            <IconButton aria-label="settings" size="small">
+              <DeleteIcon />
+            </IconButton>
+          </CardActions>
+        }
       />
-      <CardContent>
+      {/* <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           Access token: {display.displayAccessToken}
         </Typography>
@@ -68,17 +75,7 @@ export default function DisplayItem(props: { display: Display }) {
             ? display.sensors.map((s) => s.name).join(", ")
             : "No sensors"}
         </Typography>
-      </CardContent>
-      <CardActions disableSpacing style={{ justifyContent: "flex-end" }}>
-        <IconButton aria-label="settings">
-          <DeleteIcon />
-        </IconButton>
-        <Link to={`/displays/${display.id}`}>
-          <IconButton aria-label="add to favorites">
-            <SettingsIcon />
-          </IconButton>
-        </Link>
-      </CardActions>
+      </CardContent> */}
     </Card>
   );
 }

@@ -6,18 +6,37 @@ import DisplayItem from "components/DisplayItem";
 import { DisplayContext } from "context/DisplayContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
+import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
 
-const styles = (theme) => createStyles({});
+const styles = (theme) =>
+  createStyles({
+    root: {
+      backgroundColor: ColorsEnum.BGLIGHT,
+      paddingLeft: "0px",
+      paddingRight: "0px",
+      textAlign: "center",
+    },
+  });
 
 const DisplayListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
+  const { classes } = props;
+
   const [displayContext] = useContext(DisplayContext);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="sm"
+      style={{ margin: "20px auto" }}
+      className={classes.root}
+    >
       <CssBaseline />
+      <Typography component="h1" variant="h5" style={{ margin: "20px" }}>
+        My display devices
+      </Typography>
       {displayContext.displays.map((display: Display) => (
         <DisplayItem display={display} key={display.id} />
       ))}
