@@ -85,11 +85,11 @@ const SensorCanvas: React.FunctionComponent<
     },
     [DateRangeEnum.week]: {
       unit: "",
-      tickFormatter: (d) => `${format(addDays(startOfWeek(d), d - 1), "EE")}`,
-      ticks: Array.from({ length: 8 }, (data, i) => i + 1),
+      tickFormatter: (d) => `${format(addDays(startOfWeek(d), d), "EE")}`,
+      ticks: Array.from({ length: 8 }, (data, i) => i),
       getTimeDomain: (params: DateRegexGroupsInterface) => {
         const dateFrom = DateRange.parse(date).from;
-        let dayInWeek = params.day - (getDate(dateFrom) + 1) + params.hour / 24;
+        let dayInWeek = params.day - getDate(dateFrom) + params.hour / 24;
 
         // if week spans two different months
         if (dayInWeek < 0) {
