@@ -230,7 +230,7 @@ export class DateRange {
           nowWeekGroups.week === groups.week &&
           nowWeekGroups.year === groups.year
         ) {
-          return getDay(now) + 1 + nowGroups.hour / 24;
+          return getDay(now) + nowGroups.hour / 24;
         }
         break;
       case DateRangeEnum.year:
