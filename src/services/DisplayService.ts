@@ -71,4 +71,19 @@ export default class DisplayService {
     const s = new Display(result);
     return s;
   };
+
+  public static deleteDisplay = async (
+    id: DisplayId
+  ): Promise<{ success: string }> => {
+    const url = getUrl(`/displays/${id}`);
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    return result;
+  };
 }

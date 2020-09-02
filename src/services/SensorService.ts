@@ -79,6 +79,21 @@ export default class SensorService {
     return s;
   };
 
+  public static deleteSensor = async (
+    id: SensorId
+  ): Promise<{ success: string }> => {
+    const url = getUrl(`/sensors/${id}`);
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    return result;
+  };
+
   public static getSensor = async (id: SensorId): Promise<Sensor> => {
     const url = getUrl(`/sensors/${id}`);
 

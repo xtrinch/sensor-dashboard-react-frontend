@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 
-const reload = async (
+export const reload = async (
   dispatch: React.Dispatch<any>,
   accountContext: AccountContextState
 ) => {
@@ -43,7 +43,7 @@ const reload = async (
   }
 };
 
-const addSensor = async (
+export const addSensor = async (
   dispatch: React.Dispatch<any>,
   sensor: Partial<Sensor>
 ): Promise<Sensor> => {
@@ -57,7 +57,7 @@ const addSensor = async (
   return s;
 };
 
-const updateSensor = async (
+export const updateSensor = async (
   dispatch: React.Dispatch<any>,
   id: SensorId,
   sensor: Partial<Sensor>
@@ -72,60 +72,38 @@ const updateSensor = async (
   return s;
 };
 
+export const deleteSensor = async (
+  dispatch: React.Dispatch<any>,
+  id: SensorId
+): Promise<boolean> => {
+  await SensorService.deleteSensor(id);
+
+  dispatch({
+    type: "deleteSensor",
+    payload: id,
+  });
+
+  return true;
+};
+
 type SensorContextState = {
   sensorsLoaded: boolean;
   sensors: Sensor[];
   mySensors: Sensor[];
-
-  reload: (
-    dispatch: React.Dispatch<any>,
-    accountContext: AccountContextState
-  ) => {};
-  addSensor: (
-    dispatch: React.Dispatch<any>,
-    sensor: Partial<Sensor>
-  ) => Promise<Sensor>;
-  updateSensor: (
-    dispatch: React.Dispatch<any>,
-    id: SensorId,
-    sensor: Partial<Sensor>
-  ) => Promise<Sensor>;
 };
 
 const initialState: SensorContextState = {
   sensors: [],
   mySensors: [],
   sensorsLoaded: false,
-  reload: reload,
-  addSensor: addSensor,
-  updateSensor: updateSensor,
 };
 
-interface SensorAddAction {
-  type: "addSensor";
-  payload: Sensor;
-}
-
-interface SensorReadyAction {
-  type: "sensorsReady";
-  payload: Sensor[];
-}
-
-interface MySensorsReadyAction {
-  type: "mySensorsReady";
-  payload: Sensor[];
-}
-
-interface UpdateSensorAction {
-  type: "updateSensor";
-  payload: Sensor;
-}
-
 export type SensorActionTypes =
-  | SensorReadyAction
-  | UpdateSensorAction
-  | SensorAddAction
-  | MySensorsReadyAction;
+  | { type: "sensorsReady"; payload: Sensor[] }
+  | { type: "updateSensor"; payload: Sensor }
+  | { type: "addSensor"; payload: Sensor }
+  | { type: "deleteSensor"; payload: SensorId }
+  | { type: "mySensorsReady"; payload: Sensor[] };
 
 const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
@@ -145,6 +123,16 @@ let reducer = (
       const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);
       sensors[sensorIndex] = action.payload;
       return { ...state, sensors: [...sensors] };
+    case "deleteSensor":
+      const deleteMySensorIndex = state.mySensors.findIndex(
+        (s) => s.id === action.payload
+      );
+      state.mySensors.splice(deleteMySensorIndex, 1);
+      const deleteSensorIndex = state.sensors.findIndex(
+        (s) => s.id === action.payload
+      );
+      state.sensors.splice(deleteSensorIndex, 1);
+      return { ...state };
     case "addSensor":
       return { ...state, sensors: [...state.sensors, action.payload] };
     default: {
@@ -159,7 +147,7 @@ function SensorContextProvider(props) {
 
   useEffect(() => {
     if (!state.sensorsLoaded) {
-      state.reload(dispatch, accountContext);
+      reload(dispatch, accountContext);
     }
   }, [state, accountContext]); // The empty array causes this effect to only run on mount
 

@@ -7,12 +7,14 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { SensorContext } from "context/SensorContext";
+import { addSensor, SensorContext } from "context/SensorContext";
+import { addToast, ToastContext } from "context/ToastContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { listTimeZones } from "timezone-support";
 import ColorsEnum from "types/ColorsEnum";
 import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
+import { Toast } from "types/Toast";
 
 const styles = (theme) =>
   createStyles({
@@ -52,19 +54,22 @@ const AddSensorPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
+  const [, sensorContextDispatch] = useContext(SensorContext);
   const [success, setSuccess] = useState(false);
+  const [, toastContextDispatch] = useContext(ToastContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const sensor = await sensorContext.addSensor(sensorContextDispatch, data);
+      const sensor = await addSensor(sensorContextDispatch, data);
       if (sensor) {
         setSuccess(true);
-        setTimeout(() => {
-          history.push(`/sensors/${sensor.id}`);
-        }, 3000);
+        addToast(
+          toastContextDispatch,
+          new Toast({ message: "Successfully added a sensor", type: "success" })
+        );
+        history.push(`/sensors/${sensor.id}`);
       }
     } catch (e) {
       setErrors(e);

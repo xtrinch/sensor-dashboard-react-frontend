@@ -14,7 +14,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { DisplayContext } from "context/DisplayContext";
+import { addDisplay, DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -65,17 +65,14 @@ const AddDisplayPage: React.FunctionComponent<
   });
 
   const [sensorState] = useContext(SensorContext);
-  const [displayContext, displayContextDispatch] = useContext(DisplayContext);
+  const [, displayContextDispatch] = useContext(DisplayContext);
   const [success, setSuccess] = useState(false);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const display = await displayContext.addDisplay(
-        displayContextDispatch,
-        data
-      );
+      const display = await addDisplay(displayContextDispatch, data);
       if (display) {
         setSuccess(true);
         setTimeout(() => {

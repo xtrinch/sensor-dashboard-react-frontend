@@ -13,7 +13,10 @@ import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import SensorItem from "components/SensorItem";
 import { AccountContext } from "context/AccountContext";
-import { ConfirmationContext } from "context/ConfirmationContext";
+import {
+  ConfirmationContext,
+  openConfirmation,
+} from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -51,7 +54,7 @@ const styles = () =>
       width: "30px",
       height: "30px",
       minHeight: "30px",
-      color: "white",
+      color: ColorsEnum.WHITE,
     },
   });
 
@@ -66,13 +69,11 @@ const SideMenu: React.FunctionComponent<
   const [{ loginState, user, logout }, dispatchAccount] = useContext(
     AccountContext
   );
-  const [confirmationContext, dispatchConfirmationContext] = useContext(
-    ConfirmationContext
-  );
+  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = () => logout(dispatchAccount);
-    confirmationContext.openModal(
+    openConfirmation(
       dispatchConfirmationContext,
       onConfirm,
       null,

@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useReducer } from "react";
 import DisplayService from "services/DisplayService";
 import Display, { DisplayId } from "types/Display";
 
-const reload = async (
+export const reload = async (
   dispatch: React.Dispatch<any>,
   accountContext: AccountContextState
 ) => {
@@ -20,7 +20,7 @@ const reload = async (
   }
 };
 
-const addDisplay = async (
+export const addDisplay = async (
   dispatch: React.Dispatch<any>,
   display: Partial<Display>
 ): Promise<Display> => {
@@ -34,7 +34,7 @@ const addDisplay = async (
   return s;
 };
 
-const updateDisplay = async (
+export const updateDisplay = async (
   dispatch: React.Dispatch<any>,
   id: DisplayId,
   display: Partial<Display>
@@ -49,52 +49,35 @@ const updateDisplay = async (
   return s;
 };
 
+export const deleteDisplay = async (
+  dispatch: React.Dispatch<any>,
+  id: DisplayId
+): Promise<boolean> => {
+  await DisplayService.deleteDisplay(id);
+
+  dispatch({
+    type: "deleteDisplay",
+    payload: id,
+  });
+
+  return true;
+};
+
 type DisplayContextState = {
   displaysLoaded: boolean;
   displays: Display[];
-
-  reload: (
-    dispatch: React.Dispatch<any>,
-    accountContext: AccountContextState
-  ) => {};
-  addDisplay: (
-    dispatch: React.Dispatch<any>,
-    display: Partial<Display>
-  ) => Promise<Display>;
-  updateDisplay: (
-    dispatch: React.Dispatch<any>,
-    id: DisplayId,
-    display: Partial<Display>
-  ) => Promise<Display>;
 };
 
 const initialState: DisplayContextState = {
   displays: [],
   displaysLoaded: false,
-  reload: reload,
-  addDisplay: addDisplay,
-  updateDisplay: updateDisplay,
 };
 
-interface DisplayAddAction {
-  type: "addDisplay";
-  payload: Display;
-}
-
-interface DisplayReadyAction {
-  type: "displayReady";
-  payload: Display[];
-}
-
-interface UpdateDisplayAction {
-  type: "updateDisplay";
-  payload: Display;
-}
-
 export type DisplayActionTypes =
-  | DisplayReadyAction
-  | UpdateDisplayAction
-  | DisplayAddAction;
+  | { type: "displayReady"; payload: Display[] }
+  | { type: "updateDisplay"; payload: Display }
+  | { type: "addDisplay"; payload: Display }
+  | { type: "deleteDisplay"; payload: DisplayId };
 
 const DisplayContext = createContext<
   [DisplayContextState, React.Dispatch<any>]
@@ -116,6 +99,10 @@ let reducer = (
       return { ...state, displays: [...displays] };
     case "addDisplay":
       return { ...state, displays: [...state.displays, action.payload] };
+    case "deleteDisplay":
+      const idx = state.displays.findIndex((s) => s.id === action.payload);
+      state.displays.splice(idx, 1);
+      return { ...state };
     default: {
       return { ...state, displays: [] };
     }
@@ -128,7 +115,7 @@ function DisplayContextProvider(props) {
 
   useEffect(() => {
     if (!state.displaysLoaded) {
-      state.reload(dispatch, accountContext);
+      reload(dispatch, accountContext);
     }
   }, [state, accountContext]); // The empty array causes this effect to only run on mount
 

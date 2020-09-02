@@ -7,7 +7,11 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core";
-import { ConfirmationContext } from "context/ConfirmationContext";
+import {
+  close,
+  confirm,
+  ConfirmationContext,
+} from "context/ConfirmationContext";
 import React, { useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -18,6 +22,7 @@ const styles = () =>
       backgroundColor: ColorsEnum.BGLIGHT,
       borderRadius: "0px",
       padding: "20px",
+      maxWidth: "300px",
     },
   });
 
@@ -32,12 +37,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
 
   return (
     <Dialog
-      onClose={() =>
-        confirmationContext.close(
-          dispatchConfirmationContext,
-          confirmationContext
-        )
-      }
+      onClose={() => close(dispatchConfirmationContext, confirmationContext)}
       open={confirmationContext.open}
       className={classes.root}
       classes={{
@@ -54,10 +54,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
         <Grid item>
           <Button
             onClick={() =>
-              confirmationContext.close(
-                dispatchConfirmationContext,
-                confirmationContext
-              )
+              close(dispatchConfirmationContext, confirmationContext)
             }
             fullWidth
             variant="outlined"
@@ -70,10 +67,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
           <Button
             variant="outlined"
             onClick={() =>
-              confirmationContext.confirm(
-                dispatchConfirmationContext,
-                confirmationContext
-              )
+              confirm(dispatchConfirmationContext, confirmationContext)
             }
             fullWidth
             color="primary"

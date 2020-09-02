@@ -1,13 +1,13 @@
 import React, { createContext, useReducer } from "react";
 
-const openModal = (
+export const openConfirmation = (
   dispatch: React.Dispatch<any>,
   onConfirm: Function,
   onClose?: Function,
   content?: string
 ) => {
   dispatch({
-    type: "openModal",
+    type: "openConfirmation",
     payload: {
       onConfirm,
       onClose,
@@ -16,63 +16,42 @@ const openModal = (
   });
 };
 
-const closeModal = (dispatch: React.Dispatch<any>) => {
-  dispatch({
-    type: "closeModal",
-  });
+export const closeConfirmation = (dispatch: React.Dispatch<any>) => {
+  dispatch({ type: "closeConfirmation" });
 };
 
-const confirm = async (
+export const confirm = async (
   dispatch: React.Dispatch<any>,
   state: ConfirmationContextState
 ) => {
-  dispatch({
-    type: "closing",
-  });
+  dispatch({ type: "closing" });
 
   if (state.onConfirm) {
-    await state.onConfirm();
+    try {
+      await state.onConfirm();
+    } catch (e) {
+      dispatch({ type: "closeConfirmation" });
+      throw e;
+    }
   }
 
-  dispatch({
-    type: "closeModal",
-  });
+  dispatch({ type: "closeConfirmation" });
 };
 
-const close = async (
+export const close = async (
   dispatch: React.Dispatch<any>,
   state: ConfirmationContextState
 ) => {
-  dispatch({
-    type: "closing",
-  });
+  dispatch({ type: "closing" });
 
   if (state.onClose) {
     await state.onClose();
   }
 
-  dispatch({
-    type: "closeModal",
-  });
+  dispatch({ type: "closeConfirmation" });
 };
 
 type ConfirmationContextState = {
-  openModal: (
-    dispatch: React.Dispatch<any>,
-    onConfirm: Function,
-    onClose?: Function,
-    content?: string
-  ) => void;
-  closeModal: (dispatch: React.Dispatch<any>) => void;
-  confirm: (
-    dispatch: React.Dispatch<any>,
-    state: ConfirmationContextState
-  ) => void;
-  close: (
-    dispatch: React.Dispatch<any>,
-    state: ConfirmationContextState
-  ) => void;
-
   onConfirm: Function;
   onClose: Function;
   loading: boolean;
@@ -81,11 +60,6 @@ type ConfirmationContextState = {
 };
 
 const initialState: ConfirmationContextState = {
-  openModal,
-  closeModal,
-  confirm,
-  close,
-
   onConfirm: null,
   onClose: null,
   loading: false,
@@ -93,27 +67,13 @@ const initialState: ConfirmationContextState = {
   open: false,
 };
 
-interface OpenModalAction {
-  type: "openModal";
-  payload: {
-    onConfirm: Function;
-    onClose?: Function;
-    content?: string;
-  };
-}
-
-interface CloseModalAction {
-  type: "closeModal";
-}
-
-interface ClosingModalAction {
-  type: "closing";
-}
-
 export type ConfirmationActionTypes =
-  | OpenModalAction
-  | CloseModalAction
-  | ClosingModalAction;
+  | {
+      type: "openConfirmation";
+      payload: { onConfirm: Function; onClose?: Function; content?: string };
+    }
+  | { type: "closeConfirmation" }
+  | { type: "closing" };
 
 const ConfirmationContext = createContext<
   [ConfirmationContextState, React.Dispatch<any>]
@@ -124,13 +84,13 @@ let reducer = (
   action: ConfirmationActionTypes
 ): ConfirmationContextState => {
   switch (action.type) {
-    case "openModal":
+    case "openConfirmation":
       return {
         ...state,
         ...action.payload,
         open: true,
       };
-    case "closeModal":
+    case "closeConfirmation":
       return {
         ...state,
         onConfirm: undefined,

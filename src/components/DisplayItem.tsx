@@ -1,19 +1,26 @@
-import Avatar from "@material-ui/core/Avatar";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
+import { TableCell, TableRow } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {
+  createStyles,
+  Theme,
+  WithStyles,
+  withStyles,
+} from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
+import {
+  ConfirmationContext,
+  openConfirmation,
+} from "context/ConfirmationContext";
+import { deleteDisplay, DisplayContext } from "context/DisplayContext";
 import { format } from "date-fns";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
 import { DATETIME_REGEX } from "utils/date.range";
 
-const useStyles = makeStyles((theme: Theme) =>
+const styles = (theme: Theme) =>
   createStyles({
     root: {
       margin: "0px 0px",
@@ -32,17 +39,49 @@ const useStyles = makeStyles((theme: Theme) =>
     cardHeader: {
       padding: "10px",
     },
-  })
-);
+  });
 
-export default function DisplayItem(props: { display: Display }) {
-  const { display } = props;
+const DisplayItem: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{}> & { display: Display }
+> = (props) => {
+  const { display, classes, history } = props;
 
-  const classes = useStyles();
+  const [, displayContextDispatch] = useContext(DisplayContext);
+  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+
+  const deleteWithConfirmation = (display: Display) => {
+    const onConfirm = async () => {
+      await deleteDisplay(displayContextDispatch, display.id);
+      history.push("/");
+    };
+    openConfirmation(
+      dispatchConfirmationContext,
+      onConfirm,
+      null,
+      "Are you sure you want to delete display?"
+    );
+  };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
+    <TableRow className={classes.root}>
+      <TableCell>{display.name}</TableCell>
+      <TableCell>{display.boardType}</TableCell>
+      <TableCell>{format(display.createdAt, DATETIME_REGEX)}</TableCell>
+      <TableCell style={{ width: "100px" }}>
+        <Link to={`/displays/${display.id}`}>
+          <IconButton aria-label="add to favorites" size="small">
+            <SettingsIcon />
+          </IconButton>
+        </Link>
+        <IconButton
+          aria-label="settings"
+          size="small"
+          onClick={() => deleteWithConfirmation(display)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </TableCell>
+      {/* <CardHeader
         className={classes.cardHeader}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -59,12 +98,12 @@ export default function DisplayItem(props: { display: Display }) {
                 <SettingsIcon />
               </IconButton>
             </Link>
-            <IconButton aria-label="settings" size="small">
+            <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(display)}>
               <DeleteIcon />
             </IconButton>
           </CardActions>
         }
-      />
+      /> */}
       {/* <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           Access token: {display.displayAccessToken}
@@ -76,6 +115,8 @@ export default function DisplayItem(props: { display: Display }) {
             : "No sensors"}
         </Typography>
       </CardContent> */}
-    </Card>
+    </TableRow>
   );
-}
+};
+
+export default withRouter(withStyles(styles)(DisplayItem));

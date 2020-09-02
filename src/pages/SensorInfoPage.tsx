@@ -6,8 +6,17 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { SensorContext } from "context/SensorContext";
+import {
+  ConfirmationContext,
+  openConfirmation,
+} from "context/ConfirmationContext";
+import {
+  deleteSensor,
+  SensorContext,
+  updateSensor,
+} from "context/SensorContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -40,6 +49,15 @@ const styles = (theme) =>
       margin: theme.spacing(3, 0, 2),
       padding: theme.spacing(6, 0, 6),
     },
+    action: {
+      position: "absolute",
+      right: "25px",
+      bottom: "25px",
+    },
+    actionButton: {
+      backgroundColor: ColorsEnum.ERROR,
+      color: ColorsEnum.WHITE,
+    },
   });
 
 const SensorInfoPage: React.FunctionComponent<
@@ -50,6 +68,7 @@ const SensorInfoPage: React.FunctionComponent<
     match: {
       params: { id },
     },
+    history,
   } = props;
 
   const errs: { [key: string]: string } = {};
@@ -61,8 +80,22 @@ const SensorInfoPage: React.FunctionComponent<
     timezone: "",
   });
 
-  const [sensorContext, sensorContextDispatch] = useContext(SensorContext);
+  const [, sensorContextDispatch] = useContext(SensorContext);
   const [sensor, setSensor] = useState(null);
+  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+
+  const deleteWithConfirmation = () => {
+    const onConfirm = async () => {
+      await deleteSensor(sensorContextDispatch, sensor.id);
+      history.push("/");
+    };
+    openConfirmation(
+      dispatchConfirmationContext,
+      onConfirm,
+      null,
+      "Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements."
+    );
+  };
 
   useEffect(() => {
     const getSensor = async () => {
@@ -84,7 +117,7 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await sensorContext.updateSensor(
+      await updateSensor(
         sensorContextDispatch,
         (id as unknown) as SensorId,
         data
@@ -100,113 +133,125 @@ const SensorInfoPage: React.FunctionComponent<
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <SettingsInputAntennaIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sensor board info
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={submitForm}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="accessToken"
-            name="accessToken"
-            label="Sensor access token"
-            disabled
-            value={sensor?.sensorAccessToken || ""}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="accessToken"
-            name="accessToken"
-            label="Last seen at"
-            disabled
-            value={
-              sensor?.lastSeenAt
-                ? format(sensor?.lastSeenAt, DATETIME_REGEX)
-                : "Never"
-            }
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="name"
-            label="Sensor name"
-            name="name"
-            value={data.name}
-            onChange={(e) => fieldChange(e.target.value, "name")}
-            error={!!errors.name}
-            helperText={errors.name}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            name="location"
-            label="Location description"
-            type="location"
-            id="location"
-            autoComplete="current-location"
-            value={data.location}
-            onChange={(e) => fieldChange(e.target.value, "location")}
-            error={!!errors.location}
-            helperText={errors.location}
-          />
-          <TextField
-            select
-            id="select"
-            label="Board type"
-            variant="outlined"
-            margin="normal"
-            value={data.boardType}
-            onChange={(e) => fieldChange(e.target.value, "boardType")}
-            fullWidth
-            error={!!errors.boardType}
-            helperText={errors.boardType}
-          >
-            {Object.keys(SensorBoardTypesEnum).map((key) => (
-              <MenuItem key={key} value={key}>
-                {SensorBoardTypesEnum[key]}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            select
-            id="timezone"
-            variant="outlined"
-            margin="normal"
-            label="Timezone"
-            value={data.timezone}
-            onChange={(e) => fieldChange(e.target.value, "timezone")}
-            fullWidth
-          >
-            {listTimeZones().map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
-              </MenuItem>
-            ))}
-          </TextField>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            style={{ marginTop: "20px" }}
-          >
-            Update
-          </Button>
-        </form>
+    <>
+      <div className={classes.action}>
+        <Button
+          variant="contained"
+          className={classes.actionButton}
+          startIcon={<DeleteIcon />}
+          onClick={deleteWithConfirmation}
+        >
+          Delete
+        </Button>
       </div>
-    </Container>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <SettingsInputAntennaIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sensor board info
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={submitForm}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="accessToken"
+              name="accessToken"
+              label="Sensor access token"
+              disabled
+              value={sensor?.sensorAccessToken || ""}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="accessToken"
+              name="accessToken"
+              label="Last seen at"
+              disabled
+              value={
+                sensor?.lastSeenAt
+                  ? format(sensor?.lastSeenAt, DATETIME_REGEX)
+                  : "Never"
+              }
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="name"
+              label="Sensor name"
+              name="name"
+              value={data.name}
+              onChange={(e) => fieldChange(e.target.value, "name")}
+              error={!!errors.name}
+              helperText={errors.name}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="location"
+              label="Location description"
+              type="location"
+              id="location"
+              autoComplete="current-location"
+              value={data.location}
+              onChange={(e) => fieldChange(e.target.value, "location")}
+              error={!!errors.location}
+              helperText={errors.location}
+            />
+            <TextField
+              select
+              id="select"
+              label="Board type"
+              variant="outlined"
+              margin="normal"
+              value={data.boardType}
+              onChange={(e) => fieldChange(e.target.value, "boardType")}
+              fullWidth
+              error={!!errors.boardType}
+              helperText={errors.boardType}
+            >
+              {Object.keys(SensorBoardTypesEnum).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {SensorBoardTypesEnum[key]}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              id="timezone"
+              variant="outlined"
+              margin="normal"
+              label="Timezone"
+              value={data.timezone}
+              onChange={(e) => fieldChange(e.target.value, "timezone")}
+              fullWidth
+            >
+              {listTimeZones().map((item) => (
+                <MenuItem key={item} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              style={{ marginTop: "20px" }}
+            >
+              Update
+            </Button>
+          </form>
+        </div>
+      </Container>
+    </>
   );
 };
 

@@ -59,6 +59,12 @@ const theme = createMuiTheme({
       outlinedSecondary: {
         color: ColorsEnum.GRAY,
       },
+      root: {
+        color: ColorsEnum.WHITE,
+      },
+      containedPrimary: {
+        color: ColorsEnum.WHITE,
+      },
     },
     MuiListItem: {
       root: {

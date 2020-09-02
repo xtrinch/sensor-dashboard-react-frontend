@@ -1,4 +1,10 @@
-import { Typography } from "@material-ui/core";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  Typography,
+} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
@@ -27,19 +33,24 @@ const DisplayListPage: React.FunctionComponent<
   const [displayContext] = useContext(DisplayContext);
 
   return (
-    <Container
-      component="main"
-      maxWidth="sm"
-      style={{ margin: "20px auto" }}
-      className={classes.root}
-    >
+    <Container component="main" maxWidth="sm" className={classes.root}>
       <CssBaseline />
       <Typography component="h1" variant="h5" style={{ margin: "20px" }}>
         My display devices
       </Typography>
-      {displayContext.displays.map((display: Display) => (
-        <DisplayItem display={display} key={display.id} />
-      ))}
+      <Table>
+        <TableHead>
+          <TableCell>Name</TableCell>
+          <TableCell>Board type</TableCell>
+          <TableCell>Created at</TableCell>
+          <TableCell>Actions</TableCell>
+        </TableHead>
+        <TableBody>
+          {displayContext.displays.map((display: Display) => (
+            <DisplayItem display={display} key={display.id} />
+          ))}
+        </TableBody>
+      </Table>
       {displayContext.displays.length === 0 && (
         <Typography variant="body2" component="p">
           No displays added
