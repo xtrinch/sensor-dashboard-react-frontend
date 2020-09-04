@@ -14,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import TopBar from "components/TopBar";
 import {
   ConfirmationContext,
   openConfirmation,
@@ -39,7 +40,7 @@ import { DATETIME_REGEX } from "utils/date.range";
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: theme.spacing(30),
+      marginTop: "30px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -149,7 +150,7 @@ const DisplayInfoPage: React.FunctionComponent<
 
   return (
     <>
-      <div className={classes.action}>
+      <TopBar alignItems="flex-end">
         <Button
           variant="contained"
           className={classes.actionButton}
@@ -158,7 +159,7 @@ const DisplayInfoPage: React.FunctionComponent<
         >
           Delete
         </Button>
-      </div>
+      </TopBar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>

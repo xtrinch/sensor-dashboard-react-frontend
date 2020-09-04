@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Button,
   ButtonGroup,
   createStyles,
@@ -10,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import DateInput from "components/DateInput";
+import TopBar from "components/TopBar";
 import { AppContext } from "context/AppContext";
 import React, { useCallback, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -82,7 +82,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   );
 
   return (
-    <AppBar position="sticky" color="secondary" className={classes.timePicker}>
+    <TopBar>
       <Grid container spacing={5}>
         <Grid item>
           <IconButton
@@ -137,7 +137,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           </Grid>
         )}
       </Grid>
-    </AppBar>
+    </TopBar>
   );
 };
 

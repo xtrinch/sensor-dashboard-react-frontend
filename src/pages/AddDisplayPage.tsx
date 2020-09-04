@@ -90,132 +90,134 @@ const AddDisplayPage: React.FunctionComponent<
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        {!success && (
-          <>
-            <Avatar className={classes.avatar}>
-              <SettingsInputAntennaIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Add display board
-            </Typography>
-            <form className={classes.form} noValidate onSubmit={submitForm}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="name"
-                label="Display name"
-                name="name"
-                value={data.name}
-                autoFocus
-                onChange={(e) => fieldChange(e.target.value, "name")}
-                error={!!errors.name}
-                helperText={errors.name}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                name="location"
-                label="Location description"
-                type="location"
-                id="location"
-                autoComplete="current-location"
-                value={data.location}
-                onChange={(e) => fieldChange(e.target.value, "location")}
-                error={!!errors.location}
-                helperText={errors.location}
-              />
-              <TextField
-                select
-                id="select"
-                label="Board type"
-                variant="outlined"
-                margin="normal"
-                value={data.boardType}
-                onChange={(e) => fieldChange(e.target.value, "boardType")}
-                fullWidth
-                error={!!errors.boardType}
-                helperText={errors.boardType}
-              >
-                {Object.keys(DisplayBoardTypesEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {DisplayBoardTypesEnum[key]}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <FormControl variant="outlined" fullWidth margin="normal">
-                <InputLabel id="demo-mutiple-name-label">
-                  Measurement types
-                </InputLabel>
-                <Select
-                  labelId="demo-mutiple-name-label"
-                  id="demo-mutiple-name"
-                  multiple
-                  value={data.measurementTypes}
-                  onChange={(e) =>
-                    fieldChange(e.target.value, "measurementTypes")
-                  }
-                  error={!!errors.measurementTypes}
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          {!success && (
+            <>
+              <Avatar className={classes.avatar}>
+                <SettingsInputAntennaIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Add display board
+              </Typography>
+              <form className={classes.form} noValidate onSubmit={submitForm}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="name"
+                  label="Display name"
+                  name="name"
+                  value={data.name}
+                  autoFocus
+                  onChange={(e) => fieldChange(e.target.value, "name")}
+                  error={!!errors.name}
+                  helperText={errors.name}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  name="location"
+                  label="Location description"
+                  type="location"
+                  id="location"
+                  autoComplete="current-location"
+                  value={data.location}
+                  onChange={(e) => fieldChange(e.target.value, "location")}
+                  error={!!errors.location}
+                  helperText={errors.location}
+                />
+                <TextField
+                  select
+                  id="select"
+                  label="Board type"
+                  variant="outlined"
+                  margin="normal"
+                  value={data.boardType}
+                  onChange={(e) => fieldChange(e.target.value, "boardType")}
+                  fullWidth
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
                 >
-                  {Object.values(MeasurementTypeEnum).map((key) => (
+                  {Object.keys(DisplayBoardTypesEnum).map((key) => (
                     <MenuItem key={key} value={key}>
-                      {MeasurementTypeLabelsEnum[key]}
+                      {DisplayBoardTypesEnum[key]}
                     </MenuItem>
                   ))}
-                </Select>
-                {!!errors.measurementTypes && (
-                  <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                    {errors.measurementTypes}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl variant="outlined" fullWidth margin="normal">
-                <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
-                <Select
-                  labelId="demo-mutiple-name-label"
-                  id="demo-mutiple-name"
-                  multiple
-                  value={data.sensorIds}
-                  onChange={(e) => fieldChange(e.target.value, "sensorIds")}
-                  error={!!errors.sensorIds}
+                </TextField>
+                <FormControl variant="outlined" fullWidth margin="normal">
+                  <InputLabel id="demo-mutiple-name-label">
+                    Measurement types
+                  </InputLabel>
+                  <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+                    value={data.measurementTypes}
+                    onChange={(e) =>
+                      fieldChange(e.target.value, "measurementTypes")
+                    }
+                    error={!!errors.measurementTypes}
+                  >
+                    {Object.values(MeasurementTypeEnum).map((key) => (
+                      <MenuItem key={key} value={key}>
+                        {MeasurementTypeLabelsEnum[key]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {!!errors.measurementTypes && (
+                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                      {errors.measurementTypes}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                <FormControl variant="outlined" fullWidth margin="normal">
+                  <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
+                  <Select
+                    labelId="demo-mutiple-name-label"
+                    id="demo-mutiple-name"
+                    multiple
+                    value={data.sensorIds}
+                    onChange={(e) => fieldChange(e.target.value, "sensorIds")}
+                    error={!!errors.sensorIds}
+                  >
+                    {sensorState.sensors.map((sensor) => (
+                      <MenuItem key={sensor.id} value={sensor.id}>
+                        {sensor.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {!!errors.sensorIds && (
+                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                      {errors.sensorIds}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  style={{ marginTop: "20px" }}
                 >
-                  {sensorState.sensors.map((sensor) => (
-                    <MenuItem key={sensor.id} value={sensor.id}>
-                      {sensor.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {!!errors.sensorIds && (
-                  <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                    {errors.sensorIds}
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                style={{ marginTop: "20px" }}
-              >
-                Add
-              </Button>
-            </form>
-          </>
-        )}
-        {success && (
-          <Grid container spacing={10} direction={"column"}>
-            <Grid item>Display successfully added.</Grid>
-            <Grid item>Redirecting to display info page...</Grid>
-          </Grid>
-        )}
-      </div>
-    </Container>
+                  Add
+                </Button>
+              </form>
+            </>
+          )}
+          {success && (
+            <Grid container spacing={10} direction={"column"}>
+              <Grid item>Display successfully added.</Grid>
+              <Grid item>Redirecting to display info page...</Grid>
+            </Grid>
+          )}
+        </div>
+      </Container>
+    </>
   );
 };
 

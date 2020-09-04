@@ -1,5 +1,6 @@
 import {
   createStyles,
+  Grid,
   MuiThemeProvider,
   WithStyles,
   withStyles,
@@ -41,10 +42,9 @@ const styles = () =>
       },
     },
     app: {
-      display: "flex",
-      flexDirection: "row",
       minHeight: "100vh",
       backgroundColor: ColorsEnum.BGDARK,
+      width: "100%",
     },
     main: {
       flex: "1",
@@ -66,33 +66,37 @@ class App extends React.Component<WithStyles<typeof styles>> {
                       <ToastBox />
                       <ConfirmationBox />
 
-                      <div className={classes.app}>
-                        <SideMenuWrapper />
-                        <Route exact path="/">
-                          <SensorsPage />
-                        </Route>
-                        <Route exact path="/login">
-                          <LoginPage />
-                        </Route>
-                        <Route exact path="/register">
-                          <RegisterPage />
-                        </Route>
-                        <Route exact path="/add-sensor">
-                          <AddSensorPage />
-                        </Route>
-                        <Route exact path="/add-display">
-                          <AddDisplayPage />
-                        </Route>
-                        <Route exact path="/sensors/:id">
-                          <SensorInfoPage />
-                        </Route>
-                        <Route exact path="/displays/:id">
-                          <DisplayInfoPage />
-                        </Route>
-                        <Route exact path="/displays">
-                          <DisplayListPage />
-                        </Route>
-                      </div>
+                      <Grid container className={classes.app}>
+                        <Grid item>
+                          <SideMenuWrapper />
+                        </Grid>
+                        <Grid item style={{ flex: "1" }}>
+                          <Route exact path="/">
+                            <SensorsPage />
+                          </Route>
+                          <Route exact path="/login">
+                            <LoginPage />
+                          </Route>
+                          <Route exact path="/register">
+                            <RegisterPage />
+                          </Route>
+                          <Route exact path="/add-sensor">
+                            <AddSensorPage />
+                          </Route>
+                          <Route exact path="/add-display">
+                            <AddDisplayPage />
+                          </Route>
+                          <Route exact path="/sensors/:id">
+                            <SensorInfoPage />
+                          </Route>
+                          <Route exact path="/displays/:id">
+                            <DisplayInfoPage />
+                          </Route>
+                          <Route exact path="/displays">
+                            <DisplayListPage />
+                          </Route>
+                        </Grid>
+                      </Grid>
                     </ToastContextProvider>
                   </DisplayContextProvider>
                 </ConfirmationContextProvider>
