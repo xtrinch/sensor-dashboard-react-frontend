@@ -28,7 +28,7 @@ const styles = (theme) =>
       marginTop: "30px",
     },
     actionButton: {
-      backgroundColor: ColorsEnum.GREEN,
+      backgroundColor: ColorsEnum.OLIVE,
       color: ColorsEnum.WHITE,
       width: "fit-content",
     },
