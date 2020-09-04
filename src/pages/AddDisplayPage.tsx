@@ -16,6 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import { addDisplay, DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
+import { ToastContext } from "context/ToastContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
@@ -67,17 +68,20 @@ const AddDisplayPage: React.FunctionComponent<
   const [sensorState] = useContext(SensorContext);
   const [, displayContextDispatch] = useContext(DisplayContext);
   const [success, setSuccess] = useState(false);
+  const [, toastContextDispatch] = useContext(ToastContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const display = await addDisplay(displayContextDispatch, data);
+      const display = await addDisplay(
+        displayContextDispatch,
+        data,
+        toastContextDispatch
+      );
       if (display) {
         setSuccess(true);
-        setTimeout(() => {
-          history.push(`/displays/${display.id}`);
-        }, 3000);
+        history.push(`/displays/${display.id}`);
       }
     } catch (e) {
       setErrors(e);

@@ -25,6 +25,7 @@ import {
   updateDisplay,
 } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
+import { ToastContext } from "context/ToastContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -98,10 +99,15 @@ const DisplayInfoPage: React.FunctionComponent<
   const [display, setDisplay] = useState(null);
 
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+  const [, toastContextDispatch] = useContext(ToastContext);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteDisplay(displayContextDispatch, display.id);
+      await deleteDisplay(
+        displayContextDispatch,
+        display.id,
+        toastContextDispatch
+      );
       history.push("/displays");
     };
     openConfirmation(
@@ -136,7 +142,8 @@ const DisplayInfoPage: React.FunctionComponent<
       await updateDisplay(
         displayContextDispatch,
         (id as unknown) as DisplayId,
-        data
+        data,
+        toastContextDispatch
       );
     } catch (e) {
       setErrors(e);

@@ -17,9 +17,11 @@ const styles = () =>
       position: "fixed",
       right: "20px",
       backgroundColor: ColorsEnum.BGLIGHT,
+      color: ColorsEnum.WHITE,
       zIndex: 10000,
       alignItems: "center",
       width: "fit-content",
+      borderRadius: "3px",
     },
   });
 
@@ -38,12 +40,12 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (
           spacing={4}
           className={classes.root}
           style={{
-            top: `${20 + index * 40}px`,
+            bottom: `${20 + index * 40}px`,
+            backgroundColor:
+              toast.type === "success" ? ColorsEnum.OLIVE : ColorsEnum.ERROR,
           }}
         >
-          <Grid item>
-            <Check style={{ color: ColorsEnum.GREEN }} />
-          </Grid>
+          <Grid item>{toast.type === "success" && <Check />}</Grid>
           <Grid item>{toast.message}</Grid>
           <Grid item>
             <IconButton

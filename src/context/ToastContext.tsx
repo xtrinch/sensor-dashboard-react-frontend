@@ -6,7 +6,7 @@ export const addToast = (dispatch: React.Dispatch<any>, toast: Toast) => {
 
   setTimeout(() => {
     removeToast(dispatch, toast);
-  }, 3000);
+  }, 5000);
 };
 
 export const removeToast = (dispatch: React.Dispatch<any>, toast: Toast) => {

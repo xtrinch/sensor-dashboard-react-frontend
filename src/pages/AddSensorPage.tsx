@@ -8,13 +8,12 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import { addSensor, SensorContext } from "context/SensorContext";
-import { addToast, ToastContext } from "context/ToastContext";
+import { ToastContext } from "context/ToastContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { listTimeZones } from "timezone-support";
 import ColorsEnum from "types/ColorsEnum";
 import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
-import { Toast } from "types/Toast";
 
 const styles = (theme) =>
   createStyles({
@@ -62,13 +61,13 @@ const AddSensorPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const sensor = await addSensor(sensorContextDispatch, data);
+      const sensor = await addSensor(
+        sensorContextDispatch,
+        data,
+        toastContextDispatch
+      );
       if (sensor) {
         setSuccess(true);
-        addToast(
-          toastContextDispatch,
-          new Toast({ message: "Successfully added a sensor", type: "success" })
-        );
         history.push(`/sensors/${sensor.id}`);
       }
     } catch (e) {

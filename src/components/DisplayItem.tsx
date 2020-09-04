@@ -13,6 +13,7 @@ import {
   openConfirmation,
 } from "context/ConfirmationContext";
 import { deleteDisplay, DisplayContext } from "context/DisplayContext";
+import { ToastContext } from "context/ToastContext";
 import { format } from "date-fns";
 import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
@@ -44,15 +45,19 @@ const styles = (theme: Theme) =>
 const DisplayItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & { display: Display }
 > = (props) => {
-  const { display, classes, history } = props;
+  const { display, classes } = props;
 
   const [, displayContextDispatch] = useContext(DisplayContext);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+  const [, toastContextDispatch] = useContext(ToastContext);
 
   const deleteWithConfirmation = (display: Display) => {
     const onConfirm = async () => {
-      await deleteDisplay(displayContextDispatch, display.id);
-      history.push("/");
+      await deleteDisplay(
+        displayContextDispatch,
+        display.id,
+        toastContextDispatch
+      );
     };
     openConfirmation(
       dispatchConfirmationContext,

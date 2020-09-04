@@ -1,7 +1,9 @@
 import { AccountContext, AccountContextState } from "context/AccountContext";
+import { addToast } from "context/ToastContext";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
+import { Toast } from "types/Toast";
 
 export const reload = async (
   dispatch: React.Dispatch<any>,
@@ -45,7 +47,8 @@ export const reload = async (
 
 export const addSensor = async (
   dispatch: React.Dispatch<any>,
-  sensor: Partial<Sensor>
+  sensor: Partial<Sensor>,
+  toastDispatch: React.Dispatch<any>
 ): Promise<Sensor> => {
   const s = await SensorService.addSensor(sensor);
 
@@ -54,13 +57,19 @@ export const addSensor = async (
     payload: s,
   });
 
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully added a sensor", type: "success" })
+  );
+
   return s;
 };
 
 export const updateSensor = async (
   dispatch: React.Dispatch<any>,
   id: SensorId,
-  sensor: Partial<Sensor>
+  sensor: Partial<Sensor>,
+  toastDispatch: React.Dispatch<any>
 ): Promise<Sensor> => {
   const s = await SensorService.updateSensor(id, sensor);
 
@@ -69,12 +78,18 @@ export const updateSensor = async (
     payload: s,
   });
 
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully updated the sensor", type: "success" })
+  );
+
   return s;
 };
 
 export const deleteSensor = async (
   dispatch: React.Dispatch<any>,
-  id: SensorId
+  id: SensorId,
+  toastDispatch: React.Dispatch<any>
 ): Promise<boolean> => {
   await SensorService.deleteSensor(id);
 
@@ -82,6 +97,11 @@ export const deleteSensor = async (
     type: "deleteSensor",
     payload: id,
   });
+
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully deleted the sensor", type: "success" })
+  );
 
   return true;
 };

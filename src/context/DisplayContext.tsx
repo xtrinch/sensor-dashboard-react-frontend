@@ -1,7 +1,9 @@
 import { AccountContext, AccountContextState } from "context/AccountContext";
+import { addToast } from "context/ToastContext";
 import React, { createContext, useContext, useEffect, useReducer } from "react";
 import DisplayService from "services/DisplayService";
 import Display, { DisplayId } from "types/Display";
+import { Toast } from "types/Toast";
 
 export const reload = async (
   dispatch: React.Dispatch<any>,
@@ -22,7 +24,8 @@ export const reload = async (
 
 export const addDisplay = async (
   dispatch: React.Dispatch<any>,
-  display: Partial<Display>
+  display: Partial<Display>,
+  toastDispatch: React.Dispatch<any>
 ): Promise<Display> => {
   const s = await DisplayService.addDisplay(display);
 
@@ -31,13 +34,19 @@ export const addDisplay = async (
     payload: s,
   });
 
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully added a display", type: "success" })
+  );
+
   return s;
 };
 
 export const updateDisplay = async (
   dispatch: React.Dispatch<any>,
   id: DisplayId,
-  display: Partial<Display>
+  display: Partial<Display>,
+  toastDispatch: React.Dispatch<any>
 ): Promise<Display> => {
   const s = await DisplayService.updateDisplay(id, display);
 
@@ -46,12 +55,18 @@ export const updateDisplay = async (
     payload: s,
   });
 
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully updated the display", type: "success" })
+  );
+
   return s;
 };
 
 export const deleteDisplay = async (
   dispatch: React.Dispatch<any>,
-  id: DisplayId
+  id: DisplayId,
+  toastDispatch: React.Dispatch<any>
 ): Promise<boolean> => {
   await DisplayService.deleteDisplay(id);
 
@@ -59,6 +74,11 @@ export const deleteDisplay = async (
     type: "deleteDisplay",
     payload: id,
   });
+
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Successfully deleted the display", type: "success" })
+  );
 
   return true;
 };

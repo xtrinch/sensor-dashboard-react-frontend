@@ -18,6 +18,7 @@ import {
   SensorContext,
   updateSensor,
 } from "context/SensorContext";
+import { ToastContext } from "context/ToastContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -79,10 +80,11 @@ const SensorInfoPage: React.FunctionComponent<
   const [, sensorContextDispatch] = useContext(SensorContext);
   const [sensor, setSensor] = useState(null);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+  const [, toastDispatch] = useContext(ToastContext);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteSensor(sensorContextDispatch, sensor.id);
+      await deleteSensor(sensorContextDispatch, sensor.id, toastDispatch);
       history.push("/");
     };
     openConfirmation(
@@ -116,7 +118,8 @@ const SensorInfoPage: React.FunctionComponent<
       await updateSensor(
         sensorContextDispatch,
         (id as unknown) as SensorId,
-        data
+        data,
+        toastDispatch
       );
     } catch (e) {
       setErrors(e);
