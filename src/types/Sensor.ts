@@ -13,6 +13,7 @@ class Sensor extends AbstractEntity {
     super(s);
 
     this.name = s?.name || "";
+    this.displayName = s?.displayName || "";
     this.type = s?.type || undefined;
     this.visible = s?.visible || true;
     this.expanded = false;
@@ -32,6 +33,8 @@ class Sensor extends AbstractEntity {
   @IsString()
   @MinLength(2)
   public name: string;
+
+  public displayName: string;
 
   @IsEnum(SensorTypesEnum)
   public type: SensorTypesEnum;

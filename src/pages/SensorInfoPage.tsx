@@ -72,6 +72,7 @@ const SensorInfoPage: React.FunctionComponent<
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
     name: "",
+    displayName: "",
     location: "",
     boardType: "" as SensorBoardTypesEnum,
     timezone: "",
@@ -102,6 +103,7 @@ const SensorInfoPage: React.FunctionComponent<
       setData((d) => ({
         ...d,
         name: s.name,
+        displayName: s.displayName,
         location: s.location,
         boardType: s.boardType,
         timezone: s.timezone,
@@ -188,6 +190,18 @@ const SensorInfoPage: React.FunctionComponent<
               onChange={(e) => fieldChange(e.target.value, "name")}
               error={!!errors.name}
               helperText={errors.name}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="displayName"
+              label="Sensor display name"
+              name="displayName"
+              value={data.displayName}
+              onChange={(e) => fieldChange(e.target.value, "displayName")}
+              error={!!errors.displayName}
+              helperText={errors.displayName}
             />
             <TextField
               variant="outlined"
