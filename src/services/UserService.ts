@@ -20,7 +20,7 @@ export default class UserService {
     };
   };
 
-  public static register = async (user: User) => {
+  public static register = async (user: Partial<User>) => {
     const url = getUrl("/auth/register");
 
     const resp = await fetch(url, {

@@ -1,8 +1,10 @@
+import { addToast } from "context/ToastContext";
 import React, { createContext, useReducer } from "react";
 import UserService from "services/UserService";
+import { Toast } from "types/Toast";
 import User from "types/User";
 
-const login = async (
+export const login = async (
   dispatch: React.Dispatch<any>,
   email: string,
   password: string
@@ -29,32 +31,34 @@ const login = async (
   return false;
 };
 
-const register = async (dispatch: React.Dispatch<any>, user: User) => {
+export const register = async (
+  dispatch: React.Dispatch<any>,
+  user: Partial<User>
+) => {
   return await UserService.register(user);
 };
 
-const logout = async (dispatch: React.Dispatch<any>) => {
+export const logout = async (
+  dispatch: React.Dispatch<any>,
+  toastDispatch: React.Dispatch<any>
+) => {
   dispatch({
     type: "logout",
   });
+
+  addToast(
+    toastDispatch,
+    new Toast({ message: "Logout successful", type: "success" })
+  );
 };
 
 export type AccountContextState = {
   user: User;
   accessToken: string;
   loginState: "LOGGED_OUT" | "LOGGED_IN" | "LOGIN_ERROR";
-  login: (dispatch: React.Dispatch<any>, email: string, password: string) => {};
-  logout: (dispatch: React.Dispatch<any>) => {};
-  register: (
-    dispatch: React.Dispatch<any>,
-    user: Partial<User>
-  ) => Promise<User>;
 };
 
 const initialState: AccountContextState = {
-  login,
-  logout,
-  register,
   user: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))
     : null,

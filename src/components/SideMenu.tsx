@@ -12,12 +12,13 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import SensorItem from "components/SensorItem";
-import { AccountContext } from "context/AccountContext";
+import { AccountContext, logout } from "context/AccountContext";
 import {
   ConfirmationContext,
   openConfirmation,
 } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
+import { ToastContext } from "context/ToastContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -66,13 +67,12 @@ const SideMenu: React.FunctionComponent<
   const { history } = props;
 
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const [{ loginState, user, logout }, dispatchAccount] = useContext(
-    AccountContext
-  );
+  const [{ loginState, user }, dispatchAccount] = useContext(AccountContext);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
+  const [, dispatchToast] = useContext(ToastContext);
 
   const logoutWithConfirmation = () => {
-    const onConfirm = () => logout(dispatchAccount);
+    const onConfirm = () => logout(dispatchAccount, dispatchToast);
     openConfirmation(
       dispatchConfirmationContext,
       onConfirm,

@@ -10,7 +10,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { AccountContext } from "context/AccountContext";
+import { AccountContext, login } from "context/AccountContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
@@ -57,11 +57,7 @@ const LoginPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const success = await accountState.login(
-        dispatch,
-        data.email,
-        data.password
-      );
+      const success = await login(dispatch, data.email, data.password);
       if (success) {
         history.push("/");
       }
