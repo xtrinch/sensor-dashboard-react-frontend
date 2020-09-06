@@ -9,18 +9,10 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
-import {
-  ConfirmationContext,
-  openConfirmation,
-} from "context/ConfirmationContext";
-import {
-  deleteSensor,
-  SensorContext,
-  updateSensor,
-} from "context/SensorContext";
-import { ToastContext } from "context/ToastContext";
+import { openConfirmation } from "context/ConfirmationContext";
+import { deleteSensor, updateSensor } from "context/SensorContext";
 import { format } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import SensorService from "services/SensorService";
 import { listTimeZones } from "timezone-support";
@@ -79,18 +71,14 @@ const SensorInfoPage: React.FunctionComponent<
     private: false,
   });
 
-  const [, sensorContextDispatch] = useContext(SensorContext);
   const [sensor, setSensor] = useState(null);
-  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
-  const [, toastDispatch] = useContext(ToastContext);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteSensor(sensorContextDispatch, sensor.id, toastDispatch);
+      await deleteSensor(sensor.id);
       history.push("/");
     };
     openConfirmation(
-      dispatchConfirmationContext,
       onConfirm,
       null,
       "Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements."
@@ -119,12 +107,7 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateSensor(
-        sensorContextDispatch,
-        (id as unknown) as SensorId,
-        data,
-        toastDispatch
-      );
+      await updateSensor((id as unknown) as SensorId, data);
     } catch (e) {
       setErrors(e);
     }

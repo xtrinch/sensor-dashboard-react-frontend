@@ -8,14 +8,10 @@ import {
 } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
-import {
-  ConfirmationContext,
-  openConfirmation,
-} from "context/ConfirmationContext";
-import { deleteDisplay, DisplayContext } from "context/DisplayContext";
-import { ToastContext } from "context/ToastContext";
+import { openConfirmation } from "context/ConfirmationContext";
+import { deleteDisplay } from "context/DisplayContext";
 import { format } from "date-fns";
-import React, { useContext } from "react";
+import React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
@@ -47,20 +43,11 @@ const DisplayItem: React.FunctionComponent<
 > = (props) => {
   const { display, classes } = props;
 
-  const [, displayContextDispatch] = useContext(DisplayContext);
-  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
-  const [, toastContextDispatch] = useContext(ToastContext);
-
   const deleteWithConfirmation = (display: Display) => {
     const onConfirm = async () => {
-      await deleteDisplay(
-        displayContextDispatch,
-        display.id,
-        toastContextDispatch
-      );
+      await deleteDisplay(display.id);
     };
     openConfirmation(
-      dispatchConfirmationContext,
       onConfirm,
       null,
       "Are you sure you want to delete display?"

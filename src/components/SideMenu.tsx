@@ -17,6 +17,7 @@ import {
   ConfirmationContext,
   openConfirmation,
 } from "context/ConfirmationContext";
+import { DisplayContext } from "context/DisplayContext";
 import { ErrorContext } from "context/ErrorContext";
 import { SensorContext } from "context/SensorContext";
 import { ToastContext } from "context/ToastContext";
@@ -67,25 +68,27 @@ const SideMenu: React.FunctionComponent<
 > = (props) => {
   const { history } = props;
 
-  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const [{ sensors, mySensors }, dispatchSensor] = useContext(SensorContext);
   const [{ loginState, user }, dispatchAccount] = useContext(AccountContext);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
-  const [, dispatchToast] = useContext(ToastContext);
   const [, dispatchError] = useContext(ErrorContext);
+  const [, dispatchDisplay] = useContext(DisplayContext);
+  const [, dispatchToast] = useContext(ToastContext);
+
   // todo: put in an App.tsx wrapper
   ErrorContext.dispatch = dispatchError;
+  SensorContext.dispatch = dispatchSensor;
+  DisplayContext.dispatch = dispatchDisplay;
+  ConfirmationContext.dispatch = dispatchConfirmationContext;
+  ToastContext.dispatch = dispatchToast;
+  AccountContext.dispatch = dispatchAccount;
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
-      await logout(dispatchAccount, dispatchToast);
+      await logout();
       history.push("/");
     };
-    openConfirmation(
-      dispatchConfirmationContext,
-      onConfirm,
-      null,
-      "Are you sure you want to logout?"
-    );
+    openConfirmation(onConfirm, null, "Are you sure you want to logout?");
   };
   const { classes } = props;
 

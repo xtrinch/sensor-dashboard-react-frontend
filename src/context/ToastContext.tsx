@@ -1,16 +1,16 @@
-import React, { createContext, useReducer } from "react";
+import React, { Context, createContext, Dispatch, useReducer } from "react";
 import { Toast } from "types/Toast";
 
-export const addToast = (dispatch: React.Dispatch<any>, toast: Toast) => {
-  dispatch({ type: "addToast", payload: toast });
+export const addToast = (toast: Toast) => {
+  ToastContext.dispatch({ type: "addToast", payload: toast });
 
   setTimeout(() => {
-    removeToast(dispatch, toast);
+    removeToast(toast);
   }, 5000);
 };
 
-export const removeToast = (dispatch: React.Dispatch<any>, toast: Toast) => {
-  dispatch({ type: "removeToast", payload: toast });
+export const removeToast = (toast: Toast) => {
+  ToastContext.dispatch({ type: "removeToast", payload: toast });
 };
 
 type ToastContextState = {
@@ -27,7 +27,9 @@ export type ToastActionTypes =
 
 const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(
   null
-);
+) as Context<[ToastContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (
   state: ToastContextState,

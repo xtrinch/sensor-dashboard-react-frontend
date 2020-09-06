@@ -1,19 +1,21 @@
 import { AccountContext, AccountContextState } from "context/AccountContext";
 import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, {
+  Context,
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 import { Toast } from "types/Toast";
 
-export const reloadSensors = async (
-  dispatch: React.Dispatch<any>,
-  accountContext: AccountContextState
-) => {
+export const reloadSensors = async (accountContext: AccountContextState) => {
   try {
     let resp = await SensorService.listSensors({ page: 1, limit: 1000 });
     let sensorData = resp.items;
-    let mySensorData;
-    console.log(accountContext.loginState);
     if (accountContext.loginState === "LOGGED_IN") {
       sensorData.map((s) => {
         s.visible = false;
@@ -24,7 +26,7 @@ export const reloadSensors = async (
       });
     }
 
-    dispatch({
+    SensorContext.dispatch({
       type: "sensorsReady",
       payload: sensorData,
     });
@@ -33,7 +35,7 @@ export const reloadSensors = async (
   }
 };
 
-export const reloadMySensors = async (dispatch: React.Dispatch<any>) => {
+export const reloadMySensors = async () => {
   const resp = await SensorService.listMySensors();
   resp.items.map((s) => {
     s.visible = true;
@@ -41,26 +43,21 @@ export const reloadMySensors = async (dispatch: React.Dispatch<any>) => {
   });
   const mySensorData = resp.items;
 
-  dispatch({
+  SensorContext.dispatch({
     type: "mySensorsReady",
     payload: mySensorData,
   });
 };
 
-export const addSensor = async (
-  dispatch: React.Dispatch<any>,
-  sensor: Partial<Sensor>,
-  toastDispatch: React.Dispatch<any>
-): Promise<Sensor> => {
+export const addSensor = async (sensor: Partial<Sensor>): Promise<Sensor> => {
   const s = await SensorService.addSensor(sensor);
 
-  dispatch({
+  SensorContext.dispatch({
     type: "addSensor",
     payload: s,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully added a sensor", type: "success" })
   );
 
@@ -68,40 +65,32 @@ export const addSensor = async (
 };
 
 export const updateSensor = async (
-  dispatch: React.Dispatch<any>,
   id: SensorId,
-  sensor: Partial<Sensor>,
-  toastDispatch: React.Dispatch<any>
+  sensor: Partial<Sensor>
 ): Promise<Sensor> => {
   const s = await SensorService.updateSensor(id, sensor);
 
-  dispatch({
+  SensorContext.dispatch({
     type: "updateSensor",
     payload: s,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully updated the sensor", type: "success" })
   );
 
   return s;
 };
 
-export const deleteSensor = async (
-  dispatch: React.Dispatch<any>,
-  id: SensorId,
-  toastDispatch: React.Dispatch<any>
-): Promise<boolean> => {
+export const deleteSensor = async (id: SensorId): Promise<boolean> => {
   await SensorService.deleteSensor(id);
 
-  dispatch({
+  SensorContext.dispatch({
     type: "deleteSensor",
     payload: id,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully deleted the sensor", type: "success" })
   );
 
@@ -129,7 +118,9 @@ export type SensorActionTypes =
 
 const SensorContext = createContext<[SensorContextState, React.Dispatch<any>]>(
   null
-);
+) as Context<[SensorContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (
   state: SensorContextState,
@@ -169,9 +160,9 @@ function SensorContextProvider(props) {
 
   useEffect(() => {
     if (!state.sensorsLoaded) {
-      reloadSensors(dispatch, accountContext);
+      reloadSensors(accountContext);
       if (accountContext.loginState === "LOGGED_IN") {
-        reloadMySensors(dispatch);
+        reloadMySensors();
       }
     }
   }, [state, accountContext]); // The empty array causes this effect to only run on mount

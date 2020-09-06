@@ -31,13 +31,11 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const [confirmationContext, dispatchConfirmationContext] = useContext(
-    ConfirmationContext
-  );
+  const [confirmationContext] = useContext(ConfirmationContext);
 
   return (
     <Dialog
-      onClose={() => close(dispatchConfirmationContext, confirmationContext)}
+      onClose={() => close(confirmationContext)}
       open={confirmationContext.open}
       className={classes.root}
       classes={{
@@ -53,9 +51,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
       <Grid container justify="center" spacing={10}>
         <Grid item>
           <Button
-            onClick={() =>
-              close(dispatchConfirmationContext, confirmationContext)
-            }
+            onClick={() => close(confirmationContext)}
             fullWidth
             variant="outlined"
             color="secondary"
@@ -66,9 +62,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
         <Grid item>
           <Button
             variant="outlined"
-            onClick={() =>
-              confirm(dispatchConfirmationContext, confirmationContext)
-            }
+            onClick={() => confirm(confirmationContext)}
             fullWidth
             color="primary"
           >

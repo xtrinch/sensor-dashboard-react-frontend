@@ -7,9 +7,8 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import { addSensor, SensorContext } from "context/SensorContext";
-import { ToastContext } from "context/ToastContext";
-import React, { useContext, useState } from "react";
+import { addSensor } from "context/SensorContext";
+import React, { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { listTimeZones } from "timezone-support";
 import ColorsEnum from "types/ColorsEnum";
@@ -55,19 +54,13 @@ const AddSensorPage: React.FunctionComponent<
     private: false,
   });
 
-  const [, sensorContextDispatch] = useContext(SensorContext);
   const [success, setSuccess] = useState(false);
-  const [, toastContextDispatch] = useContext(ToastContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      const sensor = await addSensor(
-        sensorContextDispatch,
-        data,
-        toastContextDispatch
-      );
+      const sensor = await addSensor(data);
       if (sensor) {
         setSuccess(true);
         history.push(`/sensors/${sensor.id}`);

@@ -1,18 +1,14 @@
 import { addToast } from "context/ToastContext";
-import React, { createContext, useReducer } from "react";
+import React, { Context, createContext, Dispatch, useReducer } from "react";
 import UserService from "services/UserService";
 import { Toast } from "types/Toast";
 import User from "types/User";
 
-export const login = async (
-  dispatch: React.Dispatch<any>,
-  email: string,
-  password: string
-) => {
+export const login = async (email: string, password: string) => {
   try {
     const { accessToken, user } = await UserService.login(email, password);
     if (accessToken) {
-      dispatch({
+      AccountContext.dispatch({
         type: "loggedIn",
         payload: {
           accessToken,
@@ -23,7 +19,7 @@ export const login = async (
       return true;
     }
   } catch (e) {
-    dispatch({
+    AccountContext.dispatch({
       type: "loginError",
     });
     throw e;
@@ -32,25 +28,16 @@ export const login = async (
   return false;
 };
 
-export const register = async (
-  dispatch: React.Dispatch<any>,
-  user: Partial<User>
-) => {
+export const register = async (user: Partial<User>) => {
   return await UserService.register(user);
 };
 
-export const logout = async (
-  dispatch: React.Dispatch<any>,
-  toastDispatch: React.Dispatch<any>
-) => {
-  dispatch({
+export const logout = async () => {
+  AccountContext.dispatch({
     type: "logout",
   });
 
-  addToast(
-    toastDispatch,
-    new Toast({ message: "Logout successful", type: "success" })
-  );
+  addToast(new Toast({ message: "Logout successful", type: "success" }));
 };
 
 export type AccountContextState = {
@@ -69,7 +56,9 @@ const initialState: AccountContextState = {
 
 const AccountContext = createContext<
   [AccountContextState, React.Dispatch<any>]
->(null);
+>(null) as Context<[AccountContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (state: AccountContextState, action): AccountContextState => {
   let newState;

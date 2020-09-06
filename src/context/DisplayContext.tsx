@@ -1,46 +1,42 @@
 import { AccountContext, AccountContextState } from "context/AccountContext";
 import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, {
+  Context,
+  createContext,
+  Dispatch,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import DisplayService from "services/DisplayService";
 import Display, { DisplayId } from "types/Display";
 import { Toast } from "types/Toast";
 
-export const reload = async (
-  dispatch: React.Dispatch<any>,
-  accountContext: AccountContextState
-) => {
-  console.log(accountContext.loginState);
+export const reload = async (accountContext: AccountContextState) => {
   if (accountContext.loginState === "LOGGED_OUT") {
     return;
   }
 
-  try {
-    const resp = await DisplayService.listDisplays();
-    const displayData = resp.items;
+  const resp = await DisplayService.listDisplays();
+  const displayData = resp.items;
 
-    dispatch({
-      type: "displayReady",
-      payload: displayData,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  DisplayContext.dispatch({
+    type: "displayReady",
+    payload: displayData,
+  });
 };
 
 export const addDisplay = async (
-  dispatch: React.Dispatch<any>,
-  display: Partial<Display>,
-  toastDispatch: React.Dispatch<any>
+  display: Partial<Display>
 ): Promise<Display> => {
   const s = await DisplayService.addDisplay(display);
 
-  dispatch({
+  DisplayContext.dispatch({
     type: "addDisplay",
     payload: s,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully added a display", type: "success" })
   );
 
@@ -48,40 +44,32 @@ export const addDisplay = async (
 };
 
 export const updateDisplay = async (
-  dispatch: React.Dispatch<any>,
   id: DisplayId,
-  display: Partial<Display>,
-  toastDispatch: React.Dispatch<any>
+  display: Partial<Display>
 ): Promise<Display> => {
   const s = await DisplayService.updateDisplay(id, display);
 
-  dispatch({
+  DisplayContext.dispatch({
     type: "updateDisplay",
     payload: s,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully updated the display", type: "success" })
   );
 
   return s;
 };
 
-export const deleteDisplay = async (
-  dispatch: React.Dispatch<any>,
-  id: DisplayId,
-  toastDispatch: React.Dispatch<any>
-): Promise<boolean> => {
+export const deleteDisplay = async (id: DisplayId): Promise<boolean> => {
   await DisplayService.deleteDisplay(id);
 
-  dispatch({
+  DisplayContext.dispatch({
     type: "deleteDisplay",
     payload: id,
   });
 
   addToast(
-    toastDispatch,
     new Toast({ message: "Successfully deleted the display", type: "success" })
   );
 
@@ -106,7 +94,9 @@ export type DisplayActionTypes =
 
 const DisplayContext = createContext<
   [DisplayContextState, React.Dispatch<any>]
->(null);
+>(null) as Context<[DisplayContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (
   state: DisplayContextState,
@@ -140,7 +130,7 @@ function DisplayContextProvider(props) {
 
   useEffect(() => {
     if (!state.displaysLoaded) {
-      reload(dispatch, accountContext);
+      reload(accountContext);
     }
   }, [state, accountContext]); // The empty array causes this effect to only run on mount
 

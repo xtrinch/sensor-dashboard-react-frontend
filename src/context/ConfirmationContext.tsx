@@ -1,12 +1,11 @@
-import React, { createContext, useReducer } from "react";
+import React, { Context, createContext, Dispatch, useReducer } from "react";
 
 export const openConfirmation = (
-  dispatch: React.Dispatch<any>,
   onConfirm: Function,
   onClose?: Function,
   content?: string
 ) => {
-  dispatch({
+  ConfirmationContext.dispatch({
     type: "openConfirmation",
     payload: {
       onConfirm,
@@ -16,39 +15,33 @@ export const openConfirmation = (
   });
 };
 
-export const closeConfirmation = (dispatch: React.Dispatch<any>) => {
-  dispatch({ type: "closeConfirmation" });
+export const closeConfirmation = () => {
+  ConfirmationContext.dispatch({ type: "closeConfirmation" });
 };
 
-export const confirm = async (
-  dispatch: React.Dispatch<any>,
-  state: ConfirmationContextState
-) => {
-  dispatch({ type: "closing" });
+export const confirm = async (state: ConfirmationContextState) => {
+  ConfirmationContext.dispatch({ type: "closing" });
 
   if (state.onConfirm) {
     try {
       await state.onConfirm();
     } catch (e) {
-      dispatch({ type: "closeConfirmation" });
+      ConfirmationContext.dispatch({ type: "closeConfirmation" });
       throw e;
     }
   }
 
-  dispatch({ type: "closeConfirmation" });
+  ConfirmationContext.dispatch({ type: "closeConfirmation" });
 };
 
-export const close = async (
-  dispatch: React.Dispatch<any>,
-  state: ConfirmationContextState
-) => {
-  dispatch({ type: "closing" });
+export const close = async (state: ConfirmationContextState) => {
+  ConfirmationContext.dispatch({ type: "closing" });
 
   if (state.onClose) {
     await state.onClose();
   }
 
-  dispatch({ type: "closeConfirmation" });
+  ConfirmationContext.dispatch({ type: "closeConfirmation" });
 };
 
 type ConfirmationContextState = {
@@ -77,7 +70,9 @@ export type ConfirmationActionTypes =
 
 const ConfirmationContext = createContext<
   [ConfirmationContextState, React.Dispatch<any>]
->(null);
+>(null) as Context<[ConfirmationContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (
   state: ConfirmationContextState,

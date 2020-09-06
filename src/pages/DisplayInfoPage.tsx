@@ -15,17 +15,9 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
-import {
-  ConfirmationContext,
-  openConfirmation,
-} from "context/ConfirmationContext";
-import {
-  deleteDisplay,
-  DisplayContext,
-  updateDisplay,
-} from "context/DisplayContext";
+import { openConfirmation } from "context/ConfirmationContext";
+import { deleteDisplay, updateDisplay } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
-import { ToastContext } from "context/ToastContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -93,25 +85,16 @@ const DisplayInfoPage: React.FunctionComponent<
     sensorIds: [],
   });
 
-  const [, displayContextDispatch] = useContext(DisplayContext);
   const [sensorContext] = useContext(SensorContext);
 
   const [display, setDisplay] = useState(null);
 
-  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
-  const [, toastContextDispatch] = useContext(ToastContext);
-
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteDisplay(
-        displayContextDispatch,
-        display.id,
-        toastContextDispatch
-      );
+      await deleteDisplay(display.id);
       history.push("/displays");
     };
     openConfirmation(
-      dispatchConfirmationContext,
       onConfirm,
       null,
       "Are you sure you want to delete display?"
@@ -139,12 +122,7 @@ const DisplayInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateDisplay(
-        displayContextDispatch,
-        (id as unknown) as DisplayId,
-        data,
-        toastContextDispatch
-      );
+      await updateDisplay((id as unknown) as DisplayId, data);
     } catch (e) {
       setErrors(e);
     }

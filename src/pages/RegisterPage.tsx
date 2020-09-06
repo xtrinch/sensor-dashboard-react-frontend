@@ -8,8 +8,8 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { AccountContext, register } from "context/AccountContext";
-import React, { useContext, useState } from "react";
+import { register } from "context/AccountContext";
+import React, { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -41,7 +41,6 @@ const RegisterPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { classes, history } = props;
-  const [, dispatch] = useContext(AccountContext);
   const [registerSuccess, setRegisterSuccess] = useState(false);
 
   const [data, setData] = useState({
@@ -65,7 +64,7 @@ const RegisterPage: React.FunctionComponent<
     setErrors({});
 
     try {
-      const user = await register(dispatch, data);
+      const user = await register(data);
 
       if (user) {
         setRegisterSuccess(true);

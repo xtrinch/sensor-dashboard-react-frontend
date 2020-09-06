@@ -30,7 +30,7 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const [toastContext, dispatchToastContext] = useContext(ToastContext);
+  const [toastContext] = useContext(ToastContext);
 
   return (
     <>
@@ -49,10 +49,7 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (
           <Grid item>{toast.type === "success" && <Check />}</Grid>
           <Grid item>{toast.message}</Grid>
           <Grid item>
-            <IconButton
-              onClick={() => removeToast(dispatchToastContext, toast)}
-              size="small"
-            >
+            <IconButton onClick={() => removeToast(toast)} size="small">
               <Close />
             </IconButton>
           </Grid>
