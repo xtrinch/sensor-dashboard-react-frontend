@@ -86,40 +86,6 @@ const DisplayItem: React.FunctionComponent<
           <DeleteIcon />
         </IconButton>
       </TableCell>
-      {/* <CardHeader
-        className={classes.cardHeader}
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {display.name[0]}
-          </Avatar>
-        }
-        title={`${display.name}, ${display.boardType}`}
-        subheader={`${format(display.createdAt, DATETIME_REGEX)}`}
-        classes={{ action: classes.action }}
-        action={
-          <CardActions style={{ justifyContent: "flex-end" }}>
-            <Link to={`/displays/${display.id}`}>
-              <IconButton aria-label="add to favorites" size="small">
-                <SettingsIcon />
-              </IconButton>
-            </Link>
-            <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(display)}>
-              <DeleteIcon />
-            </IconButton>
-          </CardActions>
-        }
-      /> */}
-      {/* <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Access token: {display.displayAccessToken}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Sensors:{" "}
-          {display.sensors?.length > 0
-            ? display.sensors.map((s) => s.name).join(", ")
-            : "No sensors"}
-        </Typography>
-      </CardContent> */}
     </TableRow>
   );
 };

@@ -17,6 +17,7 @@ import {
   ConfirmationContext,
   openConfirmation,
 } from "context/ConfirmationContext";
+import { ErrorContext } from "context/ErrorContext";
 import { SensorContext } from "context/SensorContext";
 import { ToastContext } from "context/ToastContext";
 import React, { useContext } from "react";
@@ -70,6 +71,9 @@ const SideMenu: React.FunctionComponent<
   const [{ loginState, user }, dispatchAccount] = useContext(AccountContext);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
   const [, dispatchToast] = useContext(ToastContext);
+  const [, dispatchError] = useContext(ErrorContext);
+  // todo: put in an App.tsx wrapper
+  ErrorContext.dispatch = dispatchError;
 
   const logoutWithConfirmation = () => {
     const onConfirm = () => logout(dispatchAccount, dispatchToast);

@@ -6,12 +6,14 @@ import {
   withStyles,
 } from "@material-ui/core";
 import ConfirmationBox from "components/ConfirmationBox";
+import ErrorBox from "components/ErrorBox";
 import SideMenuWrapper from "components/SideMenuWrapper";
 import ToastBox from "components/ToastBox";
 import { AccountContextProvider } from "context/AccountContext";
 import { AppContextProvider } from "context/AppContext";
 import { ConfirmationContextProvider } from "context/ConfirmationContext";
 import { DisplayContextProvider } from "context/DisplayContext";
+import { ErrorContextProvider } from "context/ErrorContext";
 import { SensorContextProvider } from "context/SensorContext";
 import { ToastContextProvider } from "context/ToastContext";
 import theme from "layout/Theme";
@@ -63,40 +65,42 @@ class App extends React.Component<WithStyles<typeof styles>> {
                 <ConfirmationContextProvider>
                   <DisplayContextProvider>
                     <ToastContextProvider>
-                      <ToastBox />
-                      <ConfirmationBox />
-
-                      <Grid container className={classes.app}>
-                        <Grid item>
-                          <SideMenuWrapper />
+                      <ErrorContextProvider>
+                        <ToastBox />
+                        <ConfirmationBox />
+                        <ErrorBox />
+                        <Grid container className={classes.app}>
+                          <Grid item>
+                            <SideMenuWrapper />
+                          </Grid>
+                          <Grid item style={{ flex: "1" }}>
+                            <Route exact path="/">
+                              <SensorsPage />
+                            </Route>
+                            <Route exact path="/login">
+                              <LoginPage />
+                            </Route>
+                            <Route exact path="/register">
+                              <RegisterPage />
+                            </Route>
+                            <Route exact path="/add-sensor">
+                              <AddSensorPage />
+                            </Route>
+                            <Route exact path="/add-display">
+                              <AddDisplayPage />
+                            </Route>
+                            <Route exact path="/sensors/:id">
+                              <SensorInfoPage />
+                            </Route>
+                            <Route exact path="/displays/:id">
+                              <DisplayInfoPage />
+                            </Route>
+                            <Route exact path="/displays">
+                              <DisplayListPage />
+                            </Route>
+                          </Grid>
                         </Grid>
-                        <Grid item style={{ flex: "1" }}>
-                          <Route exact path="/">
-                            <SensorsPage />
-                          </Route>
-                          <Route exact path="/login">
-                            <LoginPage />
-                          </Route>
-                          <Route exact path="/register">
-                            <RegisterPage />
-                          </Route>
-                          <Route exact path="/add-sensor">
-                            <AddSensorPage />
-                          </Route>
-                          <Route exact path="/add-display">
-                            <AddDisplayPage />
-                          </Route>
-                          <Route exact path="/sensors/:id">
-                            <SensorInfoPage />
-                          </Route>
-                          <Route exact path="/displays/:id">
-                            <DisplayInfoPage />
-                          </Route>
-                          <Route exact path="/displays">
-                            <DisplayListPage />
-                          </Route>
-                        </Grid>
-                      </Grid>
+                      </ErrorContextProvider>
                     </ToastContextProvider>
                   </DisplayContextProvider>
                 </ConfirmationContextProvider>
