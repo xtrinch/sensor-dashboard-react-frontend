@@ -1,4 +1,4 @@
-import { Grid, MenuItem } from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid, MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -52,6 +52,7 @@ const AddSensorPage: React.FunctionComponent<
     location: "",
     boardType: "" as SensorBoardTypesEnum,
     timezone: "",
+    private: false,
   });
 
   const [, sensorContextDispatch] = useContext(SensorContext);
@@ -167,6 +168,15 @@ const AddSensorPage: React.FunctionComponent<
                   </MenuItem>
                 ))}
               </TextField>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={data.private || false}
+                    onChange={(e, checked) => fieldChange(checked, "private")}
+                  />
+                }
+                label="Private"
+              />
               <Button
                 type="submit"
                 fullWidth

@@ -5,14 +5,15 @@ import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 import { Toast } from "types/Toast";
 
-export const reload = async (
+export const reloadSensors = async (
   dispatch: React.Dispatch<any>,
   accountContext: AccountContextState
 ) => {
   try {
-    let resp = await SensorService.listSensors();
+    let resp = await SensorService.listSensors({ page: 1, limit: 1000 });
     let sensorData = resp.items;
     let mySensorData;
+    console.log(accountContext.loginState);
     if (accountContext.loginState === "LOGGED_IN") {
       sensorData.map((s) => {
         s.visible = false;
@@ -20,19 +21,6 @@ export const reload = async (
           s.visible = true;
         }
         return s;
-      });
-    }
-    if (accountContext.loginState === "LOGGED_IN") {
-      resp = await SensorService.listMySensors();
-      resp.items.map((s) => {
-        s.visible = true;
-        return s;
-      });
-      mySensorData = resp.items;
-
-      dispatch({
-        type: "mySensorsReady",
-        payload: mySensorData,
       });
     }
 
@@ -43,6 +31,20 @@ export const reload = async (
   } catch (error) {
     console.log(error);
   }
+};
+
+export const reloadMySensors = async (dispatch: React.Dispatch<any>) => {
+  const resp = await SensorService.listMySensors();
+  resp.items.map((s) => {
+    s.visible = true;
+    return s;
+  });
+  const mySensorData = resp.items;
+
+  dispatch({
+    type: "mySensorsReady",
+    payload: mySensorData,
+  });
 };
 
 export const addSensor = async (
@@ -167,7 +169,10 @@ function SensorContextProvider(props) {
 
   useEffect(() => {
     if (!state.sensorsLoaded) {
-      reload(dispatch, accountContext);
+      reloadSensors(dispatch, accountContext);
+      if (accountContext.loginState === "LOGGED_IN") {
+        reloadMySensors(dispatch);
+      }
     }
   }, [state, accountContext]); // The empty array causes this effect to only run on mount
 

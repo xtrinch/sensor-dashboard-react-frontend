@@ -11,6 +11,12 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { AccountContext, login } from "context/AccountContext";
+import { DisplayContext, reload } from "context/DisplayContext";
+import {
+  reloadMySensors,
+  reloadSensors,
+  SensorContext,
+} from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
@@ -52,6 +58,8 @@ const LoginPage: React.FunctionComponent<
   });
 
   const [accountState, dispatch] = useContext(AccountContext);
+  const [sensorState, sensorDispatch] = useContext(SensorContext);
+  const [displayState, displayDispatch] = useContext(DisplayContext);
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -59,6 +67,9 @@ const LoginPage: React.FunctionComponent<
     try {
       const success = await login(dispatch, data.email, data.password);
       if (success) {
+        reloadSensors(sensorDispatch, accountState);
+        reloadMySensors(sensorDispatch);
+        reload(displayDispatch, accountState);
         history.push("/");
       }
     } catch (e) {

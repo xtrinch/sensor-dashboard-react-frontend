@@ -35,8 +35,6 @@ const ErrorContext = createContext<[ErrorContextState, React.Dispatch<any>]>(
   dispatch: React.Dispatch<any>;
 };
 
-ErrorContext.dispatch = null;
-
 let reducer = (
   state: ErrorContextState,
   action: ErrorActionTypes

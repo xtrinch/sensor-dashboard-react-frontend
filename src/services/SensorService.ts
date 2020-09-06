@@ -2,8 +2,8 @@ import Sensor, { SensorId } from "types/Sensor";
 import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class SensorService {
-  public static listSensors = async () => {
-    const url = getUrl("/sensors");
+  public static listSensors = async (where: { [key: string]: any }) => {
+    const url = getUrl("/sensors", where);
 
     const resp = await fetch(url, {
       method: "GET",

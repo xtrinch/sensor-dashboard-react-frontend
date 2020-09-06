@@ -9,6 +9,11 @@ export const reload = async (
   dispatch: React.Dispatch<any>,
   accountContext: AccountContextState
 ) => {
+  console.log(accountContext.loginState);
+  if (accountContext.loginState === "LOGGED_OUT") {
+    return;
+  }
+
   try {
     const resp = await DisplayService.listDisplays();
     const displayData = resp.items;

@@ -44,6 +44,7 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (
             backgroundColor:
               toast.type === "success" ? ColorsEnum.OLIVE : ColorsEnum.ERROR,
           }}
+          key={index}
         >
           <Grid item>{toast.type === "success" && <Check />}</Grid>
           <Grid item>{toast.message}</Grid>

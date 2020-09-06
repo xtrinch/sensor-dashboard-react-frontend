@@ -76,7 +76,10 @@ const SideMenu: React.FunctionComponent<
   ErrorContext.dispatch = dispatchError;
 
   const logoutWithConfirmation = () => {
-    const onConfirm = () => logout(dispatchAccount, dispatchToast);
+    const onConfirm = async () => {
+      await logout(dispatchAccount, dispatchToast);
+      history.push("/");
+    };
     openConfirmation(
       dispatchConfirmationContext,
       onConfirm,

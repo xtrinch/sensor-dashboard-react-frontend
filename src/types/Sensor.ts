@@ -1,4 +1,3 @@
-import { IsBoolean, IsEnum, IsString, MinLength } from "class-validator";
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
@@ -26,20 +25,17 @@ class Sensor extends AbstractEntity {
     this.location = s?.location;
     this.sensorAccessToken = s?.sensorAccessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
+    this.private = s?.private;
   }
 
   public id: SensorId;
 
-  @IsString()
-  @MinLength(2)
   public name: string;
 
   public displayName: string;
 
-  @IsEnum(SensorTypesEnum)
   public type: SensorTypesEnum;
 
-  @IsBoolean()
   public visible: boolean;
 
   public expanded: boolean;
@@ -59,6 +55,8 @@ class Sensor extends AbstractEntity {
   public sensorAccessToken: string;
 
   public lastSeenAt: Date;
+
+  public private: boolean;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {
