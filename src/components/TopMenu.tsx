@@ -81,12 +81,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
     <TopBar noGridItem>
       {/* <Grid container spacing={5}> */}
       <Grid item className={classes.dateGridItem}>
-        <DateInput
-          groupBy={groupBy}
-          date={date}
-          onChange={onChangeDate}
-          style={{ width: "260px" }}
-        />
+        <DateInput groupBy={groupBy} date={date} onChange={onChangeDate} />
       </Grid>
       <Grid item>
         <ButtonGroup
@@ -113,11 +108,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
       </Grid>
       {groupBy === DateRangeEnum.hour && (
         <Grid item className={classes.dateGridItem}>
-          <TimeInput
-            date={date}
-            onChange={onChangeDate}
-            style={{ width: "260px" }}
-          />
+          <TimeInput date={date} onChange={onChangeDate} />
         </Grid>
       )}
       {/* </Grid> */}

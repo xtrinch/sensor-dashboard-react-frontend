@@ -241,8 +241,12 @@ const DateInput: React.FunctionComponent<
 
   return (
     <div style={{ ...props.style }}>
-      <div>{props.label}</div>
-      <Grid container alignItems="center" spacing={4}>
+      <Grid
+        container
+        alignItems="center"
+        spacing={4}
+        style={{ flexWrap: "nowrap" }}
+      >
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(-1)}>
             <ArrowBack style={{ cursor: "pointer" }} />

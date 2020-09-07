@@ -57,7 +57,7 @@ export enum DateRangeEnum {
 export type DateRegex = string;
 
 export const DATETIME_REGEX = "MMMM d, yyyy HH:mm"; // August 31, 2020
-export const DATE_REGEX = "MMMM d, yyyy"; // August 31, 2020
+export const DATE_REGEX = "MMM d, yyyy"; // August 31, 2020
 export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
 
 export class DateRange {
