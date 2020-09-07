@@ -256,6 +256,7 @@ const DateInput: React.FunctionComponent<
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               size="small"
+              style={{ maxWidth: "170px", flex: "1" }}
               views={getView()}
               label=""
               format="MM/dd/yyyy"
@@ -266,7 +267,6 @@ const DateInput: React.FunctionComponent<
               InputProps={{
                 className: classes.datepicker,
               }}
-              style={{ flex: "1" }}
               renderDay={renderDate}
               labelFunc={renderLabel}
               margin={"none"}
