@@ -1,5 +1,9 @@
-import React, { createContext, useReducer } from "react";
+import React, { Context, createContext, Dispatch, useReducer } from "react";
 import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
+
+export const drawerToggle = () => {
+  AppContext.dispatch({ type: "toggle" });
+};
 
 type AppContextState = {
   menuOpen: boolean;
@@ -13,7 +17,11 @@ const initialState: AppContextState = {
   date: DateRange.getDateString(new Date(), DateRangeEnum.day),
 };
 
-const AppContext = createContext<[AppContextState, React.Dispatch<any>]>(null);
+const AppContext = createContext<[AppContextState, React.Dispatch<any>]>(
+  null
+) as Context<[AppContextState, Dispatch<any>]> & {
+  dispatch: React.Dispatch<any>;
+};
 
 let reducer = (state: AppContextState, action): AppContextState => {
   switch (action.type) {

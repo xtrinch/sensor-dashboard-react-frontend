@@ -16,6 +16,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
+import { drawerToggle } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
 import { differenceInMinutes } from "date-fns";
 import React, { Fragment, useContext } from "react";
@@ -106,7 +107,7 @@ const SensorItem: React.FunctionComponent<
         </ListItemText>
         {sensor.user?.username === user?.username && (
           <div onClick={(e) => e.stopPropagation()}>
-            <Link to={`/sensors/${sensor.id}`}>
+            <Link to={`/sensors/${sensor.id}`} onClick={drawerToggle}>
               <Fab color="secondary" size="small" className={classes.sensorFab}>
                 <SettingsIcon />
               </Fab>

@@ -34,7 +34,7 @@ const styles = () =>
 const Link: React.FunctionComponent<LinkProps & WithStyles<typeof styles>> = (
   props
 ) => {
-  const { to, target, style, classes, children, onClick, href, id } = props;
+  const { to, target, style, classes, children, href, id, onClick } = props;
 
   return (
     <>
@@ -45,6 +45,7 @@ const Link: React.FunctionComponent<LinkProps & WithStyles<typeof styles>> = (
           target={target}
           className={classes.link}
           id={id}
+          onClick={onClick}
         >
           {children}
         </RouterLink>

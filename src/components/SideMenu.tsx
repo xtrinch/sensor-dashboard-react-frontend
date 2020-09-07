@@ -13,6 +13,7 @@ import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import SensorItem from "components/SensorItem";
 import { AccountContext, logout } from "context/AccountContext";
+import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext } from "react";
@@ -68,10 +69,17 @@ const SideMenu: React.FunctionComponent<
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
       await logout();
+      drawerToggle();
       history.push("/");
     };
     openConfirmation(onConfirm, null, "Are you sure you want to logout?");
   };
+
+  const goToDisplays = () => {
+    drawerToggle();
+    history.push("/displays");
+  };
+
   const { classes } = props;
 
   return (
@@ -79,14 +87,19 @@ const SideMenu: React.FunctionComponent<
       <ListSubheader disableGutters className={classes.subheader}>
         <Grid container style={{ padding: "15px" }} justify="space-between">
           <Grid item className={classes.logoContainer}>
-            <Link to="/">
+            <Link to="/" onClick={drawerToggle}>
               <img alt="logo" src={Logo} />
             </Link>
           </Grid>
           {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
             <Grid item>
-              <Link to="/login">Login</Link> &nbsp; | &nbsp;
-              <Link to="/register">Register</Link>
+              <Link to="/login" onClick={drawerToggle}>
+                Login
+              </Link>{" "}
+              &nbsp; | &nbsp;
+              <Link to="/register" onClick={drawerToggle}>
+                Register
+              </Link>
             </Grid>
           )}
           {loginState === "LOGGED_IN" && (
@@ -104,13 +117,13 @@ const SideMenu: React.FunctionComponent<
               button
               className={classes.listTitle}
               alignItems="center"
-              onClick={() => history.push("/displays")}
+              onClick={goToDisplays}
             >
               <Grid container alignItems="center" justify="space-between">
                 <Grid item>My display devices</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link to={`/add-display`}>
+                    <Link to="/add-display" onClick={drawerToggle}>
                       <Fab
                         color="primary"
                         size="small"
@@ -130,7 +143,7 @@ const SideMenu: React.FunctionComponent<
               My sensors
             </Grid>
             <Grid item>
-              <Link to="/add-sensor">
+              <Link to="/add-sensor" onClick={drawerToggle}>
                 <Fab color="primary" size="small" className={classes.sensorFab}>
                   <PlusIcon />
                 </Fab>

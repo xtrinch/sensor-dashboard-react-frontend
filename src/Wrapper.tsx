@@ -1,5 +1,6 @@
 import { createStyles, withStyles, WithStyles } from "@material-ui/core";
 import { AccountContext } from "context/AccountContext";
+import { AppContext } from "context/AppContext";
 import { ConfirmationContext } from "context/ConfirmationContext";
 import { DisplayContext } from "context/DisplayContext";
 import { ErrorContext } from "context/ErrorContext";
@@ -16,6 +17,7 @@ const Wrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const [, dispatchError] = useContext(ErrorContext);
   const [, dispatchDisplay] = useContext(DisplayContext);
   const [, dispatchToast] = useContext(ToastContext);
+  const [, dispatchApp] = useContext(AppContext);
 
   // todo: put in an App.tsx wrapper
   ErrorContext.dispatch = dispatchError;
@@ -24,6 +26,7 @@ const Wrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   ConfirmationContext.dispatch = dispatchConfirmationContext;
   ToastContext.dispatch = dispatchToast;
   AccountContext.dispatch = dispatchAccount;
+  AppContext.dispatch = dispatchApp;
 
   return <React.Fragment>{props.children}</React.Fragment>;
 };
