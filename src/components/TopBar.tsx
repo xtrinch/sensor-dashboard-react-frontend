@@ -30,7 +30,7 @@ const styles = (theme) =>
   });
 
 const TopBar: React.FunctionComponent<
-  WithStyles<typeof styles> & { alignItems?: string }
+  WithStyles<typeof styles> & { alignItems?: string; noGridItem?: boolean }
 > = (props) => {
   const { classes } = props;
 
@@ -47,27 +47,34 @@ const TopBar: React.FunctionComponent<
       className={classes.root}
       style={{ alignItems: props.alignItems }}
     >
-      <Grid container spacing={5} style={{ flexWrap: "nowrap" }}>
-        <Grid item className={classes.menuIcon}>
-          <IconButton
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            size="medium"
-            color="secondary"
-            style={{ marginRight: "20px" }}
+      <Grid container spacing={5}>
+        <Grid item className={classes.menuIcon} xs={1}>
+          <div
+            style={{ display: "flex", alignItems: "center", height: "100%" }}
           >
-            <MenuIcon />
-          </IconButton>
+            <IconButton
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
+              size="medium"
+              color="secondary"
+              style={{ padding: "6px" }}
+              edge={false}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
         </Grid>
-        <Grid
-          item
-          sm={12}
-          xs={11}
-          style={{ justifyContent: props.alignItems, display: "flex" }}
-        >
-          {props.children}
-        </Grid>
+        {props.noGridItem && props.children}
+        {!props.noGridItem && (
+          <Grid
+            item
+            sm={12}
+            xs={11}
+            style={{ justifyContent: props.alignItems, display: "flex" }}
+          >
+            {props.children}
+          </Grid>
+        )}
       </Grid>
     </AppBar>
   );

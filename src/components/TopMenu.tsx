@@ -26,6 +26,7 @@ const styles = (theme) =>
         },
         color: ColorsEnum.GRAY,
       },
+      maxWidth: "calc(100vw - 40px)",
     },
     activeButton: {
       backgroundColor: ColorsEnum.BLUE,
@@ -42,6 +43,12 @@ const styles = (theme) =>
         left: "270px",
       },
       boxShadow: "none",
+    },
+    dateGridItem: {
+      [theme.breakpoints.down("sm")]: {
+        marginRight: "0px",
+        marginLeft: "auto",
+      },
     },
   });
 
@@ -71,48 +78,49 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   );
 
   return (
-    <TopBar>
-      <Grid container spacing={5}>
-        <Grid item>
-          <DateInput
-            groupBy={groupBy}
+    <TopBar noGridItem>
+      {/* <Grid container spacing={5}> */}
+      <Grid item className={classes.dateGridItem}>
+        <DateInput
+          groupBy={groupBy}
+          date={date}
+          onChange={onChangeDate}
+          style={{ width: "260px" }}
+        />
+      </Grid>
+      <Grid item>
+        <ButtonGroup
+          disableElevation
+          disableFocusRipple
+          disableRipple
+          color="secondary"
+          size="large"
+          className={classes.dateButtonGroup}
+          //className={classes.datePickerGridItem}
+        >
+          {Object.values(DateRangeEnum)
+            .filter((v) => v !== DateRangeEnum.minute)
+            .map((val) => (
+              <Button
+                onClick={() => onChangeGroupBy(val)}
+                className={groupBy === val ? classes.activeButton : undefined}
+                key={val}
+              >
+                {val}
+              </Button>
+            ))}
+        </ButtonGroup>
+      </Grid>
+      {groupBy === DateRangeEnum.hour && (
+        <Grid item className={classes.dateGridItem}>
+          <TimeInput
             date={date}
             onChange={onChangeDate}
             style={{ width: "260px" }}
           />
         </Grid>
-        <Grid item>
-          <ButtonGroup
-            disableElevation
-            disableFocusRipple
-            disableRipple
-            color="secondary"
-            size="large"
-            className={classes.dateButtonGroup}
-          >
-            {Object.values(DateRangeEnum)
-              .filter((v) => v !== DateRangeEnum.minute)
-              .map((val) => (
-                <Button
-                  onClick={() => onChangeGroupBy(val)}
-                  className={groupBy === val ? classes.activeButton : undefined}
-                  key={val}
-                >
-                  {val}
-                </Button>
-              ))}
-          </ButtonGroup>
-        </Grid>
-        {groupBy === DateRangeEnum.hour && (
-          <Grid item>
-            <TimeInput
-              date={date}
-              onChange={onChangeDate}
-              style={{ width: "260px" }}
-            />
-          </Grid>
-        )}
-      </Grid>
+      )}
+      {/* </Grid> */}
     </TopBar>
   );
 };
