@@ -1,3 +1,4 @@
+import { clearMySensors } from "context/SensorContext";
 import { addToast } from "context/ToastContext";
 import React, { Context, createContext, Dispatch, useReducer } from "react";
 import UserService from "services/UserService";
@@ -36,6 +37,8 @@ export const logout = async () => {
   AccountContext.dispatch({
     type: "logout",
   });
+
+  clearMySensors();
 
   addToast(new Toast({ message: "Logout successful", type: "success" }));
 };

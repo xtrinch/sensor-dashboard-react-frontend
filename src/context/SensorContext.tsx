@@ -12,6 +12,13 @@ import SensorService from "services/SensorService";
 import Sensor, { SensorId } from "types/Sensor";
 import { Toast } from "types/Toast";
 
+export const clearMySensors = () => {
+  SensorContext.dispatch({
+    type: "mySensorsReady",
+    payload: [],
+  });
+};
+
 export const reloadSensors = async (accountContext: AccountContextState) => {
   try {
     let resp = await SensorService.listSensors({ page: 1, limit: 1000 });

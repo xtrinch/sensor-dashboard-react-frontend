@@ -64,7 +64,7 @@ const SideMenu: React.FunctionComponent<
   const { history } = props;
 
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const [{ loginState, user }] = useContext(AccountContext);
+  const [accountContext] = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -81,7 +81,7 @@ const SideMenu: React.FunctionComponent<
   };
 
   const { classes } = props;
-
+  const { loginState, user } = accountContext;
   return (
     <div className={classes.root}>
       <ListSubheader disableGutters className={classes.subheader}>
