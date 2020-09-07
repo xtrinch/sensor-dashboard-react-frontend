@@ -14,6 +14,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import TopBar from "components/TopBar";
 import { addDisplay } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
@@ -88,6 +89,7 @@ const AddDisplayPage: React.FunctionComponent<
 
   return (
     <>
+      <TopBar alignItems="flex-end" />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>

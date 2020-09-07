@@ -7,6 +7,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import TopBar from "components/TopBar";
 import { addSensor } from "context/SensorContext";
 import React, { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -76,121 +77,124 @@ const AddSensorPage: React.FunctionComponent<
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        {!success && (
-          <>
-            <Avatar className={classes.avatar}>
-              <SettingsInputAntennaIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Add sensor board
-            </Typography>
-            <form className={classes.form} noValidate onSubmit={submitForm}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="name"
-                label="Sensor name"
-                name="name"
-                value={data.name}
-                autoFocus
-                onChange={(e) => fieldChange(e.target.value, "name")}
-                error={!!errors.name}
-                helperText={errors.name}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="displayName"
-                label="Sensor display name"
-                name="displayName"
-                value={data.displayName}
-                onChange={(e) => fieldChange(e.target.value, "displayName")}
-                error={!!errors.displayName}
-                helperText={errors.displayName}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                name="location"
-                label="Location description"
-                type="location"
-                id="location"
-                autoComplete="current-location"
-                value={data.location}
-                onChange={(e) => fieldChange(e.target.value, "location")}
-                error={!!errors.location}
-                helperText={errors.location}
-              />
-              <TextField
-                select
-                id="select"
-                label="Board type"
-                variant="outlined"
-                margin="normal"
-                value={data.boardType}
-                onChange={(e) => fieldChange(e.target.value, "boardType")}
-                fullWidth
-                error={!!errors.boardType}
-                helperText={errors.boardType}
-              >
-                {Object.keys(SensorBoardTypesEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {SensorBoardTypesEnum[key]}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                id="timezone"
-                variant="outlined"
-                margin="normal"
-                label="Timezone"
-                value={data.timezone}
-                onChange={(e) => fieldChange(e.target.value, "timezone")}
-                fullWidth
-              >
-                {listTimeZones().map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={data.private || false}
-                    onChange={(e, checked) => fieldChange(checked, "private")}
-                  />
-                }
-                label="Private"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                style={{ marginTop: "20px" }}
-              >
-                Add
-              </Button>
-            </form>
-          </>
-        )}
-        {success && (
-          <Grid container spacing={10} direction={"column"}>
-            <Grid item>Sensor successfully added.</Grid>
-            <Grid item>Redirecting to sensor info page...</Grid>
-          </Grid>
-        )}
-      </div>
-    </Container>
+    <>
+      <TopBar alignItems="flex-end" />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          {!success && (
+            <>
+              <Avatar className={classes.avatar}>
+                <SettingsInputAntennaIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Add sensor board
+              </Typography>
+              <form className={classes.form} noValidate onSubmit={submitForm}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="name"
+                  label="Sensor name"
+                  name="name"
+                  value={data.name}
+                  autoFocus
+                  onChange={(e) => fieldChange(e.target.value, "name")}
+                  error={!!errors.name}
+                  helperText={errors.name}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  id="displayName"
+                  label="Sensor display name"
+                  name="displayName"
+                  value={data.displayName}
+                  onChange={(e) => fieldChange(e.target.value, "displayName")}
+                  error={!!errors.displayName}
+                  helperText={errors.displayName}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  name="location"
+                  label="Location description"
+                  type="location"
+                  id="location"
+                  autoComplete="current-location"
+                  value={data.location}
+                  onChange={(e) => fieldChange(e.target.value, "location")}
+                  error={!!errors.location}
+                  helperText={errors.location}
+                />
+                <TextField
+                  select
+                  id="select"
+                  label="Board type"
+                  variant="outlined"
+                  margin="normal"
+                  value={data.boardType}
+                  onChange={(e) => fieldChange(e.target.value, "boardType")}
+                  fullWidth
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
+                >
+                  {Object.keys(SensorBoardTypesEnum).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {SensorBoardTypesEnum[key]}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  select
+                  id="timezone"
+                  variant="outlined"
+                  margin="normal"
+                  label="Timezone"
+                  value={data.timezone}
+                  onChange={(e) => fieldChange(e.target.value, "timezone")}
+                  fullWidth
+                >
+                  {listTimeZones().map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={data.private || false}
+                      onChange={(e, checked) => fieldChange(checked, "private")}
+                    />
+                  }
+                  label="Private"
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  style={{ marginTop: "20px" }}
+                >
+                  Add
+                </Button>
+              </form>
+            </>
+          )}
+          {success && (
+            <Grid container spacing={10} direction={"column"}>
+              <Grid item>Sensor successfully added.</Grid>
+              <Grid item>Redirecting to sensor info page...</Grid>
+            </Grid>
+          )}
+        </div>
+      </Container>
+    </>
   );
 };
 

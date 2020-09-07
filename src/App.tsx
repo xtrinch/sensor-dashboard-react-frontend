@@ -28,6 +28,7 @@ import SensorsPage from "pages/SensorsPage";
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
+import Wrapper from "Wrapper";
 
 const styles = () =>
   createStyles({
@@ -66,40 +67,42 @@ class App extends React.Component<WithStyles<typeof styles>> {
                   <DisplayContextProvider>
                     <ToastContextProvider>
                       <ErrorContextProvider>
-                        <ToastBox />
-                        <ConfirmationBox />
-                        <ErrorBox />
-                        <Grid container className={classes.app}>
-                          <Grid item>
-                            <SideMenuWrapper />
+                        <Wrapper>
+                          <ToastBox />
+                          <ConfirmationBox />
+                          <ErrorBox />
+                          <Grid container className={classes.app}>
+                            <Grid item>
+                              <SideMenuWrapper />
+                            </Grid>
+                            <Grid item style={{ flex: "1" }}>
+                              <Route exact path="/">
+                                <SensorsPage />
+                              </Route>
+                              <Route exact path="/login">
+                                <LoginPage />
+                              </Route>
+                              <Route exact path="/register">
+                                <RegisterPage />
+                              </Route>
+                              <Route exact path="/add-sensor">
+                                <AddSensorPage />
+                              </Route>
+                              <Route exact path="/add-display">
+                                <AddDisplayPage />
+                              </Route>
+                              <Route exact path="/sensors/:id">
+                                <SensorInfoPage />
+                              </Route>
+                              <Route exact path="/displays/:id">
+                                <DisplayInfoPage />
+                              </Route>
+                              <Route exact path="/displays">
+                                <DisplayListPage />
+                              </Route>
+                            </Grid>
                           </Grid>
-                          <Grid item style={{ flex: "1" }}>
-                            <Route exact path="/">
-                              <SensorsPage />
-                            </Route>
-                            <Route exact path="/login">
-                              <LoginPage />
-                            </Route>
-                            <Route exact path="/register">
-                              <RegisterPage />
-                            </Route>
-                            <Route exact path="/add-sensor">
-                              <AddSensorPage />
-                            </Route>
-                            <Route exact path="/add-display">
-                              <AddDisplayPage />
-                            </Route>
-                            <Route exact path="/sensors/:id">
-                              <SensorInfoPage />
-                            </Route>
-                            <Route exact path="/displays/:id">
-                              <DisplayInfoPage />
-                            </Route>
-                            <Route exact path="/displays">
-                              <DisplayListPage />
-                            </Route>
-                          </Grid>
-                        </Grid>
+                        </Wrapper>
                       </ErrorContextProvider>
                     </ToastContextProvider>
                   </DisplayContextProvider>

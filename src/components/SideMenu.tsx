@@ -13,14 +13,8 @@ import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import SensorItem from "components/SensorItem";
 import { AccountContext, logout } from "context/AccountContext";
-import {
-  ConfirmationContext,
-  openConfirmation,
-} from "context/ConfirmationContext";
-import { DisplayContext } from "context/DisplayContext";
-import { ErrorContext } from "context/ErrorContext";
+import { openConfirmation } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
-import { ToastContext } from "context/ToastContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -68,20 +62,8 @@ const SideMenu: React.FunctionComponent<
 > = (props) => {
   const { history } = props;
 
-  const [{ sensors, mySensors }, dispatchSensor] = useContext(SensorContext);
-  const [{ loginState, user }, dispatchAccount] = useContext(AccountContext);
-  const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
-  const [, dispatchError] = useContext(ErrorContext);
-  const [, dispatchDisplay] = useContext(DisplayContext);
-  const [, dispatchToast] = useContext(ToastContext);
-
-  // todo: put in an App.tsx wrapper
-  ErrorContext.dispatch = dispatchError;
-  SensorContext.dispatch = dispatchSensor;
-  DisplayContext.dispatch = dispatchDisplay;
-  ConfirmationContext.dispatch = dispatchConfirmationContext;
-  ToastContext.dispatch = dispatchToast;
-  AccountContext.dispatch = dispatchAccount;
+  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const [{ loginState, user }] = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -159,11 +141,9 @@ const SideMenu: React.FunctionComponent<
         </>
       )}
       <List disablePadding>
-        {mySensors
-          .filter((s) => s.userId === user?.id)
-          .map((sensor: Sensor) => (
-            <SensorItem sensor={sensor} key={sensor.id} />
-          ))}
+        {mySensors.map((sensor: Sensor) => (
+          <SensorItem sensor={sensor} key={sensor.id} />
+        ))}
       </List>
       <Grid container className={classes.listTitle} alignItems="center">
         <Grid item xs>

@@ -3,11 +3,9 @@ import {
   ButtonGroup,
   createStyles,
   Grid,
-  IconButton,
   WithStyles,
   withStyles,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
 import DateInput from "components/DateInput";
 import TopBar from "components/TopBar";
 import { AppContext } from "context/AppContext";
@@ -45,21 +43,12 @@ const styles = (theme) =>
       },
       boxShadow: "none",
     },
-    menuIcon: {
-      [theme.breakpoints.up("md")]: {
-        display: "none",
-      },
-    },
   });
 
 const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
   const [{ groupBy, date }, dispatch] = useContext(AppContext);
-
-  const handleDrawerToggle = () => {
-    dispatch({ type: "toggle" });
-  };
 
   const onChangeGroupBy = useCallback(
     (val) => {
@@ -84,19 +73,6 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   return (
     <TopBar>
       <Grid container spacing={5}>
-        <Grid item>
-          <IconButton
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuIcon}
-            size="small"
-            color="secondary"
-            style={{ marginRight: "20px" }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Grid>
         <Grid item>
           <DateInput
             groupBy={groupBy}

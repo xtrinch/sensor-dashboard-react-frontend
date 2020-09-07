@@ -1,21 +1,31 @@
 import {
   AppBar,
   createStyles,
+  Grid,
+  IconButton,
   WithStyles,
   withStyles,
 } from "@material-ui/core";
-import React from "react";
+import MenuIcon from "@material-ui/icons/Menu";
+import { AppContext } from "context/AppContext";
+import React, { useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
 
 const styles = (theme) =>
   createStyles({
-    timePicker: {
+    root: {
       backgroundColor: ColorsEnum.BGLIGHT,
       padding: "13px 20px",
       [theme.breakpoints.up("md")]: {
         left: "270px",
       },
       boxShadow: "none",
+      minHeight: "60px",
+    },
+    menuIcon: {
+      [theme.breakpoints.up("md")]: {
+        display: "none",
+      },
     },
   });
 
@@ -24,14 +34,41 @@ const TopBar: React.FunctionComponent<
 > = (props) => {
   const { classes } = props;
 
+  const [, dispatch] = useContext(AppContext);
+
+  const handleDrawerToggle = () => {
+    dispatch({ type: "toggle" });
+  };
+
   return (
     <AppBar
       position="sticky"
       color="secondary"
-      className={classes.timePicker}
+      className={classes.root}
       style={{ alignItems: props.alignItems }}
     >
-      {props.children}
+      <Grid container spacing={5} style={{ flexWrap: "nowrap" }}>
+        <Grid item className={classes.menuIcon}>
+          <IconButton
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            size="medium"
+            color="secondary"
+            style={{ marginRight: "20px" }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Grid>
+        <Grid
+          item
+          sm={12}
+          xs={11}
+          style={{ justifyContent: props.alignItems, display: "flex" }}
+        >
+          {props.children}
+        </Grid>
+      </Grid>
     </AppBar>
   );
 };

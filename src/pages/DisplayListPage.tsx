@@ -4,6 +4,7 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableRow,
   Typography,
 } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
@@ -61,10 +62,12 @@ const DisplayListPage: React.FunctionComponent<
         {displayContext.displays.length !== 0 && (
           <Table>
             <TableHead>
-              <TableCell>Name</TableCell>
-              <TableCell>Board type</TableCell>
-              <TableCell>Created at</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Board type</TableCell>
+                <TableCell>Created at</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               {displayContext.displays.map((display: Display) => (
