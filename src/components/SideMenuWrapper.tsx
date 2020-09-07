@@ -36,7 +36,7 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <div>
       <CssBaseline />
-      <Hidden smDown implementation="css">
+      <Hidden smDown>
         <Drawer
           variant="permanent"
           anchor="left"
@@ -48,7 +48,7 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
           <SideMenu />
         </Drawer>
       </Hidden>
-      <Hidden mdUp implementation="css">
+      <Hidden mdUp>
         <Drawer
           variant="temporary"
           anchor="left"
