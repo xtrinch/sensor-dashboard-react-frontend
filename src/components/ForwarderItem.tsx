@@ -9,12 +9,12 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteDisplay } from "context/DisplayContext";
+import { deleteForwarder } from "context/ForwarderContext";
 import { format } from "date-fns";
 import React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
+import Forwarder from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme: Theme) =>
@@ -38,34 +38,34 @@ const styles = (theme: Theme) =>
     },
   });
 
-const DisplayItem: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{}> & { display: Display }
+const ForwarderItem: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{}> & { forwarder: Forwarder }
 > = (props) => {
-  const { display, classes } = props;
+  const { forwarder, classes } = props;
 
-  const deleteWithConfirmation = (display: Display) => {
+  const deleteWithConfirmation = (forwarder: Forwarder) => {
     const onConfirm = async () => {
-      await deleteDisplay(display.id);
+      await deleteForwarder(forwarder.id);
     };
     openConfirmation(
       onConfirm,
       null,
-      "Are you sure you want to delete display?"
+      "Are you sure you want to delete forwarder?"
     );
   };
 
   return (
     <TableRow className={classes.root}>
-      <TableCell>{display.name}</TableCell>
-      <TableCell>{display.boardType}</TableCell>
-      <TableCell>{format(display.createdAt, DATETIME_REGEX)}</TableCell>
+      <TableCell>{forwarder.name}</TableCell>
+      <TableCell>{forwarder.numForwarded}</TableCell>
+      <TableCell>{format(forwarder.createdAt, DATETIME_REGEX)}</TableCell>
       <TableCell>
-        {display.lastSeenAt
-          ? format(display.lastSeenAt, DATETIME_REGEX)
+        {forwarder.lastSeenAt
+          ? format(forwarder.lastSeenAt, DATETIME_REGEX)
           : "Never"}
       </TableCell>
       <TableCell style={{ width: "100px" }}>
-        <Link to={`/displays/${display.id}`}>
+        <Link to={`/forwarders/${forwarder.id}`}>
           <IconButton aria-label="add to favorites" size="small">
             <SettingsIcon />
           </IconButton>
@@ -73,7 +73,7 @@ const DisplayItem: React.FunctionComponent<
         <IconButton
           aria-label="settings"
           size="small"
-          onClick={() => deleteWithConfirmation(display)}
+          onClick={() => deleteWithConfirmation(forwarder)}
         >
           <DeleteIcon />
         </IconButton>
@@ -82,4 +82,4 @@ const DisplayItem: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(DisplayItem));
+export default withRouter(withStyles(styles)(ForwarderItem));

@@ -11,10 +11,12 @@ import PlusIcon from "@material-ui/icons/Add";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
-import SensorItem from "components/SensorItem";
+import SideMenuItem from "components/SideMenuItem";
 import { AccountContext, logout } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
+import { DisplayContext } from "context/DisplayContext";
+import { ForwarderContext } from "context/ForwarderContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -38,6 +40,8 @@ const styles = () =>
       textTransform: "uppercase",
       padding: "10px 16px",
       minHeight: "50px",
+      borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
+      backgroundColor: ColorsEnum.BGLIGHTER,
     },
     logoContainer: {
       display: "flex",
@@ -64,6 +68,8 @@ const SideMenu: React.FunctionComponent<
   const { history } = props;
 
   const [{ sensors, mySensors }] = useContext(SensorContext);
+  const [{ displays }] = useContext(DisplayContext);
+  const [{ forwarders }] = useContext(ForwarderContext);
   const [accountContext] = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
@@ -78,6 +84,11 @@ const SideMenu: React.FunctionComponent<
   const goToDisplays = () => {
     drawerToggle();
     history.push("/displays");
+  };
+
+  const goToForwarders = () => {
+    drawerToggle();
+    history.push("/forwarders");
   };
 
   const { classes } = props;
@@ -112,6 +123,61 @@ const SideMenu: React.FunctionComponent<
       </ListSubheader>
       {loginState === "LOGGED_IN" && (
         <>
+          <Grid container className={classes.listTitle} alignItems="center">
+            <Grid item xs>
+              My sensors
+            </Grid>
+            <Grid item>
+              <Link to="/add-sensor" onClick={drawerToggle}>
+                <Fab color="primary" size="small" className={classes.sensorFab}>
+                  <PlusIcon />
+                </Fab>
+              </Link>
+            </Grid>
+          </Grid>
+          <Divider />
+          <List disablePadding>
+            {mySensors.map((sensor: Sensor) => (
+              <SideMenuItem
+                item={sensor}
+                key={sensor.id}
+                type="sensor"
+                expandable
+                visibility
+              />
+            ))}
+          </List>
+          <List disablePadding>
+            <ListItem
+              button
+              className={classes.listTitle}
+              alignItems="center"
+              onClick={goToForwarders}
+            >
+              <Grid container alignItems="center" justify="space-between">
+                <Grid item>My packet forwarders</Grid>
+                <Grid item>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Link to="/add-forwarder" onClick={drawerToggle}>
+                      <Fab
+                        color="primary"
+                        size="small"
+                        className={classes.sensorFab}
+                      >
+                        <PlusIcon />
+                      </Fab>
+                    </Link>
+                  </div>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </List>
+          <Divider />
+          <List disablePadding>
+            {forwarders.map((sensor) => (
+              <SideMenuItem item={sensor} key={sensor.id} type="forwarder" />
+            ))}
+          </List>
           <List disablePadding>
             <ListItem
               button
@@ -138,26 +204,13 @@ const SideMenu: React.FunctionComponent<
             </ListItem>
           </List>
           <Divider />
-          <Grid container className={classes.listTitle} alignItems="center">
-            <Grid item xs>
-              My sensors
-            </Grid>
-            <Grid item>
-              <Link to="/add-sensor" onClick={drawerToggle}>
-                <Fab color="primary" size="small" className={classes.sensorFab}>
-                  <PlusIcon />
-                </Fab>
-              </Link>
-            </Grid>
-          </Grid>
-          <Divider />
+          <List disablePadding>
+            {displays.map((item) => (
+              <SideMenuItem item={item} key={item.id} type="display" />
+            ))}
+          </List>
         </>
       )}
-      <List disablePadding>
-        {mySensors.map((sensor: Sensor) => (
-          <SensorItem sensor={sensor} key={sensor.id} />
-        ))}
-      </List>
       <Grid container className={classes.listTitle} alignItems="center">
         <Grid item xs>
           All sensors
@@ -168,7 +221,13 @@ const SideMenu: React.FunctionComponent<
         {sensors
           .filter((s) => s.userId !== user?.id)
           .map((sensor: Sensor) => (
-            <SensorItem sensor={sensor} key={sensor.id} />
+            <SideMenuItem
+              item={sensor}
+              key={sensor.id}
+              type="sensor"
+              expandable
+              visibility
+            />
           ))}
       </List>
     </div>

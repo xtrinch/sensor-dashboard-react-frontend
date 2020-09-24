@@ -33,27 +33,29 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const [{ sensors }] = useContext(SensorContext);
+  const [{ sensors, mySensors }] = useContext(SensorContext);
   const [{ date, groupBy }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (sensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+    const allSensors = [...sensors, ...mySensors];
+
+    if (allSensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
       return;
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: date,
       measurementTypes: uniq(
-        sensors.reduce((acc, sensor: Sensor) => {
+        allSensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
         }, [])
       ),
-      sensorIds: sensors.filter((s) => s.visible).map((s) => s.id),
+      sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [date, sensors]);
+  }, [date, sensors, mySensors]);
 
   useEffect(() => {
     if (!date || sensors.length === 0) {

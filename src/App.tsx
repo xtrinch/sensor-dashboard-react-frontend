@@ -14,13 +14,17 @@ import { AppContextProvider } from "context/AppContext";
 import { ConfirmationContextProvider } from "context/ConfirmationContext";
 import { DisplayContextProvider } from "context/DisplayContext";
 import { ErrorContextProvider } from "context/ErrorContext";
+import { ForwarderContextProvider } from "context/ForwarderContext";
 import { SensorContextProvider } from "context/SensorContext";
 import { ToastContextProvider } from "context/ToastContext";
 import theme from "layout/Theme";
 import AddDisplayPage from "pages/AddDisplayPage";
+import AddForwarderPage from "pages/AddForwarderPage";
 import AddSensorPage from "pages/AddSensorPage";
 import DisplayInfoPage from "pages/DisplayInfoPage";
 import DisplayListPage from "pages/DisplayListPage";
+import ForwarderInfoPage from "pages/ForwarderInfoPage";
+import ForwarderListPage from "pages/ForwarderListPage";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
 import SensorInfoPage from "pages/SensorInfoPage";
@@ -65,46 +69,57 @@ class App extends React.Component<WithStyles<typeof styles>> {
               <SensorContextProvider>
                 <ConfirmationContextProvider>
                   <DisplayContextProvider>
-                    <ToastContextProvider>
-                      <ErrorContextProvider>
-                        <Wrapper>
-                          <ToastBox />
-                          <ConfirmationBox />
-                          <ErrorBox />
-                          <Grid container className={classes.app}>
-                            <Grid item>
-                              <SideMenuWrapper />
+                    <ForwarderContextProvider>
+                      <ToastContextProvider>
+                        <ErrorContextProvider>
+                          <Wrapper>
+                            <ToastBox />
+                            <ConfirmationBox />
+                            <ErrorBox />
+                            <Grid container className={classes.app}>
+                              <Grid item>
+                                <SideMenuWrapper />
+                              </Grid>
+                              <Grid item style={{ flex: "1" }}>
+                                <Route exact path="/">
+                                  <SensorsPage />
+                                </Route>
+                                <Route exact path="/login">
+                                  <LoginPage />
+                                </Route>
+                                <Route exact path="/register">
+                                  <RegisterPage />
+                                </Route>
+                                <Route exact path="/add-sensor">
+                                  <AddSensorPage />
+                                </Route>
+                                <Route exact path="/add-display">
+                                  <AddDisplayPage />
+                                </Route>
+                                <Route exact path="/add-forwarder">
+                                  <AddForwarderPage />
+                                </Route>
+                                <Route exact path="/sensors/:id">
+                                  <SensorInfoPage />
+                                </Route>
+                                <Route exact path="/displays/:id">
+                                  <DisplayInfoPage />
+                                </Route>
+                                <Route exact path="/forwarders/:id">
+                                  <ForwarderInfoPage />
+                                </Route>
+                                <Route exact path="/displays">
+                                  <DisplayListPage />
+                                </Route>
+                                <Route exact path="/forwarders">
+                                  <ForwarderListPage />
+                                </Route>
+                              </Grid>
                             </Grid>
-                            <Grid item style={{ flex: "1" }}>
-                              <Route exact path="/">
-                                <SensorsPage />
-                              </Route>
-                              <Route exact path="/login">
-                                <LoginPage />
-                              </Route>
-                              <Route exact path="/register">
-                                <RegisterPage />
-                              </Route>
-                              <Route exact path="/add-sensor">
-                                <AddSensorPage />
-                              </Route>
-                              <Route exact path="/add-display">
-                                <AddDisplayPage />
-                              </Route>
-                              <Route exact path="/sensors/:id">
-                                <SensorInfoPage />
-                              </Route>
-                              <Route exact path="/displays/:id">
-                                <DisplayInfoPage />
-                              </Route>
-                              <Route exact path="/displays">
-                                <DisplayListPage />
-                              </Route>
-                            </Grid>
-                          </Grid>
-                        </Wrapper>
-                      </ErrorContextProvider>
-                    </ToastContextProvider>
+                          </Wrapper>
+                        </ErrorContextProvider>
+                      </ToastContextProvider>
+                    </ForwarderContextProvider>
                   </DisplayContextProvider>
                 </ConfirmationContextProvider>
               </SensorContextProvider>

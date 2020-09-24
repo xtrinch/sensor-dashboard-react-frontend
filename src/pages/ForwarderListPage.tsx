@@ -11,13 +11,13 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
-import DisplayItem from "components/DisplayItem";
+import ForwarderItem from "components/ForwarderItem";
 import TopBar from "components/TopBar";
-import { DisplayContext } from "context/DisplayContext";
+import { ForwarderContext } from "context/ForwarderContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
+import Forwarder from "types/Forwarder";
 
 const styles = (theme) =>
   createStyles({
@@ -35,12 +35,12 @@ const styles = (theme) =>
     },
   });
 
-const DisplayListPage: React.FunctionComponent<
+const ForwarderListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
 
-  const [displayContext] = useContext(DisplayContext);
+  const [forwarderContext] = useContext(ForwarderContext);
 
   return (
     <>
@@ -49,7 +49,7 @@ const DisplayListPage: React.FunctionComponent<
           variant="contained"
           className={classes.actionButton}
           startIcon={<Plus />}
-          onClick={() => history.push("add-display")}
+          onClick={() => history.push("add-forwarder")}
         >
           Add
         </Button>
@@ -57,33 +57,33 @@ const DisplayListPage: React.FunctionComponent<
       <Container component="main" maxWidth="sm" className={classes.root}>
         <CssBaseline />
         <Typography component="h1" variant="h5" style={{ padding: "20px" }}>
-          My display devices
+          My forwarder devices
         </Typography>
-        {displayContext.displays.length !== 0 && (
+        {forwarderContext.forwarders.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Board type</TableCell>
+                <TableCell>Num. forwarded packets</TableCell>
                 <TableCell>Created at</TableCell>
                 <TableCell>Last seen at</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {displayContext.displays.map((display: Display) => (
-                <DisplayItem display={display} key={display.id} />
+              {forwarderContext.forwarders.map((forwarder: Forwarder) => (
+                <ForwarderItem forwarder={forwarder} key={forwarder.id} />
               ))}
             </TableBody>
           </Table>
         )}
-        {displayContext.displays.length === 0 && (
+        {forwarderContext.forwarders.length === 0 && (
           <Typography
             variant="body2"
             component="p"
             style={{ margin: "30px 0px" }}
           >
-            No displays added
+            No forwarders added
           </Typography>
         )}
       </Container>
@@ -91,4 +91,4 @@ const DisplayListPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(DisplayListPage));
+export default withRouter(withStyles(styles)(ForwarderListPage));

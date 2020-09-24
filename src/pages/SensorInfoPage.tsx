@@ -148,7 +148,7 @@ const SensorInfoPage: React.FunctionComponent<
               name="accessToken"
               label="Sensor access token"
               disabled
-              value={sensor?.sensorAccessToken || ""}
+              value={sensor?.accessToken || ""}
             />
             <TextField
               variant="outlined"

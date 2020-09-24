@@ -44,9 +44,6 @@ const styles = (theme) =>
       "& input": {
         textAlign: "center",
         cursor: "pointer",
-        "&:hover": {
-          //color: 'blue'
-        },
         paddingTop: "11px",
         paddingBottom: "10px",
       },

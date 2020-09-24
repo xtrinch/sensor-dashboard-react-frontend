@@ -34,7 +34,7 @@ const styles = () =>
       boxShadow: "none",
       borderRadius: "0px",
       backgroundColor: ColorsEnum.BGDARK,
-      padding: "20px",
+      padding: "15px",
       "& svg": {
         overflow: "visible",
       },
@@ -67,7 +67,8 @@ const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
   const { type, classes, date, groupBy, measurements } = props;
-  const [{ sensors }] = useContext(SensorContext);
+  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const allSensors = [...sensors, ...mySensors];
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {
@@ -122,7 +123,7 @@ const SensorCanvas: React.FunctionComponent<
       <Card className={classes.root}>
         <Typography
           variant="h6"
-          style={{ marginBottom: "7px", fontWeight: "normal" }}
+          style={{ marginBottom: "7px", textAlign: "center" }}
         >
           {MeasurementTypeLabelsEnum[type]}
         </Typography>
@@ -136,7 +137,7 @@ const SensorCanvas: React.FunctionComponent<
                 value: m.measurement,
                 labelTime: m.createdAt,
               })),
-              name: sensors.find((s) => s.id === parseInt(key, 10))?.name,
+              name: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
             }))}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}

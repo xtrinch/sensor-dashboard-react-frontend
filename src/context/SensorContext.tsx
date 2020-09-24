@@ -89,6 +89,17 @@ export const updateSensor = async (
   return s;
 };
 
+export const toggleSensorVisibility = async (sensor: Sensor) => {
+  sensor.visible = !sensor.visible;
+  if (!sensor.visible) {
+    sensor.expanded = false;
+  }
+  SensorContext.dispatch({
+    type: "updateSensor",
+    payload: sensor,
+  });
+};
+
 export const deleteSensor = async (id: SensorId): Promise<boolean> => {
   await SensorService.deleteSensor(id);
 

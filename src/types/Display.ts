@@ -17,7 +17,7 @@ class Display extends AbstractEntity {
     this.user = s?.user ? new User(s.user) : null;
     this.boardType = s?.boardType;
     this.location = s?.location;
-    this.displayAccessToken = s?.displayAccessToken;
+    this.accessToken = s?.accessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
     this.sensors = s?.sensors
       ? s.sensors.map((sensor) => new Sensor(sensor))
@@ -38,7 +38,7 @@ class Display extends AbstractEntity {
 
   public boardType: DisplayBoardTypesEnum;
 
-  public displayAccessToken: string;
+  public accessToken: string;
 
   public lastSeenAt: Date;
 

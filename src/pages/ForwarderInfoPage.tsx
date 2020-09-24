@@ -1,10 +1,3 @@
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -16,18 +9,13 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteDisplay, updateDisplay } from "context/DisplayContext";
-import { SensorContext } from "context/SensorContext";
+import { deleteForwarder, updateForwarder } from "context/ForwarderContext";
 import { format } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import DisplayService from "services/DisplayService";
+import ForwarderService from "services/ForwarderService";
 import ColorsEnum from "types/ColorsEnum";
-import { DisplayId } from "types/Display";
-import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
-import MeasurementTypeEnum, {
-  MeasurementTypeLabelsEnum,
-} from "types/MeasurementTypeEnum";
+import { ForwarderId } from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme) =>
@@ -63,7 +51,7 @@ const styles = (theme) =>
     },
   });
 
-const DisplayInfoPage: React.FunctionComponent<
+const ForwarderInfoPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const {
@@ -79,50 +67,43 @@ const DisplayInfoPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
-    boardType: "" as DisplayBoardTypesEnum,
-    timezone: "",
-    measurementTypes: [],
-    sensorIds: [],
   });
 
-  const [sensorContext] = useContext(SensorContext);
-
-  const [display, setDisplay] = useState(null);
+  const [forwarder, setForwarder] = useState(null);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteDisplay(display.id);
-      history.push("/displays");
+      await deleteForwarder(forwarder.id);
+      history.push("/forwarders");
     };
     openConfirmation(
       onConfirm,
       null,
-      "Are you sure you want to delete display?"
+      "Are you sure you want to delete forwarder?"
     );
   };
 
   useEffect(() => {
-    const getDisplay = async () => {
-      const s = await DisplayService.getDisplay((id as unknown) as DisplayId);
-      setDisplay(s);
+    const getForwarder = async () => {
+      const s = await ForwarderService.getForwarder(
+        (id as unknown) as ForwarderId
+      );
+      setForwarder(s);
       setData((d) => ({
         ...d,
         name: s.name,
         location: s.location,
-        boardType: s.boardType,
-        measurementTypes: s.measurementTypes,
-        sensorIds: s.sensorIds,
       }));
     };
 
-    getDisplay();
+    getForwarder();
   }, [id]);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      await updateDisplay((id as unknown) as DisplayId, data);
+      await updateForwarder((id as unknown) as ForwarderId, data);
     } catch (e) {
       setErrors(e);
     }
@@ -152,7 +133,7 @@ const DisplayInfoPage: React.FunctionComponent<
             <SettingsInputAntennaIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Display board info
+            Forwarder board info
           </Typography>
           <form className={classes.form} noValidate onSubmit={submitForm}>
             <TextField
@@ -161,9 +142,9 @@ const DisplayInfoPage: React.FunctionComponent<
               fullWidth
               id="accessToken"
               name="accessToken"
-              label="Display access token"
+              label="Forwarder access token"
               disabled
-              value={display?.accessToken || ""}
+              value={forwarder?.accessToken || ""}
             />
             <TextField
               variant="outlined"
@@ -174,8 +155,8 @@ const DisplayInfoPage: React.FunctionComponent<
               label="Last seen at"
               disabled
               value={
-                display?.lastSeenAt
-                  ? format(display?.lastSeenAt, DATETIME_REGEX)
+                forwarder?.lastSeenAt
+                  ? format(forwarder?.lastSeenAt, DATETIME_REGEX)
                   : "Never"
               }
             />
@@ -184,7 +165,7 @@ const DisplayInfoPage: React.FunctionComponent<
               margin="normal"
               fullWidth
               id="name"
-              label="Display name"
+              label="Forwarder name"
               name="name"
               value={data.name}
               onChange={(e) => fieldChange(e.target.value, "name")}
@@ -205,72 +186,6 @@ const DisplayInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
-            <TextField
-              select
-              id="select"
-              label="Board type"
-              variant="outlined"
-              margin="normal"
-              value={data.boardType}
-              onChange={(e) => fieldChange(e.target.value, "boardType")}
-              fullWidth
-              error={!!errors.boardType}
-              helperText={errors.boardType}
-            >
-              {Object.keys(DisplayBoardTypesEnum).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {DisplayBoardTypesEnum[key]}
-                </MenuItem>
-              ))}
-            </TextField>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">
-                Measurement types
-              </InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.measurementTypes}
-                onChange={(e) =>
-                  fieldChange(e.target.value, "measurementTypes")
-                }
-                error={!!errors.measurementTypes}
-              >
-                {Object.values(MeasurementTypeEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {MeasurementTypeLabelsEnum[key]}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.measurementTypes && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.measurementTypes}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.sensorIds}
-                onChange={(e) => fieldChange(e.target.value, "sensorIds")}
-                error={!!errors.sensorIds}
-              >
-                {sensorContext.sensors.map((sensor) => (
-                  <MenuItem key={sensor.id} value={sensor.id}>
-                    {sensor.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.sensorIds && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.sensorIds}
-                </FormHelperText>
-              )}
-            </FormControl>
             <Button
               type="submit"
               fullWidth
@@ -288,4 +203,4 @@ const DisplayInfoPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(DisplayInfoPage));
+export default withRouter(withStyles(styles)(ForwarderInfoPage));

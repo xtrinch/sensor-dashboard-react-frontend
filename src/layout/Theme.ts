@@ -31,6 +31,11 @@ const theme = createMuiTheme({
       h5: {
         color: ColorsEnum.GRAY,
       },
+      h6: {
+        fontSize: "15px",
+        textTransform: "uppercase",
+        fontWeight: "normal",
+      },
     },
     MuiFab: {
       root: {
@@ -73,6 +78,9 @@ const theme = createMuiTheme({
     MuiListItem: {
       root: {
         color: ColorsEnum.GRAY,
+      },
+      divider: {
+        borderBottomColor: ColorsEnum.BGLIGHT,
       },
     },
     MuiDrawer: {

@@ -23,7 +23,7 @@ class Sensor extends AbstractEntity {
     this.timezone = s?.timezone;
     this.boardType = s?.boardType;
     this.location = s?.location;
-    this.sensorAccessToken = s?.sensorAccessToken;
+    this.accessToken = s?.accessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
     this.private = s?.private;
   }
@@ -32,7 +32,7 @@ class Sensor extends AbstractEntity {
 
   public name: string;
 
-  public displayName: string;
+  public displayName: string; // eslint-disable-line
 
   public type: SensorTypesEnum;
 
@@ -52,7 +52,7 @@ class Sensor extends AbstractEntity {
 
   public timezone: string;
 
-  public sensorAccessToken: string;
+  public accessToken: string;
 
   public lastSeenAt: Date;
 
