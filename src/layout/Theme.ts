@@ -42,6 +42,15 @@ const theme = createMuiTheme({
         color: ColorsEnum.WHITE,
       },
     },
+    MuiListItem: {
+      root: {
+        color: ColorsEnum.GRAY,
+      },
+      divider: {
+        borderBottomColor: ColorsEnum.BGLIGHT,
+        borderBottomWidth: "0px",
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: "35px",
@@ -72,14 +81,6 @@ const theme = createMuiTheme({
       },
       contained: {
         boxShadow: "none",
-      },
-    },
-    MuiListItem: {
-      root: {
-        color: ColorsEnum.GRAY,
-      },
-      divider: {
-        borderBottomColor: ColorsEnum.BGLIGHT,
       },
     },
     MuiDrawer: {

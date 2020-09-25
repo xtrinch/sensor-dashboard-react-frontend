@@ -1,13 +1,14 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
 import BoardTypeEnum from "types/BoardTypeEnum";
+import { IotDeviceInterface } from "types/IotDeviceInterface";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import SensorTypeEnum from "types/SensorTypeEnum";
 import User, { UserId } from "types/User";
 
 export type SensorId = number;
 
-class Sensor extends AbstractEntity {
+class Sensor extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {
     super(s);
 
@@ -17,7 +18,7 @@ class Sensor extends AbstractEntity {
     this.visible = s?.visible || true;
     this.expanded = false;
     this.id = s?.id;
-    this.measurementTypes = s?.measurementTypes;
+    this.measurementTypes = s?.measurementTypes || [];
     this.userId = s?.userId;
     this.user = s?.user ? new User(s.user) : null;
     this.timezone = s?.timezone;

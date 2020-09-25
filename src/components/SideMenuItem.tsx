@@ -21,17 +21,17 @@ import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { SensorContext, toggleSensorVisibility } from "context/SensorContext";
 import { differenceInMinutes } from "date-fns";
-import React, { Fragment, useContext } from "react";
+import React, { Context, Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
-import Forwarder from "types/Forwarder";
+import { IotDeviceInterface } from "types/IotDeviceInterface";
 import Sensor from "types/Sensor";
 
 interface SideMenuItemProps {
-  item: Sensor | Display | Forwarder;
+  item: IotDeviceInterface;
   visibility?: boolean;
   expandable?: boolean;
   type: "sensor" | "display" | "forwarder";
+  context?: Context<any>;
 }
 
 const styles = () =>
@@ -69,18 +69,27 @@ const styles = () =>
 const SideMenuItem: React.FunctionComponent<
   SideMenuItemProps & WithStyles<typeof styles>
 > = (props) => {
-  const { item, classes } = props;
+  const { item, classes, context } = props;
 
   const [{ user }] = useContext(AccountContext);
   const [, dispatch] = useContext(SensorContext);
 
-  const toggleVisibility = async (e: any, item: Sensor) => {
+  const toggleVisibility = async (e: any, item: IotDeviceInterface) => {
     e.stopPropagation();
-    toggleSensorVisibility(item);
+
+    if (!props.visibility) {
+      return;
+    }
+    toggleSensorVisibility(item as Sensor);
   };
 
-  const toggleExpand = async (e: any, item: Sensor) => {
+  const toggleExpand = async (e: any, item: IotDeviceInterface) => {
     e.stopPropagation();
+
+    if (!props.expandable) {
+      return;
+    }
+
     item.expanded = !item.expanded;
     dispatch({
       type: "updateSensor",
@@ -96,7 +105,7 @@ const SideMenuItem: React.FunctionComponent<
         divider
         button
         onClick={(e) => {
-          toggleExpand(e, item as Sensor);
+          toggleExpand(e, item as IotDeviceInterface);
         }}
         className={
           differenceInMinutes(item.lastSeenAt, new Date()) > -60
@@ -106,16 +115,12 @@ const SideMenuItem: React.FunctionComponent<
       >
         {expandable && (
           <ListItemIcon>
-            {(item as Sensor).expanded ? (
-              <ExpandLessIcon />
-            ) : (
-              <ExpandMoreIcon />
-            )}
+            {item.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItemIcon>
         )}
         <ListItemText>
           <Grid container spacing={2}>
-            {(item as Sensor).private && (
+            {item.private && (
               <Grid item className={classes.private}>
                 <LockIcon fontSize="small" />
               </Grid>
@@ -141,10 +146,10 @@ const SideMenuItem: React.FunctionComponent<
             size="small"
             className={classes.itemFab}
             onClick={(e) => {
-              toggleVisibility(e, item as Sensor);
+              toggleVisibility(e, item);
             }}
           >
-            {(item as Sensor).visible ? (
+            {(item as IotDeviceInterface).visible ? (
               <VisibilityIcon />
             ) : (
               <VisibilityOffIcon />
@@ -155,13 +160,17 @@ const SideMenuItem: React.FunctionComponent<
           color="secondary"
           size="small"
           className={classes.itemFab}
-          onClick={() => removeSensor(item)}
+          onClick={() => removeIotDeviceInterface(item)}
         >
           <RemoveIcon />
         </Fab> */}
       </ListItem>
       {expandable && (
-        <Collapse in={(item as Sensor).expanded} timeout="auto" unmountOnExit>
+        <Collapse
+          in={(item as IotDeviceInterface).expanded}
+          timeout="auto"
+          unmountOnExit
+        >
           <List component="div" disablePadding>
             {(item as Sensor).measurementTypes.map((m, index) => (
               <ListItem button key={index}>

@@ -1,11 +1,12 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
 import BoardTypeEnum from "types/BoardTypeEnum";
+import { IotDeviceInterface } from "types/IotDeviceInterface";
 import User, { UserId } from "types/User";
 
 export type ForwarderId = number;
 
-class Forwarder extends AbstractEntity {
+class Forwarder extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {
     super(s);
 
@@ -37,6 +38,12 @@ class Forwarder extends AbstractEntity {
   public numForwarded: number;
 
   public boardType: BoardTypeEnum;
+
+  public visible: boolean;
+
+  public expanded: boolean;
+
+  public private: boolean;
 }
 
 export default Forwarder;

@@ -144,6 +144,7 @@ const SideMenu: React.FunctionComponent<
                 type="sensor"
                 expandable
                 visibility
+                context={SensorContext}
               />
             ))}
           </List>
@@ -174,8 +175,12 @@ const SideMenu: React.FunctionComponent<
           </List>
           <Divider />
           <List disablePadding>
-            {forwarders.map((sensor) => (
-              <SideMenuItem item={sensor} key={sensor.id} type="forwarder" />
+            {forwarders.map((forwarder) => (
+              <SideMenuItem
+                item={forwarder}
+                key={forwarder.id}
+                type="forwarder"
+              />
             ))}
           </List>
           <List disablePadding>
@@ -222,6 +227,7 @@ const SideMenu: React.FunctionComponent<
           .filter((s) => s.userId !== user?.id)
           .map((sensor: Sensor) => (
             <SideMenuItem
+              context={SensorContext}
               item={sensor}
               key={sensor.id}
               type="sensor"
