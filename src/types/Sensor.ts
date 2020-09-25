@@ -1,8 +1,8 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
-import SensorTypesEnum from "types/SensorTypesEnum";
+import SensorTypeEnum from "types/SensorTypeEnum";
 import User, { UserId } from "types/User";
 
 export type SensorId = number;
@@ -26,6 +26,7 @@ class Sensor extends AbstractEntity {
     this.accessToken = s?.accessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
     this.private = s?.private;
+    this.sensorTypes = s?.sensorTypes;
   }
 
   public id: SensorId;
@@ -34,7 +35,7 @@ class Sensor extends AbstractEntity {
 
   public displayName: string; // eslint-disable-line
 
-  public type: SensorTypesEnum;
+  public type: MeasurementTypeEnum;
 
   public visible: boolean;
 
@@ -48,7 +49,9 @@ class Sensor extends AbstractEntity {
 
   public location: string;
 
-  public boardType: SensorBoardTypesEnum;
+  public boardType: BoardTypeEnum;
+
+  public sensorTypes: SensorTypeEnum[];
 
   public timezone: string;
 

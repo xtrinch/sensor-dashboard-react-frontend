@@ -22,9 +22,10 @@ import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import DisplayService from "services/DisplayService";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
 import { DisplayId } from "types/Display";
-import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
+import DisplayTypeEnum from "types/DisplayTypeEnum";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
@@ -79,10 +80,11 @@ const DisplayInfoPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
-    boardType: "" as DisplayBoardTypesEnum,
+    boardType: "" as BoardTypeEnum,
     timezone: "",
     measurementTypes: [],
     sensorIds: [],
+    displayType: "" as DisplayTypeEnum,
   });
 
   const [sensorContext] = useContext(SensorContext);
@@ -112,6 +114,7 @@ const DisplayInfoPage: React.FunctionComponent<
         boardType: s.boardType,
         measurementTypes: s.measurementTypes,
         sensorIds: s.sensorIds,
+        displayType: s.displayType,
       }));
     };
 
@@ -217,9 +220,27 @@ const DisplayInfoPage: React.FunctionComponent<
               error={!!errors.boardType}
               helperText={errors.boardType}
             >
-              {Object.keys(DisplayBoardTypesEnum).map((key) => (
+              {Object.keys(BoardTypeEnum).map((key) => (
                 <MenuItem key={key} value={key}>
-                  {DisplayBoardTypesEnum[key]}
+                  {BoardTypeEnum[key]}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              id="select"
+              label="Display type"
+              variant="outlined"
+              margin="normal"
+              value={data.displayType}
+              onChange={(e) => fieldChange(e.target.value, "displayType")}
+              fullWidth
+              error={!!errors.displayType}
+              helperText={errors.displayType}
+            >
+              {Object.keys(DisplayTypeEnum).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {DisplayTypeEnum[key]}
                 </MenuItem>
               ))}
             </TextField>

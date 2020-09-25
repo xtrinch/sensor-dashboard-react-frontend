@@ -1,6 +1,7 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
-import DisplayBoardTypesEnum from "types/DisplayBoardTypesEnum";
+import BoardTypeEnum from "types/BoardTypeEnum";
+import DisplayTypeEnum from "types/DisplayTypeEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import Sensor, { SensorId } from "types/Sensor";
 import User, { UserId } from "types/User";
@@ -24,6 +25,7 @@ class Display extends AbstractEntity {
       : [];
     this.sensorIds = s?.sensorIds || [];
     this.measurementTypes = s?.measurementTypes || [];
+    this.displayType = s?.displayType;
   }
 
   public id: DisplayId;
@@ -36,7 +38,9 @@ class Display extends AbstractEntity {
 
   public location: string;
 
-  public boardType: DisplayBoardTypesEnum;
+  public boardType: BoardTypeEnum;
+
+  public displayType: DisplayTypeEnum;
 
   public accessToken: string;
 

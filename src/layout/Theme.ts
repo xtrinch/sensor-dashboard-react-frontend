@@ -33,7 +33,6 @@ const theme = createMuiTheme({
       },
       h6: {
         fontSize: "15px",
-        textTransform: "uppercase",
         fontWeight: "normal",
       },
     },

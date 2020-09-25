@@ -121,10 +121,7 @@ const SensorCanvas: React.FunctionComponent<
   return (
     <>
       <Card className={classes.root}>
-        <Typography
-          variant="h6"
-          style={{ marginBottom: "7px", textAlign: "center" }}
-        >
+        <Typography variant="h6" style={{ marginBottom: "7px" }}>
           {MeasurementTypeLabelsEnum[type]}
         </Typography>
         {measurements && (

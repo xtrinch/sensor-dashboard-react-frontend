@@ -1,3 +1,4 @@
+import { MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -14,6 +15,7 @@ import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ForwarderService from "services/ForwarderService";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
 import { ForwarderId } from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
@@ -67,6 +69,7 @@ const ForwarderInfoPage: React.FunctionComponent<
   const [data, setData] = useState({
     name: "",
     location: "",
+    boardType: "" as BoardTypeEnum,
   });
 
   const [forwarder, setForwarder] = useState(null);
@@ -93,6 +96,7 @@ const ForwarderInfoPage: React.FunctionComponent<
         ...d,
         name: s.name,
         location: s.location,
+        boardType: s.boardType,
       }));
     };
 
@@ -164,6 +168,17 @@ const ForwarderInfoPage: React.FunctionComponent<
               variant="outlined"
               margin="normal"
               fullWidth
+              id="numForwarded"
+              name="numForwarded"
+              label="Number of forwarded packets"
+              disabled
+              type="number"
+              value={forwarder?.numForwarded || 0}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
               id="name"
               label="Forwarder name"
               name="name"
@@ -186,6 +201,24 @@ const ForwarderInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
+            <TextField
+              select
+              id="select"
+              label="Board type"
+              variant="outlined"
+              margin="normal"
+              value={data.boardType}
+              onChange={(e) => fieldChange(e.target.value, "boardType")}
+              fullWidth
+              error={!!errors.boardType}
+              helperText={errors.boardType}
+            >
+              {Object.keys(BoardTypeEnum).map((key) => (
+                <MenuItem key={key} value={key}>
+                  {BoardTypeEnum[key]}
+                </MenuItem>
+              ))}
+            </TextField>
             <Button
               type="submit"
               fullWidth

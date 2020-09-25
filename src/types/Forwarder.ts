@@ -1,5 +1,6 @@
 import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import User, { UserId } from "types/User";
 
 export type ForwarderId = number;
@@ -16,6 +17,7 @@ class Forwarder extends AbstractEntity {
     this.accessToken = s?.accessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
     this.numForwarded = s?.numForwarded;
+    this.boardType = s?.boardType;
   }
 
   public id: ForwarderId;
@@ -33,6 +35,8 @@ class Forwarder extends AbstractEntity {
   public lastSeenAt: Date;
 
   public numForwarded: number;
+
+  public boardType: BoardTypeEnum;
 }
 
 export default Forwarder;

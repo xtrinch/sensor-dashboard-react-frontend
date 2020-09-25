@@ -38,8 +38,8 @@ const styles = () =>
     },
     listTitle: {
       textTransform: "uppercase",
-      padding: "10px 16px",
-      minHeight: "50px",
+      padding: "7px 16px",
+      minHeight: "40px",
       borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
       backgroundColor: ColorsEnum.BGLIGHTER,
     },

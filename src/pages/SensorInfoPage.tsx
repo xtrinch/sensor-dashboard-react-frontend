@@ -1,4 +1,12 @@
-import { Checkbox, FormControlLabel, MenuItem } from "@material-ui/core";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -16,9 +24,13 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import SensorService from "services/SensorService";
 import { listTimeZones } from "timezone-support";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
+import MeasurementTypeEnum, {
+  MeasurementTypeLabelsEnum,
+} from "types/MeasurementTypeEnum";
 import { SensorId } from "types/Sensor";
-import SensorBoardTypesEnum from "types/SensorBoardTypesEnum";
+import SensorTypeEnum from "types/SensorTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme) =>
@@ -66,9 +78,11 @@ const SensorInfoPage: React.FunctionComponent<
     name: "",
     displayName: "",
     location: "",
-    boardType: "" as SensorBoardTypesEnum,
+    boardType: "" as BoardTypeEnum,
     timezone: "",
     private: false,
+    sensorTypes: [],
+    measurementTypes: [],
   });
 
   const [sensor, setSensor] = useState(null);
@@ -97,6 +111,8 @@ const SensorInfoPage: React.FunctionComponent<
         boardType: s.boardType,
         timezone: s.timezone,
         private: s.private,
+        measurementTypes: s.measurementTypes,
+        sensorTypes: s.sensorTypes,
       }));
     };
 
@@ -214,9 +230,9 @@ const SensorInfoPage: React.FunctionComponent<
               error={!!errors.boardType}
               helperText={errors.boardType}
             >
-              {Object.keys(SensorBoardTypesEnum).map((key) => (
+              {Object.keys(BoardTypeEnum).map((key) => (
                 <MenuItem key={key} value={key}>
-                  {SensorBoardTypesEnum[key]}
+                  {BoardTypeEnum[key]}
                 </MenuItem>
               ))}
             </TextField>
@@ -236,6 +252,54 @@ const SensorInfoPage: React.FunctionComponent<
                 </MenuItem>
               ))}
             </TextField>
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel id="demo-mutiple-name-label">Sensor types</InputLabel>
+              <Select
+                labelId="demo-mutiple-name-label"
+                id="demo-mutiple-name"
+                multiple
+                value={data.sensorTypes}
+                onChange={(e) => fieldChange(e.target.value, "sensorTypes")}
+                error={!!errors.sensorTypes}
+              >
+                {Object.values(SensorTypeEnum).map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {key}
+                  </MenuItem>
+                ))}
+              </Select>
+              {!!errors.sensorTypes && (
+                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                  {errors.sensorTypes}
+                </FormHelperText>
+              )}
+            </FormControl>
+            <FormControl variant="outlined" fullWidth margin="normal">
+              <InputLabel id="demo-mutiple-name-label">
+                Measurement types
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-name-label"
+                id="demo-mutiple-name"
+                multiple
+                value={data.measurementTypes}
+                onChange={(e) =>
+                  fieldChange(e.target.value, "measurementTypes")
+                }
+                error={!!errors.measurementTypes}
+              >
+                {Object.values(MeasurementTypeEnum).map((key) => (
+                  <MenuItem key={key} value={key}>
+                    {MeasurementTypeLabelsEnum[key]}
+                  </MenuItem>
+                ))}
+              </Select>
+              {!!errors.measurementTypes && (
+                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
+                  {errors.measurementTypes}
+                </FormHelperText>
+              )}
+            </FormControl>
             <FormControlLabel
               control={
                 <Checkbox

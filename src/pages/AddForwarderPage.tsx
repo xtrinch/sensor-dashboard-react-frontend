@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -11,6 +11,7 @@ import TopBar from "components/TopBar";
 import { addForwarder } from "context/ForwarderContext";
 import React, { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
+import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
 
 const styles = (theme) =>
@@ -48,6 +49,7 @@ const AddForwarderPage: React.FunctionComponent<
     name: "",
     location: "",
     timezone: "",
+    boardType: "" as BoardTypeEnum,
   });
 
   const [success, setSuccess] = useState(false);
@@ -113,6 +115,24 @@ const AddForwarderPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
+                <TextField
+                  select
+                  id="select"
+                  label="Board type"
+                  variant="outlined"
+                  margin="normal"
+                  value={data.boardType}
+                  onChange={(e) => fieldChange(e.target.value, "boardType")}
+                  fullWidth
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
+                >
+                  {Object.keys(BoardTypeEnum).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {BoardTypeEnum[key]}
+                    </MenuItem>
+                  ))}
+                </TextField>
                 <Button
                   type="submit"
                   fullWidth
