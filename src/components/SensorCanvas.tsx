@@ -11,6 +11,7 @@ import {
   startOfWeek,
   startOfYear,
 } from "date-fns";
+import { uniqBy } from "lodash";
 import React, { useContext } from "react";
 import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
@@ -68,7 +69,7 @@ const SensorCanvas: React.FunctionComponent<
 > = (props) => {
   const { type, classes, date, groupBy, measurements } = props;
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const allSensors = [...sensors, ...mySensors];
+  const allSensors = uniqBy([...sensors, ...mySensors], (s: Sensor) => s.id);
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {
@@ -135,6 +136,9 @@ const SensorCanvas: React.FunctionComponent<
                 labelTime: m.createdAt,
               })),
               name: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
+              ordering: allSensors
+                .filter((s) => s.visible)
+                .findIndex((s) => s.id === parseInt(key, 10)),
             }))}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}

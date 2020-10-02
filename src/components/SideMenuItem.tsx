@@ -69,7 +69,7 @@ const styles = () =>
 const SideMenuItem: React.FunctionComponent<
   SideMenuItemProps & WithStyles<typeof styles>
 > = (props) => {
-  const { item, classes, context } = props;
+  const { item, classes } = props;
 
   const [{ user }] = useContext(AccountContext);
   const [, dispatch] = useContext(SensorContext);
@@ -113,6 +113,7 @@ const SideMenuItem: React.FunctionComponent<
             : undefined
         }
       >
+        {/* <WifiIcon /> */}
         {expandable && (
           <ListItemIcon>
             {item.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}

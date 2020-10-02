@@ -3,12 +3,12 @@ import SensorCanvas from "components/SensorCanvas";
 import TopMenu from "components/TopMenu";
 import { AppContext } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
+import { uniq } from "lodash";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import MeasurementService from "services/MeasurementService";
 import ColorsEnum from "types/ColorsEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import Sensor from "types/Sensor";
-import { uniq } from "utils/array";
 
 const styles = (theme) =>
   createStyles({
@@ -75,10 +75,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
     );
 
     // filter duplicates
-    sensorTypes = sensorTypes.filter(
-      (item: MeasurementTypeEnum, pos: number) =>
-        sensorTypes.findIndex((d: MeasurementTypeEnum) => d === item) === pos
-    );
+    sensorTypes = uniq(sensorTypes);
 
     return sensorTypes;
   };

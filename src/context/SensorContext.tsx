@@ -165,7 +165,7 @@ let reducer = (
       state.sensors.splice(deleteSensorIndex, 1);
       return { ...state };
     case "addSensor":
-      return { ...state, sensors: [...state.sensors, action.payload] };
+      return { ...state, mySensors: [...state.mySensors, action.payload] };
     default: {
       return { ...state, sensors: [] };
     }

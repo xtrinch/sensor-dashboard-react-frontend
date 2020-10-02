@@ -27,6 +27,7 @@ interface TimeSeriesChartInterface {
   chartData: {
     data: ChartPoint[];
     name: string;
+    ordering: number;
   }[];
   domain: [AxisDomain, AxisDomain];
   tickFormatter: (value: any) => any;
@@ -86,7 +87,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
           name={line.name}
           strokeWidth={1}
           isAnimationActive={false}
-          fill={GraphColors[index]} // dot color
+          fill={GraphColors[line.ordering] || "white"} // dot color
           id={`${index}`}
         />
       ))}

@@ -21,9 +21,19 @@ enum ColorsEnum {
 export const GraphColors = [
   "#E5BC76",
   "#8ABABE",
+  "#7f78ac",
   "#E45558",
   "#16B5A7",
   "#63BE9C",
+  "green",
+  "green",
+  "green",
+  "green",
+  "green",
+  "green",
+  "green",
+  "green",
+  "green",
 ];
 
 export default ColorsEnum;
