@@ -3,7 +3,7 @@ import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class ForwarderService {
   public static listForwarders = async () => {
-    const url = getUrl("/forwarders");
+    const url = getUrl("/forwarders/my");
 
     const resp = await fetch(url, {
       method: "GET",
