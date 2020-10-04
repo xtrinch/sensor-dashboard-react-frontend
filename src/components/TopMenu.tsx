@@ -8,9 +8,10 @@ import {
 } from "@material-ui/core";
 import DateInput from "components/DateInput";
 import TopBar from "components/TopBar";
-import { AppContext } from "context/AppContext";
+import { AppContext, setDomain } from "context/AppContext";
 import React, { useCallback, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
+import DomainTypeEnum from "types/DomainTypeEnum";
 import { DateRangeEnum } from "utils/date.range";
 import TimeInput from "./TimeInput";
 
@@ -55,7 +56,7 @@ const styles = (theme) =>
 const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const [{ groupBy, date }, dispatch] = useContext(AppContext);
+  const [{ groupBy, date, domain }, dispatch] = useContext(AppContext);
 
   const onChangeGroupBy = useCallback(
     (val) => {
@@ -111,6 +112,43 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           <TimeInput date={date} onChange={onChangeDate} />
         </Grid>
       )}
+      <Grid item className={classes.dateGridItem}>
+        <ButtonGroup
+          disableElevation
+          disableFocusRipple
+          disableRipple
+          color="secondary"
+          size="large"
+          className={classes.dateButtonGroup}
+        >
+          <Button
+            style={{
+              borderWidth: "0px",
+              cursor: "default",
+              backgroundColor: ColorsEnum.BGLIGHT,
+              textTransform: "capitalize",
+            }}
+          >
+            Y Domain:
+          </Button>
+          <Button
+            onClick={() => setDomain(DomainTypeEnum.FULL)}
+            className={
+              domain === DomainTypeEnum.FULL ? classes.activeButton : undefined
+            }
+          >
+            FULL
+          </Button>
+          <Button
+            onClick={() => setDomain(DomainTypeEnum.AUTO)}
+            className={
+              domain === DomainTypeEnum.AUTO ? classes.activeButton : undefined
+            }
+          >
+            AUTO
+          </Button>
+        </ButtonGroup>
+      </Grid>
       {/* </Grid> */}
     </TopBar>
   );

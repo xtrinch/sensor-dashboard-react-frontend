@@ -15,6 +15,7 @@ import { uniqBy } from "lodash";
 import React, { useContext } from "react";
 import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
+import DomainTypeEnum from "types/DomainTypeEnum";
 import Measurement from "types/Measurement";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
@@ -62,12 +63,13 @@ interface SensorCanvasProps {
   date: DateRegex;
   groupBy: DateRangeEnum;
   measurements: Measurement[];
+  domain: DomainTypeEnum;
 }
 
 const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
-  const { type, classes, date, groupBy, measurements } = props;
+  const { type, classes, date, groupBy, measurements, domain } = props;
   const [{ sensors, mySensors }] = useContext(SensorContext);
   const allSensors = uniqBy([...sensors, ...mySensors], (s: Sensor) => s.id);
 
@@ -148,10 +150,12 @@ const SensorCanvas: React.FunctionComponent<
                 : 10
             }
             domain={
-              Sensor.measurementTypeProperties[type].domain as [
-                AxisDomain,
-                AxisDomain
-              ]
+              domain === DomainTypeEnum.FULL
+                ? (Sensor.measurementTypeProperties[type].domain as [
+                    AxisDomain,
+                    AxisDomain
+                  ])
+                : ["auto", "auto"]
             }
             unit={{
               y: Sensor.measurementTypeProperties[type].unit,

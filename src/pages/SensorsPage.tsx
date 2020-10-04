@@ -34,7 +34,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   const { classes } = props;
 
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const [{ date, groupBy }] = useContext(AppContext);
+  const [{ date, groupBy, domain }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
@@ -91,6 +91,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
               type={type}
               date={date}
               groupBy={groupBy}
+              domain={domain}
               measurements={measurements[type] || []}
             />
           ))}
