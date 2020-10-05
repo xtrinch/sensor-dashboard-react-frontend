@@ -81,7 +81,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => (
         <Scatter
           key={index}
           data={line.data}
-          line={{ stroke: GraphColors[index] }}
+          line={{ stroke: GraphColors[line.ordering] || "white" }}
           lineJointType="monotoneX"
           lineType="joint"
           name={line.name}

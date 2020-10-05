@@ -33,12 +33,18 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const [{ sensors, mySensors, sensorsLoaded, mySensorsLoaded }] = useContext(
+    SensorContext
+  );
   const [{ date, groupBy, domain }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
+    if (!sensorsLoaded || !mySensorsLoaded) {
+      return;
+    }
+
     const allSensors = [...sensors, ...mySensors];
 
     if (allSensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
@@ -55,7 +61,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [date, sensors, mySensors]);
+  }, [date, sensors, mySensors, sensorsLoaded, mySensorsLoaded]);
 
   useEffect(() => {
     if (!date || sensors.length === 0) {

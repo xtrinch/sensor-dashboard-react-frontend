@@ -14,6 +14,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
 import { addDisplay } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
@@ -167,32 +168,27 @@ const AddDisplayPage: React.FunctionComponent<
                     </MenuItem>
                   ))}
                 </TextField>
-                <FormControl variant="outlined" fullWidth margin="normal">
-                  <InputLabel id="demo-mutiple-name-label">
-                    Measurement types
-                  </InputLabel>
-                  <Select
-                    labelId="demo-mutiple-name-label"
-                    id="demo-mutiple-name"
-                    multiple
-                    value={data.measurementTypes}
-                    onChange={(e) =>
-                      fieldChange(e.target.value, "measurementTypes")
-                    }
-                    error={!!errors.measurementTypes}
-                  >
-                    {Object.values(MeasurementTypeEnum).map((key) => (
-                      <MenuItem key={key} value={key}>
-                        {MeasurementTypeLabelsEnum[key]}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {!!errors.measurementTypes && (
-                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                      {errors.measurementTypes}
-                    </FormHelperText>
+                <Autocomplete
+                  multiple
+                  id="measurementTypes"
+                  value={data.measurementTypes}
+                  fullWidth
+                  options={Object.values(MeasurementTypeEnum)}
+                  getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
+                  onChange={(e, newVal) =>
+                    fieldChange(newVal, "measurementTypes")
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Measurement types"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.measurementTypes}
+                      helperText={errors.measurementTypes}
+                    />
                   )}
-                </FormControl>
+                />
                 <FormControl variant="outlined" fullWidth margin="normal">
                   <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
                   <Select

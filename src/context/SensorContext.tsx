@@ -117,6 +117,7 @@ export const deleteSensor = async (id: SensorId): Promise<boolean> => {
 
 type SensorContextState = {
   sensorsLoaded: boolean;
+  mySensorsLoaded: boolean;
   sensors: Sensor[];
   mySensors: Sensor[];
 };
@@ -125,6 +126,7 @@ const initialState: SensorContextState = {
   sensors: [],
   mySensors: [],
   sensorsLoaded: false,
+  mySensorsLoaded: false,
 };
 
 export type SensorActionTypes =
@@ -148,7 +150,7 @@ let reducer = (
     case "sensorsReady":
       return { ...state, sensors: action.payload, sensorsLoaded: true };
     case "mySensorsReady":
-      return { ...state, mySensors: action.payload, sensorsLoaded: true };
+      return { ...state, mySensors: action.payload, mySensorsLoaded: true };
     case "updateSensor":
       const sensors = state.sensors;
       const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);

@@ -1,13 +1,4 @@
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -16,6 +7,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
 import { addSensor } from "context/SensorContext";
 import React, { useState } from "react";
@@ -66,7 +58,7 @@ const AddSensorPage: React.FunctionComponent<
     sensorTypes: [],
     location: "",
     boardType: "" as BoardTypeEnum,
-    timezone: "",
+    timezone: null,
     private: false,
   });
 
@@ -145,90 +137,83 @@ const AddSensorPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <TextField
-                  select
+                <Autocomplete
                   id="select"
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
                   value={data.boardType}
-                  onChange={(e) => fieldChange(e.target.value, "boardType")}
+                  onChange={(e, newVal) => fieldChange(newVal, "boardType")}
                   fullWidth
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                >
-                  {Object.keys(BoardTypeEnum).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {BoardTypeEnum[key]}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  select
+                  options={Object.keys(BoardTypeEnum).map(
+                    (key) => BoardTypeEnum[key]
+                  )}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Board type"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.boardType}
+                      helperText={errors.boardType}
+                    />
+                  )}
+                />
+                <Autocomplete
                   id="timezone"
-                  variant="outlined"
-                  margin="normal"
-                  label="Timezone"
                   value={data.timezone}
-                  onChange={(e) => fieldChange(e.target.value, "timezone")}
                   fullWidth
-                >
-                  {listTimeZones().map((item) => (
-                    <MenuItem key={item} value={item}>
-                      {item}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <FormControl variant="outlined" fullWidth margin="normal">
-                  <InputLabel id="demo-mutiple-name-label">
-                    Sensor types
-                  </InputLabel>
-                  <Select
-                    labelId="demo-mutiple-name-label"
-                    id="demo-mutiple-name"
-                    multiple
-                    value={data.sensorTypes}
-                    onChange={(e) => fieldChange(e.target.value, "sensorTypes")}
-                    error={!!errors.sensorTypes}
-                  >
-                    {Object.values(SensorTypeEnum).map((key) => (
-                      <MenuItem key={key} value={key}>
-                        {key}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {!!errors.sensorTypes && (
-                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                      {errors.sensorTypes}
-                    </FormHelperText>
+                  options={listTimeZones()}
+                  getOptionLabel={(option) => option}
+                  onChange={(e, newVal) => fieldChange(newVal, "timezone")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Timezone"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.timezone}
+                      helperText={errors.timezone}
+                    />
                   )}
-                </FormControl>
-                <FormControl variant="outlined" fullWidth margin="normal">
-                  <InputLabel id="demo-mutiple-name-label">
-                    Measurement types
-                  </InputLabel>
-                  <Select
-                    labelId="demo-mutiple-name-label"
-                    id="demo-mutiple-name"
-                    multiple
-                    value={data.measurementTypes}
-                    onChange={(e) =>
-                      fieldChange(e.target.value, "measurementTypes")
-                    }
-                    error={!!errors.measurementTypes}
-                  >
-                    {Object.values(MeasurementTypeEnum).map((key) => (
-                      <MenuItem key={key} value={key}>
-                        {MeasurementTypeLabelsEnum[key]}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {!!errors.measurementTypes && (
-                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                      {errors.measurementTypes}
-                    </FormHelperText>
+                />
+                <Autocomplete
+                  multiple
+                  id="sensorTypes"
+                  value={data.sensorTypes}
+                  fullWidth
+                  options={Object.values(SensorTypeEnum)}
+                  getOptionLabel={(option) => option}
+                  onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Sensor types"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.sensorTypes}
+                      helperText={errors.sensorTypes}
+                    />
                   )}
-                </FormControl>
+                />
+                <Autocomplete
+                  multiple
+                  id="measurementTypes"
+                  value={data.measurementTypes}
+                  fullWidth
+                  options={Object.values(MeasurementTypeEnum)}
+                  getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
+                  onChange={(e, newVal) =>
+                    fieldChange(newVal, "measurementTypes")
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Measurement types"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.measurementTypes}
+                      helperText={errors.measurementTypes}
+                    />
+                  )}
+                />
                 <FormControlLabel
                   control={
                     <Checkbox

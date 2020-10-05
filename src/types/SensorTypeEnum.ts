@@ -4,6 +4,7 @@ enum SensorTypeEnum {
   DHT11 = "DHT11",
   DHT22 = "DHT22",
   BMP280 = "BMP280",
+  OTHER = "OTHER",
 }
 
 export default SensorTypeEnum;

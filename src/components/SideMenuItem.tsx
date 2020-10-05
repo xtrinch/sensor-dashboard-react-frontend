@@ -39,13 +39,11 @@ const styles = () =>
     active: {
       position: "relative",
       "&::before": {
-        borderLeft: `15px solid transparent`,
-        borderRight: `15px solid  ${ColorsEnum.OLIVE}`,
-        borderTop: "15px solid transparent",
-        height: 0,
-        width: 0,
+        backgroundColor: `${ColorsEnum.OLIVE}`,
+        height: "100%",
+        width: "5px",
         position: "absolute",
-        right: "0px",
+        left: "0px",
         bottom: 0,
         content: '""',
         display: "block",
