@@ -1,6 +1,13 @@
-import { createStyles, WithStyles, withStyles } from "@material-ui/core";
+import {
+  Box,
+  CircularProgress,
+  createStyles,
+  WithStyles,
+  withStyles,
+} from "@material-ui/core";
 import SensorCanvas from "components/SensorCanvas";
 import TopMenu from "components/TopMenu";
+import { AccountContext } from "context/AccountContext";
 import { AppContext } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
 import { uniq } from "lodash";
@@ -36,12 +43,13 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   const [{ sensors, mySensors, sensorsLoaded, mySensorsLoaded }] = useContext(
     SensorContext
   );
+  const [{ loginState }] = useContext(AccountContext);
   const [{ date, groupBy, domain }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (!sensorsLoaded || !mySensorsLoaded) {
+    if (!sensorsLoaded || (!mySensorsLoaded && loginState === "LOGGED_IN")) {
       return;
     }
 
@@ -89,6 +97,11 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <div style={{ width: "100%" }}>
       <TopMenu />
+      {!measurements && (
+        <Box style={{ textAlign: "center", marginTop: "50px" }}>
+          <CircularProgress></CircularProgress>
+        </Box>
+      )}
       {measurements && (
         <div className={classes.root}>
           {sensorTypes().map((type: MeasurementTypeEnum) => (

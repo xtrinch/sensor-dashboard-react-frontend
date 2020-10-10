@@ -1,11 +1,4 @@
-import {
-  FormControl,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -65,7 +58,7 @@ const AddDisplayPage: React.FunctionComponent<
     timezone: "",
     measurementTypes: [],
     sensorIds: [],
-    displayType: "" as DisplayTypeEnum,
+    displayType: null as DisplayTypeEnum,
   });
 
   const [sensorState] = useContext(SensorContext);
@@ -132,42 +125,40 @@ const AddDisplayPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <TextField
-                  select
-                  id="select"
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
+                <Autocomplete
+                  id="boardType"
                   value={data.boardType}
-                  onChange={(e) => fieldChange(e.target.value, "boardType")}
                   fullWidth
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                >
-                  {Object.keys(BoardTypeEnum).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {BoardTypeEnum[key]}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  select
-                  id="select"
-                  label="Display type"
-                  variant="outlined"
-                  margin="normal"
+                  options={Object.keys(BoardTypeEnum)}
+                  onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Board type"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.boardType}
+                      helperText={errors.boardType}
+                    />
+                  )}
+                />
+                <Autocomplete
+                  id="displayType"
                   value={data.displayType}
-                  onChange={(e) => fieldChange(e.target.value, "displayType")}
                   fullWidth
-                  error={!!errors.displayType}
-                  helperText={errors.displayType}
-                >
-                  {Object.keys(DisplayTypeEnum).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {DisplayTypeEnum[key]}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  options={Object.keys(DisplayTypeEnum)}
+                  onChange={(e, newVal) => fieldChange(newVal, "displayType")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Display type"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.displayType}
+                      helperText={errors.displayType}
+                    />
+                  )}
+                />
                 <Autocomplete
                   multiple
                   id="measurementTypes"
@@ -189,28 +180,27 @@ const AddDisplayPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <FormControl variant="outlined" fullWidth margin="normal">
-                  <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
-                  <Select
-                    labelId="demo-mutiple-name-label"
-                    id="demo-mutiple-name"
-                    multiple
-                    value={data.sensorIds}
-                    onChange={(e) => fieldChange(e.target.value, "sensorIds")}
-                    error={!!errors.sensorIds}
-                  >
-                    {sensorState.sensors.map((sensor) => (
-                      <MenuItem key={sensor.id} value={sensor.id}>
-                        {sensor.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {!!errors.sensorIds && (
-                    <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                      {errors.sensorIds}
-                    </FormHelperText>
+                <Autocomplete
+                  multiple
+                  id="sensorIds"
+                  value={data.sensorIds}
+                  fullWidth
+                  options={sensorState.sensors.map((s) => s.id)}
+                  getOptionLabel={(option) =>
+                    sensorState.sensors.find((s) => s.id === option).name
+                  }
+                  onChange={(e, newVal) => fieldChange(newVal, "sensorIds")}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Sensors"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.sensorIds}
+                      helperText={errors.sensorIds}
+                    />
                   )}
-                </FormControl>
+                />
                 <Button
                   type="submit"
                   fullWidth
