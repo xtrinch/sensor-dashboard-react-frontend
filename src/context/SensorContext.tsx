@@ -152,10 +152,10 @@ let reducer = (
     case "mySensorsReady":
       return { ...state, mySensors: action.payload, mySensorsLoaded: true };
     case "updateSensor":
-      const sensors = state.sensors;
+      const sensors = state.mySensors;
       const sensorIndex = sensors.findIndex((s) => s.id === action.payload.id);
       sensors[sensorIndex] = action.payload;
-      return { ...state, sensors: [...sensors] };
+      return { ...state, mySensors: [...sensors] };
     case "deleteSensor":
       const deleteMySensorIndex = state.mySensors.findIndex(
         (s) => s.id === action.payload

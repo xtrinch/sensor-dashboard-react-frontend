@@ -29,6 +29,30 @@ export const login = async (email: string, password: string) => {
   return false;
 };
 
+export const loginWithGoogle = async (idToken: string) => {
+  try {
+    const { accessToken, user } = await UserService.loginWithGoogle(idToken);
+    if (accessToken) {
+      AccountContext.dispatch({
+        type: "loggedIn",
+        payload: {
+          accessToken,
+          user,
+        },
+      });
+
+      return true;
+    }
+  } catch (e) {
+    AccountContext.dispatch({
+      type: "loginError",
+    });
+    throw e;
+  }
+
+  return false;
+};
+
 export const register = async (user: Partial<User>) => {
   return await UserService.register(user);
 };

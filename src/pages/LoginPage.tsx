@@ -10,10 +10,16 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { AccountContext, login } from "context/AccountContext";
+import config from "config/Config";
+import { AccountContext, login, loginWithGoogle } from "context/AccountContext";
 import { reload } from "context/DisplayContext";
 import { reloadMySensors, reloadSensors } from "context/SensorContext";
 import React, { useContext, useState } from "react";
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from "react-google-login";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -55,6 +61,13 @@ const LoginPage: React.FunctionComponent<
 
   const [accountState] = useContext(AccountContext);
 
+  const uponLoginSuccess = () => {
+    reloadSensors(accountState);
+    reloadMySensors();
+    reload(accountState);
+    history.push("/");
+  };
+
   const submitForm = async (e) => {
     e.preventDefault();
 
@@ -62,10 +75,7 @@ const LoginPage: React.FunctionComponent<
       const success = await login(data.email, data.password);
       if (success) {
         // todo move out of here
-        reloadSensors(accountState);
-        reloadMySensors();
-        reload(accountState);
-        history.push("/");
+        uponLoginSuccess();
       }
     } catch (e) {
       setErrors(e);
@@ -75,6 +85,17 @@ const LoginPage: React.FunctionComponent<
   const fieldChange = (val, fieldName) => {
     data[fieldName] = val;
     setData({ ...data });
+  };
+
+  const responseGoogle = async (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline | any
+  ) => {
+    console.log(response);
+    if (!response.error) {
+      if (await loginWithGoogle(response.tokenId)) {
+        uponLoginSuccess();
+      }
+    }
   };
 
   return (
@@ -148,6 +169,15 @@ const LoginPage: React.FunctionComponent<
             </Grid>
           </Grid>
         </form>
+        <div style={{ marginTop: "30px" }}>
+          <GoogleLogin
+            clientId={config.googleClientId}
+            buttonText="Login with Google"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
+        </div>
       </div>
     </Container>
   );
