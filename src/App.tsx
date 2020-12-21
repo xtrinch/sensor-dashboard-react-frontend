@@ -21,6 +21,7 @@ import theme from "layout/Theme";
 import AddDisplayPage from "pages/AddDisplayPage";
 import AddForwarderPage from "pages/AddForwarderPage";
 import AddSensorPage from "pages/AddSensorPage";
+import ConnectSensorPage from "pages/ConnectSensorPage";
 import DisplayInfoPage from "pages/DisplayInfoPage";
 import DisplayListPage from "pages/DisplayListPage";
 import ForwarderInfoPage from "pages/ForwarderInfoPage";
@@ -98,6 +99,9 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                 </Route>
                                 <Route exact path="/add-forwarder">
                                   <AddForwarderPage />
+                                </Route>
+                                <Route exact path="/sensors/:id/connect">
+                                  <ConnectSensorPage />
                                 </Route>
                                 <Route exact path="/sensors/:id">
                                   <SensorInfoPage />

@@ -7,15 +7,14 @@ import {
   MenuItem,
   Select,
 } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
 import { deleteSensor, updateSensor } from "context/SensorContext";
@@ -36,12 +35,13 @@ import { DATETIME_REGEX } from "utils/date.range";
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: "30px",
+      margin: "30px 0px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       backgroundColor: ColorsEnum.BGLIGHT,
       padding: "30px",
+      border: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
     avatar: {
       margin: theme.spacing(1),
@@ -50,6 +50,15 @@ const styles = (theme) =>
     form: {
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
+      "& >*": {
+        width: "100%",
+      },
+      "& >.MuiFormControl-root": {
+        width: "calc(50% - 10px)",
+        "&:nth-of-type(2n+1)": {
+          marginRight: "20px",
+        },
+      },
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -58,6 +67,11 @@ const styles = (theme) =>
     actionButton: {
       backgroundColor: ColorsEnum.ERROR,
       color: ColorsEnum.WHITE,
+    },
+    connectButton: {
+      backgroundColor: ColorsEnum.GREEN,
+      color: ColorsEnum.WHITE,
+      marginRight: "20px",
     },
   });
 
@@ -136,7 +150,18 @@ const SensorInfoPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="flex-end">
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h5" style={{ marginRight: "30px" }}>
+          Sensor board info
+        </Typography>
+        <Button
+          variant="contained"
+          className={classes.connectButton}
+          startIcon={<Settings />}
+          onClick={() => history.push(`/sensors/${id}/connect`)}
+        >
+          Configure device
+        </Button>
         <Button
           variant="contained"
           className={classes.actionButton}
@@ -146,20 +171,13 @@ const SensorInfoPage: React.FunctionComponent<
           Delete
         </Button>
       </TopBar>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <SettingsInputAntennaIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sensor board info
-          </Typography>
           <form className={classes.form} noValidate onSubmit={submitForm}>
             <TextField
               variant="outlined"
               margin="normal"
-              fullWidth
               id="accessToken"
               name="accessToken"
               label="Sensor access token"
@@ -169,7 +187,6 @@ const SensorInfoPage: React.FunctionComponent<
             <TextField
               variant="outlined"
               margin="normal"
-              fullWidth
               id="accessToken"
               name="accessToken"
               label="Last seen at"
@@ -183,7 +200,6 @@ const SensorInfoPage: React.FunctionComponent<
             <TextField
               variant="outlined"
               margin="normal"
-              fullWidth
               id="name"
               label="Sensor name"
               name="name"
@@ -195,7 +211,6 @@ const SensorInfoPage: React.FunctionComponent<
             <TextField
               variant="outlined"
               margin="normal"
-              fullWidth
               id="displayName"
               label="Sensor display name"
               name="displayName"
@@ -207,7 +222,6 @@ const SensorInfoPage: React.FunctionComponent<
             <TextField
               variant="outlined"
               margin="normal"
-              fullWidth
               name="location"
               label="Location description"
               type="location"
@@ -226,7 +240,6 @@ const SensorInfoPage: React.FunctionComponent<
               margin="normal"
               value={data.boardType}
               onChange={(e) => fieldChange(e.target.value, "boardType")}
-              fullWidth
               error={!!errors.boardType}
               helperText={errors.boardType}
             >
@@ -244,7 +257,6 @@ const SensorInfoPage: React.FunctionComponent<
               label="Timezone"
               value={data.timezone}
               onChange={(e) => fieldChange(e.target.value, "timezone")}
-              fullWidth
             >
               {listTimeZones().map((item) => (
                 <MenuItem key={item} value={item}>
@@ -252,7 +264,7 @@ const SensorInfoPage: React.FunctionComponent<
                 </MenuItem>
               ))}
             </TextField>
-            <FormControl variant="outlined" fullWidth margin="normal">
+            <FormControl variant="outlined" margin="normal">
               <InputLabel id="demo-mutiple-name-label">Sensor types</InputLabel>
               <Select
                 labelId="demo-mutiple-name-label"
@@ -274,7 +286,7 @@ const SensorInfoPage: React.FunctionComponent<
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl variant="outlined" fullWidth margin="normal">
+            <FormControl variant="outlined" margin="normal">
               <InputLabel id="demo-mutiple-name-label">
                 Measurement types
               </InputLabel>
@@ -311,7 +323,6 @@ const SensorInfoPage: React.FunctionComponent<
             />
             <Button
               type="submit"
-              fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}

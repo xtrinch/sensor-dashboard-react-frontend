@@ -52,12 +52,6 @@ const styles = () =>
         width: "70px",
       },
     },
-    sensorFab: {
-      width: "30px",
-      height: "30px",
-      minHeight: "30px",
-      color: ColorsEnum.WHITE,
-    },
   });
 
 interface SideMenuProps {}
@@ -129,7 +123,7 @@ const SideMenu: React.FunctionComponent<
             </Grid>
             <Grid item>
               <Link to="/add-sensor" onClick={drawerToggle}>
-                <Fab color="primary" size="small" className={classes.sensorFab}>
+                <Fab color="primary" size="small">
                   <PlusIcon />
                 </Fab>
               </Link>
@@ -160,11 +154,7 @@ const SideMenu: React.FunctionComponent<
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
                     <Link to="/add-forwarder" onClick={drawerToggle}>
-                      <Fab
-                        color="primary"
-                        size="small"
-                        className={classes.sensorFab}
-                      >
+                      <Fab color="primary" size="small">
                         <PlusIcon />
                       </Fab>
                     </Link>
@@ -195,11 +185,7 @@ const SideMenu: React.FunctionComponent<
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
                     <Link to="/add-display" onClick={drawerToggle}>
-                      <Fab
-                        color="primary"
-                        size="small"
-                        className={classes.sensorFab}
-                      >
+                      <Fab color="primary" size="small">
                         <PlusIcon />
                       </Fab>
                     </Link>

@@ -14,7 +14,7 @@ enum ColorsEnum {
   OLIVE = "#3D9970",
   ORANGE = "#ff8a65",
   ERROR = "#ff6961", // RED1 = red[500],
-  GREEN = "green",
+  GREEN = "#29a856",
   GOLD = "#E8BF8B",
 }
 

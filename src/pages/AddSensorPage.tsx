@@ -23,12 +23,13 @@ import SensorTypeEnum from "types/SensorTypeEnum";
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: theme.spacing(30),
+      marginTop: "30px",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       backgroundColor: ColorsEnum.BGLIGHT,
       padding: "30px",
+      border: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
     avatar: {
       margin: theme.spacing(1),
@@ -37,6 +38,16 @@ const styles = (theme) =>
     form: {
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
+      "& >*": {
+        width: "100%",
+      },
+      "& >.MuiFormControl-root, >.MuiAutocomplete-root": {
+        width: "calc(50% - 10px)",
+        display: "inline-flex",
+        "&:nth-of-type(2n+1)": {
+          marginRight: "20px",
+        },
+      },
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -85,8 +96,12 @@ const AddSensorPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="flex-end" />
-      <Container component="main" maxWidth="xs">
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h5" style={{ marginRight: "30px" }}>
+          Add sensor board
+        </Typography>
+      </TopBar>
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <div className={classes.paper}>
           {!success && (
@@ -94,9 +109,9 @@ const AddSensorPage: React.FunctionComponent<
               <Avatar className={classes.avatar}>
                 <SettingsInputAntennaIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
+              {/* <Typography component="h1" variant="h5">
                 Add sensor board
-              </Typography>
+              </Typography> */}
               <form className={classes.form} noValidate onSubmit={submitForm}>
                 <TextField
                   variant="outlined"

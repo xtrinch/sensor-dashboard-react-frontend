@@ -22,6 +22,13 @@ const theme = createMuiTheme({
       secondary: ColorsEnum.GRAY,
     },
   },
+  props: {
+    // MuiTextField: {
+    //   InputLabelProps: {
+    //     shrink: true,
+    //   },
+    // },
+  },
   overrides: {
     MuiTypography: {
       body1: {
@@ -40,6 +47,15 @@ const theme = createMuiTheme({
       root: {
         boxShadow: "none",
         color: ColorsEnum.WHITE,
+      },
+      sizeSmall: {
+        width: "30px",
+        height: "30px",
+        minHeight: "30px",
+        color: ColorsEnum.WHITE,
+        "& svg": {
+          fontSize: "20px",
+        },
       },
     },
     MuiListItem: {
