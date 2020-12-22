@@ -1,19 +1,9 @@
 import { Card, createStyles, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import TimeSeriesChart from "components/TimeSeriesChart";
+import NivoChart from "components/NivoChart";
 import { SensorContext } from "context/SensorContext";
-import {
-  addDays,
-  addMonths,
-  format,
-  getDate,
-  getDaysInMonth,
-  startOfWeek,
-  startOfYear,
-} from "date-fns";
 import { uniqBy } from "lodash";
 import React, { useContext } from "react";
-import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";
 import DomainTypeEnum from "types/DomainTypeEnum";
 import Measurement from "types/Measurement";
@@ -21,13 +11,7 @@ import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
 import Sensor from "types/Sensor";
-import {
-  DateRange,
-  DateRangeEnum,
-  DateRegex,
-  DateRegexGroupsInterface,
-} from "utils/date.range";
-import { getSpacePaddedNumber, getZeroPaddedNumber } from "utils/number";
+import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
 
 const styles = () =>
   createStyles({
@@ -76,48 +60,28 @@ const SensorCanvas: React.FunctionComponent<
   const groupByProperties = {
     [DateRangeEnum.hour]: {
       unit: "",
-      tickFormatter: (d) => `${getSpacePaddedNumber(d)}`,
-      ticks: Array.from({ length: 61 }, (data, i) => i),
-      getTimeDomain: (params: DateRegexGroupsInterface) => params.minute,
+      tickFormat: "%M",
+      format: "%Y/%m/%d %H:%M",
     },
     [DateRangeEnum.day]: {
       unit: "h",
-      tickFormatter: (d) => `${getZeroPaddedNumber(d - 1)}`,
-      ticks: Array.from({ length: 25 }, (data, i) => i + 1),
-      getTimeDomain: (params: DateRegexGroupsInterface) =>
-        params.hour + params.minute / 60.0 + 1,
+      tickFormat: "%H",
+      format: "%Y/%m/%d %H:%M",
     },
     [DateRangeEnum.week]: {
       unit: "",
-      tickFormatter: (d) => `${format(addDays(startOfWeek(d), d), "EE")}`,
-      ticks: Array.from({ length: 8 }, (data, i) => i),
-      getTimeDomain: (params: DateRegexGroupsInterface) => {
-        const dateFrom = DateRange.parse(date).from;
-        let dayInWeek = params.day - getDate(dateFrom) + params.hour / 24;
-
-        // if week spans two different months
-        if (dayInWeek < 0) {
-          dayInWeek += getDaysInMonth(dateFrom);
-        }
-        return dayInWeek;
-      },
+      tickFormat: "%a",
+      format: "%Y/%m/%d %H",
     },
     [DateRangeEnum.month]: {
       unit: ".",
-      tickFormatter: (d) => `${d}`,
-      ticks: Array.from(
-        { length: getDaysInMonth(DateRange.parse(date).from) },
-        (data, i) => i + 1
-      ),
-      getTimeDomain: (params: DateRegexGroupsInterface) => params.day,
+      tickFormat: "%d",
+      format: "%Y/%m/%d",
     },
     [DateRangeEnum.year]: {
       unit: "",
-      tickFormatter: (d) =>
-        `${format(addMonths(startOfYear(d), d - 1), "LLL")}`,
-      ticks: Array.from({ length: 12 }, (data, i) => i + 1),
-      getTimeDomain: (params: DateRegexGroupsInterface) =>
-        params.month + params.day / getDaysInMonth(params.month),
+      tickFormat: "%b",
+      format: "%Y/%m/%d",
     },
   };
 
@@ -127,43 +91,39 @@ const SensorCanvas: React.FunctionComponent<
         <Typography variant="h6" style={{ marginBottom: "7px" }}>
           {MeasurementTypeLabelsEnum[type]}
         </Typography>
-        {measurements && (
-          <TimeSeriesChart
-            chartData={Object.keys(measurements).map((key) => ({
-              data: measurements[key].map((m: Measurement) => ({
-                time: groupByProperties[groupBy].getTimeDomain(
-                  DateRange.getRegexGroups(m.createdAt)
-                ),
-                value: m.measurement,
-                labelTime: m.createdAt,
-              })),
-              name: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
-              ordering: allSensors
-                .filter((s) => s.visible)
-                .findIndex((s) => s.id === parseInt(key, 10)),
-            }))}
-            ticks={groupByProperties[groupBy].ticks}
-            tickFormatter={groupByProperties[groupBy].tickFormatter}
-            dotSize={
-              groupBy === DateRangeEnum.month || groupBy === DateRangeEnum.hour
-                ? 35
-                : 10
-            }
-            domain={
-              domain === DomainTypeEnum.FULL
-                ? (Sensor.measurementTypeProperties[type].domain as [
-                    AxisDomain,
-                    AxisDomain
-                  ])
-                : ["auto", "auto"]
-            }
-            unit={{
-              y: Sensor.measurementTypeProperties[type].unit,
-              x: groupByProperties[groupBy].unit,
-            }}
-            nowX={DateRange.getNowDomain(date, groupBy)}
-          />
-        )}
+        <div style={{ height: "90%" }}>
+          {measurements && (
+            <NivoChart
+              data={Object.keys(measurements).map((key) => ({
+                data: measurements[key].map((m: Measurement) => ({
+                  y: m.measurement,
+                  x: m.createdAt,
+                })),
+                id: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
+                label: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
+                ordering: allSensors
+                  .filter((s) => s.visible)
+                  .findIndex((s) => s.id === parseInt(key, 10)),
+              }))}
+              from={DateRange.format(DateRange.parse(date).from, groupBy)}
+              to={DateRange.format(DateRange.parse(date).to, groupBy)}
+              xFormat={groupByProperties[groupBy].format}
+              tickFormat={groupByProperties[groupBy].tickFormat}
+              domain={
+                domain === DomainTypeEnum.FULL
+                  ? (Sensor.measurementTypeProperties[type].domain as [
+                      number,
+                      number
+                    ])
+                  : ([undefined, undefined] as [number, number])
+              }
+              unit={{
+                y: Sensor.measurementTypeProperties[type].unit,
+                x: groupByProperties[groupBy].unit,
+              }}
+            />
+          )}
+        </div>
       </Card>
     </>
   );

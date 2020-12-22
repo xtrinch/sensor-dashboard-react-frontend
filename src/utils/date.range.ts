@@ -4,6 +4,7 @@ import {
   endOfMonth,
   endOfWeek,
   endOfYear,
+  format,
   getDate,
   getDay,
   getDaysInMonth,
@@ -185,6 +186,16 @@ export class DateRange {
     }
 
     return dateString;
+  }
+
+  public static format(date: Date, groupBy: DateRangeEnum): string {
+    if (groupBy === DateRangeEnum.week) {
+      return format(date, "yyyy/MM/dd HH");
+    }
+    if (groupBy === DateRangeEnum.day || groupBy === DateRangeEnum.hour) {
+      return format(date, "yyyy/MM/dd HH:mm");
+    }
+    return format(date, "yyyy/MM/dd");
   }
 
   public static getNowDomain(date: DateRegex, groupBy: DateRangeEnum): number {
