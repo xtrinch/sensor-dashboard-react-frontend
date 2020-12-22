@@ -45,11 +45,13 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   );
   const [{ loginState }] = useContext(AccountContext);
   const [{ date, groupBy, domain }] = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
     if (!sensorsLoaded || (!mySensorsLoaded && loginState === "LOGGED_IN")) {
+      setLoading(false);
       return;
     }
 
@@ -57,6 +59,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 
     if (allSensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
+      setLoading(false);
       return;
     }
     const resp = await MeasurementService.listMeasurements({
@@ -69,6 +72,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
+    setLoading(false);
   }, [date, sensors, mySensors, sensorsLoaded, mySensorsLoaded]);
 
   useEffect(() => {
@@ -76,6 +80,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       return;
     }
 
+    setLoading(true);
     getMeasurements();
   }, [date, getMeasurements, sensors]);
 
@@ -97,12 +102,12 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <div style={{ width: "100%" }}>
       <TopMenu />
-      {!measurements && (
+      {loading && (
         <Box style={{ textAlign: "center", marginTop: "50px" }}>
           <CircularProgress></CircularProgress>
         </Box>
       )}
-      {measurements && (
+      {!loading && measurements && (
         <div className={classes.root}>
           {sensorTypes().map((type: MeasurementTypeEnum) => (
             <SensorCanvas
