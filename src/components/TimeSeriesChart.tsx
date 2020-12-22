@@ -2,16 +2,15 @@ import React from "react";
 import {
   AxisDomain,
   CartesianGrid,
+  ComposedChart,
   Label,
   Legend,
   Line,
-  LineChart,
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
-  ZAxis,
 } from "recharts";
 import ColorsEnum, { GraphColors } from "types/ColorsEnum";
 
@@ -40,7 +39,7 @@ interface TimeSeriesChartInterface {
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
   return (
     <ResponsiveContainer width="95%" height="90%">
-      <LineChart data={props.data}>
+      <ComposedChart data={props.data}>
         <XAxis
           dataKey="time"
           name="Time"
@@ -50,7 +49,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           minTickGap={0}
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
           stroke={ColorsEnum.GRAY}
-          allowDataOverflow={false}
+          //allowDataOverflow={false}
           interval={"preserveStartEnd"}
           domain={[props.ticks[0], props.ticks[props.ticks.length - 1]]}
           //unit={props.unit.x}
@@ -65,7 +64,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
           stroke={ColorsEnum.GRAY}
         />
-        <ZAxis range={[props.dotSize, props.dotSize]} />
+        {/* <ZAxis range={[props.dotSize, props.dotSize]} /> */}
         <Legend verticalAlign="top" height={25} iconType={"circle"} />
         <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
         {props.chartData.length > 0 && (
@@ -85,15 +84,15 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             }}
           />
         )}
-        {props.chartData.map((line, index) => (
+        {props.chartData.map((line) => (
           <Line
-            key={index}
+            key={line.name}
             dataKey={line.name}
             name={line.name}
             strokeWidth={1}
             isAnimationActive={false}
             fill={GraphColors[line.ordering] || "white"} // dot color
-            id={`${index}`}
+            id={`${line.name}`}
             stroke={GraphColors[line.ordering]}
             dot={{ r: 1.5 }}
           />
@@ -111,7 +110,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             />
           }
         />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 };

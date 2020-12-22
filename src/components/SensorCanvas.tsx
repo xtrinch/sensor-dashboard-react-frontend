@@ -147,16 +147,16 @@ const SensorCanvas: React.FunctionComponent<
     ],
     []
   );
-  const newData = [];
+  let newData = [];
   for (let d of data) {
     const item = newData.find((dd) => dd.labelTime === d.labelTime);
     if (item) {
       item[d.name] = d[d.name];
     } else {
-      newData.push(d);
+      newData.push({ ...d, name: undefined });
     }
   }
-
+  newData = newData.sort((a, b) => (a.time > b.time ? 1 : -1));
   /* TODO: data could be of simple format such as 
   const data = [
     {time: 'Page A', uv: 4000, pv: 2400},
@@ -178,7 +178,7 @@ const SensorCanvas: React.FunctionComponent<
         </Typography>
         {measurements && (
           <TimeSeriesChart
-            data={data}
+            data={newData}
             chartData={chartData}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}
