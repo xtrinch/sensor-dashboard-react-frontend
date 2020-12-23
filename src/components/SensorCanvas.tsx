@@ -71,7 +71,10 @@ const SensorCanvas: React.FunctionComponent<
 > = (props) => {
   const { type, classes, date, groupBy, measurements, domain } = props;
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const allSensors = uniqBy([...sensors, ...mySensors], (s: Sensor) => s.id);
+  const allSensors = uniqBy(
+    [...sensors, ...mySensors],
+    (s: Sensor) => s.id
+  ).filter((s) => s.visible);
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {
@@ -121,6 +124,32 @@ const SensorCanvas: React.FunctionComponent<
     },
   };
 
+  let chartData = allSensors.map((s, index) => ({
+    name: `${s.id}`,
+    sensorId: s.id,
+    ordering: index,
+    label: s.name,
+  }));
+
+  let data = measurements.map((m: Measurement) => ({
+    name: `${m.sensorId}`,
+    time: groupByProperties[groupBy].getTimeDomain(
+      DateRange.getRegexGroups(m.createdAt)
+    ),
+    labelTime: m.createdAt,
+    [m.sensorId]: m.measurement,
+  }));
+
+  let newData = [];
+  for (let d of data) {
+    const item = newData.find((dd) => dd.labelTime === d.labelTime);
+    if (item) {
+      item[d.name] = d[d.name];
+    } else {
+      newData.push(d);
+    }
+  }
+
   return (
     <>
       <Card className={classes.root}>
@@ -129,19 +158,8 @@ const SensorCanvas: React.FunctionComponent<
         </Typography>
         {measurements && (
           <TimeSeriesChart
-            chartData={Object.keys(measurements).map((key) => ({
-              data: measurements[key].map((m: Measurement) => ({
-                time: groupByProperties[groupBy].getTimeDomain(
-                  DateRange.getRegexGroups(m.createdAt)
-                ),
-                value: m.measurement,
-                labelTime: m.createdAt,
-              })),
-              name: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
-              ordering: allSensors
-                .filter((s) => s.visible)
-                .findIndex((s) => s.id === parseInt(key, 10)),
-            }))}
+            data={newData}
+            chartData={chartData}
             ticks={groupByProperties[groupBy].ticks}
             tickFormatter={groupByProperties[groupBy].tickFormatter}
             dotSize={
