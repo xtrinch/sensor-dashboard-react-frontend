@@ -71,7 +71,10 @@ const SensorCanvas: React.FunctionComponent<
 > = (props) => {
   const { type, classes, date, groupBy, measurements, domain } = props;
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const allSensors = uniqBy([...sensors, ...mySensors], (s: Sensor) => s.id);
+  const allSensors = uniqBy(
+    [...sensors, ...mySensors],
+    (s: Sensor) => s.id
+  ).filter((s) => s.visible);
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {
@@ -121,54 +124,31 @@ const SensorCanvas: React.FunctionComponent<
     },
   };
 
-  let chartData = Object.keys(measurements).map((key) => ({
-    data: measurements[key].map((m: Measurement) => ({
-      time: groupByProperties[groupBy].getTimeDomain(
-        DateRange.getRegexGroups(m.createdAt)
-      ),
-      value: m.measurement,
-      labelTime: m.createdAt,
-    })),
-    name: allSensors.find((s) => s.id === parseInt(key, 10))?.name,
-    ordering: allSensors
-      .filter((s) => s.visible)
-      .findIndex((s) => s.id === parseInt(key, 10)),
+  let chartData = allSensors.map((s, index) => ({
+    name: `${s.id}`,
+    sensorId: s.id,
+    ordering: index,
+    label: s.name,
   }));
 
-  let data = chartData.reduce(
-    (acc, cc) => [
-      ...acc,
-      ...cc.data.map((d) => ({
-        name: cc.name,
-        time: d.time,
-        labelTime: d.labelTime,
-        [cc.name]: d.value,
-      })),
-    ],
-    []
-  );
+  let data = measurements.map((m: Measurement) => ({
+    name: `${m.sensorId}`,
+    time: groupByProperties[groupBy].getTimeDomain(
+      DateRange.getRegexGroups(m.createdAt)
+    ),
+    labelTime: m.createdAt,
+    [m.sensorId]: m.measurement,
+  }));
+
   let newData = [];
   for (let d of data) {
     const item = newData.find((dd) => dd.labelTime === d.labelTime);
     if (item) {
       item[d.name] = d[d.name];
     } else {
-      newData.push({ ...d, name: undefined });
+      newData.push(d);
     }
   }
-  newData = newData.sort((a, b) => (a.time > b.time ? 1 : -1));
-  /* TODO: data could be of simple format such as 
-  const data = [
-    {time: 'Page A', uv: 4000, pv: 2400},
-    {name: 'Page B', uv: 3000, pv: 1398},
-    {name: 'Page C', uv: 2000, pv: 9800},
-    {name: 'Page D', uv: 2780, pv: 3908},
-    {name: 'Page E', uv: 1890, pv: 4800},
-    {name: 'Page F', uv: 2390, pv: 3800},
-    {name: 'Page G', uv: 3490, pv: 4300},
-  ]; 
-  ;; instead, it's all messed up
-  */
 
   return (
     <>

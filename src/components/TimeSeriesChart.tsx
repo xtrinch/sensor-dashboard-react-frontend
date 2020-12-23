@@ -25,6 +25,7 @@ interface TimeSeriesChartInterface {
   chartData: {
     name: string;
     ordering: number;
+    label: string;
   }[];
   data: ChartPoint[];
   domain: [AxisDomain, AxisDomain];
@@ -37,6 +38,7 @@ interface TimeSeriesChartInterface {
 }
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
+  const { chartData } = props;
   return (
     <ResponsiveContainer width="95%" height="90%">
       <ComposedChart data={props.data}>
@@ -67,7 +69,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
         {/* <ZAxis range={[props.dotSize, props.dotSize]} /> */}
         <Legend verticalAlign="top" height={25} iconType={"circle"} />
         <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
-        {props.chartData.length > 0 && (
+        {props.data.length > 0 && (
           <Tooltip
             formatter={(value, unit, payload, index) =>
               unit === "Time"
@@ -84,11 +86,11 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             }}
           />
         )}
-        {props.chartData.map((line) => (
+        {props.chartData.map((line, index) => (
           <Line
             key={line.name}
             dataKey={line.name}
-            name={line.name}
+            name={chartData[index]?.label}
             strokeWidth={1}
             isAnimationActive={false}
             fill={GraphColors[line.ordering] || "white"} // dot color
