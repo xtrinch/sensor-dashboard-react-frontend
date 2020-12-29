@@ -72,7 +72,7 @@ const SensorCanvas: React.FunctionComponent<
   const { type, classes, date, groupBy, measurements, domain } = props;
   const [{ sensors, mySensors }] = useContext(SensorContext);
   const allSensors = uniqBy(
-    [...sensors, ...mySensors],
+    [...mySensors, ...sensors],
     (s: Sensor) => s.id
   ).filter((s) => s.visible);
 
