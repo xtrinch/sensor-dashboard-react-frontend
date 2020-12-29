@@ -14,9 +14,9 @@ import {
 } from "recharts";
 import ColorsEnum, { GraphColors } from "types/ColorsEnum";
 
-interface ChartPoint {
+export interface ChartPoint {
+  name: string;
   time: number;
-  value: number;
   labelTime: string;
 }
 interface TimeSeriesChartInterface {
@@ -57,8 +57,6 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           //unit={props.unit.x}
         />
         <YAxis
-          dataKey="value"
-          name="Value"
           domain={domain}
           allowDataOverflow={true}
           type="number"

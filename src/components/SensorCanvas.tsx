@@ -1,6 +1,6 @@
 import { Card, createStyles, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import TimeSeriesChart from "components/TimeSeriesChart";
+import TimeSeriesChart, { ChartPoint } from "components/TimeSeriesChart";
 import { SensorContext } from "context/SensorContext";
 import {
   addDays,
@@ -131,7 +131,7 @@ const SensorCanvas: React.FunctionComponent<
     label: s.name,
   }));
 
-  let data = measurements.map((m: Measurement) => ({
+  let data: ChartPoint[] = measurements.map((m: Measurement) => ({
     name: `${m.sensorId}`,
     time: groupByProperties[groupBy].getTimeDomain(
       DateRange.getRegexGroups(m.createdAt)
@@ -140,7 +140,7 @@ const SensorCanvas: React.FunctionComponent<
     [m.sensorId]: m.measurement,
   }));
 
-  let newData = [];
+  let newData: ChartPoint[] = [];
   for (let d of data) {
     const item = newData.find((dd) => dd.labelTime === d.labelTime);
     if (item) {
