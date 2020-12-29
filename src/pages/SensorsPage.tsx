@@ -69,7 +69,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [date, sensors, mySensors, sensorsLoaded, mySensorsLoaded]);
+  }, [date, sensors, mySensors, sensorsLoaded, mySensorsLoaded, loginState]);
 
   useEffect(() => {
     if (!date || sensors.length === 0) {

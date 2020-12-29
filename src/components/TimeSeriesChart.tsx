@@ -38,29 +38,29 @@ interface TimeSeriesChartInterface {
 }
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
-  const { chartData } = props;
+  const { chartData, data, ticks, tickFormatter, domain, nowX } = props;
   return (
     <ResponsiveContainer width="95%" height="90%">
-      <ComposedChart data={props.data}>
+      <ComposedChart data={data}>
         <XAxis
           dataKey="time"
           name="Time"
-          ticks={props.ticks}
-          tickFormatter={props.tickFormatter}
+          ticks={ticks}
+          tickFormatter={tickFormatter}
           type="number"
           minTickGap={0}
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
           stroke={ColorsEnum.GRAY}
           //allowDataOverflow={false}
           interval={"preserveStartEnd"}
-          domain={[props.ticks[0], props.ticks[props.ticks.length - 1]]}
+          domain={[ticks[0], ticks[ticks.length - 1]]}
           //unit={props.unit.x}
         />
         <YAxis
           dataKey="value"
           name="Value"
-          domain={props.domain}
-          allowDataOverflow={false}
+          domain={domain}
+          allowDataOverflow={true}
           type="number"
           unit={props.unit.y}
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
@@ -69,7 +69,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
         {/* <ZAxis range={[props.dotSize, props.dotSize]} /> */}
         <Legend verticalAlign="top" height={25} iconType={"circle"} />
         <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
-        {props.data.length > 0 && (
+        {data.length > 0 && (
           <Tooltip
             formatter={(value, unit, payload, index) =>
               unit === "Time"
@@ -86,7 +86,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             }}
           />
         )}
-        {props.chartData.map((line, index) => (
+        {chartData.map((line, index) => (
           <Line
             key={line.name}
             dataKey={line.name}
@@ -100,7 +100,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           />
         ))}
         <ReferenceLine
-          x={props.nowX}
+          x={nowX}
           stroke={ColorsEnum.OLIVE}
           strokeWidth={1}
           label={
