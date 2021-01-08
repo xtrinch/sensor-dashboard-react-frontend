@@ -95,6 +95,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             id={`${line.name}`}
             stroke={GraphColors[line.ordering]}
             dot={{ r: 1.5 }}
+            connectNulls={true}
           />
         ))}
         <ReferenceLine
