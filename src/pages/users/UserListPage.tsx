@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,14 +9,13 @@ import {
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Plus from "@material-ui/icons/Add";
-import DisplayItem from "components/DisplayItem";
 import TopBar from "components/TopBar";
-import { DisplayContext } from "context/DisplayContext";
+import { UserContext } from "context/UserContext";
+import UserItem from "pages/users/components/UserItem";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
+import User from "types/User";
 
 const styles = (theme) =>
   createStyles({
@@ -27,6 +25,7 @@ const styles = (theme) =>
       paddingRight: "0px",
       textAlign: "center",
       marginTop: "30px",
+      marginBottom: "30px",
     },
     actionButton: {
       backgroundColor: ColorsEnum.OLIVE,
@@ -35,55 +34,49 @@ const styles = (theme) =>
     },
   });
 
-const DisplayListPage: React.FunctionComponent<
+const UserListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
-  const { classes, history } = props;
+  const { classes } = props;
 
-  const [displayContext] = useContext(DisplayContext);
+  const {
+    state: { users },
+  } = useContext(UserContext);
 
   return (
     <>
-      <TopBar alignItems="flex-end">
-        <Button
-          variant="contained"
-          className={classes.actionButton}
-          startIcon={<Plus />}
-          onClick={() => history.push("add-display")}
-        >
-          Add
-        </Button>
-      </TopBar>
-      <Container component="main" maxWidth="sm" className={classes.root}>
-        <CssBaseline />
-        <Typography component="h1" variant="h5" style={{ padding: "20px" }}>
-          My display devices
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h4">
+          Users
         </Typography>
-        {displayContext.displays.length !== 0 && (
+      </TopBar>
+      <Container component="main" maxWidth="md" className={classes.root}>
+        <CssBaseline />
+        {users.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Board type</TableCell>
                 <TableCell>Created at</TableCell>
                 <TableCell>Last seen at</TableCell>
+                <TableCell>Group</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {displayContext.displays.map((display: Display) => (
-                <DisplayItem display={display} key={display.id} />
+              {users?.map((user: User) => (
+                <UserItem user={user} key={user.id} />
               ))}
             </TableBody>
           </Table>
         )}
-        {displayContext.displays.length === 0 && (
+        {users.length === 0 && (
           <Typography
             variant="body2"
             component="p"
             style={{ margin: "30px 0px" }}
           >
-            No displays added
+            No users added
           </Typography>
         )}
       </Container>
@@ -91,4 +84,4 @@ const DisplayListPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(DisplayListPage));
+export default withRouter(withStyles(styles)(UserListPage));

@@ -17,21 +17,25 @@ import { ErrorContextProvider } from "context/ErrorContext";
 import { ForwarderContextProvider } from "context/ForwarderContext";
 import { SensorContextProvider } from "context/SensorContext";
 import { ToastContextProvider } from "context/ToastContext";
+import { UserContextProvider } from "context/UserContext";
 import theme from "layout/Theme";
-import AddDisplayPage from "pages/AddDisplayPage";
-import AddForwarderPage from "pages/AddForwarderPage";
-import AddSensorPage from "pages/AddSensorPage";
-import DisplayInfoPage from "pages/DisplayInfoPage";
-import DisplayListPage from "pages/DisplayListPage";
-import ForwarderInfoPage from "pages/ForwarderInfoPage";
-import ForwarderListPage from "pages/ForwarderListPage";
+import AddDisplayPage from "pages/dashboard/displays/AddDisplayPage";
+import DisplayInfoPage from "pages/dashboard/displays/DisplayInfoPage";
+import DisplayListPage from "pages/dashboard/displays/DisplayListPage";
+import AddForwarderPage from "pages/dashboard/forwarders/AddForwarderPage";
+import ForwarderInfoPage from "pages/dashboard/forwarders/ForwarderInfoPage";
+import ForwarderListPage from "pages/dashboard/forwarders/ForwarderListPage";
+import AddSensorPage from "pages/dashboard/sensors/AddSensorPage";
+import SensorInfoPage from "pages/dashboard/sensors/SensorInfoPage";
+import SensorsPage from "pages/dashboard/sensors/SensorsPage";
+import ForumIndexPage from "pages/forum/ForumIndexPage";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
-import SensorInfoPage from "pages/SensorInfoPage";
-import SensorsPage from "pages/SensorsPage";
+import UserListPage from "pages/users/UserListPage";
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
+import { Routes } from "utils/Routes";
 import Wrapper from "Wrapper";
 
 const styles = () =>
@@ -69,57 +73,68 @@ class App extends React.Component<WithStyles<typeof styles>> {
               <SensorContextProvider>
                 <ConfirmationContextProvider>
                   <DisplayContextProvider>
-                    <ForwarderContextProvider>
-                      <ToastContextProvider>
-                        <ErrorContextProvider>
-                          <Wrapper>
-                            <ToastBox />
-                            <ConfirmationBox />
-                            <ErrorBox />
-                            <Grid container className={classes.app}>
-                              <Grid item>
-                                <SideMenuWrapper />
+                    <UserContextProvider>
+                      <ForwarderContextProvider>
+                        <ToastContextProvider>
+                          <ErrorContextProvider>
+                            <Wrapper>
+                              <ToastBox />
+                              <ConfirmationBox />
+                              <ErrorBox />
+                              <Grid container className={classes.app}>
+                                <Grid item>
+                                  <SideMenuWrapper />
+                                </Grid>
+                                <Grid item style={{ flex: "1" }}>
+                                  <Route exact path="/">
+                                    <Redirect to={Routes.DASHBOARD} />
+                                  </Route>
+                                  <Route exact path={Routes.DASHBOARD}>
+                                    <SensorsPage />
+                                  </Route>
+                                  <Route exact path={Routes.FORUM}>
+                                    <ForumIndexPage />
+                                  </Route>
+                                  <Route exact path={Routes.USERS}>
+                                    <UserListPage />
+                                  </Route>
+                                  <Route exact path={Routes.LOGIN}>
+                                    <LoginPage />
+                                  </Route>
+                                  <Route exact path={Routes.REGISTER}>
+                                    <RegisterPage />
+                                  </Route>
+                                  <Route exact path={Routes.ADD_SENSOR}>
+                                    <AddSensorPage />
+                                  </Route>
+                                  <Route exact path={Routes.ADD_DISPLAY}>
+                                    <AddDisplayPage />
+                                  </Route>
+                                  <Route exact path={Routes.ADD_FORWARDER}>
+                                    <AddForwarderPage />
+                                  </Route>
+                                  <Route exact path={Routes.SENSOR}>
+                                    <SensorInfoPage />
+                                  </Route>
+                                  <Route exact path={Routes.DISPLAY}>
+                                    <DisplayInfoPage />
+                                  </Route>
+                                  <Route exact path={Routes.FORWARDER}>
+                                    <ForwarderInfoPage />
+                                  </Route>
+                                  <Route exact path={Routes.DISPLAY_LIST}>
+                                    <DisplayListPage />
+                                  </Route>
+                                  <Route exact path={Routes.FORWARDER_LIST}>
+                                    <ForwarderListPage />
+                                  </Route>
+                                </Grid>
                               </Grid>
-                              <Grid item style={{ flex: "1" }}>
-                                <Route exact path="/">
-                                  <SensorsPage />
-                                </Route>
-                                <Route exact path="/login">
-                                  <LoginPage />
-                                </Route>
-                                <Route exact path="/register">
-                                  <RegisterPage />
-                                </Route>
-                                <Route exact path="/add-sensor">
-                                  <AddSensorPage />
-                                </Route>
-                                <Route exact path="/add-display">
-                                  <AddDisplayPage />
-                                </Route>
-                                <Route exact path="/add-forwarder">
-                                  <AddForwarderPage />
-                                </Route>
-                                <Route exact path="/sensors/:id">
-                                  <SensorInfoPage />
-                                </Route>
-                                <Route exact path="/displays/:id">
-                                  <DisplayInfoPage />
-                                </Route>
-                                <Route exact path="/forwarders/:id">
-                                  <ForwarderInfoPage />
-                                </Route>
-                                <Route exact path="/displays">
-                                  <DisplayListPage />
-                                </Route>
-                                <Route exact path="/forwarders">
-                                  <ForwarderListPage />
-                                </Route>
-                              </Grid>
-                            </Grid>
-                          </Wrapper>
-                        </ErrorContextProvider>
-                      </ToastContextProvider>
-                    </ForwarderContextProvider>
+                            </Wrapper>
+                          </ErrorContextProvider>
+                        </ToastContextProvider>
+                      </ForwarderContextProvider>
+                    </UserContextProvider>
                   </DisplayContextProvider>
                 </ConfirmationContextProvider>
               </SensorContextProvider>

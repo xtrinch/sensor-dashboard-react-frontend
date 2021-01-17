@@ -132,7 +132,7 @@ const SideMenuItem: React.FunctionComponent<
         </ListItemText>
         {item.userId === user?.id && (
           <div onClick={(e) => e.stopPropagation()}>
-            <Link to={`/${type}s/${item.id}`} onClick={drawerToggle}>
+            <Link to={`/dashboard/${type}s/${item.id}`} onClick={drawerToggle}>
               <Fab color="secondary" size="small" className={classes.itemFab}>
                 <SettingsIcon />
               </Fab>

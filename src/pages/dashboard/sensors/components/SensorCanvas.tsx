@@ -1,6 +1,5 @@
 import { Card, createStyles, Typography } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
-import TimeSeriesChart, { ChartPoint } from "components/TimeSeriesChart";
 import { SensorContext } from "context/SensorContext";
 import {
   addDays,
@@ -12,6 +11,9 @@ import {
   startOfYear,
 } from "date-fns";
 import { uniqBy } from "lodash";
+import TimeSeriesChart, {
+  ChartPoint,
+} from "pages/dashboard/sensors/components/TimeSeriesChart";
 import React, { useContext } from "react";
 import { AxisDomain } from "recharts";
 import ColorsEnum from "types/ColorsEnum";

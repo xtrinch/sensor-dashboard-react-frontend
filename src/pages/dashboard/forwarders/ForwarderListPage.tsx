@@ -8,16 +8,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
-import ForwarderItem from "components/ForwarderItem";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
+import ForwarderItem from "pages/dashboard/forwarders/components/ForwarderItem";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 import Forwarder from "types/Forwarder";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -44,21 +44,20 @@ const ForwarderListPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="flex-end">
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
+          My forwarder devices
+        </Typography>
         <Button
           variant="contained"
           className={classes.actionButton}
           startIcon={<Plus />}
-          onClick={() => history.push("add-forwarder")}
+          onClick={() => history.push(Routes.ADD_FORWARDER)}
         >
           Add
         </Button>
       </TopBar>
-      <Container component="main" maxWidth="sm" className={classes.root}>
-        <CssBaseline />
-        <Typography component="h1" variant="h5" style={{ padding: "20px" }}>
-          My forwarder devices
-        </Typography>
+      <Container component="main" maxWidth="md" className={classes.root}>
         {forwarderContext.forwarders.length !== 0 && (
           <Table>
             <TableHead>

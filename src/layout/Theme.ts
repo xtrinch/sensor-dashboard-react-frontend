@@ -28,6 +28,12 @@ const theme = createMuiTheme({
         fontSize: "12px",
         color: ColorsEnum.GRAY,
       },
+      h4: {
+        textTransform: "uppercase",
+        color: ColorsEnum.WHITE,
+        fontSize: "14px",
+        fontWeight: "bold",
+      },
       h5: {
         color: ColorsEnum.GRAY,
       },
@@ -51,9 +57,24 @@ const theme = createMuiTheme({
         borderBottomWidth: "0px",
       },
     },
+    MuiTableCell: {
+      head: {
+        textTransform: "uppercase",
+        fontSize: "11px",
+        color: "white",
+        fontWeight: "bold",
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: "35px",
+      },
+    },
+    MuiInput: {
+      underline: {
+        "&:before": {
+          borderBottomWidth: "0px",
+        },
       },
     },
     MuiListSubheader: {
@@ -66,6 +87,11 @@ const theme = createMuiTheme({
     MuiButtonBase: {
       root: {
         color: ColorsEnum.GRAY,
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: "transparent",
       },
     },
     MuiButton: {

@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
+import { getForwarderRoute } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -61,7 +62,7 @@ const AddForwarderPage: React.FunctionComponent<
       const forwarder = await addForwarder(data);
       if (forwarder) {
         setSuccess(true);
-        history.push(`/forwarders/${forwarder.id}`);
+        history.push(getForwarderRoute(forwarder.id));
       }
     } catch (e) {
       setErrors(e);

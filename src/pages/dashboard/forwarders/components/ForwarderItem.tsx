@@ -16,6 +16,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Forwarder from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
+import { getForwarderRoute } from "utils/Routes";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -65,7 +66,7 @@ const ForwarderItem: React.FunctionComponent<
           : "Never"}
       </TableCell>
       <TableCell style={{ width: "100px" }}>
-        <Link to={`/forwarders/${forwarder.id}`}>
+        <Link to={getForwarderRoute(forwarder.id)}>
           <IconButton aria-label="add to favorites" size="small">
             <SettingsIcon />
           </IconButton>

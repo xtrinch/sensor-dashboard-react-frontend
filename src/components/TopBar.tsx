@@ -1,14 +1,17 @@
 import {
   AppBar,
   createStyles,
+  Fab,
   Grid,
   IconButton,
   WithStyles,
   withStyles,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import { AppContext } from "context/AppContext";
 import React, { useContext } from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 
 const styles = (theme) =>
@@ -21,6 +24,7 @@ const styles = (theme) =>
       },
       boxShadow: "none",
       minHeight: "60px",
+      justifyContent: "center",
     },
     menuIcon: {
       [theme.breakpoints.up("md")]: {
@@ -29,10 +33,16 @@ const styles = (theme) =>
     },
   });
 
+interface TopBarProps {
+  alignItems?: string;
+  noGridItem?: boolean;
+  backEnabled?: boolean;
+}
+
 const TopBar: React.FunctionComponent<
-  WithStyles<typeof styles> & { alignItems?: string; noGridItem?: boolean }
+  WithStyles<typeof styles> & TopBarProps & RouteComponentProps<{}>
 > = (props) => {
-  const { classes } = props;
+  const { classes, backEnabled, history } = props;
 
   const [, dispatch] = useContext(AppContext);
 
@@ -47,7 +57,7 @@ const TopBar: React.FunctionComponent<
       className={classes.root}
       style={{ alignItems: props.alignItems }}
     >
-      <Grid container spacing={5}>
+      <Grid container spacing={5} style={{ justifyContent: "center" }}>
         <Grid item className={classes.menuIcon} xs={1}>
           <div
             style={{ display: "flex", alignItems: "center", height: "100%" }}
@@ -64,13 +74,24 @@ const TopBar: React.FunctionComponent<
             </IconButton>
           </div>
         </Grid>
+        {backEnabled && (
+          <Grid item xs={1}>
+            <Fab color="primary" size="small" onClick={() => history.goBack()}>
+              <NavigateBeforeIcon />
+            </Fab>
+          </Grid>
+        )}
         {props.noGridItem && props.children}
         {!props.noGridItem && (
           <Grid
             item
-            sm={12}
-            xs={11}
-            style={{ justifyContent: props.alignItems, display: "flex" }}
+            sm={backEnabled ? 11 : 12}
+            xs={backEnabled ? 10 : 11}
+            style={{
+              justifyContent: props.alignItems,
+              alignItems: "center",
+              display: "flex",
+            }}
           >
             {props.children}
           </Grid>
@@ -80,4 +101,4 @@ const TopBar: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(TopBar);
+export default withRouter(withStyles(styles)(TopBar));

@@ -1,12 +1,4 @@
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
@@ -18,20 +10,16 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteSensor, updateSensor } from "context/SensorContext";
+import { deleteForwarder, updateForwarder } from "context/ForwarderContext";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import SensorService from "services/SensorService";
-import { listTimeZones } from "timezone-support";
+import ForwarderService from "services/ForwarderService";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
-import MeasurementTypeEnum, {
-  MeasurementTypeLabelsEnum,
-} from "types/MeasurementTypeEnum";
-import { SensorId } from "types/Sensor";
-import SensorTypeEnum from "types/SensorTypeEnum";
+import { ForwarderId } from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -59,9 +47,14 @@ const styles = (theme) =>
       backgroundColor: ColorsEnum.ERROR,
       color: ColorsEnum.WHITE,
     },
+    action: {
+      position: "absolute",
+      right: "25px",
+      bottom: "25px",
+    },
   });
 
-const SensorInfoPage: React.FunctionComponent<
+const ForwarderInfoPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const {
@@ -76,54 +69,46 @@ const SensorInfoPage: React.FunctionComponent<
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
     name: "",
-    displayName: "",
     location: "",
     boardType: "" as BoardTypeEnum,
-    timezone: "",
-    private: false,
-    sensorTypes: [],
-    measurementTypes: [],
   });
 
-  const [sensor, setSensor] = useState(null);
+  const [forwarder, setForwarder] = useState(null);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteSensor(sensor.id);
-      history.push("/");
+      await deleteForwarder(forwarder.id);
+      history.push(Routes.FORWARDER_LIST);
     };
     openConfirmation(
       onConfirm,
       null,
-      "Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements."
+      "Are you sure you want to delete forwarder?"
     );
   };
 
   useEffect(() => {
-    const getSensor = async () => {
-      const s = await SensorService.getSensor((id as unknown) as SensorId);
-      setSensor(s);
+    const getForwarder = async () => {
+      const s = await ForwarderService.getForwarder(
+        (id as unknown) as ForwarderId
+      );
+      setForwarder(s);
       setData((d) => ({
         ...d,
         name: s.name,
-        displayName: s.displayName,
         location: s.location,
         boardType: s.boardType,
-        timezone: s.timezone,
-        private: s.private,
-        measurementTypes: s.measurementTypes,
-        sensorTypes: s.sensorTypes,
       }));
     };
 
-    getSensor();
+    getForwarder();
   }, [id]);
 
   const submitForm = async (e) => {
     e.preventDefault();
 
     try {
-      await updateSensor((id as unknown) as SensorId, data);
+      await updateForwarder((id as unknown) as ForwarderId, data);
     } catch (e) {
       setErrors(e);
     }
@@ -153,7 +138,7 @@ const SensorInfoPage: React.FunctionComponent<
             <SettingsInputAntennaIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sensor board info
+            Forwarder board info
           </Typography>
           <form className={classes.form} noValidate onSubmit={submitForm}>
             <TextField
@@ -162,9 +147,9 @@ const SensorInfoPage: React.FunctionComponent<
               fullWidth
               id="accessToken"
               name="accessToken"
-              label="Sensor access token"
+              label="Forwarder access token"
               disabled
-              value={sensor?.accessToken || ""}
+              value={forwarder?.accessToken || ""}
             />
             <TextField
               variant="outlined"
@@ -175,8 +160,8 @@ const SensorInfoPage: React.FunctionComponent<
               label="Last seen at"
               disabled
               value={
-                sensor?.lastSeenAt
-                  ? format(sensor?.lastSeenAt, DATETIME_REGEX)
+                forwarder?.lastSeenAt
+                  ? format(forwarder?.lastSeenAt, DATETIME_REGEX)
                   : "Never"
               }
             />
@@ -184,25 +169,24 @@ const SensorInfoPage: React.FunctionComponent<
               variant="outlined"
               margin="normal"
               fullWidth
-              id="name"
-              label="Sensor name"
-              name="name"
-              value={data.name}
-              onChange={(e) => fieldChange(e.target.value, "name")}
-              error={!!errors.name}
-              helperText={errors.name}
+              id="numForwarded"
+              name="numForwarded"
+              label="Number of forwarded packets"
+              disabled
+              type="number"
+              value={forwarder?.numForwarded || 0}
             />
             <TextField
               variant="outlined"
               margin="normal"
               fullWidth
-              id="displayName"
-              label="Sensor display name"
-              name="displayName"
-              value={data.displayName}
-              onChange={(e) => fieldChange(e.target.value, "displayName")}
-              error={!!errors.displayName}
-              helperText={errors.displayName}
+              id="name"
+              label="Forwarder name"
+              name="name"
+              value={data.name}
+              onChange={(e) => fieldChange(e.target.value, "name")}
+              error={!!errors.name}
+              helperText={errors.name}
             />
             <TextField
               variant="outlined"
@@ -236,79 +220,6 @@ const SensorInfoPage: React.FunctionComponent<
                 </MenuItem>
               ))}
             </TextField>
-            <TextField
-              select
-              id="timezone"
-              variant="outlined"
-              margin="normal"
-              label="Timezone"
-              value={data.timezone}
-              onChange={(e) => fieldChange(e.target.value, "timezone")}
-              fullWidth
-            >
-              {listTimeZones().map((item) => (
-                <MenuItem key={item} value={item}>
-                  {item}
-                </MenuItem>
-              ))}
-            </TextField>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">Sensor types</InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.sensorTypes}
-                onChange={(e) => fieldChange(e.target.value, "sensorTypes")}
-                error={!!errors.sensorTypes}
-              >
-                {Object.values(SensorTypeEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {key}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.sensorTypes && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.sensorTypes}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">
-                Measurement types
-              </InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.measurementTypes}
-                onChange={(e) =>
-                  fieldChange(e.target.value, "measurementTypes")
-                }
-                error={!!errors.measurementTypes}
-              >
-                {Object.values(MeasurementTypeEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {MeasurementTypeLabelsEnum[key]}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.measurementTypes && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.measurementTypes}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={data.private || false}
-                  onChange={(e, checked) => fieldChange(checked, "private")}
-                />
-              }
-              label="Private"
-            />
             <Button
               type="submit"
               fullWidth
@@ -326,4 +237,4 @@ const SensorInfoPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(SensorInfoPage));
+export default withRouter(withStyles(styles)(ForwarderInfoPage));

@@ -19,6 +19,7 @@ import DisplayTypeEnum from "types/DisplayTypeEnum";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
+import { getDisplayRoute } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -71,7 +72,7 @@ const AddDisplayPage: React.FunctionComponent<
       const display = await addDisplay(data);
       if (display) {
         setSuccess(true);
-        history.push(`/displays/${display.id}`);
+        history.push(getDisplayRoute(display.id));
       }
     } catch (e) {
       setErrors(e);

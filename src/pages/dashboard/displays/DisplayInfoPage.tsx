@@ -30,6 +30,7 @@ import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -94,7 +95,7 @@ const DisplayInfoPage: React.FunctionComponent<
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
       await deleteDisplay(display.id);
-      history.push("/displays");
+      history.push(Routes.DISPLAY_LIST);
     };
     openConfirmation(
       onConfirm,

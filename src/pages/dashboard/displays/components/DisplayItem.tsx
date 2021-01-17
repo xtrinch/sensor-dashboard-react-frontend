@@ -16,6 +16,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
 import { DATETIME_REGEX } from "utils/date.range";
+import { getDisplayRoute } from "utils/Routes";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -65,7 +66,7 @@ const DisplayItem: React.FunctionComponent<
           : "Never"}
       </TableCell>
       <TableCell style={{ width: "100px" }}>
-        <Link to={`/displays/${display.id}`}>
+        <Link to={getDisplayRoute(display.id)}>
           <IconButton aria-label="add to favorites" size="small">
             <SettingsIcon />
           </IconButton>

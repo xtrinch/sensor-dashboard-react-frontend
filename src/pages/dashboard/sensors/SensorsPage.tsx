@@ -5,12 +5,12 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core";
-import SensorCanvas from "components/SensorCanvas";
 import TopMenu from "components/TopMenu";
 import { AccountContext } from "context/AccountContext";
 import { AppContext } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
 import { uniq } from "lodash";
+import SensorCanvas from "pages/dashboard/sensors/components/SensorCanvas";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import MeasurementService from "services/MeasurementService";
 import ColorsEnum from "types/ColorsEnum";
