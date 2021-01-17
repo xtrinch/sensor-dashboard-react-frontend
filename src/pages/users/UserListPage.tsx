@@ -56,7 +56,7 @@ const UserListPage: React.FunctionComponent<
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
+                <TableCell>Username</TableCell>
                 <TableCell>Created at</TableCell>
                 <TableCell>Last seen at</TableCell>
                 <TableCell>Group</TableCell>

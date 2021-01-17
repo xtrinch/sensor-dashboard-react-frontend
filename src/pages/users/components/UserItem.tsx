@@ -59,7 +59,7 @@ const UserItem: React.FunctionComponent<
 
   return (
     <TableRow className={classes.root}>
-      <TableCell>{user.fullName}</TableCell>
+      <TableCell>{user.username}</TableCell>
       <TableCell>
         {user.createdAt ? format(user.createdAt, DATETIME_REGEX) : ""}
       </TableCell>
