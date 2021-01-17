@@ -72,7 +72,9 @@ const SensorCanvas: React.FunctionComponent<
   SensorCanvasProps & WithStyles<typeof styles>
 > = (props) => {
   const { type, classes, date, groupBy, measurements, domain } = props;
-  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const {
+    state: { sensors, mySensors },
+  } = useContext(SensorContext);
   const allSensors = uniqBy(
     [...mySensors, ...sensors],
     (s: Sensor) => s.id

@@ -16,9 +16,9 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteSensor, updateSensor } from "context/SensorContext";
+import { SensorContext } from "context/SensorContext";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import SensorService from "services/SensorService";
 import { listTimeZones } from "timezone-support";
@@ -27,7 +27,7 @@ import ColorsEnum from "types/ColorsEnum";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
-import { SensorId } from "types/Sensor";
+import Sensor, { SensorId } from "types/Sensor";
 import SensorTypeEnum from "types/SensorTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
 
@@ -85,6 +85,8 @@ const SensorInfoPage: React.FunctionComponent<
     history,
   } = props;
 
+  const { deleteSensor, updateSensor } = useContext(SensorContext);
+
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
@@ -136,7 +138,7 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateSensor((id as unknown) as SensorId, data);
+      await updateSensor((id as unknown) as SensorId, new Sensor(data));
     } catch (e) {
       setErrors(e);
     }

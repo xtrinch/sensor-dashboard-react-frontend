@@ -9,8 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
-import { addSensor } from "context/SensorContext";
-import React, { useState } from "react";
+import { SensorContext } from "context/SensorContext";
+import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { listTimeZones } from "timezone-support";
 import BoardTypeEnum from "types/BoardTypeEnum";
@@ -60,6 +60,7 @@ const AddSensorPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
+  const { addSensor } = useContext(SensorContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);

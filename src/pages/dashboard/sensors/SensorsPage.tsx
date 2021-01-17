@@ -40,10 +40,12 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 ) => {
   const { classes } = props;
 
-  const [{ sensors, mySensors, sensorsLoaded, mySensorsLoaded }] = useContext(
-    SensorContext
-  );
-  const [{ loginState }] = useContext(AccountContext);
+  const {
+    state: { sensors, mySensors, sensorsLoaded, mySensorsLoaded },
+  } = useContext(SensorContext);
+  const {
+    state: { loginState },
+  } = useContext(AccountContext);
   const [{ date, groupBy, domain }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);

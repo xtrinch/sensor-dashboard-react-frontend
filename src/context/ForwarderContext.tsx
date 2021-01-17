@@ -1,4 +1,4 @@
-import { AccountContext, AccountContextState } from "context/AccountContext";
+import { AccountContext } from "context/AccountContext";
 import { addToast } from "context/ToastContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import ForwarderService from "services/ForwarderService";
@@ -16,7 +16,7 @@ const ForwarderContext = createContext<{
   ) => Promise<Forwarder>;
   deleteForwarder?: (id: ForwarderId) => Promise<boolean>;
   addForwarder?: (forwarder: Partial<Forwarder>) => Promise<Forwarder>;
-  reload?: (accountContext: AccountContextState) => Promise<void>;
+  reload?: () => Promise<void>;
 }>({});
 
 function ForwarderContextProvider(props) {
@@ -24,10 +24,12 @@ function ForwarderContextProvider(props) {
     forwarders: [],
     forwardersLoaded: false,
   });
-  let [accountContext] = useContext(AccountContext);
+  let {
+    state: { loginState },
+  } = useContext(AccountContext);
 
-  const reload = async (accountContext: AccountContextState) => {
-    if (accountContext.loginState === "LOGGED_OUT") {
+  const reload = async () => {
+    if (loginState === "LOGGED_OUT") {
       return;
     }
 
@@ -88,9 +90,9 @@ function ForwarderContextProvider(props) {
 
   useEffect(() => {
     if (!state.forwardersLoaded) {
-      reload(accountContext);
+      reload();
     }
-  }, [state, accountContext]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ForwarderContext.Provider

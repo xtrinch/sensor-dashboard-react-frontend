@@ -19,7 +19,7 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
-import { SensorContext, toggleSensorVisibility } from "context/SensorContext";
+import { SensorContext } from "context/SensorContext";
 import { differenceInMinutes } from "date-fns";
 import React, { Context, Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -69,8 +69,10 @@ const SideMenuItem: React.FunctionComponent<
 > = (props) => {
   const { item, classes } = props;
 
-  const [{ user }] = useContext(AccountContext);
-  const [, dispatch] = useContext(SensorContext);
+  const {
+    state: { user },
+  } = useContext(AccountContext);
+  const { toggleSensorVisibility, updateSensor } = useContext(SensorContext);
 
   const toggleVisibility = async (e: any, item: IotDeviceInterface) => {
     e.stopPropagation();
@@ -89,10 +91,7 @@ const SideMenuItem: React.FunctionComponent<
     }
 
     item.expanded = !item.expanded;
-    dispatch({
-      type: "updateSensor",
-      payload: item,
-    });
+    updateSensor(item.id, (item as unknown) as Sensor, true);
   };
 
   const { visibility, expandable, type } = props;

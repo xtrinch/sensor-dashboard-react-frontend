@@ -8,8 +8,8 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { register } from "context/AccountContext";
-import React, { useState } from "react";
+import { AccountContext } from "context/AccountContext";
+import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -42,6 +42,7 @@ const RegisterPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const { register } = useContext(AccountContext);
 
   const [data, setData] = useState({
     name: "",

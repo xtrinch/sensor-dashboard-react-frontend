@@ -88,7 +88,9 @@ const DisplayInfoPage: React.FunctionComponent<
     displayType: "" as DisplayTypeEnum,
   });
 
-  const [sensorContext] = useContext(SensorContext);
+  const {
+    state: { sensors },
+  } = useContext(SensorContext);
   const { deleteDisplay, updateDisplay } = useContext(DisplayContext);
 
   const [display, setDisplay] = useState(null);
@@ -282,7 +284,7 @@ const DisplayInfoPage: React.FunctionComponent<
                 onChange={(e) => fieldChange(e.target.value, "sensorIds")}
                 error={!!errors.sensorIds}
               >
-                {sensorContext.sensors.map((sensor) => (
+                {sensors.map((sensor) => (
                   <MenuItem key={sensor.id} value={sensor.id}>
                     {sensor.name}
                   </MenuItem>

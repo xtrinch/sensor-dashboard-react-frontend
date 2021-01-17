@@ -3,7 +3,7 @@ import { withStyles, WithStyles } from "@material-ui/styles";
 import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
 import MainMenu from "components/MainMenu";
-import { AccountContext, logout } from "context/AccountContext";
+import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
@@ -63,7 +63,10 @@ const SideMenu: React.FunctionComponent<
     history,
     location: { pathname },
   } = props;
-  const [accountContext] = useContext(AccountContext);
+  const {
+    logout,
+    state: { loginState, user },
+  } = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -75,7 +78,6 @@ const SideMenu: React.FunctionComponent<
   };
 
   const { classes } = props;
-  const { loginState, user } = accountContext;
   return (
     <div className={classes.root}>
       <ListSubheader disableGutters className={classes.subheader}>

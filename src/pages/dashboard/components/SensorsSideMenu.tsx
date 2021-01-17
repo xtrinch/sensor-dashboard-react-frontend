@@ -66,14 +66,18 @@ const SensorsSideMenu: React.FunctionComponent<
 > = (props) => {
   const { history } = props;
 
-  const [{ sensors, mySensors }] = useContext(SensorContext);
+  const {
+    state: { sensors, mySensors },
+  } = useContext(SensorContext);
   const {
     state: { displays },
   } = useContext(DisplayContext);
   const {
     state: { forwarders },
   } = useContext(ForwarderContext);
-  const [accountContext] = useContext(AccountContext);
+  const {
+    state: { loginState, user },
+  } = useContext(AccountContext);
 
   const goToDisplays = () => {
     drawerToggle();
@@ -86,7 +90,6 @@ const SensorsSideMenu: React.FunctionComponent<
   };
 
   const { classes } = props;
-  const { loginState, user } = accountContext;
   return (
     <>
       {loginState === "LOGGED_IN" && (

@@ -1,4 +1,4 @@
-import { AccountContext, AccountContextState } from "context/AccountContext";
+import { AccountContext } from "context/AccountContext";
 import { addToast } from "context/ToastContext";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import DisplayService from "services/DisplayService";
@@ -13,7 +13,7 @@ const DisplayContext = createContext<{
   updateDisplay?: (id: DisplayId, display: Display) => Promise<Display>;
   deleteDisplay?: (id: DisplayId) => Promise<boolean>;
   addDisplay?: (display: Partial<Display>) => Promise<Display>;
-  reload?: (accountContext: AccountContextState) => Promise<void>;
+  reload?: () => Promise<void>;
 }>({});
 
 function DisplayContextProvider(props) {
@@ -21,10 +21,12 @@ function DisplayContextProvider(props) {
     displays: [],
     displaysLoaded: false,
   });
-  let [accountContext] = useContext(AccountContext);
+  let {
+    state: { loginState },
+  } = useContext(AccountContext);
 
-  const reload = async (accountContext: AccountContextState) => {
-    if (accountContext.loginState === "LOGGED_OUT") {
+  const reload = async () => {
+    if (loginState === "LOGGED_OUT") {
       return;
     }
 
@@ -83,9 +85,9 @@ function DisplayContextProvider(props) {
 
   useEffect(() => {
     if (!state.displaysLoaded) {
-      reload(accountContext);
+      reload();
     }
-  }, [state, accountContext]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <DisplayContext.Provider

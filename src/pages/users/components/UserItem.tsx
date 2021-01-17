@@ -53,7 +53,6 @@ const UserItem: React.FunctionComponent<
   };
 
   const groupChange = async (val) => {
-    console.log(val);
     await updateUser(user.id, new User({ ...user, group: val }));
   };
 

@@ -11,9 +11,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import config from "config/Config";
-import { AccountContext, login, loginWithGoogle } from "context/AccountContext";
+import { AccountContext } from "context/AccountContext";
 import { DisplayContext } from "context/DisplayContext";
-import { reloadMySensors, reloadSensors } from "context/SensorContext";
+import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import {
   GoogleLogin,
@@ -22,6 +22,7 @@ import {
 } from "react-google-login";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
+import User from "types/User";
 
 const styles = (theme) =>
   createStyles({
@@ -60,12 +61,16 @@ const LoginPage: React.FunctionComponent<
     password: "",
   });
 
-  const [accountState] = useContext(AccountContext);
+  const {
+    login,
+    loginWithGoogle,
+    state: { loginState },
+  } = useContext(AccountContext);
+  const { reloadSensors } = useContext(SensorContext);
 
-  const uponLoginSuccess = () => {
-    reloadSensors(accountState);
-    reloadMySensors();
-    reload(accountState);
+  const uponLoginSuccess = async (user: User) => {
+    await reloadSensors("LOGGED_IN", user);
+    await reload();
     history.push("/");
   };
 
@@ -73,10 +78,10 @@ const LoginPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const success = await login(data.email, data.password);
-      if (success) {
+      const user = await login(data.email, data.password);
+      if (user) {
         // todo move out of here
-        uponLoginSuccess();
+        await uponLoginSuccess(user);
       }
     } catch (e) {
       setErrors(e);
@@ -93,8 +98,9 @@ const LoginPage: React.FunctionComponent<
   ) => {
     console.log(response);
     if (!response.error) {
-      if (await loginWithGoogle(response.tokenId)) {
-        uponLoginSuccess();
+      const user = await loginWithGoogle(response.tokenId);
+      if (user) {
+        uponLoginSuccess(user);
       }
     }
   };
@@ -141,8 +147,7 @@ const LoginPage: React.FunctionComponent<
             helperText={errors.password}
           />
           <div style={{ color: ColorsEnum.RED }}>
-            {accountState.loginState === "LOGIN_ERROR" &&
-              "Invalid email or password"}
+            {loginState === "LOGIN_ERROR" && "Invalid email or password"}
           </div>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
