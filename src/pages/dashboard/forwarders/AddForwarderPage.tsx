@@ -8,8 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
-import { addForwarder } from "context/ForwarderContext";
-import React, { useState } from "react";
+import { ForwarderContext } from "context/ForwarderContext";
+import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
@@ -43,6 +43,7 @@ const AddForwarderPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
+  const { addForwarder } = useContext(ForwarderContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);

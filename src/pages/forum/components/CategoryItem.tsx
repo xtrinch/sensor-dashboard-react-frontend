@@ -41,7 +41,7 @@ const CategoryItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & { category: Category }
 > = (props) => {
   const { category, classes } = props;
-  const { deleteCategory, updateCategory } = useContext(CategoryContext);
+  const { deleteCategory } = useContext(CategoryContext);
 
   const deleteWithConfirmation = (category: Category) => {
     const onConfirm = async () => {
@@ -51,14 +51,6 @@ const CategoryItem: React.FunctionComponent<
       onConfirm,
       null,
       "Are you sure you want to delete category?"
-    );
-  };
-
-  const groupChange = async (val) => {
-    console.log(val);
-    await updateCategory(
-      category.id,
-      new Category({ ...category, group: val })
     );
   };
 

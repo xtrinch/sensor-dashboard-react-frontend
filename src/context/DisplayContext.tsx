@@ -85,7 +85,7 @@ function DisplayContextProvider(props) {
     if (!state.displaysLoaded) {
       reload(accountContext);
     }
-  }, [state, accountContext]); // The empty array causes this effect to only run on mount
+  }, [state, accountContext]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <DisplayContext.Provider

@@ -185,7 +185,7 @@ function SensorContextProvider(props) {
         reloadMySensors();
       }
     }
-  }, [state, accountContext]); // The empty array causes this effect to only run on mount
+  }, [state, accountContext]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <SensorContext.Provider value={[state, dispatch]}>

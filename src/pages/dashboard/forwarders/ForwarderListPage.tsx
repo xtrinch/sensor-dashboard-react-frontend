@@ -40,7 +40,9 @@ const ForwarderListPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
 
-  const [forwarderContext] = useContext(ForwarderContext);
+  const {
+    state: { forwarders },
+  } = useContext(ForwarderContext);
 
   return (
     <>
@@ -58,7 +60,7 @@ const ForwarderListPage: React.FunctionComponent<
         </Button>
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
-        {forwarderContext.forwarders.length !== 0 && (
+        {forwarders.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -70,13 +72,13 @@ const ForwarderListPage: React.FunctionComponent<
               </TableRow>
             </TableHead>
             <TableBody>
-              {forwarderContext.forwarders.map((forwarder: Forwarder) => (
+              {forwarders.map((forwarder: Forwarder) => (
                 <ForwarderItem forwarder={forwarder} key={forwarder.id} />
               ))}
             </TableBody>
           </Table>
         )}
-        {forwarderContext.forwarders.length === 0 && (
+        {forwarders.length === 0 && (
           <Typography
             variant="body2"
             component="p"

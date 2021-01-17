@@ -70,7 +70,9 @@ const SensorsSideMenu: React.FunctionComponent<
   const {
     state: { displays },
   } = useContext(DisplayContext);
-  const [{ forwarders }] = useContext(ForwarderContext);
+  const {
+    state: { forwarders },
+  } = useContext(ForwarderContext);
   const [accountContext] = useContext(AccountContext);
 
   const goToDisplays = () => {

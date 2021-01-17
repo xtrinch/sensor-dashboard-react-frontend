@@ -9,9 +9,9 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteForwarder } from "context/ForwarderContext";
+import { ForwarderContext } from "context/ForwarderContext";
 import { format } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Forwarder from "types/Forwarder";
@@ -43,6 +43,7 @@ const ForwarderItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & { forwarder: Forwarder }
 > = (props) => {
   const { forwarder, classes } = props;
+  const { deleteForwarder } = useContext(ForwarderContext);
 
   const deleteWithConfirmation = (forwarder: Forwarder) => {
     const onConfirm = async () => {

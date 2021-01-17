@@ -10,14 +10,14 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteForwarder, updateForwarder } from "context/ForwarderContext";
+import { ForwarderContext } from "context/ForwarderContext";
 import { format } from "date-fns";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ForwarderService from "services/ForwarderService";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
-import { ForwarderId } from "types/Forwarder";
+import Forwarder, { ForwarderId } from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
 import { Routes } from "utils/Routes";
 
@@ -65,6 +65,8 @@ const ForwarderInfoPage: React.FunctionComponent<
     history,
   } = props;
 
+  const { deleteForwarder, updateForwarder } = useContext(ForwarderContext);
+
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
@@ -108,7 +110,10 @@ const ForwarderInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateForwarder((id as unknown) as ForwarderId, data);
+      await updateForwarder(
+        (id as unknown) as ForwarderId,
+        new Forwarder(data)
+      );
     } catch (e) {
       setErrors(e);
     }

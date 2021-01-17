@@ -82,7 +82,7 @@ function CategoryContextProvider(props) {
     if (!state.categoriesLoaded) {
       reload();
     }
-  }, [state]); // The empty array causes this effect to only run on mount
+  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <CategoryContext.Provider

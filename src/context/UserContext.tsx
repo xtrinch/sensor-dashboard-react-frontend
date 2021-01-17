@@ -59,7 +59,7 @@ function UserContextProvider(props) {
     if (!state.usersLoaded) {
       reload();
     }
-  }, [state]); // The empty array causes this effect to only run on mount
+  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <UserContext.Provider value={{ state, updateUser, deleteUser }}>
