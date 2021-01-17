@@ -40,7 +40,9 @@ const DisplayListPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
 
-  const [displayContext] = useContext(DisplayContext);
+  const {
+    state: { displays },
+  } = useContext(DisplayContext);
 
   return (
     <>
@@ -58,7 +60,7 @@ const DisplayListPage: React.FunctionComponent<
         </Button>
       </TopBar>
       <Container component="main" maxWidth="sm" className={classes.root}>
-        {displayContext.displays.length !== 0 && (
+        {displays.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -70,13 +72,13 @@ const DisplayListPage: React.FunctionComponent<
               </TableRow>
             </TableHead>
             <TableBody>
-              {displayContext.displays.map((display: Display) => (
+              {displays.map((display: Display) => (
                 <DisplayItem display={display} key={display.id} />
               ))}
             </TableBody>
           </Table>
         )}
-        {displayContext.displays.length === 0 && (
+        {displays.length === 0 && (
           <Typography
             variant="body2"
             component="p"

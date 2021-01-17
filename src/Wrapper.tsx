@@ -2,7 +2,6 @@ import { createStyles, withStyles, WithStyles } from "@material-ui/core";
 import { AccountContext } from "context/AccountContext";
 import { AppContext } from "context/AppContext";
 import { ConfirmationContext } from "context/ConfirmationContext";
-import { DisplayContext } from "context/DisplayContext";
 import { ErrorContext } from "context/ErrorContext";
 import { ForwarderContext } from "context/ForwarderContext";
 import { SensorContext } from "context/SensorContext";
@@ -16,7 +15,6 @@ const Wrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const [, dispatchAccount] = useContext(AccountContext);
   const [, dispatchConfirmationContext] = useContext(ConfirmationContext);
   const [, dispatchError] = useContext(ErrorContext);
-  const [, dispatchDisplay] = useContext(DisplayContext);
   const [, dispatchForwarder] = useContext(ForwarderContext);
   const [, dispatchToast] = useContext(ToastContext);
   const [, dispatchApp] = useContext(AppContext);
@@ -24,7 +22,6 @@ const Wrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   ErrorContext.dispatch = dispatchError;
   SensorContext.dispatch = dispatchSensor;
   ForwarderContext.dispatch = dispatchForwarder;
-  DisplayContext.dispatch = dispatchDisplay;
   ConfirmationContext.dispatch = dispatchConfirmationContext;
   ToastContext.dispatch = dispatchToast;
   AccountContext.dispatch = dispatchAccount;

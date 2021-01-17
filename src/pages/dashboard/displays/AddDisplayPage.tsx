@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
-import { addDisplay } from "context/DisplayContext";
+import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -63,6 +63,8 @@ const AddDisplayPage: React.FunctionComponent<
   });
 
   const [sensorState] = useContext(SensorContext);
+  const { addDisplay } = useContext(DisplayContext);
+
   const [success, setSuccess] = useState(false);
 
   const submitForm = async (e) => {

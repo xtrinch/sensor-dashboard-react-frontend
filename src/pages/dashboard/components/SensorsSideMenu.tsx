@@ -67,7 +67,9 @@ const SensorsSideMenu: React.FunctionComponent<
   const { history } = props;
 
   const [{ sensors, mySensors }] = useContext(SensorContext);
-  const [{ displays }] = useContext(DisplayContext);
+  const {
+    state: { displays },
+  } = useContext(DisplayContext);
   const [{ forwarders }] = useContext(ForwarderContext);
   const [accountContext] = useContext(AccountContext);
 

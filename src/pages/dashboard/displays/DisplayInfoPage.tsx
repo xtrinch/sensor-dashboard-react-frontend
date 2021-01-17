@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteDisplay, updateDisplay } from "context/DisplayContext";
+import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
 import { format } from "date-fns";
 import React, { useContext, useEffect, useState } from "react";
@@ -24,7 +24,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import DisplayService from "services/DisplayService";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
-import { DisplayId } from "types/Display";
+import Display, { DisplayId } from "types/Display";
 import DisplayTypeEnum from "types/DisplayTypeEnum";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
@@ -89,6 +89,7 @@ const DisplayInfoPage: React.FunctionComponent<
   });
 
   const [sensorContext] = useContext(SensorContext);
+  const { deleteDisplay, updateDisplay } = useContext(DisplayContext);
 
   const [display, setDisplay] = useState(null);
 
@@ -126,7 +127,7 @@ const DisplayInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateDisplay((id as unknown) as DisplayId, data);
+      await updateDisplay((id as unknown) as DisplayId, new Display(data));
     } catch (e) {
       setErrors(e);
     }

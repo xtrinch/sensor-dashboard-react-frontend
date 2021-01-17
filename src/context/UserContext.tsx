@@ -4,13 +4,11 @@ import UserService from "services/UserService";
 import { Toast } from "types/Toast";
 import User, { UserId } from "types/User";
 
-type UserContextState = {
-  usersLoaded: boolean;
-  users: User[];
-};
-
 const UserContext = createContext<{
-  state?: UserContextState;
+  state?: {
+    usersLoaded: boolean;
+    users: User[];
+  };
   updateUser?: (id: UserId, user: User) => Promise<User>;
   deleteUser?: (id: UserId) => Promise<boolean>;
 }>({});

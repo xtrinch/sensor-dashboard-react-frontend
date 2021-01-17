@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import config from "config/Config";
 import { AccountContext, login, loginWithGoogle } from "context/AccountContext";
-import { reload } from "context/DisplayContext";
+import { DisplayContext } from "context/DisplayContext";
 import { reloadMySensors, reloadSensors } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import {
@@ -51,6 +51,7 @@ const LoginPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { classes, history } = props;
+  const { reload } = useContext(DisplayContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);

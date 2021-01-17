@@ -9,9 +9,9 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { openConfirmation } from "context/ConfirmationContext";
-import { deleteDisplay } from "context/DisplayContext";
+import { DisplayContext } from "context/DisplayContext";
 import { format } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
@@ -43,6 +43,7 @@ const DisplayItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & { display: Display }
 > = (props) => {
   const { display, classes } = props;
+  const { deleteDisplay } = useContext(DisplayContext);
 
   const deleteWithConfirmation = (display: Display) => {
     const onConfirm = async () => {
