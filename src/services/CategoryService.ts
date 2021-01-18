@@ -24,15 +24,15 @@ export default class CategoryService {
   };
 
   public static addCategory = async (
-    display: Partial<Category>
+    category: Partial<Category>
   ): Promise<Category> => {
-    const url = getUrl("/displays");
+    const url = getUrl("/categories");
 
     const resp = await fetch(url, {
       method: "POST",
       credentials: "include",
       headers: getHeaders({ contentType: "application/json" }),
-      body: JSON.stringify(display),
+      body: JSON.stringify(category),
     });
 
     const result = await processResponse(resp);

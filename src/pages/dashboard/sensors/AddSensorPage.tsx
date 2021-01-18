@@ -99,7 +99,7 @@ const AddSensorPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center">
-        <Typography component="h1" variant="h5" style={{ marginRight: "30px" }}>
+        <Typography component="h1" variant="h4">
           Add sensor board
         </Typography>
       </TopBar>

@@ -4,10 +4,6 @@ import { SensorId } from "types/Sensor";
 
 export const Routes = {
   DASHBOARD: "/dashboard",
-  FORUM: "/forum",
-  USERS: "/users",
-  LOGIN: "/login",
-  REGISTER: "/register",
   ADD_SENSOR: "/dashboard/add-sensor",
   ADD_DISPLAY: "/dashboard/add-display",
   ADD_FORWARDER: "/dashboard/add-forwarder",
@@ -16,6 +12,11 @@ export const Routes = {
   FORWARDER: "/dashboard/forwarders/:id",
   DISPLAY_LIST: "/dashboard/displays",
   FORWARDER_LIST: "/dashboard/forwarders",
+  FORUM: "/forum",
+  ADD_CATEGORY: "/forum/add-category",
+  USERS: "/users",
+  LOGIN: "/login",
+  REGISTER: "/register",
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard/sensors/${id}`;

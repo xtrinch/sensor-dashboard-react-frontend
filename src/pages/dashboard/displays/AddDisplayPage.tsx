@@ -2,7 +2,6 @@ import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -90,18 +89,18 @@ const AddDisplayPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="flex-end" />
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h4">
+          Add display board
+        </Typography>
+      </TopBar>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <div className={classes.paper}>
           {!success && (
             <>
               <Avatar className={classes.avatar}>
                 <SettingsInputAntennaIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
-                Add display board
-              </Typography>
               <form className={classes.form} noValidate onSubmit={submitForm}>
                 <TextField
                   variant="outlined"

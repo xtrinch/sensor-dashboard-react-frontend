@@ -1,4 +1,5 @@
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -9,6 +10,7 @@ import {
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import Plus from "@material-ui/icons/Add";
 import TopBar from "components/TopBar";
 import { CategoryContext } from "context/CategoryContext";
 import CategoryItem from "pages/forum/components/CategoryItem";
@@ -16,6 +18,7 @@ import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -37,7 +40,7 @@ const styles = (theme) =>
 const CategoryListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
-  const { classes } = props;
+  const { classes, history } = props;
 
   const {
     state: { categories },
@@ -46,9 +49,17 @@ const CategoryListPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center">
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
           Categories
         </Typography>
+        <Button
+          variant="contained"
+          className={classes.actionButton}
+          startIcon={<Plus />}
+          onClick={() => history.push(Routes.ADD_CATEGORY)}
+        >
+          Add
+        </Button>
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
         <CssBaseline />

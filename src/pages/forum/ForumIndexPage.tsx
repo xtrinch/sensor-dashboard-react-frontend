@@ -1,8 +1,10 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { CategoryContextProvider } from "context/CategoryContext";
+import AddCategoryPage from "pages/forum/AddCategoryPage";
 import CategoryListPage from "pages/forum/CategoryListPage";
 import React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { Route, RouteComponentProps, withRouter } from "react-router";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) => createStyles({});
 
@@ -11,7 +13,12 @@ const ForumIndexPage: React.FunctionComponent<
 > = (props) => {
   return (
     <CategoryContextProvider>
-      <CategoryListPage />
+      <Route exact path={Routes.FORUM}>
+        <CategoryListPage />
+      </Route>
+      <Route exact path={Routes.ADD_CATEGORY}>
+        <AddCategoryPage />
+      </Route>
     </CategoryContextProvider>
   );
 };

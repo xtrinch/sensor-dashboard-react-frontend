@@ -77,7 +77,11 @@ const AddForwarderPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="flex-end" />
+      <TopBar alignItems="center">
+        <Typography component="h1" variant="h4">
+          Add forwarder board
+        </Typography>
+      </TopBar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -86,9 +90,6 @@ const AddForwarderPage: React.FunctionComponent<
               <Avatar className={classes.avatar}>
                 <SettingsInputAntennaIcon />
               </Avatar>
-              <Typography component="h1" variant="h5">
-                Add forwarder board
-              </Typography>
               <form className={classes.form} noValidate onSubmit={submitForm}>
                 <TextField
                   variant="outlined"
