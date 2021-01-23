@@ -1,14 +1,16 @@
-import Button from "@material-ui/core/Button";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { CategoryContext } from "context/CategoryContext";
 import { useFormik } from "formik";
 import { ForumRoutes } from "pages/forum/ForumRoutes";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
+import CategoryService from "services/CategoryService";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -26,27 +28,33 @@ const styles = (theme) =>
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-      padding: theme.spacing(6, 0, 6),
-    },
   });
 
 const AddCategoryPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
-  const { classes, history } = props;
+  const {
+    classes,
+    history,
+    match: { params },
+  } = props;
 
-  const [category] = useState(() => new Category());
-  const { addCategory } = useContext(CategoryContext);
+  const [category, setCategory] = useState(() => new Category());
+  const { addCategory, updateCategory } = useContext(CategoryContext);
 
   const submitForm = async (values: Category, { setStatus }) => {
     try {
-      const category = await addCategory(values);
-      if (category) {
+      let c;
+      if (isEdit()) {
+        c = await updateCategory(category.id, values);
+      } else {
+        c = await addCategory(values);
+      }
+      if (c) {
         history.push(ForumRoutes.FORUM);
       }
     } catch (e) {
+      console.log(e);
       setStatus(e);
     }
   };
@@ -57,6 +65,20 @@ const AddCategoryPage: React.FunctionComponent<
     enableReinitialize: true,
   });
 
+  const isEdit = () => {
+    return !!params.id;
+  };
+
+  useEffect(() => {
+    const setData = async () => {
+      if (isEdit()) {
+        const s = await CategoryService.getCategory(parseInt(params.id));
+        setCategory(s);
+      }
+    };
+    setData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <TopBar
@@ -66,7 +88,7 @@ const AddCategoryPage: React.FunctionComponent<
         color={ColorsEnum.OLIVE}
       >
         <Typography component="h1" variant="h4">
-          Add category
+          {isEdit() ? "Edit" : "Add"} category
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="xs">
@@ -102,16 +124,26 @@ const AddCategoryPage: React.FunctionComponent<
                 error={!!formik.status?.description}
                 helperText={formik.status?.description}
               />
-              <Button
+              <div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formik.values.protected}
+                      onChange={(e, checked) =>
+                        formik.setFieldValue("protected", checked)
+                      }
+                    />
+                  }
+                  label="Protected"
+                />
+              </div>
+              <ColoredButton
                 type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "20px", minWidth: "200px" }}
+                colorVariety={ColorsEnum.OLIVE}
               >
-                Add
-              </Button>
+                Submit
+              </ColoredButton>
             </form>
           </>
         </div>

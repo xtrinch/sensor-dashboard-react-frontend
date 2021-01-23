@@ -1,8 +1,7 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import { CategoryContextProvider } from "context/CategoryContext";
-import CategoryIndexPage from "pages/forum/categories/CategoryIndexPage";
+import AddCategoryPage from "pages/forum/categories/AddCategoryPage";
+import CategoryListPage from "pages/forum/categories/CategoryListPage";
 import { ForumRoutes } from "pages/forum/ForumRoutes";
-import TopicIndexPage from "pages/forum/topic/TopicIndexPage";
 import React from "react";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 
@@ -12,14 +11,17 @@ const ForumIndexPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   return (
-    <CategoryContextProvider>
-      <Route path={ForumRoutes.FORUM}>
-        <CategoryIndexPage />
+    <>
+      <Route exact path={ForumRoutes.FORUM}>
+        <CategoryListPage />
       </Route>
-      <Route path={ForumRoutes.TOPIC_LIST}>
-        <TopicIndexPage />
+      <Route exact path={ForumRoutes.ADD_CATEGORY}>
+        <AddCategoryPage />
       </Route>
-    </CategoryContextProvider>
+      <Route exact path={ForumRoutes.EDIT_CATEGORY}>
+        <AddCategoryPage />
+      </Route>
+    </>
   );
 };
 

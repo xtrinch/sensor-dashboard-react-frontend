@@ -81,6 +81,9 @@ const theme = createMuiTheme({
         color: "white",
         fontWeight: "bold",
       },
+      root: {
+        borderColor: `${ColorsEnum.BGDARK}!important`,
+      },
     },
     MuiListItemIcon: {
       root: {

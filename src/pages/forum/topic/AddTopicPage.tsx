@@ -5,13 +5,14 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import TopBar from "components/TopBar";
 import { TopicContext } from "context/TopicContext";
-import { convertToRaw, EditorState } from "draft-js";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
-import { ForumRoutes, getTopicListRoute } from "pages/forum/ForumRoutes";
-import React, { useContext, useState } from "react";
+import { getTopicListRoute } from "pages/forum/ForumRoutes";
+import React, { useContext, useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { RouteComponentProps, withRouter } from "react-router";
+import TopicService from "services/TopicService";
 import ColorsEnum from "types/ColorsEnum";
 import Topic from "types/Topic";
 
@@ -38,7 +39,8 @@ const styles = (theme) =>
   });
 
 const AddTopicPage: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
+  WithStyles<typeof styles> &
+    RouteComponentProps<{ id: string; topicId: string }>
 > = (props) => {
   const {
     classes,
@@ -46,16 +48,24 @@ const AddTopicPage: React.FunctionComponent<
     match: { params },
   } = props;
 
-  const [topic] = useState(() => new Topic({ categoryId: params.id }));
-  const { addTopic } = useContext(TopicContext);
+  const [topic, setTopic] = useState(
+    () => new Topic({ categoryId: params.id })
+  );
+  const { addTopic, updateTopic } = useContext(TopicContext);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
 
   const submitForm = async (values: Topic, { setStatus }) => {
     try {
-      const topic = await addTopic(values);
-      if (topic) {
+      let newTopic;
+      if (isEdit()) {
+        newTopic = await updateTopic(topic.id, values);
+      } else {
+        newTopic = await addTopic(values);
+      }
+
+      if (newTopic) {
         history.push(getTopicListRoute(parseInt(params.id)));
       }
     } catch (e) {
@@ -77,16 +87,33 @@ const AddTopicPage: React.FunctionComponent<
     );
   };
 
+  const isEdit = () => {
+    return !!params.topicId;
+  };
+
+  useEffect(() => {
+    const setData = async () => {
+      if (isEdit()) {
+        const s = await TopicService.getTopic(parseInt(params.topicId));
+        setTopic(s);
+        setEditorState(
+          EditorState.createWithContent(convertFromRaw(s.description))
+        );
+      }
+    };
+    setData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <TopBar
         alignItems="center"
         backEnabled
-        backTo={ForumRoutes.FORUM}
+        backTo={getTopicListRoute(parseInt(params.id))}
         color={ColorsEnum.OLIVE}
       >
         <Typography component="h1" variant="h4">
-          Add topic
+          {isEdit() ? "Edit" : "Add"} topic
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="md">
@@ -120,7 +147,7 @@ const AddTopicPage: React.FunctionComponent<
                 style={{ marginTop: "20px", minWidth: "200px" }}
                 className={classes.actionButton}
               >
-                Add
+                Submit
               </Button>
             </form>
           </>

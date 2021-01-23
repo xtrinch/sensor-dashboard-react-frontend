@@ -62,9 +62,10 @@ const TopicListPage: React.FunctionComponent<
         color={ColorsEnum.OLIVE}
       >
         <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
-          Topics in category: {category?.name}
+          {category?.name}
         </Typography>
-        {user?.isAllowed([PermissionsEnum.Topic__create]) && (
+        {(user?.isAllowed([PermissionsEnum.Topic__create]) ||
+          !category.protected) && (
           <Button
             variant="contained"
             className={classes.actionButton}
@@ -85,16 +86,15 @@ const TopicListPage: React.FunctionComponent<
             </TableBody>
           </Table>
         )}
-        {topics.length === 0 && (
-          <Typography
-            variant="body2"
-            component="p"
-            style={{ margin: "30px 0px" }}
-          >
-            No topics added
-          </Typography>
-        )}
       </Container>
+      {topics.length === 0 && (
+        <Typography
+          variant="body2"
+          style={{ margin: "30px 0px", textAlign: "center" }}
+        >
+          No topics added
+        </Typography>
+      )}
     </>
   );
 };

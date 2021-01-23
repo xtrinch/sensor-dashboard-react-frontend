@@ -6,11 +6,12 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core/styles";
+import { Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { AccountContext } from "context/AccountContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { TopicContext } from "context/TopicContext";
-import { getTopicRoute } from "pages/forum/ForumRoutes";
+import { getTopicEditRoute, getTopicRoute } from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -41,7 +42,7 @@ const styles = (theme: Theme) =>
 const TopicItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & { topic: Topic }
 > = (props) => {
-  const { topic, classes } = props;
+  const { topic, classes, history } = props;
   const { deleteTopic } = useContext(TopicContext);
   const {
     state: { user },
@@ -64,15 +65,28 @@ const TopicItem: React.FunctionComponent<
         </div>
       </TableCell>
       <TableCell style={{ width: "50px" }}>
-        {user?.isAllowed([PermissionsEnum.Topic__delete]) && (
-          <IconButton
-            aria-label="settings"
-            size="small"
-            onClick={() => deleteWithConfirmation(topic)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {user?.isAllowed([PermissionsEnum.Category__update]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() =>
+                history.push(getTopicEditRoute(topic.categoryId, topic.id))
+              }
+            >
+              <Settings />
+            </IconButton>
+          )}
+          {user?.isAllowed([PermissionsEnum.Topic__delete]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => deleteWithConfirmation(topic)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        </div>
       </TableCell>
     </TableRow>
   );

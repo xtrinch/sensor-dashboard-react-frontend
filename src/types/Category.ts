@@ -9,6 +9,7 @@ class Category extends AbstractEntity {
     this.name = s?.name || "";
     this.description = s?.description || "";
     this.id = s?.id || 0;
+    this.protected = s?.protected || false;
   }
 
   public id: CategoryId;
@@ -16,6 +17,8 @@ class Category extends AbstractEntity {
   public name: string;
 
   public description: string;
+
+  public protected: boolean;
 }
 
 export default Category;

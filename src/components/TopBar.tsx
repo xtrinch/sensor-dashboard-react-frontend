@@ -31,6 +31,10 @@ const styles = (theme) =>
         display: "none",
       },
     },
+    back: {
+      position: "absolute",
+      left: "20px",
+    },
   });
 
 interface TopBarProps {
@@ -59,6 +63,17 @@ const TopBar: React.FunctionComponent<
       className={classes.root}
       style={{ alignItems: props.alignItems }}
     >
+      {backEnabled && (
+        <div className={classes.back}>
+          <Fab
+            size="small"
+            onClick={() => history.push(backTo)}
+            style={{ backgroundColor: color }}
+          >
+            <NavigateBeforeIcon />
+          </Fab>
+        </div>
+      )}
       <Grid container spacing={5} style={{ justifyContent: "center" }}>
         <Grid item className={classes.menuIcon} xs={1}>
           <div
@@ -76,17 +91,6 @@ const TopBar: React.FunctionComponent<
             </IconButton>
           </div>
         </Grid>
-        {backEnabled && (
-          <Grid item xs={1} style={{ padding: "0px" }}>
-            <Fab
-              size="small"
-              onClick={() => history.push(backTo)}
-              style={{ backgroundColor: color }}
-            >
-              <NavigateBeforeIcon />
-            </Fab>
-          </Grid>
-        )}
         {props.noGridItem && props.children}
         {!props.noGridItem && (
           <Grid

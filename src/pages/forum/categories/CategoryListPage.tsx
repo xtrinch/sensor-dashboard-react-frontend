@@ -1,6 +1,5 @@
 import { Button, Table, TableBody, Typography } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
 import TopBar from "components/TopBar";
@@ -61,7 +60,6 @@ const CategoryListPage: React.FunctionComponent<
         )}
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
-        <CssBaseline />
         {categories.length !== 0 && (
           <Table>
             <TableBody>

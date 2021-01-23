@@ -38,6 +38,9 @@ const ForumIndexPage: React.FunctionComponent<
       <Route exact path={ForumRoutes.ADD_TOPIC}>
         <AddTopicPage />
       </Route>
+      <Route exact path={ForumRoutes.EDIT_TOPIC}>
+        <AddTopicPage />
+      </Route>
     </TopicContextProvider>
   );
 };

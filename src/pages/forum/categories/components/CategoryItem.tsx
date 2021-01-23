@@ -6,11 +6,15 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core/styles";
+import { Lock, Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { AccountContext } from "context/AccountContext";
 import { CategoryContext } from "context/CategoryContext";
 import { openConfirmation } from "context/ConfirmationContext";
-import { getTopicListRoute } from "pages/forum/ForumRoutes";
+import {
+  getCategoryEditRoute,
+  getTopicListRoute,
+} from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import Category from "types/Category";
@@ -21,7 +25,8 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       margin: "0px 0px",
-      backgroundColor: ColorsEnum.BGLIGHT,
+      backgroundColor: (props: CategoryItemProps) =>
+        props.category.protected ? ColorsEnum.BGLIGHTER : ColorsEnum.BGLIGHT,
       borderRadius: 0,
       boxShadow: "none",
       borderBottom: `1px solid ${ColorsEnum.GRAYDARK}`,
@@ -38,10 +43,14 @@ const styles = (theme: Theme) =>
     },
   });
 
+interface CategoryItemProps {
+  category: Category;
+}
+
 const CategoryItem: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{}> & { category: Category }
+  WithStyles<typeof styles> & RouteComponentProps<{}> & CategoryItemProps
 > = (props) => {
-  const { category, classes } = props;
+  const { category, classes, history } = props;
   const { deleteCategory } = useContext(CategoryContext);
   const {
     state: { user },
@@ -60,6 +69,9 @@ const CategoryItem: React.FunctionComponent<
 
   return (
     <TableRow className={classes.root}>
+      <TableCell style={{ width: "30px" }}>
+        {category.protected && <Lock />}
+      </TableCell>
       <TableCell>
         <div>
           <Link to={getTopicListRoute(category.id)}>{category.name}</Link>
@@ -67,15 +79,26 @@ const CategoryItem: React.FunctionComponent<
         <div>{category.description}</div>
       </TableCell>
       <TableCell style={{ width: "50px" }}>
-        {user?.isAllowed([PermissionsEnum.Category__delete]) && (
-          <IconButton
-            aria-label="settings"
-            size="small"
-            onClick={() => deleteWithConfirmation(category)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {user?.isAllowed([PermissionsEnum.Category__update]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => history.push(getCategoryEditRoute(category.id))}
+            >
+              <Settings />
+            </IconButton>
+          )}
+          {user?.isAllowed([PermissionsEnum.Category__delete]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => deleteWithConfirmation(category)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        </div>
       </TableCell>
     </TableRow>
   );
