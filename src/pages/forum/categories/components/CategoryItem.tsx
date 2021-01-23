@@ -7,14 +7,15 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { AccountContext } from "context/AccountContext";
 import { CategoryContext } from "context/CategoryContext";
 import { openConfirmation } from "context/ConfirmationContext";
-import { format } from "date-fns";
+import { getTopicListRoute } from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
-import { DATETIME_REGEX } from "utils/date.range";
+import { PermissionsEnum } from "types/PermissionEnum";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -42,6 +43,9 @@ const CategoryItem: React.FunctionComponent<
 > = (props) => {
   const { category, classes } = props;
   const { deleteCategory } = useContext(CategoryContext);
+  const {
+    state: { user },
+  } = useContext(AccountContext);
 
   const deleteWithConfirmation = (category: Category) => {
     const onConfirm = async () => {
@@ -56,20 +60,22 @@ const CategoryItem: React.FunctionComponent<
 
   return (
     <TableRow className={classes.root}>
-      <TableCell>{category.name}</TableCell>
       <TableCell>
-        {category.createdAt ? format(category.createdAt, DATETIME_REGEX) : ""}
+        <div>
+          <Link to={getTopicListRoute(category.id)}>{category.name}</Link>
+        </div>
+        <div>{category.description}</div>
       </TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-      <TableCell style={{ width: "100px" }}>
-        <IconButton
-          aria-label="settings"
-          size="small"
-          onClick={() => deleteWithConfirmation(category)}
-        >
-          <DeleteIcon />
-        </IconButton>
+      <TableCell style={{ width: "50px" }}>
+        {user?.isAllowed([PermissionsEnum.Category__delete]) && (
+          <IconButton
+            aria-label="settings"
+            size="small"
+            onClick={() => deleteWithConfirmation(category)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        )}
       </TableCell>
     </TableRow>
   );

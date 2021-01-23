@@ -1,4 +1,5 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import AddDisplayPage from "pages/dashboard/displays/AddDisplayPage";
 import DisplayInfoPage from "pages/dashboard/displays/DisplayInfoPage";
 import DisplayListPage from "pages/dashboard/displays/DisplayListPage";
@@ -10,7 +11,6 @@ import SensorInfoPage from "pages/dashboard/sensors/SensorInfoPage";
 import SensorsPage from "pages/dashboard/sensors/SensorsPage";
 import React from "react";
 import { Route } from "react-router-dom";
-import { Routes } from "utils/Routes";
 
 const styles = () => createStyles({});
 
@@ -18,31 +18,31 @@ class DashboardIndexPage extends React.Component<WithStyles<typeof styles>> {
   render() {
     return (
       <>
-        <Route exact path={Routes.DASHBOARD}>
+        <Route exact path={DashboardRoutes.DASHBOARD}>
           <SensorsPage />
         </Route>
-        <Route exact path={Routes.ADD_SENSOR}>
+        <Route exact path={DashboardRoutes.ADD_SENSOR}>
           <AddSensorPage />
         </Route>
-        <Route exact path={Routes.ADD_DISPLAY}>
+        <Route exact path={DashboardRoutes.ADD_DISPLAY}>
           <AddDisplayPage />
         </Route>
-        <Route exact path={Routes.ADD_FORWARDER}>
+        <Route exact path={DashboardRoutes.ADD_FORWARDER}>
           <AddForwarderPage />
         </Route>
-        <Route exact path={Routes.SENSOR}>
+        <Route exact path={DashboardRoutes.SENSOR}>
           <SensorInfoPage />
         </Route>
-        <Route exact path={Routes.DISPLAY}>
+        <Route exact path={DashboardRoutes.DISPLAY}>
           <DisplayInfoPage />
         </Route>
-        <Route exact path={Routes.FORWARDER}>
+        <Route exact path={DashboardRoutes.FORWARDER}>
           <ForwarderInfoPage />
         </Route>
-        <Route exact path={Routes.DISPLAY_LIST}>
+        <Route exact path={DashboardRoutes.DISPLAY_LIST}>
           <DisplayListPage />
         </Route>
-        <Route exact path={Routes.FORWARDER_LIST}>
+        <Route exact path={DashboardRoutes.FORWARDER_LIST}>
           <ForwarderListPage />
         </Route>
       </>

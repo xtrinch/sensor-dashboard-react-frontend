@@ -7,6 +7,7 @@ import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -107,7 +108,7 @@ const SideMenu: React.FunctionComponent<
         </Grid>
         <MainMenu />
       </ListSubheader>
-      {pathname.indexOf(Routes.DASHBOARD) >= 0 && <SensorsSideMenu />}
+      {pathname.indexOf(DashboardRoutes.DASHBOARD) >= 0 && <SensorsSideMenu />}
     </div>
   );
 };

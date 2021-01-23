@@ -10,6 +10,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
+import { getDisplayRoute } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import BoardTypeEnum from "types/BoardTypeEnum";
@@ -18,7 +19,6 @@ import DisplayTypeEnum from "types/DisplayTypeEnum";
 import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
-import { getDisplayRoute } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({

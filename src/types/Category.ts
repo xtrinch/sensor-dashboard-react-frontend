@@ -1,4 +1,3 @@
-import { IsString, MinLength } from "class-validator";
 import { AbstractEntity } from "types/AbstractEntity";
 
 export type CategoryId = number;
@@ -8,13 +7,15 @@ class Category extends AbstractEntity {
     super(s);
 
     this.name = s?.name || "";
+    this.description = s?.description || "";
+    this.id = s?.id || 0;
   }
 
   public id: CategoryId;
 
-  @IsString()
-  @MinLength(2)
   public name: string;
+
+  public description: string;
 }
 
 export default Category;

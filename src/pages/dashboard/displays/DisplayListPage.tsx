@@ -12,12 +12,12 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import DisplayItem from "pages/dashboard/displays/components/DisplayItem";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
-import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -54,7 +54,7 @@ const DisplayListPage: React.FunctionComponent<
           variant="contained"
           className={classes.actionButton}
           startIcon={<Plus />}
-          onClick={() => history.push(Routes.ADD_DISPLAY)}
+          onClick={() => history.push(DashboardRoutes.ADD_DISPLAY)}
         >
           Add
         </Button>

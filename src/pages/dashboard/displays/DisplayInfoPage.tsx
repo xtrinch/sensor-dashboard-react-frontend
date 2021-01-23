@@ -19,6 +19,7 @@ import { openConfirmation } from "context/ConfirmationContext";
 import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
 import { format } from "date-fns";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import DisplayService from "services/DisplayService";
@@ -30,7 +31,6 @@ import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
-import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -98,7 +98,7 @@ const DisplayInfoPage: React.FunctionComponent<
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
       await deleteDisplay(display.id);
-      history.push(Routes.DISPLAY_LIST);
+      history.push(DashboardRoutes.DISPLAY_LIST);
     };
     openConfirmation(
       onConfirm,

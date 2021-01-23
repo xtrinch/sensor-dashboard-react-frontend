@@ -5,11 +5,12 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import TopBar from "components/TopBar";
 import { CategoryContext } from "context/CategoryContext";
+import { useFormik } from "formik";
+import { ForumRoutes } from "pages/forum/ForumRoutes";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
-import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -36,35 +37,34 @@ const AddCategoryPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
 
-  const errs: { [key: string]: string } = {};
-  const [errors, setErrors] = useState(errs);
-  const [data, setData] = useState({
-    name: "",
-  });
-
+  const [category] = useState(() => new Category());
   const { addCategory } = useContext(CategoryContext);
 
-  const submitForm = async (e) => {
-    e.preventDefault();
-
+  const submitForm = async (values: Category, { setStatus }) => {
     try {
-      const category = await addCategory(new Category(data));
+      const category = await addCategory(values);
       if (category) {
-        history.push(Routes.FORUM);
+        history.push(ForumRoutes.FORUM);
       }
     } catch (e) {
-      setErrors(e);
+      setStatus(e);
     }
   };
 
-  const fieldChange = (val, fieldName) => {
-    data[fieldName] = val;
-    setData({ ...data });
-  };
+  const formik = useFormik<Category>({
+    initialValues: category,
+    onSubmit: submitForm,
+    enableReinitialize: true,
+  });
 
   return (
     <>
-      <TopBar alignItems="center">
+      <TopBar
+        alignItems="center"
+        backEnabled
+        backTo={ForumRoutes.FORUM}
+        color={ColorsEnum.OLIVE}
+      >
         <Typography component="h1" variant="h4">
           Add category
         </Typography>
@@ -72,19 +72,35 @@ const AddCategoryPage: React.FunctionComponent<
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <>
-            <form className={classes.form} noValidate onSubmit={submitForm}>
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={formik.handleSubmit}
+            >
               <TextField
+                id="name"
                 variant="outlined"
                 margin="normal"
                 fullWidth
-                id="name"
                 label="Category name"
                 name="name"
-                value={data.name}
+                value={formik.values.name}
                 autoFocus
-                onChange={(e) => fieldChange(e.target.value, "name")}
-                error={!!errors.name}
-                helperText={errors.name}
+                onChange={formik.handleChange}
+                error={!!formik.status?.name}
+                helperText={formik.status?.name}
+              />
+              <TextField
+                id="description"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Description"
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                error={!!formik.status?.description}
+                helperText={formik.status?.description}
               />
               <Button
                 type="submit"

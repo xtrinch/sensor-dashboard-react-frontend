@@ -10,6 +10,7 @@ import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TopBar from "components/TopBar";
 import { SensorContext } from "context/SensorContext";
+import { getSensorRoute } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { listTimeZones } from "timezone-support";
@@ -19,7 +20,6 @@ import MeasurementTypeEnum, {
   MeasurementTypeLabelsEnum,
 } from "types/MeasurementTypeEnum";
 import SensorTypeEnum from "types/SensorTypeEnum";
-import { getSensorRoute } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({

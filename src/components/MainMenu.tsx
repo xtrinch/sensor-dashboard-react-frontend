@@ -1,8 +1,10 @@
 import { createStyles, makeStyles, Tab, Tabs, Theme } from "@material-ui/core";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
+import { ForumRoutes } from "pages/forum/ForumRoutes";
+import { UserRoutes } from "pages/users/UserRoutes";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
-import { Routes } from "utils/Routes";
 
 interface MainMenuProps {}
 
@@ -87,25 +89,25 @@ const MainMenu: React.FunctionComponent<
           label="IOT dashboard"
           className={classes.dashboard}
           onClick={() => {
-            history.push(Routes.DASHBOARD);
+            history.push(DashboardRoutes.DASHBOARD);
           }}
-          value={Routes.DASHBOARD}
+          value={DashboardRoutes.DASHBOARD}
         />
         <Tab
           label="Forum"
           className={classes.forum}
           onClick={() => {
-            history.push(Routes.FORUM);
+            history.push(ForumRoutes.FORUM);
           }}
-          value={Routes.FORUM}
+          value={ForumRoutes.FORUM}
         />
         <Tab
           label="Users"
           className={classes.users}
           onClick={() => {
-            history.push(Routes.USERS);
+            history.push(UserRoutes.USERS);
           }}
-          value={Routes.USERS}
+          value={UserRoutes.USERS}
         />
       </Tabs>
     </>

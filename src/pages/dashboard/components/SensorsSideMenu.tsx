@@ -15,11 +15,11 @@ import { drawerToggle } from "context/AppContext";
 import { DisplayContext } from "context/DisplayContext";
 import { ForwarderContext } from "context/ForwarderContext";
 import { SensorContext } from "context/SensorContext";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
-import { Routes } from "utils/Routes";
 
 const styles = () =>
   createStyles({
@@ -81,12 +81,12 @@ const SensorsSideMenu: React.FunctionComponent<
 
   const goToDisplays = () => {
     drawerToggle();
-    history.push(Routes.DISPLAY_LIST);
+    history.push(DashboardRoutes.DISPLAY_LIST);
   };
 
   const goToForwarders = () => {
     drawerToggle();
-    history.push(Routes.FORWARDER_LIST);
+    history.push(DashboardRoutes.FORWARDER_LIST);
   };
 
   const { classes } = props;
@@ -99,7 +99,7 @@ const SensorsSideMenu: React.FunctionComponent<
               My sensors
             </Grid>
             <Grid item>
-              <Link to={Routes.ADD_SENSOR} onClick={drawerToggle}>
+              <Link to={DashboardRoutes.ADD_SENSOR} onClick={drawerToggle}>
                 <Fab color="primary" size="small" className={classes.sensorFab}>
                   <PlusIcon />
                 </Fab>
@@ -130,7 +130,10 @@ const SensorsSideMenu: React.FunctionComponent<
                 <Grid item>My packet forwarders</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link to={Routes.ADD_FORWARDER} onClick={drawerToggle}>
+                    <Link
+                      to={DashboardRoutes.ADD_FORWARDER}
+                      onClick={drawerToggle}
+                    >
                       <Fab
                         color="primary"
                         size="small"
@@ -165,7 +168,10 @@ const SensorsSideMenu: React.FunctionComponent<
                 <Grid item>My display devices</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link to={Routes.ADD_DISPLAY} onClick={drawerToggle}>
+                    <Link
+                      to={DashboardRoutes.ADD_DISPLAY}
+                      onClick={drawerToggle}
+                    >
                       <Fab
                         color="primary"
                         size="small"

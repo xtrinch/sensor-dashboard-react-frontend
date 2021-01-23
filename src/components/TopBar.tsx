@@ -37,12 +37,14 @@ interface TopBarProps {
   alignItems?: string;
   noGridItem?: boolean;
   backEnabled?: boolean;
+  backTo?: string;
+  color?: string;
 }
 
 const TopBar: React.FunctionComponent<
   WithStyles<typeof styles> & TopBarProps & RouteComponentProps<{}>
 > = (props) => {
-  const { classes, backEnabled, history } = props;
+  const { classes, backEnabled, history, backTo, color } = props;
 
   const [, dispatch] = useContext(AppContext);
 
@@ -75,8 +77,12 @@ const TopBar: React.FunctionComponent<
           </div>
         </Grid>
         {backEnabled && (
-          <Grid item xs={1}>
-            <Fab color="primary" size="small" onClick={() => history.goBack()}>
+          <Grid item xs={1} style={{ padding: "0px" }}>
+            <Fab
+              size="small"
+              onClick={() => history.push(backTo)}
+              style={{ backgroundColor: color }}
+            >
               <NavigateBeforeIcon />
             </Fab>
           </Grid>

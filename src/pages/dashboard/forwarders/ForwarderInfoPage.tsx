@@ -12,6 +12,7 @@ import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
 import { ForwarderContext } from "context/ForwarderContext";
 import { format } from "date-fns";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ForwarderService from "services/ForwarderService";
@@ -19,7 +20,6 @@ import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
 import Forwarder, { ForwarderId } from "types/Forwarder";
 import { DATETIME_REGEX } from "utils/date.range";
-import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -80,7 +80,7 @@ const ForwarderInfoPage: React.FunctionComponent<
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
       await deleteForwarder(forwarder.id);
-      history.push(Routes.FORWARDER_LIST);
+      history.push(DashboardRoutes.FORWARDER_LIST);
     };
     openConfirmation(
       onConfirm,

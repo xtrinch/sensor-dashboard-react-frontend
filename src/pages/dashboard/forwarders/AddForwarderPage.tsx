@@ -9,11 +9,11 @@ import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
+import { getForwarderRoute } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import BoardTypeEnum from "types/BoardTypeEnum";
 import ColorsEnum from "types/ColorsEnum";
-import { getForwarderRoute } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({

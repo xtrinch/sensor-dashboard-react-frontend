@@ -12,12 +12,12 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import ForwarderItem from "pages/dashboard/forwarders/components/ForwarderItem";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 import Forwarder from "types/Forwarder";
-import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -54,7 +54,7 @@ const ForwarderListPage: React.FunctionComponent<
           variant="contained"
           className={classes.actionButton}
           startIcon={<Plus />}
-          onClick={() => history.push(Routes.ADD_FORWARDER)}
+          onClick={() => history.push(DashboardRoutes.ADD_FORWARDER)}
         >
           Add
         </Button>

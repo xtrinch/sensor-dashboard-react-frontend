@@ -22,7 +22,7 @@ function AccountContextProvider(props) {
 
   let [state, setState] = useState({
     user: localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user"))
+      ? new User(JSON.parse(localStorage.getItem("user")))
       : null,
     loginState: localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT",
     accessToken: localStorage.getItem("accessToken"),

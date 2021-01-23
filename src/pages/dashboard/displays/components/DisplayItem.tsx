@@ -11,12 +11,12 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import { openConfirmation } from "context/ConfirmationContext";
 import { DisplayContext } from "context/DisplayContext";
 import { format } from "date-fns";
+import { getDisplayRoute } from "pages/dashboard/DashboardRoutes";
 import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Display from "types/Display";
 import { DATETIME_REGEX } from "utils/date.range";
-import { getDisplayRoute } from "utils/Routes";
 
 const styles = (theme: Theme) =>
   createStyles({

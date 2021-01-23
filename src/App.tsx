@@ -20,10 +20,13 @@ import { ToastContextProvider } from "context/ToastContext";
 import { UserContextProvider } from "context/UserContext";
 import theme from "layout/Theme";
 import DashboardIndexPage from "pages/dashboard/DashboardIndexPage";
+import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import ForumIndexPage from "pages/forum/ForumIndexPage";
+import { ForumRoutes } from "pages/forum/ForumRoutes";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
 import UserListPage from "pages/users/UserListPage";
+import { UserRoutes } from "pages/users/UserRoutes";
 import React from "react";
 import { BrowserRouter, Redirect, Route } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -79,15 +82,15 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                 </Grid>
                                 <Grid item style={{ flex: "1" }}>
                                   <Route exact path="/">
-                                    <Redirect to={Routes.DASHBOARD} />
+                                    <Redirect to={DashboardRoutes.DASHBOARD} />
                                   </Route>
-                                  <Route path={Routes.DASHBOARD}>
+                                  <Route path={DashboardRoutes.DASHBOARD}>
                                     <DashboardIndexPage />
                                   </Route>
-                                  <Route path={Routes.FORUM}>
+                                  <Route path={ForumRoutes.FORUM}>
                                     <ForumIndexPage />
                                   </Route>
-                                  <Route exact path={Routes.USERS}>
+                                  <Route exact path={UserRoutes.USERS}>
                                     <UserListPage />
                                   </Route>
                                   <Route exact path={Routes.LOGIN}>

@@ -1,24 +1,18 @@
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
+import { Button, Table, TableBody, Typography } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
 import TopBar from "components/TopBar";
+import { AccountContext } from "context/AccountContext";
 import { CategoryContext } from "context/CategoryContext";
-import CategoryItem from "pages/forum/components/CategoryItem";
+import CategoryItem from "pages/forum/categories/components/CategoryItem";
+import { ForumRoutes } from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
-import { Routes } from "utils/Routes";
+import { PermissionsEnum } from "types/PermissionEnum";
 
 const styles = (theme) =>
   createStyles({
@@ -41,6 +35,9 @@ const CategoryListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
+  const {
+    state: { user },
+  } = useContext(AccountContext);
 
   const {
     state: { categories },
@@ -50,33 +47,26 @@ const CategoryListPage: React.FunctionComponent<
     <>
       <TopBar alignItems="center">
         <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
-          Categories
+          Forum
         </Typography>
-        <Button
-          variant="contained"
-          className={classes.actionButton}
-          startIcon={<Plus />}
-          onClick={() => history.push(Routes.ADD_CATEGORY)}
-        >
-          Add
-        </Button>
+        {user?.isAllowed([PermissionsEnum.Category__delete]) && (
+          <Button
+            variant="contained"
+            className={classes.actionButton}
+            startIcon={<Plus />}
+            onClick={() => history.push(ForumRoutes.ADD_CATEGORY)}
+          >
+            Add category
+          </Button>
+        )}
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
         <CssBaseline />
         {categories.length !== 0 && (
           <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Categoryname</TableCell>
-                <TableCell>Created at</TableCell>
-                <TableCell>Last seen at</TableCell>
-                <TableCell>Group</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
             <TableBody>
-              {categories?.map((category: Category) => (
-                <CategoryItem category={category} key={category.id} />
+              {categories?.map((category: Category, index: number) => (
+                <CategoryItem category={category} key={index} />
               ))}
             </TableBody>
           </Table>

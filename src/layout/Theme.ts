@@ -23,6 +23,19 @@ const theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        a: {
+          textDecoration: "none",
+          color: ColorsEnum.OLIVE,
+          fontWeight: "bold",
+          "&:hover": {
+            color: ColorsEnum.OLIVE,
+            textDecoration: "underline",
+          },
+        },
+      },
+    },
     MuiTypography: {
       body1: {
         fontSize: "12px",
@@ -46,6 +59,10 @@ const theme = createMuiTheme({
       root: {
         boxShadow: "none",
         color: ColorsEnum.WHITE,
+      },
+      sizeSmall: {
+        width: "35px",
+        height: "35px",
       },
     },
     MuiListItem: {
