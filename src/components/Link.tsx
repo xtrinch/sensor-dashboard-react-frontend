@@ -15,6 +15,7 @@ interface LinkProps {
   target?: string;
   id?: string;
   to?: string;
+  color?: string;
 }
 
 const styles = () =>
@@ -26,7 +27,7 @@ const styles = () =>
       cursor: "pointer",
       fontStyle: "normal",
       fontSize: "13px",
-      color: ColorsEnum.BLUE,
+      color: (props: LinkProps) => props.color || ColorsEnum.BLUE,
       textDecoration: "none",
     },
   });

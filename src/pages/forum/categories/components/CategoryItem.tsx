@@ -72,7 +72,7 @@ const CategoryItem: React.FunctionComponent<
       <TableCell style={{ width: "30px" }}>
         {category.protected && <Lock />}
       </TableCell>
-      <TableCell>
+      <TableCell style={{ paddingLeft: "0px" }}>
         <div>
           <Link to={getTopicListRoute(category.id)}>{category.name}</Link>
         </div>

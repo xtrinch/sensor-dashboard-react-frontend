@@ -3,20 +3,23 @@ import IconButton from "@material-ui/core/IconButton";
 import {
   createStyles,
   Theme,
-  WithStyles,
   withStyles,
+  WithStyles,
 } from "@material-ui/core/styles";
 import { Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { TopicContext } from "context/TopicContext";
+import { format } from "date-fns";
 import { getTopicEditRoute, getTopicRoute } from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import { PermissionsEnum } from "types/PermissionEnum";
 import Topic from "types/Topic";
+import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -59,9 +62,16 @@ const TopicItem: React.FunctionComponent<
     <TableRow className={classes.root}>
       <TableCell>
         <div>
-          <Link to={getTopicRoute(topic.categoryId, topic.id)}>
+          <Link
+            color={ColorsEnum.OLIVE}
+            to={getTopicRoute(topic.categoryId, topic.id)}
+          >
             {topic.name}
           </Link>
+          <div>
+            By <Link color={ColorsEnum.OLIVE}>{topic.user?.username}</Link>,{" "}
+            {format(topic.createdAt, DATETIME_REGEX)}
+          </div>
         </div>
       </TableCell>
       <TableCell style={{ width: "50px" }}>

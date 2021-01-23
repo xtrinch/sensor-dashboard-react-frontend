@@ -128,14 +128,14 @@ const AddTopicPage: React.FunctionComponent<
                 id="name"
                 variant="outlined"
                 margin="normal"
-                label="Topic name"
+                label="Name"
                 name="name"
                 value={formik.values.name}
                 autoFocus
                 onChange={formik.handleChange}
                 error={!!formik.status?.name}
                 helperText={formik.status?.name}
-                style={{ minWidth: "50%" }}
+                fullWidth
               />
               <WYSIGEditor
                 editorState={editorState}

@@ -1,4 +1,5 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { EditorState } from "draft-js";
 import React from "react";
 import { Editor } from "react-draft-wysiwyg";
@@ -9,13 +10,16 @@ const styles = (theme) =>
   createStyles({
     wrapper: {
       backgroundColor: "transparent",
-      border: "1px solid rgba(255, 255, 255, 0.12)",
+      border: (props: WYSIGEditorProps) =>
+        props.readOnly ? undefined : "1px solid rgba(255, 255, 255, 0.12)",
+      flex: "1",
     },
     editor: {
       backgroundColor: "transparent",
       minHeight: (props: WYSIGEditorProps) =>
         props.readOnly ? undefined : "300px",
       padding: "0px 15px",
+      overflow: "visible",
     },
     toolbar: {
       display: (props: WYSIGEditorProps) =>
@@ -35,6 +39,7 @@ interface WYSIGEditorProps {
   editorState: EditorState;
   onEditorStateChange?: (change: EditorState) => void;
   readOnly?: boolean;
+  style?: CSSProperties;
 }
 
 const WYSIGEditor: React.FunctionComponent<
