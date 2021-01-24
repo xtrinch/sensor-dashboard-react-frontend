@@ -19,7 +19,9 @@ const TextInput: React.FunctionComponent<
 
   return (
     <FormControl {...(rest.fullWidth ? { style: { width: "100%" } } : {})}>
-      <InputLabel shrink>{label}</InputLabel>
+      <InputLabel shrink style={{ fontSize: "17px" }}>
+        {label}
+      </InputLabel>
       <TextField
         variant={"outlined" as any}
         margin="normal"

@@ -65,6 +65,12 @@ const theme = createMuiTheme({
         height: "35px",
       },
     },
+    MuiFormControl: {
+      marginNormal: {
+        marginTop: "20px",
+        marginBottom: "8px",
+      },
+    },
     MuiListItem: {
       root: {
         color: ColorsEnum.GRAY,

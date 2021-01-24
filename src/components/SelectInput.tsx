@@ -34,7 +34,7 @@ const SelectInput: React.FunctionComponent<
             error={rest.error}
             helperText={rest.helperText}
             placeholder={rest.placeholder}
-            margin={rest.margin}
+            margin={rest.margin || "normal"}
             variant={rest.variant}
             fullWidth
           />
