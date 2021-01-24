@@ -71,8 +71,13 @@ const CategoryListPage: React.FunctionComponent<
                 <TableCell style={{ paddingLeft: "0px" }}>
                   Category name
                 </TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
+                <TableCell style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                  Topics
+                </TableCell>
+                <TableCell style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                  Comments
+                </TableCell>
+                <TableCell style={{ paddingLeft: "0px" }}>Last topic</TableCell>
                 <TableCell style={{ paddingLeft: "0px" }}>
                   Last comment
                 </TableCell>

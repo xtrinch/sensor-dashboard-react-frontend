@@ -14,6 +14,7 @@ import { openConfirmation } from "context/ConfirmationContext";
 import { format } from "date-fns";
 import { convertFromRaw, EditorState } from "draft-js";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
+import { getUserRoute } from "pages/users/UserRoutes";
 // import { getCommentEditRoute } from "pages/forum/ForumRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -59,7 +60,9 @@ const CommentItem: React.FunctionComponent<
         <div>
           <Typography variant="body1">
             Posted by{" "}
-            <Link color={ColorsEnum.OLIVE}>{comment.user?.username}</Link>
+            <Link color={ColorsEnum.OLIVE} to={getUserRoute(comment.user?.id)}>
+              {comment.user?.username}
+            </Link>
           </Typography>
         </div>
         <div>

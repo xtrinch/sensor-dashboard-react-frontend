@@ -73,7 +73,7 @@ const CategoryItem: React.FunctionComponent<
 
   return (
     <TableRow className={classes.root}>
-      <TableCell style={{ width: "30px" }}>
+      <TableCell style={{ width: "30px", padding: "0px 10px 0px 10px" }}>
         {category.protected && <Lock />}
       </TableCell>
       <TableCell style={{ paddingLeft: "0px" }}>
@@ -82,13 +82,36 @@ const CategoryItem: React.FunctionComponent<
         </div>
         <div>{category.description}</div>
       </TableCell>
-      <TableCell style={{ width: "100px", padding: "0px" }}>
-        {category.numTopics} topics
+      <TableCell style={{ width: "60px", padding: "0px" }}>
+        {category.numTopics}
       </TableCell>
-      <TableCell style={{ width: "100px", padding: "0px" }}>
-        {category.numComments} comments
+      <TableCell style={{ width: "80px", padding: "0px" }}>
+        {category.numComments}
       </TableCell>
-      <TableCell style={{ padding: "0px" }}>
+      <TableCell style={{ padding: "0px", width: "180px" }}>
+        {category.lastTopic && (
+          <>
+            <Link
+              to={getTopicRoute(
+                category.lastTopic?.categoryId,
+                category.lastTopic?.id
+              )}
+            >
+              {category.lastTopic?.name}
+            </Link>
+            <br />
+            by{" "}
+            <Link to={getUserRoute(category.lastTopic?.user?.id)}>
+              {category.lastTopic?.user?.username}
+            </Link>
+            <br />
+            {category.lastTopic?.createdAt
+              ? format(category.lastTopic?.createdAt, DATETIME_REGEX)
+              : ""}
+          </>
+        )}
+      </TableCell>
+      <TableCell style={{ padding: "0px", width: "180px" }}>
         {category.lastComment && (
           <>
             <Link
@@ -111,8 +134,8 @@ const CategoryItem: React.FunctionComponent<
           </>
         )}
       </TableCell>
-      <TableCell style={{ width: "50px" }}>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+      <TableCell style={{ width: "50px", padding: "0px" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           {user?.isAllowed([PermissionsEnum.Category__update]) && (
             <IconButton
               aria-label="settings"

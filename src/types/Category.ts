@@ -1,5 +1,6 @@
 import { AbstractEntity } from "types/AbstractEntity";
 import Comment, { CommentId } from "types/Comment";
+import Topic, { TopicId } from "types/Topic";
 
 export type CategoryId = number;
 
@@ -15,6 +16,8 @@ class Category extends AbstractEntity {
     this.numComments = s?.numComments || 0;
     this.lastComment = s?.lastComment ? new Comment(s.lastComment) : null;
     this.lastCommentId = s?.lastCommentId;
+    this.lastTopic = s?.lastTopic ? new Topic(s.lastTopic) : null;
+    this.lastTopicId = s?.lastTopicId;
   }
 
   public id: CategoryId;
@@ -32,6 +35,10 @@ class Category extends AbstractEntity {
   public lastCommentId: CommentId;
 
   public lastComment: Comment;
+
+  public lastTopicId: TopicId;
+
+  public lastTopic: Topic;
 }
 
 export default Category;

@@ -12,6 +12,7 @@ const CategoryContext = createContext<{
   updateCategory?: (id: CategoryId, category: Category) => Promise<Category>;
   addCategory?: (category: Category) => Promise<Category>;
   deleteCategory?: (id: CategoryId) => Promise<boolean>;
+  reload?: () => Promise<void>;
 }>({});
 
 function CategoryContextProvider(props) {
@@ -20,7 +21,7 @@ function CategoryContextProvider(props) {
     categoriesLoaded: false,
   });
 
-  const reload = async () => {
+  const reload = async (): Promise<void> => {
     const resp = await CategoryService.listCategories();
     const categoryData = resp.items;
 
@@ -86,7 +87,7 @@ function CategoryContextProvider(props) {
 
   return (
     <CategoryContext.Provider
-      value={{ state, updateCategory, deleteCategory, addCategory }}
+      value={{ state, updateCategory, deleteCategory, addCategory, reload }}
     >
       {props.children}
     </CategoryContext.Provider>

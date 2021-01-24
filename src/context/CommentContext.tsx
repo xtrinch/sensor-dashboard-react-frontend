@@ -1,5 +1,7 @@
+import { CategoryContext } from "context/CategoryContext";
 import { addToast } from "context/ToastContext";
-import React, { createContext, useEffect, useState } from "react";
+import { TopicContext } from "context/TopicContext";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import CommentService from "services/CommentService";
 import { CategoryId } from "types/Category";
 import Comment, { CommentId } from "types/Comment";
@@ -22,6 +24,8 @@ function CommentContextProvider(props: {
   children: any;
 }) {
   const { categoryId, topicId } = props;
+  let { reload: reloadCategories } = useContext(CategoryContext);
+  let { reload: reloadTopics } = useContext(TopicContext);
 
   let [state, setState] = useState({
     comments: [],
@@ -83,6 +87,9 @@ function CommentContextProvider(props: {
     addToast(
       new Toast({ message: "Successfully added a comment", type: "success" })
     );
+
+    reloadCategories();
+    reloadTopics();
 
     return s;
   };

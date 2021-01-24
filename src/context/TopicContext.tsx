@@ -1,5 +1,6 @@
+import { CategoryContext } from "context/CategoryContext";
 import { addToast } from "context/ToastContext";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import TopicService from "services/TopicService";
 import Category from "types/Category";
 import { Toast } from "types/Toast";
@@ -13,10 +14,12 @@ const TopicContext = createContext<{
   updateTopic?: (id: TopicId, topic: Topic) => Promise<Topic>;
   addTopic?: (topic: Topic) => Promise<Topic>;
   deleteTopic?: (id: TopicId) => Promise<boolean>;
+  reload?: () => Promise<void>;
 }>({});
 
 function TopicContextProvider(props: { category: Category; children: any }) {
   const { category } = props;
+  let { reload: reloadCategories } = useContext(CategoryContext);
 
   let [state, setState] = useState({
     topics: [],
@@ -76,6 +79,8 @@ function TopicContextProvider(props: { category: Category; children: any }) {
       new Toast({ message: "Successfully added a topic", type: "success" })
     );
 
+    reloadCategories();
+
     return s;
   };
 
@@ -87,7 +92,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
 
   return (
     <TopicContext.Provider
-      value={{ state, updateTopic, deleteTopic, addTopic }}
+      value={{ state, updateTopic, deleteTopic, addTopic, reload }}
     >
       {props.children}
     </TopicContext.Provider>

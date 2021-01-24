@@ -15,6 +15,7 @@ import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicEditRoute, getTopicListRoute } from "pages/forum/ForumRoutes";
 import CommentItem from "pages/forum/topic/components/CommentItem";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import TopicService from "services/TopicService";
@@ -151,7 +152,12 @@ const TopicPage: React.FunctionComponent<
             <div>
               <Typography variant="body1">
                 Posted by{" "}
-                <Link color={ColorsEnum.OLIVE}>{topic.user?.username}</Link>
+                <Link
+                  color={ColorsEnum.OLIVE}
+                  to={getUserRoute(topic.user?.id)}
+                >
+                  {topic.user?.username}
+                </Link>
               </Typography>
             </div>
             <div>
