@@ -42,7 +42,7 @@ const styles = (theme) =>
       "& >*": {
         width: "100%",
       },
-      "& >.MuiFormControl-root, >.MuiSelectInput-root": {
+      "& >.MuiFormControl-root, >.MuiAutocomplete-root": {
         width: "calc(50% - 10px)",
         display: "inline-flex",
         "&:nth-of-type(2n+1)": {
