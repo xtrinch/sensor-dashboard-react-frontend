@@ -10,10 +10,10 @@ import {
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
 import { SensorContext } from "context/SensorContext";
@@ -172,7 +172,7 @@ const SensorInfoPage: React.FunctionComponent<
         <CssBaseline />
         <div className={classes.paper}>
           <form className={classes.form} noValidate onSubmit={submitForm}>
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               id="accessToken"
@@ -181,7 +181,7 @@ const SensorInfoPage: React.FunctionComponent<
               disabled
               value={sensor?.accessToken || ""}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               id="accessToken"
@@ -194,7 +194,7 @@ const SensorInfoPage: React.FunctionComponent<
                   : "Never"
               }
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               id="name"
@@ -205,7 +205,7 @@ const SensorInfoPage: React.FunctionComponent<
               error={!!errors.name}
               helperText={errors.name}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               id="displayName"
@@ -216,7 +216,7 @@ const SensorInfoPage: React.FunctionComponent<
               error={!!errors.displayName}
               helperText={errors.displayName}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               name="location"
@@ -229,7 +229,7 @@ const SensorInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
-            <TextField
+            <TextInput
               select
               id="select"
               label="Board type"
@@ -245,8 +245,8 @@ const SensorInfoPage: React.FunctionComponent<
                   {BoardTypeEnum[key]}
                 </MenuItem>
               ))}
-            </TextField>
-            <TextField
+            </TextInput>
+            <TextInput
               select
               id="timezone"
               variant="outlined"
@@ -260,7 +260,7 @@ const SensorInfoPage: React.FunctionComponent<
                   {item}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextInput>
             <FormControl variant="outlined" margin="normal">
               <InputLabel id="demo-mutiple-name-label">Sensor types</InputLabel>
               <Select

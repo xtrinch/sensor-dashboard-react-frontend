@@ -101,7 +101,9 @@ const SideMenu: React.FunctionComponent<
           )}
           {loginState === "LOGGED_IN" && (
             <Grid item>
-              <div>Logged in as {user.username}</div>
+              <div>
+                Logged in as <Link>{user.username}</Link>
+              </div>
               <Link onClick={() => logoutWithConfirmation()}>Logout</Link>
             </Grid>
           )}

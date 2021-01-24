@@ -76,7 +76,7 @@ const TopicItem: React.FunctionComponent<
       </TableCell>
       <TableCell style={{ width: "50px" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>
-          {user?.isAllowed([PermissionsEnum.Category__update]) && (
+          {user?.isAllowed([PermissionsEnum.Topic__update]) && (
             <IconButton
               aria-label="settings"
               size="small"

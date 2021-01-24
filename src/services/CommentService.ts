@@ -1,8 +1,12 @@
 import Comment, { CommentId } from "types/Comment";
+import { TopicId } from "types/Topic";
 import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class CommentService {
-  public static listComments = async (where: { categoryId: CommentId }) => {
+  public static listComments = async (where: {
+    categoryId: CommentId;
+    topicId: TopicId;
+  }) => {
     const url = getUrl("/comments", where);
 
     const resp = await fetch(url, {

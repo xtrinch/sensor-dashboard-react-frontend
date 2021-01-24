@@ -33,11 +33,18 @@ const ForumIndexPage: React.FunctionComponent<
       <Route exact path={ForumRoutes.TOPIC_LIST}>
         <TopicListPage />
       </Route>
-      <CommentContextProvider category={category}>
-        <Route exact path={ForumRoutes.TOPIC}>
-          <TopicPage />
-        </Route>
-      </CommentContextProvider>
+      <Route
+        exact
+        path={ForumRoutes.TOPIC}
+        render={({ match }) => (
+          <CommentContextProvider
+            categoryId={category.id}
+            topicId={match.params.topicId}
+          >
+            <TopicPage />
+          </CommentContextProvider>
+        )}
+      />
       <Route exact path={ForumRoutes.ADD_TOPIC}>
         <AddTopicPage />
       </Route>

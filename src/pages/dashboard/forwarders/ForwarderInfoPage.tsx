@@ -3,11 +3,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
 import { ForwarderContext } from "context/ForwarderContext";
@@ -146,7 +146,7 @@ const ForwarderInfoPage: React.FunctionComponent<
             Forwarder board info
           </Typography>
           <form className={classes.form} noValidate onSubmit={submitForm}>
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               fullWidth
@@ -156,7 +156,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               disabled
               value={forwarder?.accessToken || ""}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               fullWidth
@@ -170,7 +170,7 @@ const ForwarderInfoPage: React.FunctionComponent<
                   : "Never"
               }
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               fullWidth
@@ -181,7 +181,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               type="number"
               value={forwarder?.numForwarded || 0}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               fullWidth
@@ -193,7 +193,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               error={!!errors.name}
               helperText={errors.name}
             />
-            <TextField
+            <TextInput
               variant="outlined"
               margin="normal"
               fullWidth
@@ -207,7 +207,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
-            <TextField
+            <TextInput
               select
               id="select"
               label="Board type"
@@ -224,7 +224,7 @@ const ForwarderInfoPage: React.FunctionComponent<
                   {BoardTypeEnum[key]}
                 </MenuItem>
               ))}
-            </TextField>
+            </TextInput>
             <ColoredButton
               type="submit"
               fullWidth

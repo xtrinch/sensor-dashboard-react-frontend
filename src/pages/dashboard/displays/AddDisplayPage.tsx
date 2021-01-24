@@ -2,11 +2,11 @@ import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
@@ -102,7 +102,7 @@ const AddDisplayPage: React.FunctionComponent<
                 <SettingsInputAntennaIcon />
               </Avatar>
               <form className={classes.form} noValidate onSubmit={submitForm}>
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -115,7 +115,7 @@ const AddDisplayPage: React.FunctionComponent<
                   error={!!errors.name}
                   helperText={errors.name}
                 />
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -136,7 +136,7 @@ const AddDisplayPage: React.FunctionComponent<
                   options={Object.keys(BoardTypeEnum)}
                   onChange={(e, newVal) => fieldChange(newVal, "boardType")}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Board type"
                       variant="outlined"
@@ -153,7 +153,7 @@ const AddDisplayPage: React.FunctionComponent<
                   options={Object.keys(DisplayTypeEnum)}
                   onChange={(e, newVal) => fieldChange(newVal, "displayType")}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Display type"
                       variant="outlined"
@@ -174,7 +174,7 @@ const AddDisplayPage: React.FunctionComponent<
                     fieldChange(newVal, "measurementTypes")
                   }
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Measurement types"
                       variant="outlined"
@@ -195,7 +195,7 @@ const AddDisplayPage: React.FunctionComponent<
                   }
                   onChange={(e, newVal) => fieldChange(newVal, "sensorIds")}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Sensors"
                       variant="outlined"

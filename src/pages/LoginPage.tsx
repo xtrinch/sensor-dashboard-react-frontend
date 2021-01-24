@@ -6,10 +6,10 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import config from "config/Config";
 import { AccountContext } from "context/AccountContext";
 import { DisplayContext } from "context/DisplayContext";
@@ -116,7 +116,7 @@ const LoginPage: React.FunctionComponent<
           Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={submitForm}>
-          <TextField
+          <TextInput
             variant="outlined"
             margin="normal"
             required
@@ -131,7 +131,7 @@ const LoginPage: React.FunctionComponent<
             error={!!errors.email}
             helperText={errors.email}
           />
-          <TextField
+          <TextInput
             variant="outlined"
             margin="normal"
             required

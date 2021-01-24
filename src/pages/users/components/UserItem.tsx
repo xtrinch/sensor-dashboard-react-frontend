@@ -1,4 +1,4 @@
-import { TableCell, TableRow, TextField } from "@material-ui/core";
+import { TableCell, TableRow } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import {
   createStyles,
@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextInput from "components/TextInput";
 import { openConfirmation } from "context/ConfirmationContext";
 import { UserContext } from "context/UserContext";
 import { format } from "date-fns";
@@ -72,7 +73,7 @@ const UserItem: React.FunctionComponent<
           options={Object.values(GroupEnum)}
           onChange={(e, newVal) => groupChange(newVal)}
           renderInput={(params) => (
-            <TextField
+            <TextInput
               {...params}
               placeholder="Group"
               variant="standard"

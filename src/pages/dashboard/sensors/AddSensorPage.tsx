@@ -3,11 +3,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { SensorContext } from "context/SensorContext";
 import { getSensorRoute } from "pages/dashboard/DashboardRoutes";
@@ -115,7 +115,7 @@ const AddSensorPage: React.FunctionComponent<
                 Add sensor board
               </Typography> */}
               <form className={classes.form} noValidate onSubmit={submitForm}>
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -128,7 +128,7 @@ const AddSensorPage: React.FunctionComponent<
                   error={!!errors.name}
                   helperText={errors.name}
                 />
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -140,7 +140,7 @@ const AddSensorPage: React.FunctionComponent<
                   error={!!errors.displayName}
                   helperText={errors.displayName}
                 />
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -163,7 +163,7 @@ const AddSensorPage: React.FunctionComponent<
                     (key) => BoardTypeEnum[key]
                   )}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Board type"
                       variant="outlined"
@@ -181,7 +181,7 @@ const AddSensorPage: React.FunctionComponent<
                   getOptionLabel={(option) => option}
                   onChange={(e, newVal) => fieldChange(newVal, "timezone")}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Timezone"
                       variant="outlined"
@@ -200,7 +200,7 @@ const AddSensorPage: React.FunctionComponent<
                   getOptionLabel={(option) => option}
                   onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Sensor types"
                       variant="outlined"
@@ -221,7 +221,7 @@ const AddSensorPage: React.FunctionComponent<
                     fieldChange(newVal, "measurementTypes")
                   }
                   renderInput={(params) => (
-                    <TextField
+                    <TextInput
                       {...params}
                       label="Measurement types"
                       variant="outlined"

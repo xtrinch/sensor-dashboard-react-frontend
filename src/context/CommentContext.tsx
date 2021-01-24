@@ -1,9 +1,10 @@
 import { addToast } from "context/ToastContext";
 import React, { createContext, useEffect, useState } from "react";
 import CommentService from "services/CommentService";
-import Category from "types/Category";
+import { CategoryId } from "types/Category";
 import Comment, { CommentId } from "types/Comment";
 import { Toast } from "types/Toast";
+import { TopicId } from "types/Topic";
 
 const CommentContext = createContext<{
   state?: {
@@ -15,8 +16,12 @@ const CommentContext = createContext<{
   deleteComment?: (id: CommentId) => Promise<boolean>;
 }>({});
 
-function CommentContextProvider(props: { category: Category; children: any }) {
-  const { category } = props;
+function CommentContextProvider(props: {
+  categoryId: CategoryId;
+  topicId: TopicId;
+  children: any;
+}) {
+  const { categoryId, topicId } = props;
 
   let [state, setState] = useState({
     comments: [],
@@ -24,7 +29,10 @@ function CommentContextProvider(props: { category: Category; children: any }) {
   });
 
   const reload = async () => {
-    const resp = await CommentService.listComments({ categoryId: category.id });
+    const resp = await CommentService.listComments({
+      categoryId: categoryId,
+      topicId: topicId,
+    });
     const commentData = resp.items;
 
     setState({ ...state, comments: commentData, commentsLoaded: true });

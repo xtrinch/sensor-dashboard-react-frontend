@@ -1,5 +1,5 @@
 import { Container, IconButton, Typography } from "@material-ui/core";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import { Delete, Settings } from "@material-ui/icons";
 import ColoredButton from "components/ColoredButton";
 import Link from "components/Link";
@@ -14,6 +14,7 @@ import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicEditRoute, getTopicListRoute } from "pages/forum/ForumRoutes";
+import CommentItem from "pages/forum/topic/components/CommentItem";
 import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import TopicService from "services/TopicService";
@@ -50,12 +51,12 @@ const TopicPage: React.FunctionComponent<
     history,
   } = props;
 
-  const {
-    state: { topics },
-    deleteTopic,
-  } = useContext(TopicContext);
+  const { deleteTopic } = useContext(TopicContext);
 
-  const { addComment } = useContext(CommentContext);
+  const {
+    addComment,
+    state: { comments },
+  } = useContext(CommentContext);
 
   const {
     state: { user },
@@ -182,6 +183,9 @@ const TopicPage: React.FunctionComponent<
             />
           </div>
         </div>
+        {comments.map((comment) => (
+          <CommentItem comment={comment} />
+        ))}
         <form
           noValidate
           onSubmit={formik.handleSubmit}
@@ -191,10 +195,9 @@ const TopicPage: React.FunctionComponent<
           <TextInput
             id="name"
             margin="normal"
-            label="Name"
+            label="Title"
             name="name"
             value={formik.values.name}
-            autoFocus
             onChange={formik.handleChange}
             error={!!formik.status?.name}
             helperText={formik.status?.name}

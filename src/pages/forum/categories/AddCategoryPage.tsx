@@ -1,9 +1,9 @@
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { CategoryContext } from "context/CategoryContext";
 import { useFormik } from "formik";
@@ -99,7 +99,7 @@ const AddCategoryPage: React.FunctionComponent<
               noValidate
               onSubmit={formik.handleSubmit}
             >
-              <TextField
+              <TextInput
                 id="name"
                 variant="outlined"
                 margin="normal"
@@ -112,7 +112,7 @@ const AddCategoryPage: React.FunctionComponent<
                 error={!!formik.status?.name}
                 helperText={formik.status?.name}
               />
-              <TextField
+              <TextInput
                 id="description"
                 variant="outlined"
                 margin="normal"

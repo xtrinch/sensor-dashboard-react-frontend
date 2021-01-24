@@ -4,10 +4,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import { AccountContext } from "context/AccountContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -94,7 +94,7 @@ const RegisterPage: React.FunctionComponent<
             >
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextInput
                     autoComplete="fname"
                     name="firstName"
                     variant="outlined"
@@ -110,7 +110,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -125,7 +125,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -140,7 +140,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -155,7 +155,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth

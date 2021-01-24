@@ -3,10 +3,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
 import { getForwarderRoute } from "pages/dashboard/DashboardRoutes";
@@ -91,7 +91,7 @@ const AddForwarderPage: React.FunctionComponent<
                 <SettingsInputAntennaIcon />
               </Avatar>
               <form className={classes.form} noValidate onSubmit={submitForm}>
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -104,7 +104,7 @@ const AddForwarderPage: React.FunctionComponent<
                   error={!!errors.name}
                   helperText={errors.name}
                 />
-                <TextField
+                <TextInput
                   variant="outlined"
                   margin="normal"
                   fullWidth
@@ -118,7 +118,7 @@ const AddForwarderPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <TextField
+                <TextInput
                   select
                   id="select"
                   label="Board type"
@@ -135,7 +135,7 @@ const AddForwarderPage: React.FunctionComponent<
                       {BoardTypeEnum[key]}
                     </MenuItem>
                   ))}
-                </TextField>
+                </TextInput>
                 <ColoredButton
                   type="submit"
                   fullWidth
