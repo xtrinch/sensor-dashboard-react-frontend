@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import ColoredButton from "components/ColoredButton";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
@@ -212,42 +213,44 @@ const DisplayInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
-            <TextInput
-              select
-              id="select"
-              label="Board type"
-              variant="outlined"
-              margin="normal"
+            <SelectInput
+              // label="Board type"
               value={data.boardType}
-              onChange={(e) => fieldChange(e.target.value, "boardType")}
+              onChange={(e, newVal) => fieldChange(newVal, "boardType")}
               fullWidth
-              error={!!errors.boardType}
-              helperText={errors.boardType}
-            >
-              {Object.keys(BoardTypeEnum).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {BoardTypeEnum[key]}
-                </MenuItem>
-              ))}
-            </TextInput>
-            <TextInput
-              select
-              id="select"
-              label="Display type"
-              variant="outlined"
-              margin="normal"
+              // error={!!errors.boardType}
+              // helperText={errors.boardType}
+              options={Object.keys(BoardTypeEnum)}
+              renderInput={(params) => (
+                <TextInput
+                  {...params}
+                  label="Board type"
+                  variant="outlined"
+                  margin="normal"
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
+                />
+              )}
+            />
+            <SelectInput
+              // label="Display type"
               value={data.displayType}
-              onChange={(e) => fieldChange(e.target.value, "displayType")}
+              onChange={(e, newVal) => fieldChange(newVal, "displayType")}
               fullWidth
-              error={!!errors.displayType}
-              helperText={errors.displayType}
-            >
-              {Object.keys(DisplayTypeEnum).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {DisplayTypeEnum[key]}
-                </MenuItem>
-              ))}
-            </TextInput>
+              // error={!!errors.displayType}
+              // helperText={errors.displayType}
+              options={Object.keys(DisplayTypeEnum)}
+              renderInput={(params) => (
+                <TextInput
+                  {...params}
+                  label="Display type"
+                  variant="outlined"
+                  margin="normal"
+                  error={!!errors.displayType}
+                  helperText={errors.displayType}
+                />
+              )}
+            />
             <FormControl variant="outlined" fullWidth margin="normal">
               <InputLabel id="demo-mutiple-name-label">
                 Measurement types

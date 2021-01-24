@@ -1,4 +1,4 @@
-import { Grid, MenuItem } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -6,6 +6,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import ColoredButton from "components/ColoredButton";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
@@ -118,24 +119,26 @@ const AddForwarderPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <TextInput
-                  select
+                <SelectInput
                   id="select"
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
+                  // label="Board type"
                   value={data.boardType}
-                  onChange={(e) => fieldChange(e.target.value, "boardType")}
+                  onChange={(e, newVal) => fieldChange(newVal, "boardType")}
                   fullWidth
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                >
-                  {Object.keys(BoardTypeEnum).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {BoardTypeEnum[key]}
-                    </MenuItem>
-                  ))}
-                </TextInput>
+                  // error={!!errors.boardType}
+                  // helperText={errors.boardType}
+                  options={Object.keys(BoardTypeEnum)}
+                  renderInput={(params) => (
+                    <TextInput
+                      {...params}
+                      label="Board type"
+                      variant="outlined"
+                      margin="normal"
+                      error={!!errors.boardType}
+                      helperText={errors.boardType}
+                    />
+                  )}
+                />
                 <ColoredButton
                   type="submit"
                   fullWidth

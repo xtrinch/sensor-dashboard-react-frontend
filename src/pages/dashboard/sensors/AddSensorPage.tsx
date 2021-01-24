@@ -5,8 +5,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import ColoredButton from "components/ColoredButton";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { SensorContext } from "context/SensorContext";
@@ -42,7 +42,7 @@ const styles = (theme) =>
       "& >*": {
         width: "100%",
       },
-      "& >.MuiFormControl-root, >.MuiAutocomplete-root": {
+      "& >.MuiFormControl-root, >.MuiSelectInput-root": {
         width: "calc(50% - 10px)",
         display: "inline-flex",
         "&:nth-of-type(2n+1)": {
@@ -154,14 +154,12 @@ const AddSensorPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <Autocomplete
+                <SelectInput
                   id="select"
                   value={data.boardType}
                   onChange={(e, newVal) => fieldChange(newVal, "boardType")}
                   fullWidth
-                  options={Object.keys(BoardTypeEnum).map(
-                    (key) => BoardTypeEnum[key]
-                  )}
+                  options={Object.keys(BoardTypeEnum)}
                   renderInput={(params) => (
                     <TextInput
                       {...params}
@@ -173,7 +171,7 @@ const AddSensorPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   id="timezone"
                   value={data.timezone}
                   fullWidth
@@ -191,7 +189,7 @@ const AddSensorPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   multiple
                   id="sensorTypes"
                   value={data.sensorTypes}
@@ -210,7 +208,7 @@ const AddSensorPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   multiple
                   id="measurementTypes"
                   value={data.measurementTypes}

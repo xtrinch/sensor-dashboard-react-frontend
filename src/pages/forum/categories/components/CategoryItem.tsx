@@ -78,8 +78,11 @@ const CategoryItem: React.FunctionComponent<
         </div>
         <div>{category.description}</div>
       </TableCell>
-      <TableCell style={{ width: "120px" }}>
+      <TableCell style={{ width: "100px", padding: "0px" }}>
         {category.numTopics} topics
+      </TableCell>
+      <TableCell style={{ width: "100px", padding: "0px" }}>
+        {category.numComments} comments
       </TableCell>
       <TableCell style={{ width: "50px" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>

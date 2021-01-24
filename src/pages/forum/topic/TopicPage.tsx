@@ -81,14 +81,13 @@ const TopicPage: React.FunctionComponent<
 
   const submitForm = async (values: Comment, { setStatus }) => {
     try {
-      let newComment;
-      newComment = await addComment(values);
+      await addComment(values);
     } catch (e) {
       setStatus(e);
     }
   };
 
-  const [comment, setComment] = useState(
+  const [comment] = useState(
     () => new Comment({ categoryId: params.id, topicId: params.topicId })
   );
   const [editorState, setEditorState] = useState(() =>

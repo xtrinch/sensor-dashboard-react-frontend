@@ -25,7 +25,7 @@ import ForumIndexPage from "pages/forum/ForumIndexPage";
 import { ForumRoutes } from "pages/forum/ForumRoutes";
 import LoginPage from "pages/LoginPage";
 import RegisterPage from "pages/RegisterPage";
-import UserListPage from "pages/users/UserListPage";
+import UserIndexPage from "pages/users/UserIndexPage";
 import { UserRoutes } from "pages/users/UserRoutes";
 import React from "react";
 import { BrowserRouter, Redirect, Route } from "react-router-dom";
@@ -90,8 +90,8 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                   <Route path={ForumRoutes.FORUM}>
                                     <ForumIndexPage />
                                   </Route>
-                                  <Route exact path={UserRoutes.USERS}>
-                                    <UserListPage />
+                                  <Route path={UserRoutes.USERS}>
+                                    <UserIndexPage />
                                   </Route>
                                   <Route exact path={Routes.LOGIN}>
                                     <LoginPage />

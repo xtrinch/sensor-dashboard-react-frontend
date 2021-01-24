@@ -1,4 +1,3 @@
-import { MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import ColoredButton from "components/ColoredButton";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
@@ -207,24 +207,23 @@ const ForwarderInfoPage: React.FunctionComponent<
               error={!!errors.location}
               helperText={errors.location}
             />
-            <TextInput
-              select
-              id="select"
-              label="Board type"
-              variant="outlined"
-              margin="normal"
+            <SelectInput
+              id="boardType"
               value={data.boardType}
-              onChange={(e) => fieldChange(e.target.value, "boardType")}
               fullWidth
-              error={!!errors.boardType}
-              helperText={errors.boardType}
-            >
-              {Object.keys(BoardTypeEnum).map((key) => (
-                <MenuItem key={key} value={key}>
-                  {BoardTypeEnum[key]}
-                </MenuItem>
-              ))}
-            </TextInput>
+              options={Object.keys(BoardTypeEnum)}
+              onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+              renderInput={(params) => (
+                <TextInput
+                  {...params}
+                  label="Board type"
+                  variant="outlined"
+                  margin="normal"
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
+                />
+              )}
+            />
             <ColoredButton
               type="submit"
               fullWidth

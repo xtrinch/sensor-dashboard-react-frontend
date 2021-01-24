@@ -4,8 +4,8 @@ import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import ColoredButton from "components/ColoredButton";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
@@ -129,7 +129,7 @@ const AddDisplayPage: React.FunctionComponent<
                   error={!!errors.location}
                   helperText={errors.location}
                 />
-                <Autocomplete
+                <SelectInput
                   id="boardType"
                   value={data.boardType}
                   fullWidth
@@ -146,7 +146,7 @@ const AddDisplayPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   id="displayType"
                   value={data.displayType}
                   fullWidth
@@ -163,7 +163,7 @@ const AddDisplayPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   multiple
                   id="measurementTypes"
                   value={data.measurementTypes}
@@ -184,7 +184,7 @@ const AddDisplayPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Autocomplete
+                <SelectInput
                   multiple
                   id="sensorIds"
                   value={data.sensorIds}

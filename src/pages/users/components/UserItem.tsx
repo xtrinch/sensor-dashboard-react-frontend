@@ -7,11 +7,13 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Link from "components/Link";
+import SelectInput from "components/SelectInput";
 import TextInput from "components/TextInput";
 import { openConfirmation } from "context/ConfirmationContext";
 import { UserContext } from "context/UserContext";
 import { format } from "date-fns";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -59,7 +61,9 @@ const UserItem: React.FunctionComponent<
 
   return (
     <TableRow className={classes.root}>
-      <TableCell>{user.username}</TableCell>
+      <TableCell>
+        <Link to={getUserRoute(user.id)}>{user.username}</Link>
+      </TableCell>
       <TableCell>
         {user.createdAt ? format(user.createdAt, DATETIME_REGEX) : ""}
       </TableCell>
@@ -67,7 +71,7 @@ const UserItem: React.FunctionComponent<
         {user.lastSeenAt ? format(user.lastSeenAt, DATETIME_REGEX) : ""}
       </TableCell>
       <TableCell style={{ padding: "0px" }}>
-        <Autocomplete
+        <SelectInput
           value={user.group}
           fullWidth
           options={Object.values(GroupEnum)}
