@@ -8,6 +8,7 @@ import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -102,7 +103,10 @@ const SideMenu: React.FunctionComponent<
           {loginState === "LOGGED_IN" && (
             <Grid item>
               <div>
-                Logged in as <Link>{user.username}</Link>
+                Logged in as{" "}
+                <Link to={getUserRoute(user.id)} color={ColorsEnum.YELLOW}>
+                  {user.username}
+                </Link>
               </div>
               <Link onClick={() => logoutWithConfirmation()}>Logout</Link>
             </Grid>

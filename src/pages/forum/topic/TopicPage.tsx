@@ -79,17 +79,23 @@ const TopicPage: React.FunctionComponent<
     openConfirmation(onConfirm, null, "Are you sure you want to delete topic?");
   };
 
+  const [comment, setComment] = useState(
+    () => new Comment({ categoryId: params.id, topicId: params.topicId })
+  );
+
   const submitForm = async (values: Comment, { setStatus }) => {
     try {
       await addComment(values);
+      // clear current comment
+      setComment(
+        new Comment({ categoryId: params.id, topicId: params.topicId })
+      );
+      setEditorState(EditorState.createEmpty());
     } catch (e) {
       setStatus(e);
     }
   };
 
-  const [comment] = useState(
-    () => new Comment({ categoryId: params.id, topicId: params.topicId })
-  );
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -182,8 +188,8 @@ const TopicPage: React.FunctionComponent<
             />
           </div>
         </div>
-        {comments.map((comment) => (
-          <CommentItem comment={comment} />
+        {comments.map((comment, index) => (
+          <CommentItem comment={comment} key={index} />
         ))}
         <form
           noValidate

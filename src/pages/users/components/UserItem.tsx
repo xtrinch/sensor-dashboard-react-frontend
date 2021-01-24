@@ -9,7 +9,6 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import Link from "components/Link";
 import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
 import { openConfirmation } from "context/ConfirmationContext";
 import { UserContext } from "context/UserContext";
 import { format } from "date-fns";
@@ -62,7 +61,9 @@ const UserItem: React.FunctionComponent<
   return (
     <TableRow className={classes.root}>
       <TableCell>
-        <Link to={getUserRoute(user.id)}>{user.username}</Link>
+        <Link to={getUserRoute(user.id)} color={ColorsEnum.YELLOW}>
+          {user.username}
+        </Link>
       </TableCell>
       <TableCell>
         {user.createdAt ? format(user.createdAt, DATETIME_REGEX) : ""}
@@ -76,14 +77,9 @@ const UserItem: React.FunctionComponent<
           fullWidth
           options={Object.values(GroupEnum)}
           onChange={(e, newVal) => groupChange(newVal)}
-          renderInput={(params) => (
-            <TextInput
-              {...params}
-              placeholder="Group"
-              variant="standard"
-              margin="none"
-            />
-          )}
+          placeholder="Group"
+          margin="none"
+          variant="standard"
         />
       </TableCell>
       <TableCell style={{ width: "100px" }}>

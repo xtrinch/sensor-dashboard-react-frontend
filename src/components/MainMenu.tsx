@@ -84,7 +84,10 @@ const MainMenu: React.FunctionComponent<
 
   return (
     <>
-      <Tabs className={classes.container} value={"/" + pathname.split("/")[1]}>
+      <Tabs
+        className={classes.container}
+        value={"/" + (pathname.split("/")[1] || "dashboard")}
+      >
         <Tab
           label="IOT dashboard"
           className={classes.dashboard}

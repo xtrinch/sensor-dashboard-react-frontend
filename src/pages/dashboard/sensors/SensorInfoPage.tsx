@@ -167,8 +167,6 @@ const SensorInfoPage: React.FunctionComponent<
         <div className={classes.paper}>
           <form className={classes.form} noValidate onSubmit={submitForm}>
             <TextInput
-              variant="outlined"
-              margin="normal"
               id="accessToken"
               name="accessToken"
               label="Sensor access token"
@@ -176,8 +174,6 @@ const SensorInfoPage: React.FunctionComponent<
               value={sensor?.accessToken || ""}
             />
             <TextInput
-              variant="outlined"
-              margin="normal"
               id="accessToken"
               name="accessToken"
               label="Last seen at"
@@ -189,8 +185,6 @@ const SensorInfoPage: React.FunctionComponent<
               }
             />
             <TextInput
-              variant="outlined"
-              margin="normal"
               id="name"
               label="Sensor name"
               name="name"
@@ -200,8 +194,6 @@ const SensorInfoPage: React.FunctionComponent<
               helperText={errors.name}
             />
             <TextInput
-              variant="outlined"
-              margin="normal"
               id="displayName"
               label="Sensor display name"
               name="displayName"
@@ -211,8 +203,6 @@ const SensorInfoPage: React.FunctionComponent<
               helperText={errors.displayName}
             />
             <TextInput
-              variant="outlined"
-              margin="normal"
               name="location"
               label="Location description"
               type="location"
@@ -228,16 +218,11 @@ const SensorInfoPage: React.FunctionComponent<
               value={data.boardType}
               options={Object.keys(BoardTypeEnum)}
               onChange={(e, newVal) => fieldChange(newVal, "boardType")}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                />
-              )}
+              label="Board type"
+              variant="outlined"
+              margin="normal"
+              error={!!errors.boardType}
+              helperText={errors.boardType}
             />
             <SelectInput
               id="timezone"
@@ -246,14 +231,9 @@ const SensorInfoPage: React.FunctionComponent<
               fullWidth
               getOptionLabel={(option) => option}
               onChange={(e, newVal) => fieldChange(newVal, "timezone")}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Timezone"
-                  error={!!errors.timezone}
-                  helperText={errors.timezone}
-                />
-              )}
+              label="Timezone"
+              error={!!errors.timezone}
+              helperText={errors.timezone}
             />
             <SelectInput
               multiple
@@ -263,16 +243,9 @@ const SensorInfoPage: React.FunctionComponent<
               options={Object.values(SensorTypeEnum)}
               getOptionLabel={(option) => option}
               onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Sensor types"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.sensorTypes}
-                  helperText={errors.sensorTypes}
-                />
-              )}
+              label="Sensor types"
+              error={!!errors.sensorTypes}
+              helperText={errors.sensorTypes}
             />
             <SelectInput
               multiple
@@ -281,16 +254,9 @@ const SensorInfoPage: React.FunctionComponent<
               options={Object.values(MeasurementTypeEnum)}
               getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
               onChange={(e, newVal) => fieldChange(newVal, "measurementTypes")}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Measurement types"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.measurementTypes}
-                  helperText={errors.measurementTypes}
-                />
-              )}
+              label="Measurement types"
+              error={!!errors.measurementTypes}
+              helperText={errors.measurementTypes}
             />
             <FormControlLabel
               control={

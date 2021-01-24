@@ -213,16 +213,11 @@ const ForwarderInfoPage: React.FunctionComponent<
               fullWidth
               options={Object.keys(BoardTypeEnum)}
               onChange={(e, newVal) => fieldChange(newVal, "boardType")}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                />
-              )}
+              label="Board type"
+              variant="outlined"
+              margin="normal"
+              error={!!errors.boardType}
+              helperText={errors.boardType}
             />
             <ColoredButton
               type="submit"

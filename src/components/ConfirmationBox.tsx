@@ -54,7 +54,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
             onClick={() => close(confirmationContext)}
             fullWidth
             size="small"
-            colorVariety={ColorsEnum.GRAY}
+            colorVariety={ColorsEnum.BGDARK}
           >
             NO
           </ColoredButton>
@@ -64,6 +64,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
             onClick={() => confirm(confirmationContext)}
             fullWidth
             colorVariety={ColorsEnum.BLUE}
+            size="small"
           >
             YES
           </ColoredButton>

@@ -135,16 +135,9 @@ const AddDisplayPage: React.FunctionComponent<
                   fullWidth
                   options={Object.keys(BoardTypeEnum)}
                   onChange={(e, newVal) => fieldChange(newVal, "boardType")}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Board type"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.boardType}
-                      helperText={errors.boardType}
-                    />
-                  )}
+                  label="Board type"
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
                 />
                 <SelectInput
                   id="displayType"
@@ -152,16 +145,9 @@ const AddDisplayPage: React.FunctionComponent<
                   fullWidth
                   options={Object.keys(DisplayTypeEnum)}
                   onChange={(e, newVal) => fieldChange(newVal, "displayType")}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Display type"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.displayType}
-                      helperText={errors.displayType}
-                    />
-                  )}
+                  label="Display type"
+                  error={!!errors.displayType}
+                  helperText={errors.displayType}
                 />
                 <SelectInput
                   multiple
@@ -173,16 +159,9 @@ const AddDisplayPage: React.FunctionComponent<
                   onChange={(e, newVal) =>
                     fieldChange(newVal, "measurementTypes")
                   }
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Measurement types"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.measurementTypes}
-                      helperText={errors.measurementTypes}
-                    />
-                  )}
+                  label="Measurement types"
+                  error={!!errors.measurementTypes}
+                  helperText={errors.measurementTypes}
                 />
                 <SelectInput
                   multiple
@@ -194,16 +173,9 @@ const AddDisplayPage: React.FunctionComponent<
                     sensors.find((s) => s.id === option).name
                   }
                   onChange={(e, newVal) => fieldChange(newVal, "sensorIds")}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Sensors"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.sensorIds}
-                      helperText={errors.sensorIds}
-                    />
-                  )}
+                  label="Sensors"
+                  error={!!errors.sensorIds}
+                  helperText={errors.sensorIds}
                 />
                 <ColoredButton
                   type="submit"

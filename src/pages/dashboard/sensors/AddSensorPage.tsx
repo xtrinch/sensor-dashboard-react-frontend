@@ -1,7 +1,6 @@
-import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
+import { Checkbox, FormControlLabel } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
@@ -104,7 +103,6 @@ const AddSensorPage: React.FunctionComponent<
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="sm">
-        <CssBaseline />
         <div className={classes.paper}>
           {!success && (
             <>
@@ -116,9 +114,6 @@ const AddSensorPage: React.FunctionComponent<
               </Typography> */}
               <form className={classes.form} noValidate onSubmit={submitForm}>
                 <TextInput
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
                   id="name"
                   label="Sensor name"
                   name="name"
@@ -129,9 +124,6 @@ const AddSensorPage: React.FunctionComponent<
                   helperText={errors.name}
                 />
                 <TextInput
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
                   id="displayName"
                   label="Sensor display name"
                   name="displayName"
@@ -141,9 +133,6 @@ const AddSensorPage: React.FunctionComponent<
                   helperText={errors.displayName}
                 />
                 <TextInput
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
                   name="location"
                   label="Location description"
                   type="location"
@@ -158,18 +147,10 @@ const AddSensorPage: React.FunctionComponent<
                   id="select"
                   value={data.boardType}
                   onChange={(e, newVal) => fieldChange(newVal, "boardType")}
-                  fullWidth
                   options={Object.keys(BoardTypeEnum)}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Board type"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.boardType}
-                      helperText={errors.boardType}
-                    />
-                  )}
+                  label="Board type"
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
                 />
                 <SelectInput
                   id="timezone"
@@ -178,16 +159,9 @@ const AddSensorPage: React.FunctionComponent<
                   options={listTimeZones()}
                   getOptionLabel={(option) => option}
                   onChange={(e, newVal) => fieldChange(newVal, "timezone")}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Timezone"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.timezone}
-                      helperText={errors.timezone}
-                    />
-                  )}
+                  label="Timezone"
+                  error={!!errors.timezone}
+                  helperText={errors.timezone}
                 />
                 <SelectInput
                   multiple
@@ -197,16 +171,9 @@ const AddSensorPage: React.FunctionComponent<
                   options={Object.values(SensorTypeEnum)}
                   getOptionLabel={(option) => option}
                   onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Sensor types"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.sensorTypes}
-                      helperText={errors.sensorTypes}
-                    />
-                  )}
+                  label="Sensor types"
+                  error={!!errors.sensorTypes}
+                  helperText={errors.sensorTypes}
                 />
                 <SelectInput
                   multiple
@@ -218,16 +185,9 @@ const AddSensorPage: React.FunctionComponent<
                   onChange={(e, newVal) =>
                     fieldChange(newVal, "measurementTypes")
                   }
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Measurement types"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.measurementTypes}
-                      helperText={errors.measurementTypes}
-                    />
-                  )}
+                  label="Measurement types"
+                  error={!!errors.measurementTypes}
+                  helperText={errors.measurementTypes}
                 />
                 <FormControlLabel
                   control={
@@ -249,12 +209,6 @@ const AddSensorPage: React.FunctionComponent<
                 </div>
               </form>
             </>
-          )}
-          {success && (
-            <Grid container spacing={10} direction={"column"}>
-              <Grid item>Sensor successfully added.</Grid>
-              <Grid item>Redirecting to sensor info page...</Grid>
-            </Grid>
           )}
         </div>
       </Container>

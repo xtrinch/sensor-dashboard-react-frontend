@@ -76,6 +76,20 @@ export default class UserService {
     };
   };
 
+  public static getUser = async (id: UserId): Promise<User> => {
+    const url = getUrl(`/users/${id}`);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new User(result);
+    return s;
+  };
+
   public static updateUser = async (
     id: UserId,
     user: Partial<User>

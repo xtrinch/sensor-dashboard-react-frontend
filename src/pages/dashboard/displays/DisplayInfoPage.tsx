@@ -1,10 +1,3 @@
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -214,91 +207,50 @@ const DisplayInfoPage: React.FunctionComponent<
               helperText={errors.location}
             />
             <SelectInput
-              // label="Board type"
               value={data.boardType}
               onChange={(e, newVal) => fieldChange(newVal, "boardType")}
               fullWidth
-              // error={!!errors.boardType}
-              // helperText={errors.boardType}
               options={Object.keys(BoardTypeEnum)}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Board type"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                />
-              )}
+              error={!!errors.boardType}
+              helperText={errors.boardType}
             />
             <SelectInput
-              // label="Display type"
               value={data.displayType}
               onChange={(e, newVal) => fieldChange(newVal, "displayType")}
               fullWidth
-              // error={!!errors.displayType}
-              // helperText={errors.displayType}
               options={Object.keys(DisplayTypeEnum)}
-              renderInput={(params) => (
-                <TextInput
-                  {...params}
-                  label="Display type"
-                  variant="outlined"
-                  margin="normal"
-                  error={!!errors.displayType}
-                  helperText={errors.displayType}
-                />
-              )}
+              label="Display type"
+              variant="outlined"
+              margin="normal"
+              error={!!errors.displayType}
+              helperText={errors.displayType}
             />
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">
-                Measurement types
-              </InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.measurementTypes}
-                onChange={(e) =>
-                  fieldChange(e.target.value, "measurementTypes")
-                }
-                error={!!errors.measurementTypes}
-              >
-                {Object.values(MeasurementTypeEnum).map((key) => (
-                  <MenuItem key={key} value={key}>
-                    {MeasurementTypeLabelsEnum[key]}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.measurementTypes && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.measurementTypes}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl variant="outlined" fullWidth margin="normal">
-              <InputLabel id="demo-mutiple-name-label">Sensors</InputLabel>
-              <Select
-                labelId="demo-mutiple-name-label"
-                id="demo-mutiple-name"
-                multiple
-                value={data.sensorIds}
-                onChange={(e) => fieldChange(e.target.value, "sensorIds")}
-                error={!!errors.sensorIds}
-              >
-                {sensors.map((sensor) => (
-                  <MenuItem key={sensor.id} value={sensor.id}>
-                    {sensor.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              {!!errors.sensorIds && (
-                <FormHelperText style={{ color: ColorsEnum.ORANGE }}>
-                  {errors.sensorIds}
-                </FormHelperText>
-              )}
-            </FormControl>
+            <SelectInput
+              multiple
+              id="measurementTypes"
+              value={data.measurementTypes}
+              fullWidth
+              options={Object.values(MeasurementTypeEnum)}
+              getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
+              onChange={(e, newVal) => fieldChange(newVal, "measurementTypes")}
+              label="Measurement types"
+              error={!!errors.measurementTypes}
+              helperText={errors.measurementTypes}
+            />
+            <SelectInput
+              multiple
+              id="sensorIds"
+              value={data.sensorIds}
+              fullWidth
+              options={sensors.map((s) => s.id)}
+              getOptionLabel={(option) =>
+                sensors.find((s) => s.id === option)?.name
+              }
+              onChange={(e, newVal) => fieldChange(newVal, "sensorIds")}
+              label="Sensors"
+              error={!!errors.sensorIds}
+              helperText={errors.sensorIds}
+            />
             <ColoredButton
               type="submit"
               fullWidth

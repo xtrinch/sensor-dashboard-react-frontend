@@ -121,23 +121,13 @@ const AddForwarderPage: React.FunctionComponent<
                 />
                 <SelectInput
                   id="select"
-                  // label="Board type"
                   value={data.boardType}
                   onChange={(e, newVal) => fieldChange(newVal, "boardType")}
                   fullWidth
-                  // error={!!errors.boardType}
-                  // helperText={errors.boardType}
+                  label="Board type"
+                  error={!!errors.boardType}
+                  helperText={errors.boardType}
                   options={Object.keys(BoardTypeEnum)}
-                  renderInput={(params) => (
-                    <TextInput
-                      {...params}
-                      label="Board type"
-                      variant="outlined"
-                      margin="normal"
-                      error={!!errors.boardType}
-                      helperText={errors.boardType}
-                    />
-                  )}
                 />
                 <ColoredButton
                   type="submit"
