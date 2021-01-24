@@ -7,7 +7,7 @@ import {
   ListItem,
 } from "@material-ui/core";
 import PlusIcon from "@material-ui/icons/Add";
-import { withStyles, WithStyles } from "@material-ui/styles";
+import { CSSProperties, withStyles, WithStyles } from "@material-ui/styles";
 import Link from "components/Link";
 import SideMenuItem from "components/SideMenuItem";
 import { AccountContext } from "context/AccountContext";
@@ -35,8 +35,10 @@ const styles = () =>
       padding: "5px 16px",
       minHeight: "40px",
       // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
-      backgroundColor: ColorsEnum.BGLIGHTER,
+      // backgroundColor: ColorsEnum.BLUE,
       color: "white",
+      fontWeight: "bold",
+      borderBottom: `2px solid ${ColorsEnum.BLUE}`,
     },
     logoContainer: {
       display: "flex",
@@ -59,7 +61,9 @@ const styles = () =>
     },
   });
 
-interface SensorsSideMenuProps {}
+interface SensorsSideMenuProps {
+  style?: CSSProperties;
+}
 
 const SensorsSideMenu: React.FunctionComponent<
   SensorsSideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
@@ -91,7 +95,7 @@ const SensorsSideMenu: React.FunctionComponent<
 
   const { classes } = props;
   return (
-    <>
+    <div style={props.style}>
       {loginState === "LOGGED_IN" && (
         <>
           <Grid container className={classes.listTitle} alignItems="center">
@@ -213,7 +217,7 @@ const SensorsSideMenu: React.FunctionComponent<
             />
           ))}
       </List>
-    </>
+    </div>
   );
 };
 

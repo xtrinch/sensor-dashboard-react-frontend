@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       width: "100%",
       marginBottom: "20px",
+      marginTop: "40px",
       "& .MuiTabs-flexContainer": {
         flexDirection: "column",
       },

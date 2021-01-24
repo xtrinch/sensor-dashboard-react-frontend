@@ -64,6 +64,9 @@ const theme = createMuiTheme({
         width: "35px",
         height: "35px",
       },
+      secondary: {
+        backgroundColor: "transparent",
+      },
     },
     MuiFormControl: {
       marginNormal: {
