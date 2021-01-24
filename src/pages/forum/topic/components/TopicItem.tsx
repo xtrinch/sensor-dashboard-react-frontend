@@ -14,6 +14,7 @@ import { openConfirmation } from "context/ConfirmationContext";
 import { TopicContext } from "context/TopicContext";
 import { format } from "date-fns";
 import { getTopicEditRoute, getTopicRoute } from "pages/forum/ForumRoutes";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
@@ -73,6 +74,33 @@ const TopicItem: React.FunctionComponent<
             {format(topic.createdAt, DATETIME_REGEX)}
           </div>
         </div>
+      </TableCell>
+      <TableCell style={{ padding: "0px" }}>
+        {topic.lastComment && (
+          <>
+            <Link
+              color={ColorsEnum.OLIVE}
+              to={getTopicRoute(
+                topic.lastComment?.categoryId,
+                topic.lastComment?.topicId
+              )}
+            >
+              {topic.lastComment?.name}
+            </Link>
+            <br />
+            by{" "}
+            <Link
+              color={ColorsEnum.OLIVE}
+              to={getUserRoute(topic.lastComment?.user?.id)}
+            >
+              {topic.lastComment?.user?.username}
+            </Link>
+            ,{" "}
+            {topic.lastComment?.createdAt
+              ? format(topic.lastComment?.createdAt, DATETIME_REGEX)
+              : ""}
+          </>
+        )}
       </TableCell>
       <TableCell style={{ width: "50px" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>

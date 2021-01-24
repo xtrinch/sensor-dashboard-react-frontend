@@ -96,7 +96,12 @@ const CommentItem: React.FunctionComponent<
           )}
         </div>
       </div>
-      <div style={{ paddingTop: "5px" }}>
+      <div>
+        <div style={{ textAlign: "left", padding: "15px 15px 5px 15px" }}>
+          <Typography variant="body1" style={{ textDecoration: "underline" }}>
+            {comment.name}
+          </Typography>
+        </div>
         <WYSIGEditor
           editorState={EditorState.createWithContent(
             convertFromRaw(comment?.description)

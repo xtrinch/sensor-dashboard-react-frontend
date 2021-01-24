@@ -1,6 +1,7 @@
 import { RawDraftContentState } from "draft-js";
 import { AbstractEntity } from "types/AbstractEntity";
 import { CategoryId } from "types/Category";
+import Comment, { CommentId } from "types/Comment";
 import User, { UserId } from "types/User";
 
 export type TopicId = number;
@@ -15,6 +16,8 @@ class Topic extends AbstractEntity {
     this.categoryId = s?.categoryId;
     this.userId = s?.userId;
     this.user = s?.user ? new User(s.user) : undefined;
+    this.lastComment = s?.lastComment ? new Comment(s.lastComment) : null;
+    this.lastCommentId = s?.lastCommentId;
   }
 
   public id: TopicId;
@@ -28,6 +31,10 @@ class Topic extends AbstractEntity {
   public userId: UserId;
 
   public user: User;
+
+  public lastCommentId: CommentId;
+
+  public lastComment: Comment;
 }
 
 export default Topic;

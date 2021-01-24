@@ -86,6 +86,7 @@ const theme = createMuiTheme({
         fontSize: "11px",
         color: "white",
         fontWeight: "bold",
+        padding: "8px 16px 6px 16px",
       },
       root: {
         borderColor: `${ColorsEnum.BGDARK}!important`,

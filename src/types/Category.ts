@@ -1,4 +1,5 @@
 import { AbstractEntity } from "types/AbstractEntity";
+import Comment, { CommentId } from "types/Comment";
 
 export type CategoryId = number;
 
@@ -12,6 +13,8 @@ class Category extends AbstractEntity {
     this.protected = s?.protected || false;
     this.numTopics = s?.numTopics || 0;
     this.numComments = s?.numComments || 0;
+    this.lastComment = s?.lastComment ? new Comment(s.lastComment) : null;
+    this.lastCommentId = s?.lastCommentId;
   }
 
   public id: CategoryId;
@@ -25,6 +28,10 @@ class Category extends AbstractEntity {
   public numTopics: number;
 
   public numComments: number;
+
+  public lastCommentId: CommentId;
+
+  public lastComment: Comment;
 }
 
 export default Category;

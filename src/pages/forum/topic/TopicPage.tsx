@@ -68,6 +68,13 @@ const TopicPage: React.FunctionComponent<
     const setData = async () => {
       const s = await TopicService.getTopic(parseInt(params.topicId));
       setTopic(s);
+      setComment(
+        new Comment({
+          categoryId: params.id,
+          topicId: params.topicId,
+          name: `Re: ${s.name}`,
+        })
+      );
     };
     setData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -79,16 +86,18 @@ const TopicPage: React.FunctionComponent<
     openConfirmation(onConfirm, null, "Are you sure you want to delete topic?");
   };
 
-  const [comment, setComment] = useState(
-    () => new Comment({ categoryId: params.id, topicId: params.topicId })
-  );
+  const [comment, setComment] = useState(null);
 
   const submitForm = async (values: Comment, { setStatus }) => {
     try {
       await addComment(values);
       // clear current comment
       setComment(
-        new Comment({ categoryId: params.id, topicId: params.topicId })
+        new Comment({
+          categoryId: params.id,
+          topicId: params.topicId,
+          name: `Re: ${topic.name}`,
+        })
       );
       setEditorState(EditorState.createEmpty());
     } catch (e) {
@@ -200,9 +209,8 @@ const TopicPage: React.FunctionComponent<
           <TextInput
             id="name"
             margin="normal"
-            label="Title"
             name="name"
-            value={formik.values.name}
+            value={formik.values?.name || ""}
             onChange={formik.handleChange}
             error={!!formik.status?.name}
             helperText={formik.status?.name}

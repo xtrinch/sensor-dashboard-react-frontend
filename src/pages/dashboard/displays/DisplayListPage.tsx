@@ -54,7 +54,7 @@ const DisplayListPage: React.FunctionComponent<
           Add
         </ColoredButton>
       </TopBar>
-      <Container component="main" maxWidth="sm" className={classes.root}>
+      <Container component="main" maxWidth="md" className={classes.root}>
         {displays.length !== 0 && (
           <Table>
             <TableHead>

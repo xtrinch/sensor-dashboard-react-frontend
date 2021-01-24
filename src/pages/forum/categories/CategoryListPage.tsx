@@ -1,4 +1,11 @@
-import { Table, TableBody, Typography } from "@material-ui/core";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
@@ -58,6 +65,20 @@ const CategoryListPage: React.FunctionComponent<
       <Container component="main" maxWidth="md" className={classes.root}>
         {categories.length !== 0 && (
           <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell style={{ paddingLeft: "0px" }}>
+                  Category name
+                </TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell style={{ paddingLeft: "0px" }}>
+                  Last comment
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
               {categories?.map((category: Category, index: number) => (
                 <CategoryItem category={category} key={index} />

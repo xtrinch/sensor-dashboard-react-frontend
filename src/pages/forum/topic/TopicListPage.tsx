@@ -1,4 +1,11 @@
-import { Table, TableBody, Typography } from "@material-ui/core";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
@@ -75,6 +82,15 @@ const TopicListPage: React.FunctionComponent<
       <Container component="main" maxWidth="md" className={classes.root}>
         {topics.length !== 0 && (
           <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Topic name</TableCell>
+                <TableCell style={{ paddingLeft: "0px" }}>
+                  Last comment
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
               {topics?.map((topic: Topic, index: number) => (
                 <TopicItem topic={topic} key={index} />

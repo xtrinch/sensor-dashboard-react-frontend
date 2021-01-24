@@ -11,15 +11,19 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { AccountContext } from "context/AccountContext";
 import { CategoryContext } from "context/CategoryContext";
 import { openConfirmation } from "context/ConfirmationContext";
+import { format } from "date-fns";
 import {
   getCategoryEditRoute,
   getTopicListRoute,
+  getTopicRoute,
 } from "pages/forum/ForumRoutes";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import Category from "types/Category";
 import ColorsEnum from "types/ColorsEnum";
 import { PermissionsEnum } from "types/PermissionEnum";
+import { DATETIME_REGEX } from "utils/date.range";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -83,6 +87,29 @@ const CategoryItem: React.FunctionComponent<
       </TableCell>
       <TableCell style={{ width: "100px", padding: "0px" }}>
         {category.numComments} comments
+      </TableCell>
+      <TableCell style={{ padding: "0px" }}>
+        {category.lastComment && (
+          <>
+            <Link
+              to={getTopicRoute(
+                category.lastComment?.categoryId,
+                category.lastComment?.topicId
+              )}
+            >
+              {category.lastComment?.name}
+            </Link>
+            <br />
+            by{" "}
+            <Link to={getUserRoute(category.lastComment?.user?.id)}>
+              {category.lastComment?.user?.username}
+            </Link>
+            <br />
+            {category.lastComment?.createdAt
+              ? format(category.lastComment?.createdAt, DATETIME_REGEX)
+              : ""}
+          </>
+        )}
       </TableCell>
       <TableCell style={{ width: "50px" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>
