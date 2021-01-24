@@ -1,18 +1,24 @@
 import { Container, IconButton, Typography } from "@material-ui/core";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { Delete, Settings } from "@material-ui/icons";
+import ColoredButton from "components/ColoredButton";
 import Link from "components/Link";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { AccountContext } from "context/AccountContext";
+import { CommentContext } from "context/CommentContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { TopicContext } from "context/TopicContext";
 import { format } from "date-fns";
-import { convertFromRaw, EditorState } from "draft-js";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
+import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicEditRoute, getTopicListRoute } from "pages/forum/ForumRoutes";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
+import TopicService from "services/TopicService";
 import ColorsEnum from "types/ColorsEnum";
+import Comment from "types/Comment";
 import { PermissionsEnum } from "types/PermissionEnum";
 import Topic from "types/Topic";
 import { DATETIME_REGEX } from "utils/date.range";
@@ -27,10 +33,10 @@ const styles = (theme) =>
       marginTop: "30px",
       marginBottom: "30px",
     },
-    actionButton: {
-      backgroundColor: ColorsEnum.OLIVE,
-      color: ColorsEnum.WHITE,
-      width: "fit-content",
+    commentForm: {
+      padding: "15px",
+      textAlign: "left",
+      borderTop: `1px solid ${ColorsEnum.BGDARK}`,
     },
   });
 
@@ -49,17 +55,56 @@ const TopicPage: React.FunctionComponent<
     deleteTopic,
   } = useContext(TopicContext);
 
+  const { addComment } = useContext(CommentContext);
+
   const {
     state: { user },
   } = useContext(AccountContext);
 
-  const topic = topics.find((c) => c.id === parseInt(params.topicId));
+  const [topic, setTopic] = useState(null);
+
+  useEffect(() => {
+    const setData = async () => {
+      const s = await TopicService.getTopic(parseInt(params.topicId));
+      setTopic(s);
+    };
+    setData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const deleteWithConfirmation = (topic: Topic) => {
     const onConfirm = async () => {
       await deleteTopic(topic.id);
     };
     openConfirmation(onConfirm, null, "Are you sure you want to delete topic?");
+  };
+
+  const submitForm = async (values: Comment, { setStatus }) => {
+    try {
+      let newComment;
+      newComment = await addComment(values);
+    } catch (e) {
+      setStatus(e);
+    }
+  };
+
+  const [comment, setComment] = useState(
+    () => new Comment({ categoryId: params.id, topicId: params.topicId })
+  );
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const formik = useFormik<Comment>({
+    initialValues: comment,
+    onSubmit: submitForm,
+    enableReinitialize: true,
+  });
+
+  const onEditorStateChange = (change: EditorState) => {
+    setEditorState(change);
+    formik.setFieldValue(
+      "description",
+      convertToRaw(change.getCurrentContent())
+    );
   };
 
   if (!topic) {
@@ -137,6 +182,36 @@ const TopicPage: React.FunctionComponent<
             />
           </div>
         </div>
+        <form
+          noValidate
+          onSubmit={formik.handleSubmit}
+          className={classes.commentForm}
+        >
+          <Typography variant="h6">Leave a comment</Typography>
+          <TextInput
+            id="name"
+            margin="normal"
+            label="Name"
+            name="name"
+            value={formik.values.name}
+            autoFocus
+            onChange={formik.handleChange}
+            error={!!formik.status?.name}
+            helperText={formik.status?.name}
+            fullWidth
+          />
+          <WYSIGEditor
+            editorState={editorState}
+            onEditorStateChange={onEditorStateChange}
+          />
+          <ColoredButton
+            type="submit"
+            style={{ marginTop: "20px" }}
+            colorVariety={ColorsEnum.OLIVE}
+          >
+            Submit
+          </ColoredButton>
+        </form>
       </Container>
     </>
   );

@@ -1,8 +1,8 @@
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { TopicContext } from "context/TopicContext";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
@@ -24,17 +24,7 @@ const styles = (theme) =>
       flexDirection: "column",
       alignItems: "center",
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
-    },
-    form: {
-      width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    actionButton: {
-      margin: theme.spacing(3, 0, 2),
-      padding: theme.spacing(6, 0, 6),
-      backgroundColor: ColorsEnum.OLIVE,
-      color: ColorsEnum.WHITE,
+      padding: "15px",
     },
   });
 
@@ -118,39 +108,31 @@ const AddTopicPage: React.FunctionComponent<
       </TopBar>
       <Container component="main" maxWidth="md">
         <div className={classes.paper}>
-          <>
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={formik.handleSubmit}
+          <form noValidate onSubmit={formik.handleSubmit}>
+            <TextInput
+              id="name"
+              margin="normal"
+              label="Name"
+              name="name"
+              value={formik.values.name}
+              autoFocus
+              onChange={formik.handleChange}
+              error={!!formik.status?.name}
+              helperText={formik.status?.name}
+              fullWidth
+            />
+            <WYSIGEditor
+              editorState={editorState}
+              onEditorStateChange={onEditorStateChange}
+            />
+            <ColoredButton
+              type="submit"
+              style={{ marginTop: "20px" }}
+              colorVariety={ColorsEnum.OLIVE}
             >
-              <TextField
-                id="name"
-                variant="outlined"
-                margin="normal"
-                label="Name"
-                name="name"
-                value={formik.values.name}
-                autoFocus
-                onChange={formik.handleChange}
-                error={!!formik.status?.name}
-                helperText={formik.status?.name}
-                fullWidth
-              />
-              <WYSIGEditor
-                editorState={editorState}
-                onEditorStateChange={onEditorStateChange}
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                style={{ marginTop: "20px", minWidth: "200px" }}
-                className={classes.actionButton}
-              >
-                Submit
-              </Button>
-            </form>
-          </>
+              Submit
+            </ColoredButton>
+          </form>
         </div>
       </Container>
     </>

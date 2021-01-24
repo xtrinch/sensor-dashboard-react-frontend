@@ -6,7 +6,6 @@ import {
   Select,
 } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
@@ -14,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { openConfirmation } from "context/ConfirmationContext";
 import { DisplayContext } from "context/DisplayContext";
@@ -143,14 +143,14 @@ const DisplayInfoPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="flex-end">
-        <Button
-          variant="contained"
-          className={classes.actionButton}
+        <ColoredButton
           startIcon={<DeleteIcon />}
           onClick={deleteWithConfirmation}
+          colorVariety={ColorsEnum.ERROR}
+          size="small"
         >
           Delete
-        </Button>
+        </ColoredButton>
       </TopBar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -296,16 +296,14 @@ const DisplayInfoPage: React.FunctionComponent<
                 </FormHelperText>
               )}
             </FormControl>
-            <Button
+            <ColoredButton
               type="submit"
               fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
               style={{ marginTop: "20px" }}
+              colorVariety={ColorsEnum.BLUE}
             >
               Update
-            </Button>
+            </ColoredButton>
           </form>
         </div>
       </Container>

@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,6 +9,7 @@ import {
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
@@ -28,11 +28,6 @@ const styles = (theme) =>
       textAlign: "center",
       marginTop: "30px",
     },
-    actionButton: {
-      backgroundColor: ColorsEnum.OLIVE,
-      color: ColorsEnum.WHITE,
-      width: "fit-content",
-    },
   });
 
 const DisplayListPage: React.FunctionComponent<
@@ -50,14 +45,14 @@ const DisplayListPage: React.FunctionComponent<
         <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
           My display devices
         </Typography>
-        <Button
-          variant="contained"
-          className={classes.actionButton}
+        <ColoredButton
           startIcon={<Plus />}
           onClick={() => history.push(DashboardRoutes.ADD_DISPLAY)}
+          size="small"
+          colorVariety={ColorsEnum.BLUE}
         >
           Add
-        </Button>
+        </ColoredButton>
       </TopBar>
       <Container component="main" maxWidth="sm" className={classes.root}>
         {displays.length !== 0 && (

@@ -78,6 +78,9 @@ const CategoryItem: React.FunctionComponent<
         </div>
         <div>{category.description}</div>
       </TableCell>
+      <TableCell style={{ width: "120px" }}>
+        {category.numTopics} topics
+      </TableCell>
       <TableCell style={{ width: "50px" }}>
         <div style={{ display: "flex", flexDirection: "row" }}>
           {user?.isAllowed([PermissionsEnum.Category__update]) && (

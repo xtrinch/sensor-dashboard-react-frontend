@@ -1,5 +1,4 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,6 +9,7 @@ import {
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Plus from "@material-ui/icons/Add";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
@@ -50,14 +50,14 @@ const ForwarderListPage: React.FunctionComponent<
         <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
           My forwarder devices
         </Typography>
-        <Button
-          variant="contained"
-          className={classes.actionButton}
+        <ColoredButton
           startIcon={<Plus />}
           onClick={() => history.push(DashboardRoutes.ADD_FORWARDER)}
+          size="small"
+          colorVariety={ColorsEnum.BLUE}
         >
           Add
-        </Button>
+        </ColoredButton>
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
         {forwarders.length !== 0 && (

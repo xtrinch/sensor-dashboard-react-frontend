@@ -6,19 +6,22 @@ import ColorsEnum from "types/ColorsEnum";
 const styles = (theme) =>
   createStyles({
     submit: {
-      margin: theme.spacing(3, 0, 2),
-      padding: theme.spacing(6, 0, 6),
+      //margin: theme.spacing(3, 0, 2),
+      padding: (props: IButtonProps) =>
+        props.size !== "small" ? "9px 16px" : "6px 16px",
       backgroundColor: (props: IButtonProps) => props.colorVariety,
       color: ColorsEnum.WHITE,
+      minWidth: (props: IButtonProps) =>
+        props.size !== "small" ? "150px" : undefined,
     },
   });
 
-interface IButtonProps {
+interface IButtonProps extends ButtonProps {
   colorVariety: string;
 }
 
 const ColoredButton: React.FunctionComponent<
-  WithStyles<typeof styles> & ButtonProps & IButtonProps
+  WithStyles<typeof styles> & IButtonProps
 > = (props) => {
   const { classes, colorVariety, children, ...rest } = props;
 

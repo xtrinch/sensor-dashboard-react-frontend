@@ -1,11 +1,11 @@
 import {
-  Button,
   createStyles,
   Dialog,
   Typography,
   WithStyles,
   withStyles,
 } from "@material-ui/core";
+import ColoredButton from "components/ColoredButton";
 import { clearError, ErrorContext } from "context/ErrorContext";
 import React, { useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
@@ -43,14 +43,13 @@ const ErrorBox: React.FunctionComponent<WithStyles<typeof styles>> = (
       <Typography variant="body2" style={{ marginBottom: "30px" }}>
         {errorContext.error?.statusCode} {errorContext.error?.message}
       </Typography>
-      <Button
-        variant="outlined"
+      <ColoredButton
         onClick={() => clearError(dispatchErrorContext)}
         fullWidth
-        color="primary"
+        colorVariety={ColorsEnum.BLUE}
       >
         Close
-      </Button>
+      </ColoredButton>
     </Dialog>
   );
 };

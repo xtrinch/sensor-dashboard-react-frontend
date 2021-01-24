@@ -153,6 +153,14 @@ const theme = createMuiTheme({
       },
     },
   },
+  props: {
+    MuiTextField: {
+      variant: "outlined",
+      InputLabelProps: {
+        shrink: true,
+      },
+    },
+  },
 });
 
 export default theme;

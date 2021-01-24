@@ -1,5 +1,4 @@
 import {
-  Button,
   createStyles,
   Dialog,
   Grid,
@@ -7,6 +6,7 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core";
+import ColoredButton from "components/ColoredButton";
 import {
   close,
   confirm,
@@ -50,24 +50,23 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (
       </Typography>
       <Grid container justify="center" spacing={10}>
         <Grid item>
-          <Button
+          <ColoredButton
             onClick={() => close(confirmationContext)}
             fullWidth
-            variant="outlined"
-            color="secondary"
+            size="small"
+            colorVariety={ColorsEnum.GRAY}
           >
             NO
-          </Button>
+          </ColoredButton>
         </Grid>
         <Grid item>
-          <Button
-            variant="outlined"
+          <ColoredButton
             onClick={() => confirm(confirmationContext)}
             fullWidth
-            color="primary"
+            colorVariety={ColorsEnum.BLUE}
           >
             YES
-          </Button>
+          </ColoredButton>
         </Grid>
       </Grid>
     </Dialog>

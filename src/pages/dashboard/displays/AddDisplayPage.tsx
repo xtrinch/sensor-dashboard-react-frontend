@@ -1,12 +1,12 @@
 import { Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { DisplayContext } from "context/DisplayContext";
 import { SensorContext } from "context/SensorContext";
@@ -205,16 +205,14 @@ const AddDisplayPage: React.FunctionComponent<
                     />
                   )}
                 />
-                <Button
+                <ColoredButton
                   type="submit"
                   fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
                   style={{ marginTop: "20px" }}
+                  colorVariety={ColorsEnum.BLUE}
                 >
-                  Add
-                </Button>
+                  Submit
+                </ColoredButton>
               </form>
             </>
           )}

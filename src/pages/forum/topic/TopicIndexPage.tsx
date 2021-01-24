@@ -1,5 +1,6 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { CategoryContext } from "context/CategoryContext";
+import { CommentContextProvider } from "context/CommentContext";
 import { TopicContextProvider } from "context/TopicContext";
 import { ForumRoutes } from "pages/forum/ForumRoutes";
 import AddTopicPage from "pages/forum/topic/AddTopicPage";
@@ -32,9 +33,11 @@ const ForumIndexPage: React.FunctionComponent<
       <Route exact path={ForumRoutes.TOPIC_LIST}>
         <TopicListPage />
       </Route>
-      <Route exact path={ForumRoutes.TOPIC}>
-        <TopicPage />
-      </Route>
+      <CommentContextProvider category={category}>
+        <Route exact path={ForumRoutes.TOPIC}>
+          <TopicPage />
+        </Route>
+      </CommentContextProvider>
       <Route exact path={ForumRoutes.ADD_TOPIC}>
         <AddTopicPage />
       </Route>

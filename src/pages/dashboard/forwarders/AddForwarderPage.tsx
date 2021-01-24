@@ -1,12 +1,12 @@
 import { Grid, MenuItem } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { ForwarderContext } from "context/ForwarderContext";
 import { getForwarderRoute } from "pages/dashboard/DashboardRoutes";
@@ -136,16 +136,14 @@ const AddForwarderPage: React.FunctionComponent<
                     </MenuItem>
                   ))}
                 </TextField>
-                <Button
+                <ColoredButton
                   type="submit"
                   fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
                   style={{ marginTop: "20px" }}
+                  colorVariety={ColorsEnum.BLUE}
                 >
-                  Add
-                </Button>
+                  Submit
+                </ColoredButton>
               </form>
             </>
           )}

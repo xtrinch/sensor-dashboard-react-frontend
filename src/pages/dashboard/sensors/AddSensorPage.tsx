@@ -1,6 +1,5 @@
 import { Checkbox, FormControlLabel, Grid } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
@@ -8,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ColoredButton from "components/ColoredButton";
 import TopBar from "components/TopBar";
 import { SensorContext } from "context/SensorContext";
 import { getSensorRoute } from "pages/dashboard/DashboardRoutes";
@@ -240,16 +240,15 @@ const AddSensorPage: React.FunctionComponent<
                   }
                   label="Private"
                 />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  style={{ marginTop: "20px" }}
-                >
-                  Add
-                </Button>
+                <div style={{ textAlign: "center" }}>
+                  <ColoredButton
+                    type="submit"
+                    style={{ marginTop: "20px" }}
+                    colorVariety={ColorsEnum.BLUE}
+                  >
+                    Submit
+                  </ColoredButton>
+                </div>
               </form>
             </>
           )}

@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,6 +9,7 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ColoredButton from "components/ColoredButton";
 import config from "config/Config";
 import { AccountContext } from "context/AccountContext";
 import { DisplayContext } from "context/DisplayContext";
@@ -153,15 +153,14 @@ const LoginPage: React.FunctionComponent<
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button
+          <ColoredButton
             type="submit"
             fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            style={{ marginTop: "20px" }}
+            colorVariety={ColorsEnum.BLUE}
           >
-            Sign In
-          </Button>
+            Sign in
+          </ColoredButton>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
