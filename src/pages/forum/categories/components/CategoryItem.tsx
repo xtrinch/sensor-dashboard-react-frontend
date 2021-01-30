@@ -6,7 +6,7 @@ import {
   WithStyles,
   withStyles,
 } from "@material-ui/core/styles";
-import { Lock, Settings } from "@material-ui/icons";
+import { ArrowDownward, ArrowUpward, Lock, Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { AccountContext } from "context/AccountContext";
 import { CategoryContext } from "context/CategoryContext";
@@ -55,7 +55,9 @@ const CategoryItem: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}> & CategoryItemProps
 > = (props) => {
   const { category, classes, history } = props;
-  const { deleteCategory } = useContext(CategoryContext);
+  const { deleteCategory, decreaseInSequence, increaseInSequence } = useContext(
+    CategoryContext
+  );
   const {
     state: { user },
   } = useContext(AccountContext);
@@ -134,7 +136,7 @@ const CategoryItem: React.FunctionComponent<
           </>
         )}
       </TableCell>
-      <TableCell style={{ width: "50px", padding: "0px" }}>
+      <TableCell style={{ width: "25px", padding: "0px" }}>
         <div style={{ display: "flex", flexDirection: "column" }}>
           {user?.isAllowed([PermissionsEnum.Category__update]) && (
             <IconButton
@@ -152,6 +154,28 @@ const CategoryItem: React.FunctionComponent<
               onClick={() => deleteWithConfirmation(category)}
             >
               <DeleteIcon />
+            </IconButton>
+          )}
+        </div>
+      </TableCell>
+      <TableCell style={{ width: "25px", padding: "0px" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          {user?.isAllowed([PermissionsEnum.Category__update]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => decreaseInSequence(category.id)}
+            >
+              <ArrowUpward />
+            </IconButton>
+          )}
+          {user?.isAllowed([PermissionsEnum.Category__delete]) && (
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => increaseInSequence(category.id)}
+            >
+              <ArrowDownward />
             </IconButton>
           )}
         </div>

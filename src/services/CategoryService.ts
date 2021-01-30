@@ -72,6 +72,38 @@ export default class CategoryService {
     return s;
   };
 
+  public static increaseInSequence = async (
+    id: CategoryId
+  ): Promise<Category> => {
+    const url = getUrl(`/categories/${id}/increaseInSequence`);
+
+    const resp = await fetch(url, {
+      method: "PUT",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new Category(result);
+    return s;
+  };
+
+  public static decreaseInSequence = async (
+    id: CategoryId
+  ): Promise<Category> => {
+    const url = getUrl(`/categories/${id}/decreaseInSequence`);
+
+    const resp = await fetch(url, {
+      method: "PUT",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new Category(result);
+    return s;
+  };
+
   public static deleteCategory = async (
     id: CategoryId
   ): Promise<{ success: string }> => {

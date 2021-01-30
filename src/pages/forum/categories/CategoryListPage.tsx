@@ -82,6 +82,7 @@ const CategoryListPage: React.FunctionComponent<
                   Last comment
                 </TableCell>
                 <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

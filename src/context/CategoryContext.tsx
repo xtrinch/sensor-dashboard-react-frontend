@@ -12,6 +12,8 @@ const CategoryContext = createContext<{
   updateCategory?: (id: CategoryId, category: Category) => Promise<Category>;
   addCategory?: (category: Category) => Promise<Category>;
   deleteCategory?: (id: CategoryId) => Promise<boolean>;
+  increaseInSequence?: (id: CategoryId) => Promise<Category>;
+  decreaseInSequence?: (id: CategoryId) => Promise<Category>;
   reload?: () => Promise<void>;
 }>({});
 
@@ -38,6 +40,36 @@ function CategoryContextProvider(props) {
     const categoryIndex = categories.findIndex((s) => s.id === id);
     categories[categoryIndex] = s;
     setState({ ...state, categories: [...categories] });
+
+    addToast(
+      new Toast({
+        message: "Successfully updated the category",
+        type: "success",
+      })
+    );
+
+    return s;
+  };
+
+  const increaseInSequence = async (id: CategoryId): Promise<Category> => {
+    const s = await CategoryService.increaseInSequence(id);
+
+    reload();
+
+    addToast(
+      new Toast({
+        message: "Successfully updated the category",
+        type: "success",
+      })
+    );
+
+    return s;
+  };
+
+  const decreaseInSequence = async (id: CategoryId): Promise<Category> => {
+    const s = await CategoryService.decreaseInSequence(id);
+
+    reload();
 
     addToast(
       new Toast({
@@ -87,7 +119,15 @@ function CategoryContextProvider(props) {
 
   return (
     <CategoryContext.Provider
-      value={{ state, updateCategory, deleteCategory, addCategory, reload }}
+      value={{
+        state,
+        updateCategory,
+        deleteCategory,
+        addCategory,
+        reload,
+        increaseInSequence,
+        decreaseInSequence,
+      }}
     >
       {props.children}
     </CategoryContext.Provider>
