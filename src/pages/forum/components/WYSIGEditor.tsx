@@ -36,7 +36,8 @@ const styles = (theme) =>
   });
 
 interface WYSIGEditorProps {
-  editorState: EditorState;
+  editorState?: EditorState;
+  defaultEditorState?: EditorState;
   onEditorStateChange?: (change: EditorState) => void;
   readOnly?: boolean;
   style?: CSSProperties;
@@ -45,11 +46,18 @@ interface WYSIGEditorProps {
 const WYSIGEditor: React.FunctionComponent<
   WithStyles<typeof styles> & WYSIGEditorProps
 > = (props) => {
-  const { classes, editorState, onEditorStateChange, readOnly } = props;
+  const {
+    classes,
+    editorState,
+    onEditorStateChange,
+    readOnly,
+    defaultEditorState,
+  } = props;
 
   return (
     <Editor
       editorState={editorState}
+      defaultEditorState={defaultEditorState}
       toolbarClassName={classes.toolbar}
       editorClassName={classes.editor}
       onEditorStateChange={onEditorStateChange}

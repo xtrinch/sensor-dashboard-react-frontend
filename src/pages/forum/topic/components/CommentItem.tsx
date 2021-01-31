@@ -16,7 +16,7 @@ import { convertFromRaw, EditorState } from "draft-js";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getUserRoute } from "pages/users/UserRoutes";
 // import { getCommentEditRoute } from "pages/forum/ForumRoutes";
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Comment from "types/Comment";
@@ -51,7 +51,7 @@ const CommentItem: React.FunctionComponent<
     >
       <div
         style={{
-          minWidth: "150px",
+          minWidth: "200px",
           padding: "15px",
           textAlign: "left",
           borderRight: `1px solid ${ColorsEnum.BGDARK}`,
@@ -116,4 +116,4 @@ const CommentItem: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(CommentItem));
+export default memo(withRouter(withStyles(styles)(CommentItem)));

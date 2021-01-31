@@ -80,6 +80,7 @@ const TopicItem: React.FunctionComponent<
           </div>
         </div>
       </TableCell>
+      <TableCell>{topic.numComments}</TableCell>
       <TableCell style={{ padding: "0px" }}>
         {topic.lastComment && (
           <>

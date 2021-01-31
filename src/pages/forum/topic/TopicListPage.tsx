@@ -85,6 +85,7 @@ const TopicListPage: React.FunctionComponent<
             <TableHead>
               <TableRow>
                 <TableCell>Topic name</TableCell>
+                <TableCell>Comments</TableCell>
                 <TableCell style={{ paddingLeft: "0px" }}>
                   Last comment
                 </TableCell>

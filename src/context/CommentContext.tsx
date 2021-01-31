@@ -12,10 +12,13 @@ const CommentContext = createContext<{
   state?: {
     commentsLoaded: boolean;
     comments: Comment[];
+    page: number;
+    totalPages: number;
   };
   updateComment?: (id: CommentId, comment: Comment) => Promise<Comment>;
   addComment?: (comment: Comment) => Promise<Comment>;
   deleteComment?: (id: CommentId) => Promise<boolean>;
+  listComments?: (page: number) => Promise<void>;
 }>({});
 
 function CommentContextProvider(props: {
@@ -30,16 +33,31 @@ function CommentContextProvider(props: {
   let [state, setState] = useState({
     comments: [],
     commentsLoaded: false,
+    page: 1,
+    totalPages: 0,
+    limit: 10,
   });
 
   const reload = async () => {
+    listComments(1);
+  };
+
+  const listComments = async (page: number) => {
     const resp = await CommentService.listComments({
       categoryId: categoryId,
       topicId: topicId,
+      page: page,
+      limit: state.limit,
     });
     const commentData = resp.items;
 
-    setState({ ...state, comments: commentData, commentsLoaded: true });
+    setState({
+      ...state,
+      comments: commentData,
+      commentsLoaded: true,
+      page: resp.meta.currentPage,
+      totalPages: resp.meta.totalPages,
+    });
   };
 
   const updateComment = async (
@@ -82,7 +100,8 @@ function CommentContextProvider(props: {
 
   const addComment = async (comment: Partial<Comment>): Promise<Comment> => {
     const s = await CommentService.addComment(comment);
-    setState({ ...state, comments: [...state.comments, s] });
+    await listComments(state.totalPages || 1);
+    // setState({ ...state, comments: [...state.comments, s], page: state.totalPages || 1 });
 
     addToast(
       new Toast({ message: "Successfully added a comment", type: "success" })
@@ -102,7 +121,7 @@ function CommentContextProvider(props: {
 
   return (
     <CommentContext.Provider
-      value={{ state, updateComment, deleteComment, addComment }}
+      value={{ state, updateComment, deleteComment, addComment, listComments }}
     >
       {props.children}
     </CommentContext.Provider>

@@ -1,6 +1,7 @@
 import { Container, IconButton, Typography } from "@material-ui/core";
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import { Delete, Settings } from "@material-ui/icons";
+import { Pagination } from "@material-ui/lab";
 import ColoredButton from "components/ColoredButton";
 import Link from "components/Link";
 import TextInput from "components/TextInput";
@@ -32,13 +33,19 @@ const styles = (theme) =>
       paddingLeft: "0px",
       paddingRight: "0px",
       textAlign: "center",
-      marginTop: "30px",
+      marginTop: "10px",
       marginBottom: "30px",
     },
     commentForm: {
       padding: "15px",
       textAlign: "left",
       borderTop: `1px solid ${ColorsEnum.BGDARK}`,
+    },
+    pagination: {
+      marginTop: "30px",
+      display: "flex",
+      alignItems: "flex-end",
+      justifyContent: "flex-end",
     },
   });
 
@@ -56,7 +63,8 @@ const TopicPage: React.FunctionComponent<
 
   const {
     addComment,
-    state: { comments },
+    state: { comments, totalPages, page },
+    listComments,
   } = useContext(CommentContext);
 
   const {
@@ -139,11 +147,19 @@ const TopicPage: React.FunctionComponent<
           {topic.name}
         </Typography>
       </TopBar>
-      <Container component="main" maxWidth="md" className={classes.root}>
-        <div style={{ display: "flex" }}>
+      <Container component="main" maxWidth="md">
+        <div className={classes.pagination}>
+          <Pagination
+            count={totalPages || 1}
+            page={page}
+            shape="rounded"
+            onChange={(e, p) => listComments(p)}
+          />
+        </div>
+        <div style={{ display: "flex" }} className={classes.root}>
           <div
             style={{
-              minWidth: "150px",
+              minWidth: "200px",
               padding: "15px",
               textAlign: "left",
               borderRight: `1px solid ${ColorsEnum.BGDARK}`,
@@ -203,37 +219,41 @@ const TopicPage: React.FunctionComponent<
             />
           </div>
         </div>
-        {comments.map((comment, index) => (
-          <CommentItem comment={comment} key={index} />
-        ))}
-        <form
-          noValidate
-          onSubmit={formik.handleSubmit}
-          className={classes.commentForm}
-        >
-          <Typography variant="h6">Leave a comment</Typography>
-          <TextInput
-            id="name"
-            margin="normal"
-            name="name"
-            value={formik.values?.name || ""}
-            onChange={formik.handleChange}
-            error={!!formik.status?.name}
-            helperText={formik.status?.name}
-            fullWidth
-          />
-          <WYSIGEditor
-            editorState={editorState}
-            onEditorStateChange={onEditorStateChange}
-          />
-          <ColoredButton
-            type="submit"
-            style={{ marginTop: "20px" }}
-            colorVariety={ColorsEnum.OLIVE}
+        <div className={classes.root}>
+          {comments.map((comment, index) => (
+            <CommentItem comment={comment} key={index} />
+          ))}
+        </div>
+        <div className={classes.root}>
+          <form
+            noValidate
+            onSubmit={formik.handleSubmit}
+            className={classes.commentForm}
           >
-            Submit
-          </ColoredButton>
-        </form>
+            <Typography variant="h6">Leave a comment</Typography>
+            <TextInput
+              id="name"
+              margin="normal"
+              name="name"
+              value={formik.values?.name || ""}
+              onChange={formik.handleChange}
+              error={!!formik.status?.name}
+              helperText={formik.status?.name}
+              fullWidth
+            />
+            <WYSIGEditor
+              editorState={editorState}
+              onEditorStateChange={onEditorStateChange}
+            />
+            <ColoredButton
+              type="submit"
+              style={{ marginTop: "20px" }}
+              colorVariety={ColorsEnum.OLIVE}
+            >
+              Submit
+            </ColoredButton>
+          </form>
+        </div>
       </Container>
     </>
   );

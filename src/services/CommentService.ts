@@ -6,6 +6,8 @@ export default class CommentService {
   public static listComments = async (where: {
     categoryId: CommentId;
     topicId: TopicId;
+    page: number;
+    limit: number;
   }) => {
     const url = getUrl("/comments", where);
 

@@ -59,10 +59,7 @@ interface SideMenuProps {}
 const SideMenu: React.FunctionComponent<
   SideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
-  const {
-    history,
-    location: { pathname },
-  } = props;
+  const { history } = props;
   const {
     logout,
     state: { loginState, user },
@@ -112,7 +109,6 @@ const SideMenu: React.FunctionComponent<
         </Grid>
         <MainMenu />
       </ListSubheader>
-      {/* {pathname.indexOf(DashboardRoutes.DASHBOARD) >= 0 && <SensorsSideMenu />} */}
     </div>
   );
 };
