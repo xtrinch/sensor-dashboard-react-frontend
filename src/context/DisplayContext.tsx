@@ -13,7 +13,7 @@ const DisplayContext = createContext<{
   updateDisplay?: (id: DisplayId, display: Display) => Promise<Display>;
   deleteDisplay?: (id: DisplayId) => Promise<boolean>;
   addDisplay?: (display: Partial<Display>) => Promise<Display>;
-  reload?: () => Promise<void>;
+  reloadDisplays?: (loginState: string) => Promise<void>;
 }>({});
 
 function DisplayContextProvider(props) {
@@ -25,7 +25,7 @@ function DisplayContextProvider(props) {
     state: { loginState },
   } = useContext(AccountContext);
 
-  const reload = async () => {
+  const reloadDisplays = async (loginState: string) => {
     if (loginState === "LOGGED_OUT") {
       return;
     }
@@ -85,13 +85,19 @@ function DisplayContextProvider(props) {
 
   useEffect(() => {
     if (!state.displaysLoaded) {
-      reload();
+      reloadDisplays(loginState);
     }
   }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <DisplayContext.Provider
-      value={{ state, updateDisplay, deleteDisplay, addDisplay, reload }}
+      value={{
+        state,
+        updateDisplay,
+        deleteDisplay,
+        addDisplay,
+        reloadDisplays,
+      }}
     >
       {props.children}
     </DisplayContext.Provider>

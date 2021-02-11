@@ -52,7 +52,7 @@ const LoginPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { classes, history } = props;
-  const { reload } = useContext(DisplayContext);
+  const { reloadDisplays } = useContext(DisplayContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
@@ -70,7 +70,7 @@ const LoginPage: React.FunctionComponent<
 
   const uponLoginSuccess = async (user: User) => {
     await reloadSensors("LOGGED_IN", user);
-    await reload();
+    await reloadDisplays("LOGGED_IN");
     history.push("/");
   };
 
