@@ -52,10 +52,15 @@ const AddRadioPage: React.FunctionComponent<
 
   const submitForm = async (values: Radio, { setStatus }) => {
     try {
+      let newRadio;
       if (isEdit()) {
-        await updateRadio(radio.id, values);
+        newRadio = await updateRadio(radio.id, values);
       } else {
-        await addRadio(values);
+        newRadio = await addRadio(values);
+      }
+
+      if (newRadio && !isEdit()) {
+        history.push(DashboardRoutes.RADIO_LIST);
       }
     } catch (e) {
       console.log(e);
@@ -91,6 +96,28 @@ const AddRadioPage: React.FunctionComponent<
     openConfirmation(onConfirm, null, "Are you sure you want to delete radio?");
   };
 
+  const requestConfigWithConfirmation = () => {
+    const onConfirm = async () => {
+      await readConfig(radio.id);
+    };
+    openConfirmation(
+      onConfirm,
+      null,
+      "Are you sure you want to request configuration from radio? Existing cloud configuration will be overwritten."
+    );
+  };
+
+  const sendConfigWithConfirmation = () => {
+    const onConfirm = async () => {
+      await sendConfig(radio.id);
+    };
+    openConfirmation(
+      onConfirm,
+      null,
+      "Are you sure you want to send config to the radio?"
+    );
+  };
+
   return (
     <>
       <TopBar
@@ -106,7 +133,7 @@ const AddRadioPage: React.FunctionComponent<
           <>
             <ColoredButton
               startIcon={<Delete />}
-              onClick={() => readConfig(radio.id)}
+              onClick={requestConfigWithConfirmation}
               colorVariety={ColorsEnum.BLUE}
               size="small"
               style={{ marginRight: "20px" }}
@@ -115,7 +142,7 @@ const AddRadioPage: React.FunctionComponent<
             </ColoredButton>
             <ColoredButton
               startIcon={<Delete />}
-              onClick={() => sendConfig(radio.id)}
+              onClick={sendConfigWithConfirmation}
               colorVariety={ColorsEnum.BLUE}
               size="small"
               style={{ marginRight: "20px" }}
