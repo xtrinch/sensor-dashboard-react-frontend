@@ -10,7 +10,6 @@ import { AccountContext } from "context/AccountContext";
 import { AppContext } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
 import { uniq } from "lodash";
-import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
 import SensorCanvas from "pages/dashboard/sensors/components/SensorCanvas";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import MeasurementService from "services/MeasurementService";
@@ -27,7 +26,7 @@ const styles = (theme) =>
       gridGap: "0px",
       padding: "0px",
       gridAutoRows: "calc(50vh - 40px)",
-      width: "calc(100% - 270px)",
+      width: "100%",
       boxSizing: "border-box",
       overflow: "auto",
       [theme.breakpoints.up("md")]: {
@@ -100,17 +99,6 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <div style={{ width: "100%" }}>
       <TopMenu />
-      <SensorsSideMenu
-        style={{
-          position: "fixed",
-          right: "0",
-          backgroundColor: "rgb(58,65,73)",
-          zIndex: 1000,
-          width: "270px",
-          height: "calc(100vh - 65px)",
-          overflow: "auto",
-        }}
-      />
       {!measurements && (
         <Box style={{ textAlign: "center", marginTop: "50px" }}>
           <CircularProgress></CircularProgress>

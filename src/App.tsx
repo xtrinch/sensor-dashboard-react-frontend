@@ -15,6 +15,7 @@ import { ConfirmationContextProvider } from "context/ConfirmationContext";
 import { DisplayContextProvider } from "context/DisplayContext";
 import { ErrorContextProvider } from "context/ErrorContext";
 import { ForwarderContextProvider } from "context/ForwarderContext";
+import { RadioContextProvider } from "context/RadioContext";
 import { SensorContextProvider } from "context/SensorContext";
 import { ToastContextProvider } from "context/ToastContext";
 import { UserContextProvider } from "context/UserContext";
@@ -70,40 +71,44 @@ class App extends React.Component<WithStyles<typeof styles>> {
                   <DisplayContextProvider>
                     <UserContextProvider>
                       <ForwarderContextProvider>
-                        <ToastContextProvider>
-                          <ErrorContextProvider>
-                            <Wrapper>
-                              <ToastBox />
-                              <ConfirmationBox />
-                              <ErrorBox />
-                              <Grid container className={classes.app}>
-                                <Grid item>
-                                  <SideMenuWrapper />
+                        <RadioContextProvider>
+                          <ToastContextProvider>
+                            <ErrorContextProvider>
+                              <Wrapper>
+                                <ToastBox />
+                                <ConfirmationBox />
+                                <ErrorBox />
+                                <Grid container className={classes.app}>
+                                  <Grid item>
+                                    <SideMenuWrapper />
+                                  </Grid>
+                                  <Grid item style={{ flex: "1" }}>
+                                    <Route exact path="/">
+                                      <Redirect
+                                        to={DashboardRoutes.DASHBOARD}
+                                      />
+                                    </Route>
+                                    <Route path={DashboardRoutes.DASHBOARD}>
+                                      <DashboardIndexPage />
+                                    </Route>
+                                    <Route path={ForumRoutes.FORUM}>
+                                      <ForumIndexPage />
+                                    </Route>
+                                    <Route path={UserRoutes.USERS}>
+                                      <UserIndexPage />
+                                    </Route>
+                                    <Route exact path={Routes.LOGIN}>
+                                      <LoginPage />
+                                    </Route>
+                                    <Route exact path={Routes.REGISTER}>
+                                      <RegisterPage />
+                                    </Route>
+                                  </Grid>
                                 </Grid>
-                                <Grid item style={{ flex: "1" }}>
-                                  <Route exact path="/">
-                                    <Redirect to={DashboardRoutes.DASHBOARD} />
-                                  </Route>
-                                  <Route path={DashboardRoutes.DASHBOARD}>
-                                    <DashboardIndexPage />
-                                  </Route>
-                                  <Route path={ForumRoutes.FORUM}>
-                                    <ForumIndexPage />
-                                  </Route>
-                                  <Route path={UserRoutes.USERS}>
-                                    <UserIndexPage />
-                                  </Route>
-                                  <Route exact path={Routes.LOGIN}>
-                                    <LoginPage />
-                                  </Route>
-                                  <Route exact path={Routes.REGISTER}>
-                                    <RegisterPage />
-                                  </Route>
-                                </Grid>
-                              </Grid>
-                            </Wrapper>
-                          </ErrorContextProvider>
-                        </ToastContextProvider>
+                              </Wrapper>
+                            </ErrorContextProvider>
+                          </ToastContextProvider>
+                        </RadioContextProvider>
                       </ForwarderContextProvider>
                     </UserContextProvider>
                   </DisplayContextProvider>

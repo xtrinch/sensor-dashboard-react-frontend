@@ -30,7 +30,7 @@ interface SideMenuItemProps {
   item: IotDeviceInterface;
   visibility?: boolean;
   expandable?: boolean;
-  type: "sensor" | "display" | "forwarder";
+  type: "sensor" | "display" | "forwarder" | "radio";
   context?: Context<any>;
 }
 

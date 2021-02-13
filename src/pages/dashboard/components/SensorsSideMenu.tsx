@@ -14,6 +14,7 @@ import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { DisplayContext } from "context/DisplayContext";
 import { ForwarderContext } from "context/ForwarderContext";
+import { RadioContext } from "context/RadioContext";
 import { SensorContext } from "context/SensorContext";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext } from "react";
@@ -77,6 +78,9 @@ const SensorsSideMenu: React.FunctionComponent<
     state: { displays },
   } = useContext(DisplayContext);
   const {
+    state: { radios },
+  } = useContext(RadioContext);
+  const {
     state: { forwarders },
   } = useContext(ForwarderContext);
   const {
@@ -91,6 +95,11 @@ const SensorsSideMenu: React.FunctionComponent<
   const goToForwarders = () => {
     drawerToggle();
     history.push(DashboardRoutes.FORWARDER_LIST);
+  };
+
+  const goToRadios = () => {
+    drawerToggle();
+    history.push(DashboardRoutes.RADIO_LIST);
   };
 
   const { classes } = props;
@@ -159,6 +168,37 @@ const SensorsSideMenu: React.FunctionComponent<
                 key={forwarder.id}
                 type="forwarder"
               />
+            ))}
+          </List>
+          <List disablePadding>
+            <ListItem
+              button
+              className={classes.listTitle}
+              alignItems="center"
+              onClick={goToRadios}
+            >
+              <Grid container alignItems="center" justify="space-between">
+                <Grid item>My radios</Grid>
+                <Grid item>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Link to={DashboardRoutes.ADD_RADIO} onClick={drawerToggle}>
+                      <Fab
+                        color="primary"
+                        size="small"
+                        className={classes.sensorFab}
+                      >
+                        <PlusIcon />
+                      </Fab>
+                    </Link>
+                  </div>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </List>
+          <Divider />
+          <List disablePadding>
+            {radios.map((forwarder) => (
+              <SideMenuItem item={forwarder} key={forwarder.id} type="radio" />
             ))}
           </List>
           <List disablePadding>
