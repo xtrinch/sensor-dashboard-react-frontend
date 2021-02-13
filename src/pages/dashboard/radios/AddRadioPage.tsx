@@ -13,6 +13,7 @@ import { useFormik } from "formik";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ReactJson, { InteractionProps } from "react-json-view";
 import { RouteComponentProps, withRouter } from "react-router";
 import RadioService from "services/RadioService";
 import BoardTypeEnum from "types/BoardTypeEnum";
@@ -216,7 +217,7 @@ const AddRadioPage: React.FunctionComponent<
               error={!!formik.status?.boardType}
               helperText={formik.status?.boardType}
             />
-            <TextInput
+            {/* <TextInput
               id="config"
               label="Config"
               multiline={true}
@@ -226,10 +227,26 @@ const AddRadioPage: React.FunctionComponent<
               error={!!formik.status?.config}
               helperText={formik.status?.config}
               fullWidth
-            />
-            {/* {formik.values.config && (
-            <ReactJson src={JSON.parse(formik.values.config)} onEdit={(edit: InteractionProps) => {formik.setFieldValue("config", JSON.stringify(edit.new_value))}} />
-            )} */}
+            /> */}
+            <Typography variant="body2">Config</Typography>
+            {formik.values.config && (
+              <ReactJson
+                src={formik.values.config}
+                theme="monokai"
+                onEdit={(edit: InteractionProps) => {
+                  formik.setFieldValue("config", edit.updated_src);
+                }}
+                onAdd={(edit: InteractionProps) => {
+                  formik.setFieldValue("config", edit.updated_src);
+                }}
+                enableClipboard={false}
+                collapsed={false}
+                displayObjectSize={false}
+                displayDataTypes={false}
+                defaultValue={""}
+                style={{ marginTop: "5px", padding: "10px" }}
+              />
+            )}
             <ColoredButton
               type="submit"
               style={{ marginTop: "20px" }}

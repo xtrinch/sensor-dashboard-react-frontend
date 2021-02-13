@@ -34,6 +34,9 @@ const theme = createMuiTheme({
             textDecoration: "underline",
           },
         },
+        body: {
+          fontSize: "12px",
+        },
       },
     },
     MuiTypography: {

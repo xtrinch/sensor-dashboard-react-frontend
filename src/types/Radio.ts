@@ -22,7 +22,7 @@ class Radio extends AbstractEntity implements IotDeviceInterface {
     this.visible = s?.visible;
     this.expanded = s?.expanded;
     this.private = s?.private;
-    this.config = s?.config;
+    this.config = s?.config || { presets: [] };
   }
 
   public id: RadioId;
@@ -49,7 +49,7 @@ class Radio extends AbstractEntity implements IotDeviceInterface {
 
   public expanded: boolean;
 
-  public config: string;
+  public config: any;
 }
 
 export default Radio;
