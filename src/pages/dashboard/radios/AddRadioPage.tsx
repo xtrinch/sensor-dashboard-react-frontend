@@ -110,6 +110,7 @@ const AddRadioPage: React.FunctionComponent<
 
   const sendConfigWithConfirmation = () => {
     const onConfirm = async () => {
+      await updateRadio(radio.id, formik.values);
       await sendConfig(radio.id);
     };
     openConfirmation(
@@ -237,6 +238,9 @@ const AddRadioPage: React.FunctionComponent<
                   formik.setFieldValue("config", edit.updated_src);
                 }}
                 onAdd={(edit: InteractionProps) => {
+                  formik.setFieldValue("config", edit.updated_src);
+                }}
+                onDelete={(edit: InteractionProps) => {
                   formik.setFieldValue("config", edit.updated_src);
                 }}
                 enableClipboard={false}
