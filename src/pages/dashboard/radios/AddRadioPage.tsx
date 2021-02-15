@@ -12,7 +12,6 @@ import { format } from "date-fns";
 import { useFormik } from "formik";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import React, { useContext, useEffect, useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import ReactJson, { InteractionProps } from "react-json-view";
 import { RouteComponentProps, withRouter } from "react-router";
 import RadioService from "services/RadioService";

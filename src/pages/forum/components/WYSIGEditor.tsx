@@ -2,7 +2,6 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { EditorState } from "draft-js";
 import React from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import * as Showdown from "showdown";

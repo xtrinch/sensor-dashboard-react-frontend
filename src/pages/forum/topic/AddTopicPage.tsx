@@ -9,7 +9,6 @@ import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicListRoute } from "pages/forum/ForumRoutes";
 import React, { useContext, useEffect, useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { RouteComponentProps, withRouter } from "react-router";
 import TopicService from "services/TopicService";
 import ColorsEnum from "types/ColorsEnum";
