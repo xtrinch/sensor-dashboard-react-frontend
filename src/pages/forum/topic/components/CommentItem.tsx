@@ -12,7 +12,6 @@ import { AccountContext } from "context/AccountContext";
 import { CommentContext } from "context/CommentContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { format } from "date-fns";
-import { convertFromRaw, EditorState } from "draft-js";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getUserRoute } from "pages/users/UserRoutes";
 // import { getCommentEditRoute } from "pages/forum/ForumRoutes";
@@ -99,18 +98,13 @@ const CommentItem: React.FunctionComponent<
           )}
         </div>
       </div>
-      <div>
+      <div style={{ flex: "1" }}>
         <div style={{ textAlign: "left", padding: "15px 15px 5px 15px" }}>
           <Typography variant="body1" style={{ textDecoration: "underline" }}>
             {comment.name}
           </Typography>
         </div>
-        <WYSIGEditor
-          editorState={EditorState.createWithContent(
-            convertFromRaw(comment?.description)
-          )}
-          readOnly
-        />
+        <WYSIGEditor editorState={comment?.description} readOnly />
       </div>
     </div>
   );

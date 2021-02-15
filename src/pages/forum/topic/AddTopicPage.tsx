@@ -5,7 +5,6 @@ import ColoredButton from "components/ColoredButton";
 import TextInput from "components/TextInput";
 import TopBar from "components/TopBar";
 import { TopicContext } from "context/TopicContext";
-import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicListRoute } from "pages/forum/ForumRoutes";
@@ -41,10 +40,8 @@ const AddTopicPage: React.FunctionComponent<
   const [topic, setTopic] = useState(
     () => new Topic({ categoryId: params.id })
   );
+
   const { addTopic, updateTopic } = useContext(TopicContext);
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
 
   const submitForm = async (values: Topic, { setStatus }) => {
     try {
@@ -69,14 +66,6 @@ const AddTopicPage: React.FunctionComponent<
     enableReinitialize: true,
   });
 
-  const onEditorStateChange = (change: EditorState) => {
-    setEditorState(change);
-    formik.setFieldValue(
-      "description",
-      convertToRaw(change.getCurrentContent())
-    );
-  };
-
   const isEdit = () => {
     return !!params.topicId;
   };
@@ -86,9 +75,6 @@ const AddTopicPage: React.FunctionComponent<
       if (isEdit()) {
         const s = await TopicService.getTopic(parseInt(params.topicId));
         setTopic(s);
-        setEditorState(
-          EditorState.createWithContent(convertFromRaw(s.description))
-        );
       }
     };
     setData();
@@ -122,8 +108,10 @@ const AddTopicPage: React.FunctionComponent<
               fullWidth
             />
             <WYSIGEditor
-              editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
+              editorState={formik.values.description}
+              onEditorStateChange={(value) =>
+                formik.setFieldValue("description", value)
+              }
             />
             <ColoredButton
               type="submit"

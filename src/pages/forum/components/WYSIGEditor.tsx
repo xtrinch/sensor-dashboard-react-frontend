@@ -2,17 +2,36 @@ import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import { EditorState } from "draft-js";
 import React from "react";
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ReactMde from "react-mde";
+import "react-mde/lib/styles/css/react-mde-all.css";
+import * as Showdown from "showdown";
 import ColorsEnum from "types/ColorsEnum";
 
 const styles = (theme) =>
   createStyles({
-    wrapper: {
+    reactMde: {
       backgroundColor: "transparent",
       border: (props: WYSIGEditorProps) =>
         props.readOnly ? undefined : "1px solid rgba(255, 255, 255, 0.12)",
-      flex: "1",
+      borderWidth: "0px",
+      width: "100%",
+    },
+    preview: {
+      borderWidth: "0px",
+      textAlign: "left",
+      "& pre": {
+        backgroundColor: `${ColorsEnum.BGDARK}!important`,
+      },
+      "& blockquote": {
+        color: "white!important",
+      },
+    },
+    textArea: {
+      backgroundColor: ColorsEnum.BGLIGHTER,
+      color: "white",
+      borderWidth: "0px",
+      outline: "none",
     },
     editor: {
       backgroundColor: "transparent",
@@ -27,68 +46,53 @@ const styles = (theme) =>
       backgroundColor: ColorsEnum.BGLIGHTER,
       borderWidth: "0px",
       borderBottom: "1px solid rgba(255, 255, 255, 0.12)",
-      "& .rdw-option-wrapper, .rdw-dropdown-wrapper": {
-        backgroundColor: ColorsEnum.GRAYDARK,
-        borderWidth: "0px",
-        color: "white",
+      color: "white!important",
+      "& button": {
+        color: "white!important",
       },
     },
   });
 
+const converter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+});
 interface WYSIGEditorProps {
-  editorState?: EditorState;
+  editorState?: string;
   defaultEditorState?: EditorState;
-  onEditorStateChange?: (change: EditorState) => void;
+  onEditorStateChange?: (change: string) => void;
   readOnly?: boolean;
   style?: CSSProperties;
+  // selectedTab: "preview" | "write"
 }
 
 const WYSIGEditor: React.FunctionComponent<
   WithStyles<typeof styles> & WYSIGEditorProps
 > = (props) => {
-  const {
-    classes,
-    editorState,
-    onEditorStateChange,
-    readOnly,
-    defaultEditorState,
-  } = props;
+  const { classes, editorState, onEditorStateChange, readOnly, style } = props;
+
+  const [selectedTab, setSelectedTab] = React.useState<"write" | "preview">(
+    readOnly ? "preview" : "write"
+  );
 
   return (
-    <Editor
-      editorState={editorState}
-      defaultEditorState={defaultEditorState}
-      toolbarClassName={classes.toolbar}
-      editorClassName={classes.editor}
-      onEditorStateChange={onEditorStateChange}
-      wrapperClassName={classes.wrapper}
-      toolbar={{
-        options: [
-          "inline",
-          "blockType",
-          "fontSize",
-          "fontFamily",
-          "list",
-          "textAlign",
-          "colorPicker",
-          "link",
-          "embedded",
-          "emoji",
-          "image",
-          "remove",
-          "history",
-        ],
-        inline: {
-          options: [
-            "bold",
-            "italic",
-            "underline",
-            "strikethrough",
-            "monospace",
-          ],
-        },
-      }}
+    <ReactMde
+      value={editorState}
+      onChange={onEditorStateChange}
+      selectedTab={selectedTab}
+      onTabChange={setSelectedTab}
+      generateMarkdownPreview={(markdown) =>
+        Promise.resolve(converter.makeHtml(markdown))
+      }
       readOnly={readOnly}
+      classes={{
+        reactMde: classes.reactMde,
+        toolbar: classes.toolbar,
+        preview: classes.preview,
+        textArea: classes.textArea,
+      }}
     />
   );
 };

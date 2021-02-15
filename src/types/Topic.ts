@@ -1,4 +1,3 @@
-import { RawDraftContentState } from "draft-js";
 import { AbstractEntity } from "types/AbstractEntity";
 import { CategoryId } from "types/Category";
 import Comment, { CommentId } from "types/Comment";
@@ -25,7 +24,7 @@ class Topic extends AbstractEntity {
 
   public name: string;
 
-  public description: RawDraftContentState;
+  public description: string;
 
   public categoryId: CategoryId;
 

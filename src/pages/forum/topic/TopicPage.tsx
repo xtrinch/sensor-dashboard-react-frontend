@@ -11,7 +11,6 @@ import { CommentContext } from "context/CommentContext";
 import { openConfirmation } from "context/ConfirmationContext";
 import { TopicContext } from "context/TopicContext";
 import { format } from "date-fns";
-import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useFormik } from "formik";
 import WYSIGEditor from "pages/forum/components/WYSIGEditor";
 import { getTopicEditRoute, getTopicListRoute } from "pages/forum/ForumRoutes";
@@ -108,28 +107,16 @@ const TopicPage: React.FunctionComponent<
           name: `Re: ${topic.name}`,
         })
       );
-      setEditorState(EditorState.createEmpty());
     } catch (e) {
       setStatus(e);
     }
   };
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
   const formik = useFormik<Comment>({
     initialValues: comment,
     onSubmit: submitForm,
     enableReinitialize: true,
   });
-
-  const onEditorStateChange = (change: EditorState) => {
-    setEditorState(change);
-    formik.setFieldValue(
-      "description",
-      convertToRaw(change.getCurrentContent())
-    );
-  };
 
   if (!topic) {
     return null;
@@ -212,9 +199,8 @@ const TopicPage: React.FunctionComponent<
           </div>
           <div style={{ paddingTop: "5px" }}>
             <WYSIGEditor
-              editorState={EditorState.createWithContent(
-                convertFromRaw(topic?.description)
-              )}
+              editorState={topic?.description}
+              style={{ width: "100%" }}
               readOnly
             />
           </div>
@@ -242,8 +228,10 @@ const TopicPage: React.FunctionComponent<
               fullWidth
             />
             <WYSIGEditor
-              editorState={editorState}
-              onEditorStateChange={onEditorStateChange}
+              editorState={formik.values?.description}
+              onEditorStateChange={(value) =>
+                formik.setFieldValue("description", value)
+              }
             />
             <ColoredButton
               type="submit"
