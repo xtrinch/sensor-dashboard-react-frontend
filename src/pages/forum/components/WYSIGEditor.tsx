@@ -1,6 +1,5 @@
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
-import { EditorState } from "draft-js";
 import React from "react";
 import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
@@ -60,7 +59,6 @@ const converter = new Showdown.Converter({
 });
 interface WYSIGEditorProps {
   editorState?: string;
-  defaultEditorState?: EditorState;
   onEditorStateChange?: (change: string) => void;
   readOnly?: boolean;
   style?: CSSProperties;
