@@ -18,6 +18,7 @@ class Topic extends AbstractEntity {
     this.lastComment = s?.lastComment ? new Comment(s.lastComment) : null;
     this.lastCommentId = s?.lastCommentId;
     this.numComments = s?.numComments;
+    this.tag = s?.tag;
   }
 
   public id: TopicId;
@@ -37,6 +38,8 @@ class Topic extends AbstractEntity {
   public lastComment: Comment;
 
   public numComments: number;
+
+  public tag: string;
 }
 
 export default Topic;

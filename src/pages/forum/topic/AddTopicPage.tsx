@@ -96,15 +96,22 @@ const AddTopicPage: React.FunctionComponent<
           <form noValidate onSubmit={formik.handleSubmit}>
             <TextInput
               id="name"
-              margin="normal"
               label="Name"
-              name="name"
               value={formik.values.name}
               autoFocus
               onChange={formik.handleChange}
               error={!!formik.status?.name}
               helperText={formik.status?.name}
               fullWidth
+            />
+            <TextInput
+              id="tag"
+              label="Unique tag (optional)"
+              value={formik.values.tag}
+              onChange={formik.handleChange}
+              error={!!formik.status?.tag}
+              helperText={formik.status?.tag}
+              style={{ marginBottom: "20px" }}
             />
             <WYSIGEditor
               editorState={formik.values.description}

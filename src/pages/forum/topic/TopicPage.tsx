@@ -196,6 +196,9 @@ const TopicPage: React.FunctionComponent<
                 </IconButton>
               )}
             </div>
+            <div style={{ marginTop: "15px" }}>
+              {topic.tag ? `Tag: ${topic.tag}` : ""}
+            </div>
           </div>
           <div style={{ paddingTop: "5px" }}>
             <WYSIGEditor
