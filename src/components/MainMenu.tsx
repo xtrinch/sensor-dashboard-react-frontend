@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Tab, Tabs, Theme } from "@material-ui/core";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import { ForumRoutes } from "pages/forum/ForumRoutes";
+import { ForumRoutes, getTopicByTagRoute } from "pages/forum/ForumRoutes";
 import { UserRoutes } from "pages/users/UserRoutes";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -71,6 +71,13 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: ColorsEnum.YELLOW,
       color: ColorsEnum.YELLOW,
     },
+    about: {
+      "&:before, &:after": {
+        backgroundColor: ColorsEnum.WHITE,
+      },
+      borderColor: ColorsEnum.WHITE,
+      color: ColorsEnum.WHITE,
+    },
   })
 );
 
@@ -87,7 +94,11 @@ const MainMenu: React.FunctionComponent<
     <>
       <Tabs
         className={classes.container}
-        value={"/" + (pathname.split("/")[1] || "dashboard")}
+        value={
+          pathname.indexOf("about") >= 0
+            ? "about"
+            : "/" + (pathname.split("/")[1] || "dashboard")
+        }
       >
         <Tab
           label="IOT dashboard"
@@ -112,6 +123,15 @@ const MainMenu: React.FunctionComponent<
             history.push(UserRoutes.USERS);
           }}
           value={UserRoutes.USERS}
+        />
+
+        <Tab
+          label="About"
+          className={classes.about}
+          onClick={() => {
+            history.push(getTopicByTagRoute("about"));
+          }}
+          value={"about"}
         />
       </Tabs>
     </>

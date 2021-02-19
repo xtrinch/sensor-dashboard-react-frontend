@@ -68,7 +68,7 @@ interface WYSIGEditorProps {
 const WYSIGEditor: React.FunctionComponent<
   WithStyles<typeof styles> & WYSIGEditorProps
 > = (props) => {
-  const { classes, editorState, onEditorStateChange, readOnly, style } = props;
+  const { classes, editorState, onEditorStateChange, readOnly } = props;
 
   const [selectedTab, setSelectedTab] = React.useState<"write" | "preview">(
     readOnly ? "preview" : "write"

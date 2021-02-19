@@ -37,6 +37,20 @@ export default class TopicService {
     return s;
   };
 
+  public static getTopicByTag = async (tag: string): Promise<Topic> => {
+    const url = getUrl(`/topics/tag/${tag}`);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new Topic(result);
+    return s;
+  };
+
   public static addTopic = async (topic: Partial<Topic>): Promise<Topic> => {
     const url = getUrl("/topics");
 

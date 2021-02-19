@@ -12,6 +12,7 @@ import RadioListPage from "pages/dashboard/radios/RadioListPage";
 import AddSensorPage from "pages/dashboard/sensors/AddSensorPage";
 import SensorInfoPage from "pages/dashboard/sensors/SensorInfoPage";
 import SensorsPage from "pages/dashboard/sensors/SensorsPage";
+import TopicPageByTag from "pages/forum/topic/TopicPageByTag";
 import React from "react";
 import { Route } from "react-router-dom";
 
@@ -57,6 +58,9 @@ class DashboardIndexPage extends React.Component<WithStyles<typeof styles>> {
           </Route>
           <Route exact path={DashboardRoutes.RADIO_LIST}>
             <RadioListPage />
+          </Route>
+          <Route path={DashboardRoutes.TOPIC_BY_TAG}>
+            <TopicPageByTag />
           </Route>
         </Grid>
         <Grid item style={{ width: "270px" }}>

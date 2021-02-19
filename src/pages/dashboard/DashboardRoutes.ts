@@ -16,6 +16,7 @@ export const DashboardRoutes = {
   DISPLAY_LIST: "/dashboard/displays",
   FORWARDER_LIST: "/dashboard/forwarders",
   RADIO_LIST: "/dashboard/radios",
+  TOPIC_BY_TAG: "/dashboard/static/:tag",
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard/sensors/${id}`;

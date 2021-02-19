@@ -88,11 +88,14 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                         to={DashboardRoutes.DASHBOARD}
                                       />
                                     </Route>
-                                    <Route path={DashboardRoutes.DASHBOARD}>
-                                      <DashboardIndexPage />
-                                    </Route>
                                     <Route path={ForumRoutes.FORUM}>
                                       <ForumIndexPage />
+                                    </Route>
+                                    <Route path={ForumRoutes.TOPIC_BY_TAG}>
+                                      <ForumIndexPage />
+                                    </Route>
+                                    <Route path={DashboardRoutes.DASHBOARD}>
+                                      <DashboardIndexPage />
                                     </Route>
                                     <Route path={UserRoutes.USERS}>
                                       <UserIndexPage />
