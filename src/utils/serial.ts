@@ -14,6 +14,7 @@ const filters: USBDeviceFilter[] = [
   { vendorId: 0x2341, productId: 0x8056 }, // Arduino MKR Vidor 4000
   { vendorId: 0x2341, productId: 0x8057 }, // Arduino NANO 33 IoT
   { vendorId: 0x239a }, // Adafruit Boards!
+  { vendorId: 0x303a }, // Espressif
 ];
 
 export class Serial {
@@ -31,7 +32,7 @@ export class Serial {
 
     try {
       device = await navigator.usb.requestDevice({
-        filters: ownFilters ? ownFilters : filters,
+        filters: ownFilters || filters,
       });
     } catch (e) {
       console.log(e);
@@ -48,10 +49,13 @@ export class Serial {
 
 export class Port {
   public device_: USBDevice;
+
   public interfaceNumber_: number;
 
   public interface: USBInterface;
+
   public endpointIn: USBEndpoint;
+
   public endpointOut: USBEndpoint;
 
   constructor(device: USBDevice) {
@@ -82,7 +86,7 @@ export class Port {
   }
 
   public onReceive = (data: DataView): string => {
-    let textDecoder = new TextDecoder();
+    const textDecoder = new TextDecoder();
     return textDecoder.decode(data);
   };
 
@@ -110,7 +114,7 @@ export class Port {
     if (!this.interface) {
       throw new Error("Interface not found");
     }
-    let alternate = this.interface.alternates[0];
+    const alternate = this.interface.alternates[0];
 
     this.endpointIn = alternate.endpoints.find((e) => e.direction === "in");
     this.endpointOut = alternate.endpoints.find((e) => e.direction === "out");

@@ -1,4 +1,4 @@
-import User from "types/User";
+import User, { UserId } from "types/User";
 import { getHeaders, getUrl, processResponse } from "utils/http";
 
 export default class UserService {
@@ -53,5 +53,73 @@ export default class UserService {
     const result = await processResponse(resp);
 
     return new User(result);
+  };
+
+  public static listUsers = async () => {
+    const url = getUrl("/users");
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const users: User[] = [];
+    for (const item of result.items) {
+      users.push(new User(item));
+    }
+
+    return {
+      meta: result.meta,
+      items: users,
+    };
+  };
+
+  public static getUser = async (id: UserId): Promise<User> => {
+    const url = getUrl(`/users/${id}`);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new User(result);
+    return s;
+  };
+
+  public static updateUser = async (
+    id: UserId,
+    user: Partial<User>
+  ): Promise<User> => {
+    const url = getUrl(`/users/${id}`);
+
+    const resp = await fetch(url, {
+      method: "PUT",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+      body: JSON.stringify(user),
+    });
+
+    const result = await processResponse(resp);
+    const s = new User(result);
+    return s;
+  };
+
+  public static deleteUser = async (
+    id: UserId
+  ): Promise<{ success: string }> => {
+    const url = getUrl(`/users/${id}`);
+
+    const resp = await fetch(url, {
+      method: "DELETE",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    return result;
   };
 }

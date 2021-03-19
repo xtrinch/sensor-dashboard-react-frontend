@@ -16,6 +16,7 @@ enum ColorsEnum {
   ERROR = "#ff6961", // RED1 = red[500],
   GREEN = "#29a856",
   GOLD = "#E8BF8B",
+  YELLOW = "#babd4b",
 }
 
 export const GraphColors = [

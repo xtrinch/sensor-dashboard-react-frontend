@@ -178,7 +178,7 @@ export class DateRange {
         )} ${getHours(date)}:${getMinutes(date)}`;
         break;
       case DateRangeEnum.week:
-        dateString = `${getYear(date)}/w${getWeek(date)}`;
+        dateString = `${getYear(endOfWeek(date))}/w${getWeek(date)}`;
         break;
       default:
         break;

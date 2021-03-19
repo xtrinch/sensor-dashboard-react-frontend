@@ -1,15 +1,15 @@
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { register } from "context/AccountContext";
-import React, { useState } from "react";
+import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
+import { AccountContext } from "context/AccountContext";
+import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 
@@ -31,10 +31,6 @@ const styles = (theme) =>
       width: "100%", // Fix IE 11 issue.
       marginTop: theme.spacing(3),
     },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-      padding: theme.spacing(6, 0, 6),
-    },
   });
 
 const RegisterPage: React.FunctionComponent<
@@ -42,6 +38,7 @@ const RegisterPage: React.FunctionComponent<
 > = (props) => {
   const { classes, history } = props;
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const { register } = useContext(AccountContext);
 
   const [data, setData] = useState({
     name: "",
@@ -97,7 +94,7 @@ const RegisterPage: React.FunctionComponent<
             >
               <Grid container spacing={10}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextInput
                     autoComplete="fname"
                     name="firstName"
                     variant="outlined"
@@ -113,7 +110,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -128,7 +125,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -143,7 +140,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -158,7 +155,7 @@ const RegisterPage: React.FunctionComponent<
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
+                  <TextInput
                     variant="outlined"
                     required
                     fullWidth
@@ -179,16 +176,14 @@ const RegisterPage: React.FunctionComponent<
                   </Grid>
                 )}
               </Grid>
-              <Button
+              <ColoredButton
                 type="submit"
                 fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
                 style={{ marginTop: "20px" }}
+                colorVariety={ColorsEnum.BLUE}
               >
-                Sign Up
-              </Button>
+                Sign up
+              </ColoredButton>
               <Grid container justify="flex-end">
                 <Grid item>
                   <Link href="#" variant="body2">

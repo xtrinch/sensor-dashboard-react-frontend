@@ -1,141 +1,104 @@
-import { AccountContext, AccountContextState } from "context/AccountContext";
+import { AccountContext } from "context/AccountContext";
 import { addToast } from "context/ToastContext";
-import React, {
-  Context,
-  createContext,
-  Dispatch,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import DisplayService from "services/DisplayService";
 import Display, { DisplayId } from "types/Display";
 import { Toast } from "types/Toast";
 
-export const reload = async (accountContext: AccountContextState) => {
-  if (accountContext.loginState === "LOGGED_OUT") {
-    return;
-  }
-
-  const resp = await DisplayService.listDisplays();
-  const displayData = resp.items;
-
-  DisplayContext.dispatch({
-    type: "displayReady",
-    payload: displayData,
-  });
-};
-
-export const addDisplay = async (
-  display: Partial<Display>
-): Promise<Display> => {
-  const s = await DisplayService.addDisplay(display);
-
-  DisplayContext.dispatch({
-    type: "addDisplay",
-    payload: s,
-  });
-
-  addToast(
-    new Toast({ message: "Successfully added a display", type: "success" })
-  );
-
-  return s;
-};
-
-export const updateDisplay = async (
-  id: DisplayId,
-  display: Partial<Display>
-): Promise<Display> => {
-  const s = await DisplayService.updateDisplay(id, display);
-
-  DisplayContext.dispatch({
-    type: "updateDisplay",
-    payload: s,
-  });
-
-  addToast(
-    new Toast({ message: "Successfully updated the display", type: "success" })
-  );
-
-  return s;
-};
-
-export const deleteDisplay = async (id: DisplayId): Promise<boolean> => {
-  await DisplayService.deleteDisplay(id);
-
-  DisplayContext.dispatch({
-    type: "deleteDisplay",
-    payload: id,
-  });
-
-  addToast(
-    new Toast({ message: "Successfully deleted the display", type: "success" })
-  );
-
-  return true;
-};
-
-type DisplayContextState = {
-  displaysLoaded: boolean;
-  displays: Display[];
-};
-
-const initialState: DisplayContextState = {
-  displays: [],
-  displaysLoaded: false,
-};
-
-export type DisplayActionTypes =
-  | { type: "displayReady"; payload: Display[] }
-  | { type: "updateDisplay"; payload: Display }
-  | { type: "addDisplay"; payload: Display }
-  | { type: "deleteDisplay"; payload: DisplayId };
-
-const DisplayContext = createContext<
-  [DisplayContextState, React.Dispatch<any>]
->(null) as Context<[DisplayContextState, Dispatch<any>]> & {
-  dispatch: React.Dispatch<any>;
-};
-
-let reducer = (
-  state: DisplayContextState,
-  action: DisplayActionTypes
-): DisplayContextState => {
-  switch (action.type) {
-    case "displayReady":
-      return { ...state, displays: action.payload, displaysLoaded: true };
-    case "updateDisplay":
-      const displays = state.displays;
-      const displayIndex = displays.findIndex(
-        (s) => s.id === action.payload.id
-      );
-      displays[displayIndex] = action.payload;
-      return { ...state, displays: [...displays] };
-    case "addDisplay":
-      return { ...state, displays: [...state.displays, action.payload] };
-    case "deleteDisplay":
-      const idx = state.displays.findIndex((s) => s.id === action.payload);
-      state.displays.splice(idx, 1);
-      return { ...state };
-    default: {
-      return { ...state, displays: [] };
-    }
-  }
-};
+const DisplayContext = createContext<{
+  state?: {
+    displaysLoaded: boolean;
+    displays: Display[];
+  };
+  updateDisplay?: (id: DisplayId, display: Display) => Promise<Display>;
+  deleteDisplay?: (id: DisplayId) => Promise<boolean>;
+  addDisplay?: (display: Partial<Display>) => Promise<Display>;
+  reloadDisplays?: (loginState: string) => Promise<void>;
+}>({});
 
 function DisplayContextProvider(props) {
-  let [state, dispatch] = useReducer(reducer, initialState);
-  let [accountContext] = useContext(AccountContext);
+  let [state, setState] = useState({
+    displays: [],
+    displaysLoaded: false,
+  });
+  let {
+    state: { loginState },
+  } = useContext(AccountContext);
+
+  const reloadDisplays = async (loginState: string) => {
+    if (loginState === "LOGGED_OUT") {
+      return;
+    }
+
+    const resp = await DisplayService.listDisplays();
+    const displayData = resp.items;
+    setState({ ...state, displays: displayData, displaysLoaded: true });
+  };
+
+  const addDisplay = async (display: Partial<Display>): Promise<Display> => {
+    const s = await DisplayService.addDisplay(display);
+    setState({ ...state, displays: [...state.displays, s] });
+
+    addToast(
+      new Toast({ message: "Successfully added a display", type: "success" })
+    );
+
+    return s;
+  };
+
+  const updateDisplay = async (
+    id: DisplayId,
+    display: Partial<Display>
+  ): Promise<Display> => {
+    const s = await DisplayService.updateDisplay(id, display);
+    const displays = state.displays;
+    const displayIndex = displays.findIndex((sd) => sd.id === s.id);
+    displays[displayIndex] = s;
+    setState({ ...state, displays: [...displays] });
+
+    addToast(
+      new Toast({
+        message: "Successfully updated the display",
+        type: "success",
+      })
+    );
+
+    return s;
+  };
+
+  const deleteDisplay = async (id: DisplayId): Promise<boolean> => {
+    await DisplayService.deleteDisplay(id);
+
+    const idx = state.displays.findIndex((s) => s.id === id);
+    state.displays.splice(idx, 1);
+    setState({ ...state });
+
+    addToast(
+      new Toast({
+        message: "Successfully deleted the display",
+        type: "success",
+      })
+    );
+
+    return true;
+  };
 
   useEffect(() => {
     if (!state.displaysLoaded) {
-      reload(accountContext);
+      reloadDisplays(loginState);
     }
-  }, [state, accountContext]); // The empty array causes this effect to only run on mount
+  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <DisplayContext.Provider value={[state, dispatch]}>
+    <DisplayContext.Provider
+      value={{
+        state,
+        updateDisplay,
+        deleteDisplay,
+        addDisplay,
+        reloadDisplays,
+      }}
+    >
       {props.children}
     </DisplayContext.Provider>
   );

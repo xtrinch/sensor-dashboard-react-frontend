@@ -40,7 +40,11 @@ export const getHeaders = (params: {
 });
 
 export const processResponse = async (response) => {
-  const responseData = await response.json();
+  let responseData;
+
+  try {
+    responseData = await response.json();
+  } catch (e) {}
 
   if (response.status >= 200 && response.status <= 399) {
     return responseData;

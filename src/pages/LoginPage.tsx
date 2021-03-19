@@ -1,5 +1,4 @@
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,13 +6,14 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ColoredButton from "components/ColoredButton";
+import TextInput from "components/TextInput";
 import config from "config/Config";
-import { AccountContext, login, loginWithGoogle } from "context/AccountContext";
-import { reload } from "context/DisplayContext";
-import { reloadMySensors, reloadSensors } from "context/SensorContext";
+import { AccountContext } from "context/AccountContext";
+import { DisplayContext } from "context/DisplayContext";
+import { SensorContext } from "context/SensorContext";
 import React, { useContext, useState } from "react";
 import {
   GoogleLogin,
@@ -22,6 +22,7 @@ import {
 } from "react-google-login";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
+import User from "types/User";
 
 const styles = (theme) =>
   createStyles({
@@ -51,6 +52,7 @@ const LoginPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { classes, history } = props;
+  const { reloadDisplays } = useContext(DisplayContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
@@ -59,12 +61,16 @@ const LoginPage: React.FunctionComponent<
     password: "",
   });
 
-  const [accountState] = useContext(AccountContext);
+  const {
+    login,
+    loginWithGoogle,
+    state: { loginState },
+  } = useContext(AccountContext);
+  const { reloadSensors } = useContext(SensorContext);
 
-  const uponLoginSuccess = () => {
-    reloadSensors(accountState);
-    reloadMySensors();
-    reload(accountState);
+  const uponLoginSuccess = async (user: User) => {
+    await reloadSensors("LOGGED_IN", user);
+    await reloadDisplays("LOGGED_IN");
     history.push("/");
   };
 
@@ -72,10 +78,10 @@ const LoginPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const success = await login(data.email, data.password);
-      if (success) {
+      const user = await login(data.email, data.password);
+      if (user) {
         // todo move out of here
-        uponLoginSuccess();
+        await uponLoginSuccess(user);
       }
     } catch (e) {
       setErrors(e);
@@ -92,8 +98,9 @@ const LoginPage: React.FunctionComponent<
   ) => {
     console.log(response);
     if (!response.error) {
-      if (await loginWithGoogle(response.tokenId)) {
-        uponLoginSuccess();
+      const user = await loginWithGoogle(response.tokenId);
+      if (user) {
+        uponLoginSuccess(user);
       }
     }
   };
@@ -109,7 +116,7 @@ const LoginPage: React.FunctionComponent<
           Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={submitForm}>
-          <TextField
+          <TextInput
             variant="outlined"
             margin="normal"
             required
@@ -124,7 +131,7 @@ const LoginPage: React.FunctionComponent<
             error={!!errors.email}
             helperText={errors.email}
           />
-          <TextField
+          <TextInput
             variant="outlined"
             margin="normal"
             required
@@ -140,22 +147,20 @@ const LoginPage: React.FunctionComponent<
             helperText={errors.password}
           />
           <div style={{ color: ColorsEnum.RED }}>
-            {accountState.loginState === "LOGIN_ERROR" &&
-              "Invalid email or password"}
+            {loginState === "LOGIN_ERROR" && "Invalid email or password"}
           </div>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Button
+          <ColoredButton
             type="submit"
             fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+            style={{ marginTop: "20px" }}
+            colorVariety={ColorsEnum.BLUE}
           >
-            Sign In
-          </Button>
+            Sign in
+          </ColoredButton>
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

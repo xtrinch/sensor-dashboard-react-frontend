@@ -12,12 +12,8 @@ export default class MeasurementService {
     });
 
     const result = await processResponse(resp);
-    for (const sensor of Object.keys(result)) {
-      for (const measureType of Object.keys(result[sensor])) {
-        result[sensor][measureType] = result[sensor][measureType].map(
-          (m) => new Measurement(m)
-        );
-      }
+    for (const measureType of Object.keys(result)) {
+      result[measureType] = result[measureType].map((m) => new Measurement(m));
     }
 
     return result;

@@ -1,27 +1,16 @@
-import {
-  createStyles,
-  Divider,
-  Fab,
-  Grid,
-  List,
-  ListItem,
-  ListSubheader,
-} from "@material-ui/core";
-import PlusIcon from "@material-ui/icons/Add";
+import { createStyles, Grid, ListSubheader } from "@material-ui/core";
 import { withStyles, WithStyles } from "@material-ui/styles";
 import Logo from "assets/transistor.svg"; // with import
 import Link from "components/Link";
-import SideMenuItem from "components/SideMenuItem";
-import { AccountContext, logout } from "context/AccountContext";
+import MainMenu from "components/MainMenu";
+import { AccountContext } from "context/AccountContext";
 import { drawerToggle } from "context/AppContext";
 import { openConfirmation } from "context/ConfirmationContext";
-import { DisplayContext } from "context/DisplayContext";
-import { ForwarderContext } from "context/ForwarderContext";
-import { SensorContext } from "context/SensorContext";
+import { getUserRoute } from "pages/users/UserRoutes";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
-import Sensor from "types/Sensor";
+import { Routes } from "utils/Routes";
 
 const styles = () =>
   createStyles({
@@ -38,10 +27,11 @@ const styles = () =>
     },
     listTitle: {
       textTransform: "uppercase",
-      padding: "7px 16px",
+      padding: "5px 16px",
       minHeight: "40px",
-      borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
+      // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
       backgroundColor: ColorsEnum.BGLIGHTER,
+      color: "white",
     },
     logoContainer: {
       display: "flex",
@@ -52,6 +42,16 @@ const styles = () =>
         width: "70px",
       },
     },
+    sensorFab: {
+      width: "30px",
+      height: "30px",
+      minHeight: "30px",
+      color: ColorsEnum.BLUE,
+      backgroundColor: "transparent",
+      "& .MuiSvgIcon-root": {
+        fontSize: "25px!important",
+      },
+    },
   });
 
 interface SideMenuProps {}
@@ -60,11 +60,10 @@ const SideMenu: React.FunctionComponent<
   SideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { history } = props;
-
-  const [{ sensors, mySensors }] = useContext(SensorContext);
-  const [{ displays }] = useContext(DisplayContext);
-  const [{ forwarders }] = useContext(ForwarderContext);
-  const [accountContext] = useContext(AccountContext);
+  const {
+    logout,
+    state: { loginState, user },
+  } = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -75,18 +74,7 @@ const SideMenu: React.FunctionComponent<
     openConfirmation(onConfirm, null, "Are you sure you want to logout?");
   };
 
-  const goToDisplays = () => {
-    drawerToggle();
-    history.push("/displays");
-  };
-
-  const goToForwarders = () => {
-    drawerToggle();
-    history.push("/forwarders");
-  };
-
   const { classes } = props;
-  const { loginState, user } = accountContext;
   return (
     <div className={classes.root}>
       <ListSubheader disableGutters className={classes.subheader}>
@@ -98,130 +86,29 @@ const SideMenu: React.FunctionComponent<
           </Grid>
           {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
             <Grid item>
-              <Link to="/login" onClick={drawerToggle}>
+              <Link to={Routes.LOGIN} onClick={drawerToggle}>
                 Login
               </Link>{" "}
               &nbsp; | &nbsp;
-              <Link to="/register" onClick={drawerToggle}>
+              <Link to={Routes.REGISTER} onClick={drawerToggle}>
                 Register
               </Link>
             </Grid>
           )}
           {loginState === "LOGGED_IN" && (
             <Grid item>
-              <div>Logged in as {user.username}</div>
+              <div>
+                Logged in as{" "}
+                <Link to={getUserRoute(user.id)} color={ColorsEnum.YELLOW}>
+                  {user.username}
+                </Link>
+              </div>
               <Link onClick={() => logoutWithConfirmation()}>Logout</Link>
             </Grid>
           )}
         </Grid>
+        <MainMenu />
       </ListSubheader>
-      {loginState === "LOGGED_IN" && (
-        <>
-          <Grid container className={classes.listTitle} alignItems="center">
-            <Grid item xs>
-              My sensors
-            </Grid>
-            <Grid item>
-              <Link to="/add-sensor" onClick={drawerToggle}>
-                <Fab color="primary" size="small">
-                  <PlusIcon />
-                </Fab>
-              </Link>
-            </Grid>
-          </Grid>
-          <Divider />
-          <List disablePadding>
-            {mySensors.map((sensor: Sensor) => (
-              <SideMenuItem
-                item={sensor}
-                key={sensor.id}
-                type="sensor"
-                expandable
-                visibility
-                context={SensorContext}
-              />
-            ))}
-          </List>
-          <List disablePadding>
-            <ListItem
-              button
-              className={classes.listTitle}
-              alignItems="center"
-              onClick={goToForwarders}
-            >
-              <Grid container alignItems="center" justify="space-between">
-                <Grid item>My packet forwarders</Grid>
-                <Grid item>
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <Link to="/add-forwarder" onClick={drawerToggle}>
-                      <Fab color="primary" size="small">
-                        <PlusIcon />
-                      </Fab>
-                    </Link>
-                  </div>
-                </Grid>
-              </Grid>
-            </ListItem>
-          </List>
-          <Divider />
-          <List disablePadding>
-            {forwarders.map((forwarder) => (
-              <SideMenuItem
-                item={forwarder}
-                key={forwarder.id}
-                type="forwarder"
-              />
-            ))}
-          </List>
-          <List disablePadding>
-            <ListItem
-              button
-              className={classes.listTitle}
-              alignItems="center"
-              onClick={goToDisplays}
-            >
-              <Grid container alignItems="center" justify="space-between">
-                <Grid item>My display devices</Grid>
-                <Grid item>
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <Link to="/add-display" onClick={drawerToggle}>
-                      <Fab color="primary" size="small">
-                        <PlusIcon />
-                      </Fab>
-                    </Link>
-                  </div>
-                </Grid>
-              </Grid>
-            </ListItem>
-          </List>
-          <Divider />
-          <List disablePadding>
-            {displays.map((item) => (
-              <SideMenuItem item={item} key={item.id} type="display" />
-            ))}
-          </List>
-        </>
-      )}
-      <Grid container className={classes.listTitle} alignItems="center">
-        <Grid item xs>
-          All sensors
-        </Grid>
-      </Grid>
-      <Divider />
-      <List disablePadding>
-        {sensors
-          .filter((s) => s.userId !== user?.id)
-          .map((sensor: Sensor) => (
-            <SideMenuItem
-              context={SensorContext}
-              item={sensor}
-              key={sensor.id}
-              type="sensor"
-              expandable
-              visibility
-            />
-          ))}
-      </List>
     </div>
   );
 };

@@ -66,7 +66,6 @@ const ConnectSensorPage: React.FunctionComponent<
     match: {
       params: { id },
     },
-    history,
   } = props;
 
   const [sensor, setSensor] = useState<Sensor>(null);

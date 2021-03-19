@@ -22,18 +22,33 @@ const theme = createMuiTheme({
       secondary: ColorsEnum.GRAY,
     },
   },
-  props: {
-    // MuiTextField: {
-    //   InputLabelProps: {
-    //     shrink: true,
-    //   },
-    // },
-  },
   overrides: {
+    MuiCssBaseline: {
+      "@global": {
+        a: {
+          textDecoration: "none",
+          color: ColorsEnum.OLIVE,
+          fontWeight: "bold",
+          "&:hover": {
+            color: ColorsEnum.OLIVE,
+            textDecoration: "underline",
+          },
+        },
+        body: {
+          fontSize: "12px",
+        },
+      },
+    },
     MuiTypography: {
       body1: {
         fontSize: "12px",
         color: ColorsEnum.GRAY,
+      },
+      h4: {
+        textTransform: "uppercase",
+        color: ColorsEnum.WHITE,
+        fontSize: "14px",
+        fontWeight: "bold",
       },
       h5: {
         color: ColorsEnum.GRAY,
@@ -49,13 +64,17 @@ const theme = createMuiTheme({
         color: ColorsEnum.WHITE,
       },
       sizeSmall: {
-        width: "30px",
-        height: "30px",
-        minHeight: "30px",
-        color: ColorsEnum.WHITE,
-        "& svg": {
-          fontSize: "20px",
-        },
+        width: "35px",
+        height: "35px",
+      },
+      secondary: {
+        backgroundColor: "transparent",
+      },
+    },
+    MuiFormControl: {
+      marginNormal: {
+        marginTop: "20px",
+        marginBottom: "8px",
       },
     },
     MuiListItem: {
@@ -67,9 +86,28 @@ const theme = createMuiTheme({
         borderBottomWidth: "0px",
       },
     },
+    MuiTableCell: {
+      head: {
+        textTransform: "uppercase",
+        fontSize: "11px",
+        color: "white",
+        fontWeight: "bold",
+        padding: "8px 16px 6px 16px",
+      },
+      root: {
+        borderColor: `${ColorsEnum.BGDARK}!important`,
+      },
+    },
     MuiListItemIcon: {
       root: {
         minWidth: "35px",
+      },
+    },
+    MuiInput: {
+      underline: {
+        "&:before": {
+          borderBottomWidth: "0px",
+        },
       },
     },
     MuiListSubheader: {
@@ -82,6 +120,11 @@ const theme = createMuiTheme({
     MuiButtonBase: {
       root: {
         color: ColorsEnum.GRAY,
+      },
+    },
+    MuiDivider: {
+      root: {
+        backgroundColor: "transparent",
       },
     },
     MuiButton: {
@@ -120,6 +163,14 @@ const theme = createMuiTheme({
       inputMarginDense: {
         paddingTop: "11px",
         paddingBottom: "11px",
+      },
+    },
+  },
+  props: {
+    MuiTextField: {
+      variant: "outlined",
+      InputLabelProps: {
+        shrink: true,
       },
     },
   },

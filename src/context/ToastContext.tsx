@@ -31,28 +31,30 @@ const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(
   dispatch: React.Dispatch<any>;
 };
 
-let reducer = (
-  state: ToastContextState,
-  action: ToastActionTypes
-): ToastContextState => {
-  switch (action.type) {
-    case "addToast":
-      return {
-        ...state,
-        toasts: [...state.toasts, action.payload],
-      };
-    case "removeToast":
-      return {
-        ...state,
-        toasts: state.toasts.filter((toast) => toast.id !== action.payload.id),
-      };
-    default: {
-      return { ...state };
-    }
-  }
-};
-
 function ToastContextProvider(props) {
+  let reducer = (
+    state: ToastContextState,
+    action: ToastActionTypes
+  ): ToastContextState => {
+    switch (action.type) {
+      case "addToast":
+        return {
+          ...state,
+          toasts: [...state.toasts, action.payload],
+        };
+      case "removeToast":
+        return {
+          ...state,
+          toasts: state.toasts.filter(
+            (toast) => toast.id !== action.payload.id
+          ),
+        };
+      default: {
+        return { ...state };
+      }
+    }
+  };
+
   let [state, dispatch] = useReducer(reducer, initialState);
 
   return (
