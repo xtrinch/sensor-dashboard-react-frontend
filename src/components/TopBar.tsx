@@ -91,13 +91,6 @@ const TopBar: React.FunctionComponent<
             </IconButton>
           </div>
         </Grid>
-        {backEnabled && (
-          <Grid item xs={1}>
-            <Fab color="primary" size="small" onClick={() => history.goBack()}>
-              <NavigateBeforeIcon />
-            </Fab>
-          </Grid>
-        )}
         {props.noGridItem && props.children}
         {!props.noGridItem && (
           <Grid
