@@ -6,6 +6,7 @@ import { SensorId } from "types/Sensor";
 export const DashboardRoutes = {
   DASHBOARD: "/dashboard",
   ADD_SENSOR: "/dashboard/add-sensor",
+  CONNECT_SENSOR: "/dashboard/sensors/:id/connect",
   ADD_DISPLAY: "/dashboard/add-display",
   ADD_FORWARDER: "/dashboard/add-forwarder",
   ADD_RADIO: "/dashboard/add-radio",
@@ -20,6 +21,8 @@ export const DashboardRoutes = {
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard/sensors/${id}`;
+export const getConnectSensorRoute = (id: SensorId) =>
+  `/dashboard/sensors/${id}/connect`;
 export const getDisplayRoute = (id: DisplayId) => `/dashboard/displays/${id}`;
 export const getForwarderRoute = (id: ForwarderId) =>
   `/dashboard/forwarders/${id}`;

@@ -1,8 +1,9 @@
-import { Checkbox, FormControlLabel } from "@material-ui/core";
+import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { Settings } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ColoredButton from "components/ColoredButton";
 import SelectInput from "components/SelectInput";
@@ -23,6 +24,7 @@ import MeasurementTypeEnum, {
 import Sensor, { SensorId } from "types/Sensor";
 import SensorTypeEnum from "types/SensorTypeEnum";
 import { DATETIME_REGEX } from "utils/date.range";
+import { getConnectSensorRoute } from "../DashboardRoutes";
 
 const styles = (theme) =>
   createStyles({
@@ -145,14 +147,14 @@ const SensorInfoPage: React.FunctionComponent<
         <Typography component="h1" variant="h4" style={{ marginRight: "30px" }}>
           Sensor board info
         </Typography>
-        {/* <Button
+        <Button
           variant="contained"
           className={classes.connectButton}
           startIcon={<Settings />}
-          onClick={() => history.push(`/sensors/${id}/connect`)}
+          onClick={() => history.push(getConnectSensorRoute(parseInt(id)))}
         >
-          Configure device
-        </Button> */}
+          USB Configurator
+        </Button>
         <ColoredButton
           startIcon={<DeleteIcon />}
           onClick={deleteWithConfirmation}

@@ -1,4 +1,5 @@
 import { createStyles, Grid, WithStyles, withStyles } from "@material-ui/core";
+import ConnectSensorPage from "pages/ConnectSensorPage";
 import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
 import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
 import AddDisplayPage from "pages/dashboard/displays/AddDisplayPage";
@@ -37,6 +38,9 @@ class DashboardIndexPage extends React.Component<WithStyles<typeof styles>> {
           </Route>
           <Route exact path={DashboardRoutes.ADD_FORWARDER}>
             <AddForwarderPage />
+          </Route>
+          <Route exact path={DashboardRoutes.CONNECT_SENSOR}>
+            <ConnectSensorPage />
           </Route>
           <Route exact path={DashboardRoutes.SENSOR}>
             <SensorInfoPage />

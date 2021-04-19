@@ -2,6 +2,7 @@ import {
   Box,
   CircularProgress,
   createStyles,
+  Typography,
   WithStyles,
   withStyles,
 } from "@material-ui/core";
@@ -75,6 +76,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
 
   useEffect(() => {
     if (!date || sensors.length === 0) {
+      setMeasurements({});
       return;
     }
 
@@ -99,6 +101,13 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   return (
     <div style={{ width: "100%" }}>
       <TopMenu />
+      {sensors.length === 0 && (
+        <Box style={{ textAlign: "center", marginTop: "50px" }}>
+          <Typography variant="h5">
+            No sensors found. Try adding some.
+          </Typography>
+        </Box>
+      )}
       {!measurements && (
         <Box style={{ textAlign: "center", marginTop: "50px" }}>
           <CircularProgress></CircularProgress>
