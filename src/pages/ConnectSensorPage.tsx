@@ -56,6 +56,7 @@ interface ConnectProps {
   timeBetweenMeasurements?: number;
   wifiSSID?: string;
   wifiPassword?: string;
+  maxRtcRecords?: number;
 }
 
 const ConnectSensorPage: React.FunctionComponent<
@@ -73,10 +74,10 @@ const ConnectSensorPage: React.FunctionComponent<
   const send = async () => {
     if (!port) return;
 
-    const ACCESS_TOKEN_START = "C1";
-    const SSID_START = "C2";
-    const PASSWORD_START = "C3";
-    const TIME_START = "C4";
+    // const ACCESS_TOKEN_START = "C1";
+    // const SSID_START = "C2";
+    // const PASSWORD_START = "C3";
+    // const TIME_START = "C4";
 
     const data: Uint8Array[] = [];
     const {
@@ -84,35 +85,18 @@ const ConnectSensorPage: React.FunctionComponent<
       wifiPassword,
       wifiSSID,
       accessToken,
+      maxRtcRecords,
     } = formik.values;
 
-    data.push(
-      new Uint8Array([
-        parseInt(ACCESS_TOKEN_START, 16),
-        accessToken.length,
-        ...new TextEncoder().encode(accessToken),
-      ])
-    );
+    const stringified = JSON.stringify({
+      timeBetweenMeasurements,
+      wifiPassword,
+      wifiSSID,
+      accessToken,
+      maxRtcRecords,
+    });
 
-    data.push(
-      new Uint8Array([
-        parseInt(SSID_START, 16),
-        wifiSSID.length,
-        ...new TextEncoder().encode(wifiSSID),
-      ])
-    );
-
-    data.push(
-      new Uint8Array([
-        parseInt(PASSWORD_START, 16),
-        wifiPassword.length,
-        ...new TextEncoder().encode(wifiPassword),
-      ])
-    );
-
-    data.push(
-      new Uint8Array([parseInt(TIME_START, 16), timeBetweenMeasurements])
-    );
+    data.push(new Uint8Array([...new TextEncoder().encode(stringified), 0]));
 
     for (let d of data) {
       try {
@@ -132,6 +116,7 @@ const ConnectSensorPage: React.FunctionComponent<
       wifiSSID: "",
       wifiPassword: "",
       timeBetweenMeasurements: 10,
+      maxRtcRecords: 4,
     },
     onSubmit: send,
     enableReinitialize: true,
@@ -265,6 +250,20 @@ const ConnectSensorPage: React.FunctionComponent<
               id="timeBetweenMeasurements"
               onChange={(e) =>
                 formik.setFieldValue("timeBetweenMeasurements", e.target.value)
+              }
+              disabled={!port}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="location"
+              label="Max rtc records (1 for no RTC cache)"
+              type="number"
+              value={formik.values.maxRtcRecords}
+              id="maxRtcRecords"
+              onChange={(e) =>
+                formik.setFieldValue("maxRtcRecords", e.target.value)
               }
               disabled={!port}
             />
