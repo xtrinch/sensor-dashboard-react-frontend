@@ -16,6 +16,8 @@ import SensorService from "services/SensorService";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor, { SensorId } from "types/Sensor";
 import { Port, Serial } from "utils/serial";
+import { addToast } from "context/ToastContext";
+import { Toast } from "types/Toast";
 
 const styles = (theme) =>
   createStyles({
@@ -74,11 +76,6 @@ const ConnectSensorPage: React.FunctionComponent<
   const send = async () => {
     if (!port) return;
 
-    // const ACCESS_TOKEN_START = "C1";
-    // const SSID_START = "C2";
-    // const PASSWORD_START = "C3";
-    // const TIME_START = "C4";
-
     const data: Uint8Array[] = [];
     const {
       timeBetweenMeasurements,
@@ -102,6 +99,23 @@ const ConnectSensorPage: React.FunctionComponent<
       try {
         await port.send(d.buffer);
         const read = await port.readLoop();
+
+        if (read === "success") {
+          addToast(
+            new Toast({
+              message: "Successfully configured the device.",
+              type: "success",
+            })
+          );
+        } else if (read === "failure") {
+          addToast(
+            new Toast({
+              message: "Failed to configure the device.",
+              type: "failure",
+            })
+          );
+        }
+        console.log("Received:");
         console.log(read);
       } catch (e) {
         console.log(e);

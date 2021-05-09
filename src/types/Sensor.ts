@@ -83,6 +83,10 @@ class Sensor extends AbstractEntity implements IotDeviceInterface {
       domain: [-20, 40],
       unit: "°C",
     },
+    [MeasurementTypeEnum.BATTERY_VOLTAGE]: {
+      domain: [0, 5],
+      unit: "V",
+    },
   };
 }
 
