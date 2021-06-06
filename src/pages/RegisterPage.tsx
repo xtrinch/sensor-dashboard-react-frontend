@@ -2,7 +2,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -12,6 +11,8 @@ import { AccountContext } from "context/AccountContext";
 import React, { useContext, useState } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
+import { Routes } from "utils/Routes";
+import Link from "components/Link";
 
 const styles = (theme) =>
   createStyles({
@@ -184,10 +185,10 @@ const RegisterPage: React.FunctionComponent<
               >
                 Sign up
               </ColoredButton>
-              <Grid container justify="flex-end">
+              <Grid container justify="flex-end" style={{ marginTop: "10px" }}>
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    Already have an account? Sign in
+                  <Link to={Routes.LOGIN} color={ColorsEnum.BLUE}>
+                    Already have an account or want to use google login? Sign in
                   </Link>
                 </Grid>
               </Grid>

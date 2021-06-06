@@ -4,7 +4,6 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -23,6 +22,8 @@ import {
 import { RouteComponentProps, withRouter } from "react-router";
 import ColorsEnum from "types/ColorsEnum";
 import User from "types/User";
+import Link from "components/Link";
+import { Routes } from "utils/Routes";
 
 const styles = (theme) =>
   createStyles({
@@ -161,14 +162,14 @@ const LoginPage: React.FunctionComponent<
           >
             Sign in
           </ColoredButton>
-          <Grid container>
+          <Grid container style={{ marginTop: "10px" }}>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link to={Routes.REGISTER} color={ColorsEnum.BLUE}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to={Routes.REGISTER} color={ColorsEnum.BLUE}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
