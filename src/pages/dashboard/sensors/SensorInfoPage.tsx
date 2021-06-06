@@ -131,6 +131,7 @@ const SensorInfoPage: React.FunctionComponent<
 
     try {
       await updateSensor((id as unknown) as SensorId, new Sensor(data));
+      setErrors({});
     } catch (e) {
       setErrors(e);
     }

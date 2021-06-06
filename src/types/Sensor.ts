@@ -87,6 +87,10 @@ class Sensor extends AbstractEntity implements IotDeviceInterface {
       domain: [0, 5],
       unit: "V",
     },
+    [MeasurementTypeEnum.RAW_BATTERY_VOLTAGE]: {
+      domain: [0, 8192], // 13 bit ADC
+      unit: "",
+    },
   };
 }
 
