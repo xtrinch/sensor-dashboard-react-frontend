@@ -50,7 +50,7 @@ export class Port {
 
   constructor(device: USBDevice) {
     this.device_ = device;
-    this.interfaceNumber_ = 0; // interface number defined in webusb arduino library
+    this.interfaceNumber_ = 2; // interface number defined in webusb arduino library
   }
 
   public async send(data: BufferSource): Promise<USBOutTransferResult> {
@@ -90,6 +90,7 @@ export class Port {
   }
 
   public async connect() {
+    console.log(this.device_);
     await this.device_.open();
     if (this.device_.configuration === null) {
       this.device_.selectConfiguration(1);
