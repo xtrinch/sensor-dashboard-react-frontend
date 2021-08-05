@@ -92,9 +92,9 @@ export class Port {
   public async connect() {
     console.log(this.device_);
     await this.device_.open();
-    if (this.device_.configuration === null) {
-      await this.device_.selectConfiguration(1);
-    }
+    // if (this.device_.configuration === null) {
+    await this.device_.selectConfiguration(1);
+    // }
 
     // find the interface which has 0xff interface class as its alternate and its interface number is 0 for esp, 2 for arduino
     this.interface = (this.device_.configuration.interfaces || []).find(
