@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  sensor-dashboard-frontend:
-    container_name: sensor-dashboard-frontend
+  iotfreezer-frontend:
+    container_name: iotfreezer-frontend
     build:
       context: .
     ports:
