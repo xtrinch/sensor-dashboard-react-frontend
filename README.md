@@ -42,6 +42,7 @@ Runs `eslint` and `prettier` and writes what they could fix to filesystem.
 ## Production setup
  
  ```bash
+ $ cp .env.example .env
  $ docker-compose up -d
 ```
 
