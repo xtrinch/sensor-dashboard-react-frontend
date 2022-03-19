@@ -40,9 +40,10 @@ The build is minified and the filenames include the hashes.<br />
 Runs `eslint` and `prettier` and writes what they could fix to filesystem.
 
 ## Production setup
- 
- ```bash
- $ docker-compose up -d
+
+```bash
+$ cp .env.example .env
+$ docker-compose up -d
 ```
 
 Will spin up a nginx container and copy the files into it. You should be able to access the frontend at the specified port.
