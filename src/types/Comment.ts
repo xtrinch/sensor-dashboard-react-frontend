@@ -3,7 +3,7 @@ import { CategoryId } from "types/Category";
 import { TopicId } from "types/Topic";
 import User, { UserId } from "types/User";
 
-export type CommentId = number;
+export type CommentId = string;
 
 class Comment extends AbstractEntity {
   constructor(s?: any) {

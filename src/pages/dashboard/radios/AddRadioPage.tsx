@@ -81,7 +81,7 @@ const AddRadioPage: React.FunctionComponent<
   useEffect(() => {
     const setData = async () => {
       if (isEdit()) {
-        const s = await RadioService.getRadio(parseInt(params.id));
+        const s = await RadioService.getRadio(params.id);
         setRadio(s);
       }
     };

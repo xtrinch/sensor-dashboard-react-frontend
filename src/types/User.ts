@@ -3,7 +3,7 @@ import { parseISO } from "date-fns";
 import { AbstractEntity } from "types/AbstractEntity";
 import { PermissionsEnum } from "types/PermissionEnum";
 
-export type UserId = number;
+export type UserId = string;
 
 class User extends AbstractEntity {
   constructor(s?: any) {

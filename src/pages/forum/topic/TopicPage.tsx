@@ -74,7 +74,7 @@ const TopicPage: React.FunctionComponent<
 
   useEffect(() => {
     const setData = async () => {
-      const s = await TopicService.getTopic(parseInt(params.topicId));
+      const s = await TopicService.getTopic(params.topicId);
       setTopic(s);
       setComment(
         new Comment({

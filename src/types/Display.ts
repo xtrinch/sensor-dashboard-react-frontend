@@ -7,7 +7,7 @@ import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import Sensor, { SensorId } from "types/Sensor";
 import User, { UserId } from "types/User";
 
-export type DisplayId = number;
+export type DisplayId = string;
 
 class Display extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {

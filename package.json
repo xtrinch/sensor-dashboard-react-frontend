@@ -41,7 +41,7 @@
     "uuid": "^8.0.0"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider",
+    "start": "react-scripts start",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "format": "eslint src/**/**.ts --fix && prettier --write \"./src/**/*.{ts,tsx}\" --check --loglevel error"

@@ -152,7 +152,7 @@ const SensorInfoPage: React.FunctionComponent<
           variant="contained"
           className={classes.connectButton}
           startIcon={<Settings />}
-          onClick={() => history.push(getConnectSensorRoute(parseInt(id)))}
+          onClick={() => history.push(getConnectSensorRoute(id))}
         >
           USB Configurator
         </Button>

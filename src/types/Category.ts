@@ -2,7 +2,7 @@ import { AbstractEntity } from "types/AbstractEntity";
 import Comment, { CommentId } from "types/Comment";
 import Topic, { TopicId } from "types/Topic";
 
-export type CategoryId = number;
+export type CategoryId = string;
 
 class Category extends AbstractEntity {
   constructor(s?: any) {

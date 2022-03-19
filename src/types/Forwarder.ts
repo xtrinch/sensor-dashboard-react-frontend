@@ -4,7 +4,7 @@ import BoardTypeEnum from "types/BoardTypeEnum";
 import { IotDeviceInterface } from "types/IotDeviceInterface";
 import User, { UserId } from "types/User";
 
-export type ForwarderId = number;
+export type ForwarderId = string;
 
 class Forwarder extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {

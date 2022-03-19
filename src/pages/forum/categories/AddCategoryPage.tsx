@@ -72,7 +72,7 @@ const AddCategoryPage: React.FunctionComponent<
   useEffect(() => {
     const setData = async () => {
       if (isEdit()) {
-        const s = await CategoryService.getCategory(parseInt(params.id));
+        const s = await CategoryService.getCategory(params.id);
         setCategory(s);
       }
     };

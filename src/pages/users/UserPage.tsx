@@ -33,7 +33,7 @@ const UserPage: React.FunctionComponent<
 
   useEffect(() => {
     const setData = async () => {
-      const s = await UserService.getUser(parseInt(params.id));
+      const s = await UserService.getUser(params.id);
       setUser(s);
     };
     setData();

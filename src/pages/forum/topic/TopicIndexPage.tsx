@@ -22,7 +22,7 @@ const ForumIndexPage: React.FunctionComponent<
     state: { categories },
   } = useContext(CategoryContext);
 
-  const category = categories.find((c) => c.id === parseInt(params.id));
+  const category = categories.find((c) => c.id === params.id);
 
   if (!category) {
     return null;

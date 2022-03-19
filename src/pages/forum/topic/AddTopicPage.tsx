@@ -52,7 +52,7 @@ const AddTopicPage: React.FunctionComponent<
       }
 
       if (newTopic) {
-        history.push(getTopicListRoute(parseInt(params.id)));
+        history.push(getTopicListRoute(params.id));
       }
     } catch (e) {
       setStatus(e);
@@ -72,7 +72,7 @@ const AddTopicPage: React.FunctionComponent<
   useEffect(() => {
     const setData = async () => {
       if (isEdit()) {
-        const s = await TopicService.getTopic(parseInt(params.topicId));
+        const s = await TopicService.getTopic(params.topicId);
         setTopic(s);
       }
     };
@@ -84,7 +84,7 @@ const AddTopicPage: React.FunctionComponent<
       <TopBar
         alignItems="center"
         backEnabled
-        backTo={getTopicListRoute(parseInt(params.id))}
+        backTo={getTopicListRoute(params.id)}
         color={ColorsEnum.OLIVE}
       >
         <Typography component="h1" variant="h4">
