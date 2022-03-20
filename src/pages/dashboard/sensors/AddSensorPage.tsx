@@ -85,8 +85,8 @@ const AddSensorPage: React.FunctionComponent<
         setSuccess(true);
         history.push(getSensorRoute(sensor.id));
       }
-    } catch (e) {
-      setErrors(e);
+    } catch (err) {
+      setErrors(err);
     }
   };
 
@@ -109,9 +109,6 @@ const AddSensorPage: React.FunctionComponent<
               <Avatar className={classes.avatar}>
                 <SettingsInputAntennaIcon />
               </Avatar>
-              {/* <Typography component="h1" variant="h5">
-                Add sensor board
-              </Typography> */}
               <form className={classes.form} noValidate onSubmit={submitForm}>
                 <TextInput
                   id="name"

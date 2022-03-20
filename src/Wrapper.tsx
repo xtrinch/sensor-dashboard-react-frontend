@@ -15,7 +15,7 @@ const Wrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   ConfirmationContext.dispatch = dispatchConfirmationContext;
   ToastContext.dispatch = dispatchToast;
 
-  return <React.Fragment>{props.children}</React.Fragment>;
+  return <>{props.children}</>;
 };
 
 export default withStyles(styles)(Wrapper);
