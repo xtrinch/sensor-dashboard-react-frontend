@@ -22,7 +22,7 @@ import {
   startOfMonth,
   startOfWeek,
   startOfYear,
-} from "date-fns";
+} from 'date-fns';
 
 export interface DateRegexGroupsInterface {
   year?: number;
@@ -40,25 +40,25 @@ export interface DateRangeInterface {
 }
 
 export enum RangeGroupByEnum {
-  MONTH = "month",
-  DAY = "day",
-  HOUR = "hour",
+  MONTH = 'month',
+  DAY = 'day',
+  HOUR = 'hour',
 }
 
 export enum DateRangeEnum {
-  year = "year",
-  month = "month",
-  week = "week",
-  day = "day",
-  hour = "hour",
-  minute = "minute",
+  year = 'year',
+  month = 'month',
+  week = 'week',
+  day = 'day',
+  hour = 'hour',
+  minute = 'minute',
 }
 
 export type DateRegex = string;
 
-export const DATETIME_REGEX = "MMMM d, yyyy HH:mm"; // August 31, 2020
-export const DATE_REGEX = "MMM d, yyyy"; // August 31, 2020
-export const MONTH_YEAR_REGEX = "MMMM yyyy"; // August 31, 2020
+export const DATETIME_REGEX = 'MMMM d, yyyy HH:mm'; // August 31, 2020
+export const DATE_REGEX = 'MMM d, yyyy'; // August 31, 2020
+export const MONTH_YEAR_REGEX = 'MMMM yyyy'; // August 31, 2020
 
 export class DateRange {
   public static regex = /^(?<year>[0-9]{4})(\/((?<month>[0-9]{1,2})|(w(?<week>[0-9]{1,2})))(\/(?<day>[0-9]{1,2})( (?<hour>[0-9]{1,2})(:(?<minute>[0-9]{1,2}))?)?)?)?$/;
@@ -95,9 +95,7 @@ export class DateRange {
     return ranges;
   }
 
-  public static getGroupBy(
-    range: DateRegexGroupsInterface
-  ): RangeGroupByEnum | null {
+  public static getGroupBy(range: DateRegexGroupsInterface): RangeGroupByEnum | null {
     let groupBy: RangeGroupByEnum = null;
     if (!range.month && !range.week) {
       groupBy = RangeGroupByEnum.DAY;
@@ -155,7 +153,7 @@ export class DateRange {
   }
 
   public static getDateString(date: Date, groupBy: DateRangeEnum): string {
-    let dateString = "";
+    let dateString = '';
 
     switch (groupBy) {
       case DateRangeEnum.month:
@@ -168,14 +166,12 @@ export class DateRange {
         dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(date)}`;
         break;
       case DateRangeEnum.hour:
-        dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(
-          date
-        )} ${getHours(date)}`;
+        dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(date)} ${getHours(date)}`;
         break;
       case DateRangeEnum.minute:
-        dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(
+        dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(date)} ${getHours(
           date
-        )} ${getHours(date)}:${getMinutes(date)}`;
+        )}:${getMinutes(date)}`;
         break;
       case DateRangeEnum.week:
         dateString = `${getYear(endOfWeek(date))}/w${getWeek(date)}`;
@@ -190,12 +186,8 @@ export class DateRange {
   public static getNowDomain(date: DateRegex, groupBy: DateRangeEnum): number {
     const groups = this.getRegexGroups(date);
     const now = new Date();
-    const nowGroups = this.getRegexGroups(
-      this.getDateString(now, DateRangeEnum.minute)
-    );
-    const nowWeekGroups = this.getRegexGroups(
-      this.getDateString(now, DateRangeEnum.week)
-    );
+    const nowGroups = this.getRegexGroups(this.getDateString(now, DateRangeEnum.minute));
+    const nowWeekGroups = this.getRegexGroups(this.getDateString(now, DateRangeEnum.week));
 
     switch (groupBy) {
       case DateRangeEnum.hour:
@@ -218,18 +210,12 @@ export class DateRange {
         }
         break;
       case DateRangeEnum.month:
-        if (
-          nowGroups.month === groups.month &&
-          nowGroups.year === groups.year
-        ) {
+        if (nowGroups.month === groups.month && nowGroups.year === groups.year) {
           return nowGroups.day;
         }
         break;
       case DateRangeEnum.week:
-        if (
-          nowWeekGroups.week === groups.week &&
-          nowWeekGroups.year === groups.year
-        ) {
+        if (nowWeekGroups.week === groups.week && nowWeekGroups.year === groups.year) {
           return getDay(now) + nowGroups.hour / 24;
         }
         break;

@@ -72,7 +72,11 @@ const CommentItem: React.FunctionComponent<
             </IconButton>
           )}
           {user?.isAllowed([PermissionsEnum.Comment__delete]) && (
-            <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(comment)}>
+            <IconButton
+              aria-label="settings"
+              size="small"
+              onClick={() => deleteWithConfirmation(comment)}
+            >
               <Delete />
             </IconButton>
           )}

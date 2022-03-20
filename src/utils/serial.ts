@@ -10,7 +10,7 @@ const filters: USBDeviceFilter[] = [
 export class Port {
   public device: USBDevice;
 
-  public interfaceNumber_: number;
+  public interfaceNumber: number;
 
   public interface: USBInterface;
 
@@ -20,7 +20,7 @@ export class Port {
 
   constructor(device: USBDevice) {
     this.device = device;
-    this.interfaceNumber_ = 2; // interface number defined in webusb arduino library
+    this.interfaceNumber = 2; // interface number defined in webusb arduino library
   }
 
   public async send(data: BufferSource): Promise<USBOutTransferResult> {
@@ -34,7 +34,7 @@ export class Port {
       recipient: 'interface',
       request: 0x22,
       value: 0x00,
-      index: this.interfaceNumber_,
+      index: this.interfaceNumber,
     });
     await this.device.close();
     this.interface = null;
@@ -62,7 +62,9 @@ export class Port {
 
     // find the interface which has 0xff interface class as its alternate and its interface number is 0 for esp, 2 for arduino
     this.interface = (this.device.configuration.interfaces || []).find(
-      (c) => !!c.alternates.find((a) => a.interfaceClass === 0xff) && c.interfaceNumber === this.interfaceNumber_
+      (c) =>
+        !!c.alternates.find((a) => a.interfaceClass === 0xff) &&
+        c.interfaceNumber === this.interfaceNumber
     );
     if (!this.interface) {
       throw new Error('Interface not found');

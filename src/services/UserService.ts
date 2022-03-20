@@ -1,14 +1,14 @@
-import User, { UserId } from "types/User";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import User, { UserId } from 'types/User';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class UserService {
   public static login = async (email, password) => {
-    const url = getUrl("/auth/login");
+    const url = getUrl('/auth/login');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify({ username: email, password }),
     });
 
@@ -20,24 +20,24 @@ export default class UserService {
   };
 
   public static logout = async () => {
-    const url = getUrl("/auth/logout");
+    const url = getUrl('/auth/logout');
 
     const resp = await fetch(url, {
-      method: "POST",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     await processResponse(resp);
   };
 
   public static loginWithGoogle = async (idToken: string) => {
-    const url = getUrl("/auth/google-login");
+    const url = getUrl('/auth/google-login');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
       headers: {
-        ...getHeaders({ contentType: "application/json" }),
+        ...getHeaders({ contentType: 'application/json' }),
         Authorization: idToken,
       },
     });
@@ -51,12 +51,12 @@ export default class UserService {
   };
 
   public static register = async (user: Partial<User>) => {
-    const url = getUrl("/auth/register");
+    const url = getUrl('/auth/register');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(user),
     });
 
@@ -66,12 +66,12 @@ export default class UserService {
   };
 
   public static listUsers = async () => {
-    const url = getUrl("/users");
+    const url = getUrl('/users');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -90,9 +90,9 @@ export default class UserService {
     const url = getUrl(`/users/${id}`);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -101,12 +101,12 @@ export default class UserService {
   };
 
   public static getMe = async (): Promise<User> => {
-    const url = getUrl("/users/me");
+    const url = getUrl('/users/me');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -114,16 +114,13 @@ export default class UserService {
     return s;
   };
 
-  public static updateUser = async (
-    id: UserId,
-    user: Partial<User>
-  ): Promise<User> => {
+  public static updateUser = async (id: UserId, user: Partial<User>): Promise<User> => {
     const url = getUrl(`/users/${id}`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(user),
     });
 
@@ -132,15 +129,13 @@ export default class UserService {
     return s;
   };
 
-  public static deleteUser = async (
-    id: UserId
-  ): Promise<{ success: string }> => {
+  public static deleteUser = async (id: UserId): Promise<{ success: string }> => {
     const url = getUrl(`/users/${id}`);
 
     const resp = await fetch(url, {
-      method: "DELETE",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'DELETE',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);

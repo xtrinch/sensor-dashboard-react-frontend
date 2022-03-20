@@ -27,7 +27,10 @@
     "react/prop-types": "off",
     "react/destructuring-assignment": "off",
     "import/extensions": "off",
-    "max-classes-per-file": "off"
+    "max-classes-per-file": "off",
+    "react/require-default-props": "off",
+    "no-empty": "off",
+    "operator-linebreak": "off"
   },
   "settings": {
     "import/resolver": {

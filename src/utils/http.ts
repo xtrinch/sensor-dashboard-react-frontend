@@ -1,42 +1,39 @@
-import { setError } from "context/ErrorContext";
+import { setError } from 'context/ErrorContext';
 
-export const serializeQuery = (params, prefix = ""): string => {
+export const serializeQuery = (params, prefix = ''): string => {
   if (!params) {
-    return "";
+    return '';
   }
 
   const query: string[] = Object.keys(params).map((key) => {
     let kk = key;
     const value = params[key];
     if (!value) {
-      return "";
+      return '';
     }
 
     if (params.constructor === Array) kk = `${prefix}[]`;
-    else if (params.constructor === Object)
-      kk = prefix ? `${prefix}[${kk}]` : kk;
+    else if (params.constructor === Object) kk = prefix ? `${prefix}[${kk}]` : kk;
 
-    if (typeof value === "object" && !(value instanceof Date)) {
+    if (typeof value === 'object' && !(value instanceof Date)) {
       return serializeQuery(value, kk);
     }
     return `${kk}=${encodeURIComponent(value)}`;
   });
 
-  return query.join("&");
+  return query.join('&');
 };
 
 export const getUrl = (urlString: string, queryParams: object = {}): string => {
   const url = `/api${urlString}`;
   const p = serializeQuery(queryParams);
-  return `${url}${p ? `?${p}` : ""}`;
+  return `${url}${p ? `?${p}` : ''}`;
 };
 
-export const getHeaders = (params: {
-  contentType?: string;
-}): { [key: string]: string } => ({
-  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  Accept: "application/json",
-  ...(params.contentType ? { "Content-Type": params.contentType } : undefined),
+export const getHeaders = (params: { contentType?: string }): { [key: string]: string } => ({
+  Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  Accept: 'application/json',
+  ...(params.contentType ? { 'Content-Type': params.contentType } : undefined),
 });
 
 export const processResponse = async (response) => {

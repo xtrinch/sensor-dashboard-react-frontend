@@ -32,9 +32,9 @@ const styles = (theme) =>
     },
   });
 
-const AddRadioPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
-  props
-) => {
+const AddRadioPage: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
+> = (props) => {
   const {
     classes,
     history,
@@ -111,7 +111,12 @@ const AddRadioPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
 
   return (
     <>
-      <TopBar alignItems="center" backEnabled backTo={DashboardRoutes.RADIO_LIST} color={ColorsEnum.BLUE}>
+      <TopBar
+        alignItems="center"
+        backEnabled
+        backTo={DashboardRoutes.RADIO_LIST}
+        color={ColorsEnum.BLUE}
+      >
         <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           {isEdit() ? 'Edit' : 'Add'} radio
         </Typography>
@@ -229,7 +234,11 @@ const AddRadioPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
                 style={{ marginTop: '5px', padding: '10px' }}
               />
             )}
-            <ColoredButton type="submit" style={{ marginTop: '20px' }} colorVariety={ColorsEnum.BLUE}>
+            <ColoredButton
+              type="submit"
+              style={{ marginTop: '20px' }}
+              colorVariety={ColorsEnum.BLUE}
+            >
               Submit
             </ColoredButton>
           </form>
