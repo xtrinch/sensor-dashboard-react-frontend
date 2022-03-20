@@ -93,7 +93,6 @@ const styles = (theme) =>
   });
 export interface DateInputProps {
   style?: CSSProperties;
-  label?: string;
   disabled?: boolean;
   onChange?: (e: string) => void;
   date?: DateRegex;

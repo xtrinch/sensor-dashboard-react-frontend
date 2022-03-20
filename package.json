@@ -24,7 +24,6 @@
     "react-dom": "^16.13.1",
     "react-json-view": "^1.21.1",
     "react-mde": "^11.0.6",
-    "react-router": "^6.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.0",
     "recharts": "^1.8.5",
@@ -36,7 +35,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts --openssl-legacy-provider --max_old_space_size=4096 build",
+    "build": "DISABLE_ESLINT_PLUGIN=true && react-scripts --openssl-legacy-provider --max_old_space_size=4096 build",
     "test": "react-scripts test",
     "format": "eslint src/**/**.{ts,tsx} --fix && prettier --write \"./src/**/*.{ts,tsx}\" --check --loglevel error"
   },
