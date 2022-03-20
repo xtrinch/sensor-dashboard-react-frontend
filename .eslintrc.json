@@ -57,7 +57,8 @@
     "function-paren-newline": "off",
     "react/jsx-curly-brace-presence": "off",
     "react/jsx-boolean-value": "off",
-    "react/no-unused-prop-types": "off"
+    "react/no-unused-prop-types": "off",
+    "react/jsx-curly-newline": "off"
   },
   "settings": {
     "import/resolver": {
