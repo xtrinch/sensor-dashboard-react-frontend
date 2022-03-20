@@ -1,14 +1,14 @@
-import Category, { CategoryId } from "types/Category";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import Category, { CategoryId } from 'types/Category';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class CategoryService {
   public static listCategories = async () => {
-    const url = getUrl("/categories");
+    const url = getUrl('/categories');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -27,9 +27,9 @@ export default class CategoryService {
     const url = getUrl(`/categories/${id}`);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -37,15 +37,13 @@ export default class CategoryService {
     return s;
   };
 
-  public static addCategory = async (
-    category: Partial<Category>
-  ): Promise<Category> => {
-    const url = getUrl("/categories");
+  public static addCategory = async (category: Partial<Category>): Promise<Category> => {
+    const url = getUrl('/categories');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(category),
     });
 
@@ -61,9 +59,9 @@ export default class CategoryService {
     const url = getUrl(`/categories/${id}`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(category),
     });
 
@@ -72,15 +70,13 @@ export default class CategoryService {
     return s;
   };
 
-  public static increaseInSequence = async (
-    id: CategoryId
-  ): Promise<Category> => {
+  public static increaseInSequence = async (id: CategoryId): Promise<Category> => {
     const url = getUrl(`/categories/${id}/increaseInSequence`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -88,15 +84,13 @@ export default class CategoryService {
     return s;
   };
 
-  public static decreaseInSequence = async (
-    id: CategoryId
-  ): Promise<Category> => {
+  public static decreaseInSequence = async (id: CategoryId): Promise<Category> => {
     const url = getUrl(`/categories/${id}/decreaseInSequence`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -104,15 +98,13 @@ export default class CategoryService {
     return s;
   };
 
-  public static deleteCategory = async (
-    id: CategoryId
-  ): Promise<{ success: string }> => {
+  public static deleteCategory = async (id: CategoryId): Promise<{ success: string }> => {
     const url = getUrl(`/categories/${id}`);
 
     const resp = await fetch(url, {
-      method: "DELETE",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'DELETE',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);

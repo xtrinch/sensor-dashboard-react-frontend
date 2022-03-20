@@ -1,14 +1,14 @@
-import Sensor, { SensorId } from "types/Sensor";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import Sensor, { SensorId } from 'types/Sensor';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class SensorService {
   public static listSensors = async (where: { [key: string]: any }) => {
-    const url = getUrl("/sensors", where);
+    const url = getUrl('/sensors', where);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -24,12 +24,12 @@ export default class SensorService {
   };
 
   public static listMySensors = async () => {
-    const url = getUrl("/sensors/my");
+    const url = getUrl('/sensors/my');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -44,15 +44,13 @@ export default class SensorService {
     };
   };
 
-  public static addSensor = async (
-    sensor: Partial<Sensor>
-  ): Promise<Sensor> => {
-    const url = getUrl("/sensors");
+  public static addSensor = async (sensor: Partial<Sensor>): Promise<Sensor> => {
+    const url = getUrl('/sensors');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(sensor),
     });
 
@@ -61,16 +59,13 @@ export default class SensorService {
     return s;
   };
 
-  public static updateSensor = async (
-    id: SensorId,
-    sensor: Partial<Sensor>
-  ): Promise<Sensor> => {
+  public static updateSensor = async (id: SensorId, sensor: Partial<Sensor>): Promise<Sensor> => {
     const url = getUrl(`/sensors/${id}`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(sensor),
     });
 
@@ -79,15 +74,13 @@ export default class SensorService {
     return s;
   };
 
-  public static deleteSensor = async (
-    id: SensorId
-  ): Promise<{ success: string }> => {
+  public static deleteSensor = async (id: SensorId): Promise<{ success: string }> => {
     const url = getUrl(`/sensors/${id}`);
 
     const resp = await fetch(url, {
-      method: "DELETE",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'DELETE',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -98,9 +91,9 @@ export default class SensorService {
     const url = getUrl(`/sensors/${id}`);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);

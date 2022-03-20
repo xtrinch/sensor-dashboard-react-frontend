@@ -1,14 +1,14 @@
-import Display, { DisplayId } from "types/Display";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import Display, { DisplayId } from 'types/Display';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class DisplayService {
   public static listDisplays = async () => {
-    const url = getUrl("/displays/my");
+    const url = getUrl('/displays/my');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -23,15 +23,13 @@ export default class DisplayService {
     };
   };
 
-  public static addDisplay = async (
-    display: Partial<Display>
-  ): Promise<Display> => {
-    const url = getUrl("/displays");
+  public static addDisplay = async (display: Partial<Display>): Promise<Display> => {
+    const url = getUrl('/displays');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(display),
     });
 
@@ -47,9 +45,9 @@ export default class DisplayService {
     const url = getUrl(`/displays/${id}`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(display),
     });
 
@@ -62,9 +60,9 @@ export default class DisplayService {
     const url = getUrl(`/displays/${id}`);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -72,15 +70,13 @@ export default class DisplayService {
     return s;
   };
 
-  public static deleteDisplay = async (
-    id: DisplayId
-  ): Promise<{ success: string }> => {
+  public static deleteDisplay = async (id: DisplayId): Promise<{ success: string }> => {
     const url = getUrl(`/displays/${id}`);
 
     const resp = await fetch(url, {
-      method: "DELETE",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'DELETE',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);

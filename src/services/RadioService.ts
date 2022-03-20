@@ -1,14 +1,14 @@
-import Radio, { RadioId } from "types/Radio";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import Radio, { RadioId } from 'types/Radio';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class RadioService {
   public static listRadios = async () => {
-    const url = getUrl("/radios");
+    const url = getUrl('/radios');
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -27,9 +27,9 @@ export default class RadioService {
     const url = getUrl(`/radios/${id}`);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -38,12 +38,12 @@ export default class RadioService {
   };
 
   public static addRadio = async (radio: Partial<Radio>): Promise<Radio> => {
-    const url = getUrl("/radios");
+    const url = getUrl('/radios');
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(radio),
     });
 
@@ -52,16 +52,13 @@ export default class RadioService {
     return s;
   };
 
-  public static updateRadio = async (
-    id: RadioId,
-    radio: Partial<Radio>
-  ): Promise<Radio> => {
+  public static updateRadio = async (id: RadioId, radio: Partial<Radio>): Promise<Radio> => {
     const url = getUrl(`/radios/${id}`);
 
     const resp = await fetch(url, {
-      method: "PUT",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'PUT',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
       body: JSON.stringify(radio),
     });
 
@@ -74,9 +71,9 @@ export default class RadioService {
     const url = getUrl(`/radios/${id}/request-config`);
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
@@ -87,24 +84,22 @@ export default class RadioService {
     const url = getUrl(`/radios/${id}/send-config`);
 
     const resp = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
     return result;
   };
 
-  public static deleteRadio = async (
-    id: RadioId
-  ): Promise<{ success: string }> => {
+  public static deleteRadio = async (id: RadioId): Promise<{ success: string }> => {
     const url = getUrl(`/radios/${id}`);
 
     const resp = await fetch(url, {
-      method: "DELETE",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'DELETE',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);
