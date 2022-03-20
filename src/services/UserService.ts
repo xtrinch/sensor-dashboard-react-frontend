@@ -101,7 +101,7 @@ export default class UserService {
   };
 
   public static getMe = async (): Promise<User> => {
-    const url = getUrl(`/users/me`);
+    const url = getUrl("/users/me");
 
     const resp = await fetch(url, {
       method: "GET",
