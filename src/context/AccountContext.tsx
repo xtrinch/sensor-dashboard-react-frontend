@@ -1,37 +1,28 @@
 import { SensorContext } from "context/SensorContext";
 import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useState } from "react";
+import { makeAutoObservable } from "mobx";
+import React, { createContext, useContext } from "react";
 import UserService from "services/UserService";
 import { Toast } from "types/Toast";
 import User from "types/User";
 
-const AccountContext = createContext<{
-  user?: User;
-  loginState?: "LOGGED_OUT" | "LOGGED_IN" | "LOGIN_ERROR" | string;
-  login?: (email: string, password: string) => Promise<User>;
-  loginWithGoogle?: (idToken: string) => Promise<User>;
-  register?: (user: Partial<User>) => Promise<User>;
-  logout?: () => Promise<void>;
-  getMyData?: () => Promise<User>;
-}>({});
+const AccountContext = createContext<AccountStore>(null);
 
-function AccountContextProvider(props) {
-  const { clearMySensors } = useContext(SensorContext);
+class AccountStore {
+  public user: User = localStorage.getItem("user")
+    ? new User(JSON.parse(localStorage.getItem("user")))
+    : null;
 
-  let [user, setUser] = useState(() =>
-    localStorage.getItem("user")
-      ? new User(JSON.parse(localStorage.getItem("user")))
-      : null
-  );
+  public loginState = localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT";
 
-  let [loginState, setLoginState] = useState(() =>
-    localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT"
-  );
+  constructor(public sensorContext: any) {
+    makeAutoObservable(this);
+  }
 
-  const setStateWithSideEffects = (newState: any) => {
+  public setStateWithSideEffects = (newState: any) => {
     // save to local storage
     if (newState.loginState) {
-      setLoginState(newState.loginState);
+      this.loginState = newState.loginState;
       if (newState.loginState === "LOGGED_OUT") {
         localStorage.removeItem("user");
       }
@@ -39,14 +30,14 @@ function AccountContextProvider(props) {
     if (newState.user) {
       localStorage.setItem("user", JSON.stringify(newState.user));
     }
-    setUser(newState.user);
+    this.user = newState.user;
   };
 
-  const login = async (email: string, password: string): Promise<User> => {
+  public login = async (email: string, password: string): Promise<User> => {
     try {
       const { user } = await UserService.login(email, password);
       if (user) {
-        setStateWithSideEffects({
+        this.setStateWithSideEffects({
           user: user,
           loginState: "LOGGED_IN",
         });
@@ -54,51 +45,53 @@ function AccountContextProvider(props) {
         return user;
       }
     } catch (e) {
-      setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
+      this.setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
       throw e;
     }
 
     return null;
   };
 
-  const getMyData = async (): Promise<User> => {
+  public getMyData = async (): Promise<User> => {
     try {
       const user = await UserService.getMe();
-      setStateWithSideEffects({
+      this.setStateWithSideEffects({
         user,
         loginState: "LOGGED_IN",
       });
 
       return user;
     } catch (e) {
-      setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
+      this.setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
       throw e;
     }
   };
 
-  const register = async (user: Partial<User>) => {
-    return await UserService.register(user);
+  public register = async (user: Partial<User>) => {
+    return UserService.register(user);
   };
 
-  const logout = async (): Promise<void> => {
+  public logout = async (): Promise<void> => {
     await UserService.logout();
 
-    setStateWithSideEffects({
+    this.setStateWithSideEffects({
       loginState: "LOGGED_OUT",
       user: undefined,
     });
 
-    if (clearMySensors) {
-      clearMySensors();
+    if (this.sensorContext.clearMySensors) {
+      this.sensorContext.clearMySensors();
     }
 
     addToast(new Toast({ message: "Logout successful", type: "success" }));
   };
+}
+
+function AccountContextProvider(props) {
+  const sensorContext = useContext(SensorContext);
 
   return (
-    <AccountContext.Provider
-      value={{ user, loginState, login, logout, register, getMyData }}
-    >
+    <AccountContext.Provider value={new AccountStore(sensorContext)}>
       {props.children}
     </AccountContext.Provider>
   );
