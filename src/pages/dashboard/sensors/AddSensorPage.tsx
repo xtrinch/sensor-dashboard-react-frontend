@@ -193,7 +193,9 @@ const AddSensorPage: React.FunctionComponent<
                   control={
                     <Checkbox
                       checked={data.private || false}
-                      onChange={(e, checked) => fieldChange(checked, "private")}
+                      onChange={(_e, checked) =>
+                        fieldChange(checked, "private")
+                      }
                     />
                   }
                   label="Private"
