@@ -1,55 +1,48 @@
-import {
-  Button,
-  ButtonGroup,
-  createStyles,
-  Grid,
-  WithStyles,
-  withStyles,
-} from "@material-ui/core";
-import DateInput from "components/DateInput";
-import TopBar from "components/TopBar";
-import { AppContext } from "context/AppContext";
-import React, { useContext } from "react";
-import ColorsEnum from "types/ColorsEnum";
-import DomainTypeEnum from "types/DomainTypeEnum";
-import { DateRangeEnum } from "utils/date.range";
-import TimeInput from "./TimeInput";
-import { observer } from "mobx-react-lite";
+import { Button, ButtonGroup, createStyles, Grid, WithStyles, withStyles } from '@material-ui/core';
+import DateInput from 'components/DateInput';
+import TopBar from 'components/TopBar';
+import { AppContext } from 'context/AppContext';
+import React, { useContext } from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import DomainTypeEnum from 'types/DomainTypeEnum';
+import { DateRangeEnum } from 'utils/date.range';
+import TimeInput from './TimeInput';
+import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
     dateButtonGroup: {
       backgroundColor: ColorsEnum.BGLIGHTER,
-      "& button": {
-        borderRadius: "0px",
+      '& button': {
+        borderRadius: '0px',
         border: `1px solid ${ColorsEnum.GRAYDARK}`,
-        "&:hover": {
+        '&:hover': {
           border: `1px solid ${ColorsEnum.GRAYDARK}`,
         },
         color: ColorsEnum.GRAY,
       },
-      maxWidth: "calc(100vw - 40px)",
+      maxWidth: 'calc(100vw - 40px)',
     },
     activeButton: {
       backgroundColor: ColorsEnum.BLUE,
       color: `${ColorsEnum.WHITE}!important`,
       border: `1px solid ${ColorsEnum.BLUE}`,
-      "&:hover": {
+      '&:hover': {
         backgroundColor: ColorsEnum.BLUE,
       },
     },
     timePicker: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "13px 20px",
-      [theme.breakpoints.up("md")]: {
-        left: "270px",
+      padding: '13px 20px',
+      [theme.breakpoints.up('md')]: {
+        left: '270px',
       },
-      boxShadow: "none",
+      boxShadow: 'none',
     },
     dateGridItem: {
-      [theme.breakpoints.down("sm")]: {
-        marginRight: "0px",
-        marginLeft: "auto",
+      [theme.breakpoints.down('sm')]: {
+        marginRight: '0px',
+        marginLeft: 'auto',
       },
     },
   });
@@ -70,11 +63,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   return (
     <TopBar noGridItem>
       <Grid item className={classes.dateGridItem}>
-        <DateInput
-          groupBy={appContext.groupBy}
-          date={appContext.date}
-          onChange={onChangeDate}
-        />
+        <DateInput groupBy={appContext.groupBy} date={appContext.date} onChange={onChangeDate} />
       </Grid>
       <Grid item>
         <ButtonGroup
@@ -90,9 +79,7 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
             .map((val) => (
               <Button
                 onClick={() => onChangeGroupBy(val)}
-                className={
-                  appContext.groupBy === val ? classes.activeButton : undefined
-                }
+                className={appContext.groupBy === val ? classes.activeButton : undefined}
                 key={val}
               >
                 {val}
@@ -116,31 +103,23 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
         >
           <Button
             style={{
-              borderWidth: "0px",
-              cursor: "default",
+              borderWidth: '0px',
+              cursor: 'default',
               backgroundColor: ColorsEnum.BGLIGHT,
-              textTransform: "capitalize",
+              textTransform: 'capitalize',
             }}
           >
             Y Domain:
           </Button>
           <Button
             onClick={() => appContext.setDomain(DomainTypeEnum.FULL)}
-            className={
-              appContext.domain === DomainTypeEnum.FULL
-                ? classes.activeButton
-                : undefined
-            }
+            className={appContext.domain === DomainTypeEnum.FULL ? classes.activeButton : undefined}
           >
             FULL
           </Button>
           <Button
             onClick={() => appContext.setDomain(DomainTypeEnum.AUTO)}
-            className={
-              appContext.domain === DomainTypeEnum.AUTO
-                ? classes.activeButton
-                : undefined
-            }
+            className={appContext.domain === DomainTypeEnum.AUTO ? classes.activeButton : undefined}
           >
             AUTO
           </Button>

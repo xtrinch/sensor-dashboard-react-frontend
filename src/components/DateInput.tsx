@@ -22,7 +22,13 @@ import {
 } from 'date-fns';
 import React, { useEffect } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
-import { DateRange, DateRangeEnum, DateRegex, DATE_REGEX, MONTH_YEAR_REGEX } from 'utils/date.range';
+import {
+  DateRange,
+  DateRangeEnum,
+  DateRegex,
+  DATE_REGEX,
+  MONTH_YEAR_REGEX,
+} from 'utils/date.range';
 import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>

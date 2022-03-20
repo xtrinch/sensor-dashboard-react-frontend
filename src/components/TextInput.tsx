@@ -1,7 +1,7 @@
-import { FormControl, InputLabel, TextField } from "@material-ui/core";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import { TextFieldProps } from "@material-ui/core/TextField";
-import React from "react";
+import { FormControl, InputLabel, TextField } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { TextFieldProps } from '@material-ui/core/TextField';
+import React from 'react';
 
 const styles = (theme) =>
   createStyles({
@@ -18,16 +18,11 @@ const TextInput: React.FunctionComponent<
   const { classes, colorVariety, children, label, ...rest } = props;
 
   return (
-    <FormControl {...(rest.fullWidth ? { style: { width: "100%" } } : {})}>
-      <InputLabel shrink style={{ fontSize: "17px" }}>
+    <FormControl {...(rest.fullWidth ? { style: { width: '100%' } } : {})}>
+      <InputLabel shrink style={{ fontSize: '17px' }}>
         {label}
       </InputLabel>
-      <TextField
-        variant={"outlined" as any}
-        margin="normal"
-        fullWidth
-        {...rest}
-      />
+      <TextField variant={'outlined' as any} margin="normal" fullWidth {...rest} />
     </FormControl>
   );
 };

@@ -57,7 +57,11 @@ function UserContextProvider(props) {
     }
   }, [state]);
 
-  return <UserContext.Provider value={{ state, updateUser, deleteUser }}>{props.children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ state, updateUser, deleteUser }}>
+      {props.children}
+    </UserContext.Provider>
+  );
 }
 
 export { UserContext, UserContextProvider };

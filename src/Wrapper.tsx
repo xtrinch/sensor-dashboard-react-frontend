@@ -1,8 +1,8 @@
-import { createStyles, withStyles, WithStyles } from "@material-ui/core";
-import { ConfirmationContext } from "context/ConfirmationContext";
-import { ErrorContext } from "context/ErrorContext";
-import { ToastContext } from "context/ToastContext";
-import React, { useContext } from "react";
+import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { ConfirmationContext } from 'context/ConfirmationContext';
+import { ErrorContext } from 'context/ErrorContext';
+import { ToastContext } from 'context/ToastContext';
+import React, { useContext } from 'react';
 
 const styles = (theme) => createStyles({});
 

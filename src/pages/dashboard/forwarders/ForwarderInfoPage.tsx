@@ -1,42 +1,42 @@
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { openConfirmation } from "context/ConfirmationContext";
-import { ForwarderContext } from "context/ForwarderContext";
-import { format } from "date-fns";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ForwarderService from "services/ForwarderService";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
-import Forwarder, { ForwarderId } from "types/Forwarder";
-import { DATETIME_REGEX } from "utils/date.range";
+import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { ForwarderContext } from 'context/ForwarderContext';
+import { format } from 'date-fns';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ForwarderService from 'services/ForwarderService';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
+import Forwarder, { ForwarderId } from 'types/Forwarder';
+import { DATETIME_REGEX } from 'utils/date.range';
 
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: "30px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      marginTop: '30px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {
@@ -48,9 +48,9 @@ const styles = (theme) =>
       color: ColorsEnum.WHITE,
     },
     action: {
-      position: "absolute",
-      right: "25px",
-      bottom: "25px",
+      position: 'absolute',
+      right: '25px',
+      bottom: '25px',
     },
   });
 
@@ -70,9 +70,9 @@ const ForwarderInfoPage: React.FunctionComponent<
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
-    name: "",
-    location: "",
-    boardType: "" as BoardTypeEnum,
+    name: '',
+    location: '',
+    boardType: '' as BoardTypeEnum,
   });
 
   const [forwarder, setForwarder] = useState(null);
@@ -82,18 +82,12 @@ const ForwarderInfoPage: React.FunctionComponent<
       await deleteForwarder(forwarder.id);
       history.push(DashboardRoutes.FORWARDER_LIST);
     };
-    openConfirmation(
-      onConfirm,
-      null,
-      "Are you sure you want to delete forwarder?"
-    );
+    openConfirmation(onConfirm, null, 'Are you sure you want to delete forwarder?');
   };
 
   useEffect(() => {
     const getForwarder = async () => {
-      const s = await ForwarderService.getForwarder(
-        (id as unknown) as ForwarderId
-      );
+      const s = await ForwarderService.getForwarder((id as unknown) as ForwarderId);
       setForwarder(s);
       setData((d) => ({
         ...d,
@@ -110,10 +104,7 @@ const ForwarderInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateForwarder(
-        (id as unknown) as ForwarderId,
-        new Forwarder(data)
-      );
+      await updateForwarder((id as unknown) as ForwarderId, new Forwarder(data));
     } catch (e) {
       setErrors(e);
     }
@@ -154,7 +145,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               name="accessToken"
               label="Forwarder access token"
               disabled
-              value={forwarder?.accessToken || ""}
+              value={forwarder?.accessToken || ''}
             />
             <TextInput
               variant="outlined"
@@ -165,9 +156,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               label="Last seen at"
               disabled
               value={
-                forwarder?.lastSeenAt
-                  ? format(forwarder?.lastSeenAt, DATETIME_REGEX)
-                  : "Never"
+                forwarder?.lastSeenAt ? format(forwarder?.lastSeenAt, DATETIME_REGEX) : 'Never'
               }
             />
             <TextInput
@@ -189,7 +178,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               label="Forwarder name"
               name="name"
               value={data.name}
-              onChange={(e) => fieldChange(e.target.value, "name")}
+              onChange={(e) => fieldChange(e.target.value, 'name')}
               error={!!errors.name}
               helperText={errors.name}
             />
@@ -203,7 +192,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               id="location"
               autoComplete="current-location"
               value={data.location}
-              onChange={(e) => fieldChange(e.target.value, "location")}
+              onChange={(e) => fieldChange(e.target.value, 'location')}
               error={!!errors.location}
               helperText={errors.location}
             />
@@ -212,7 +201,7 @@ const ForwarderInfoPage: React.FunctionComponent<
               value={data.boardType}
               fullWidth
               options={Object.keys(BoardTypeEnum)}
-              onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+              onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
               label="Board type"
               variant="outlined"
               margin="normal"
@@ -222,7 +211,7 @@ const ForwarderInfoPage: React.FunctionComponent<
             <ColoredButton
               type="submit"
               fullWidth
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: '20px' }}
               colorVariety={ColorsEnum.BLUE}
             >
               Update

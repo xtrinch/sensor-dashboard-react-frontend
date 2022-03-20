@@ -1,10 +1,10 @@
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import { CategoryContextProvider } from "context/CategoryContext";
-import CategoryIndexPage from "pages/forum/categories/CategoryIndexPage";
-import { ForumRoutes } from "pages/forum/ForumRoutes";
-import TopicIndexPage from "pages/forum/topic/TopicIndexPage";
-import React from "react";
-import { Route, RouteComponentProps, withRouter } from "react-router";
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { CategoryContextProvider } from 'context/CategoryContext';
+import CategoryIndexPage from 'pages/forum/categories/CategoryIndexPage';
+import { ForumRoutes } from 'pages/forum/ForumRoutes';
+import TopicIndexPage from 'pages/forum/topic/TopicIndexPage';
+import React from 'react';
+import { Route, RouteComponentProps, withRouter } from 'react-router';
 
 const styles = (theme) => createStyles({});
 

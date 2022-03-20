@@ -22,7 +22,9 @@ const styles = (theme) =>
     },
   });
 
-const UserPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (props) => {
+const UserPage: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
+> = (props) => {
   const {
     classes,
     match: { params },

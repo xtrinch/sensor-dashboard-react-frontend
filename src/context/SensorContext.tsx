@@ -81,7 +81,11 @@ function SensorContextProvider(props) {
     return s;
   };
 
-  const updateSensor = async (id: SensorId, sensor: Partial<Sensor>, skipApiCall?: boolean): Promise<Sensor> => {
+  const updateSensor = async (
+    id: SensorId,
+    sensor: Partial<Sensor>,
+    skipApiCall?: boolean
+  ): Promise<Sensor> => {
     let s;
     if (skipApiCall) {
       s = sensor;

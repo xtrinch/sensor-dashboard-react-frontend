@@ -1,37 +1,30 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Plus from "@material-ui/icons/Add";
-import ColoredButton from "components/ColoredButton";
-import TopBar from "components/TopBar";
-import { ForwarderContext } from "context/ForwarderContext";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import ForwarderItem from "pages/dashboard/forwarders/components/ForwarderItem";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ColorsEnum from "types/ColorsEnum";
-import Forwarder from "types/Forwarder";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Plus from '@material-ui/icons/Add';
+import ColoredButton from 'components/ColoredButton';
+import TopBar from 'components/TopBar';
+import { ForwarderContext } from 'context/ForwarderContext';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import ForwarderItem from 'pages/dashboard/forwarders/components/ForwarderItem';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ColorsEnum from 'types/ColorsEnum';
+import Forwarder from 'types/Forwarder';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      textAlign: "center",
-      marginTop: "30px",
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      textAlign: 'center',
+      marginTop: '30px',
     },
     actionButton: {
       backgroundColor: ColorsEnum.OLIVE,
       color: ColorsEnum.WHITE,
-      width: "fit-content",
+      width: 'fit-content',
     },
   });
 
@@ -47,7 +40,7 @@ const ForwarderListPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center">
-        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           My forwarder devices
         </Typography>
         <ColoredButton
@@ -79,11 +72,7 @@ const ForwarderListPage: React.FunctionComponent<
           </Table>
         )}
         {forwarders.length === 0 && (
-          <Typography
-            variant="body2"
-            component="p"
-            style={{ margin: "30px 0px" }}
-          >
+          <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No forwarders added
           </Typography>
         )}

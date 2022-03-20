@@ -1,8 +1,8 @@
-import React, { Context, createContext, Dispatch, useReducer } from "react";
-import { Toast } from "types/Toast";
+import React, { Context, createContext, Dispatch, useReducer } from 'react';
+import { Toast } from 'types/Toast';
 
 export const addToast = (toast: Toast) => {
-  ToastContext.dispatch({ type: "addToast", payload: toast });
+  ToastContext.dispatch({ type: 'addToast', payload: toast });
 
   setTimeout(() => {
     removeToast(toast);
@@ -10,7 +10,7 @@ export const addToast = (toast: Toast) => {
 };
 
 export const removeToast = (toast: Toast) => {
-  ToastContext.dispatch({ type: "removeToast", payload: toast });
+  ToastContext.dispatch({ type: 'removeToast', payload: toast });
 };
 
 type ToastContextState = {
@@ -22,32 +22,27 @@ const initialState: ToastContextState = {
 };
 
 export type ToastActionTypes =
-  | { type: "addToast"; payload: Toast }
-  | { type: "removeToast"; payload: Toast };
+  | { type: 'addToast'; payload: Toast }
+  | { type: 'removeToast'; payload: Toast };
 
-const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(
-  null
-) as Context<[ToastContextState, Dispatch<any>]> & {
+const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(null) as Context<
+  [ToastContextState, Dispatch<any>]
+> & {
   dispatch: React.Dispatch<any>;
 };
 
 function ToastContextProvider(props) {
-  let reducer = (
-    state: ToastContextState,
-    action: ToastActionTypes
-  ): ToastContextState => {
+  let reducer = (state: ToastContextState, action: ToastActionTypes): ToastContextState => {
     switch (action.type) {
-      case "addToast":
+      case 'addToast':
         return {
           ...state,
           toasts: [...state.toasts, action.payload],
         };
-      case "removeToast":
+      case 'removeToast':
         return {
           ...state,
-          toasts: state.toasts.filter(
-            (toast) => toast.id !== action.payload.id
-          ),
+          toasts: state.toasts.filter((toast) => toast.id !== action.payload.id),
         };
       default: {
         return { ...state };
@@ -57,11 +52,7 @@ function ToastContextProvider(props) {
 
   let [state, dispatch] = useReducer(reducer, initialState);
 
-  return (
-    <ToastContext.Provider value={[state, dispatch]}>
-      {props.children}
-    </ToastContext.Provider>
-  );
+  return <ToastContext.Provider value={[state, dispatch]}>{props.children}</ToastContext.Provider>;
 }
 
 export { ToastContext, ToastContextProvider };

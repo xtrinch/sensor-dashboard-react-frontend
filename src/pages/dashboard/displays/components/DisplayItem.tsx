@@ -1,41 +1,36 @@
-import { TableCell, TableRow } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import {
-  createStyles,
-  Theme,
-  WithStyles,
-  withStyles,
-} from "@material-ui/core/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { openConfirmation } from "context/ConfirmationContext";
-import { DisplayContext } from "context/DisplayContext";
-import { format } from "date-fns";
-import { getDisplayRoute } from "pages/dashboard/DashboardRoutes";
-import React, { useContext } from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
-import { DATETIME_REGEX } from "utils/date.range";
+import { TableCell, TableRow } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { DisplayContext } from 'context/DisplayContext';
+import { format } from 'date-fns';
+import { getDisplayRoute } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import ColorsEnum from 'types/ColorsEnum';
+import Display from 'types/Display';
+import { DATETIME_REGEX } from 'utils/date.range';
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      margin: "0px 0px",
+      margin: '0px 0px',
       backgroundColor: ColorsEnum.BGLIGHT,
       borderRadius: 0,
-      boxShadow: "none",
+      boxShadow: 'none',
       borderBottom: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
     action: {
-      marginTop: "0px",
+      marginTop: '0px',
     },
     avatar: {
       backgroundColor: ColorsEnum.BLUE,
-      color: "white",
+      color: 'white',
     },
     cardHeader: {
-      padding: "10px",
+      padding: '10px',
     },
   });
 
@@ -49,11 +44,7 @@ const DisplayItem: React.FunctionComponent<
     const onConfirm = async () => {
       await deleteDisplay(display.id);
     };
-    openConfirmation(
-      onConfirm,
-      null,
-      "Are you sure you want to delete display?"
-    );
+    openConfirmation(onConfirm, null, 'Are you sure you want to delete display?');
   };
 
   return (
@@ -62,11 +53,9 @@ const DisplayItem: React.FunctionComponent<
       <TableCell>{display.boardType}</TableCell>
       <TableCell>{format(display.createdAt, DATETIME_REGEX)}</TableCell>
       <TableCell>
-        {display.lastSeenAt
-          ? format(display.lastSeenAt, DATETIME_REGEX)
-          : "Never"}
+        {display.lastSeenAt ? format(display.lastSeenAt, DATETIME_REGEX) : 'Never'}
       </TableCell>
-      <TableCell style={{ width: "100px" }}>
+      <TableCell style={{ width: '100px' }}>
         <Link to={getDisplayRoute(display.id)}>
           <IconButton aria-label="add to favorites" size="small">
             <SettingsIcon />

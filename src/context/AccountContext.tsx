@@ -1,19 +1,19 @@
-import { SensorContext } from "context/SensorContext";
-import { addToast } from "context/ToastContext";
-import { makeAutoObservable } from "mobx";
-import React, { createContext, useContext } from "react";
-import UserService from "services/UserService";
-import { Toast } from "types/Toast";
-import User from "types/User";
+import { SensorContext } from 'context/SensorContext';
+import { addToast } from 'context/ToastContext';
+import { makeAutoObservable } from 'mobx';
+import React, { createContext, useContext } from 'react';
+import UserService from 'services/UserService';
+import { Toast } from 'types/Toast';
+import User from 'types/User';
 
 export const AccountContext = createContext<AccountStore>(null);
 
 class AccountStore {
-  public user: User = localStorage.getItem("user")
-    ? new User(JSON.parse(localStorage.getItem("user")))
+  public user: User = localStorage.getItem('user')
+    ? new User(JSON.parse(localStorage.getItem('user')))
     : null;
 
-  public loginState = localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT";
+  public loginState = localStorage.getItem('user') ? 'LOGGED_IN' : 'LOGGED_OUT';
 
   constructor(public sensorContext: any) {
     makeAutoObservable(this);
@@ -22,16 +22,14 @@ class AccountStore {
   private setUser = (user: User) => {
     this.user = user;
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(user));
     }
   };
 
-  private setLoginState = (
-    loginState: "LOGGED_IN" | "LOGGED_OUT" | "LOGIN_ERROR"
-  ) => {
+  private setLoginState = (loginState: 'LOGGED_IN' | 'LOGGED_OUT' | 'LOGIN_ERROR') => {
     this.loginState = loginState;
-    if (loginState === "LOGGED_OUT") {
-      localStorage.removeItem("user");
+    if (loginState === 'LOGGED_OUT') {
+      localStorage.removeItem('user');
     }
   };
 
@@ -40,12 +38,12 @@ class AccountStore {
       const { user } = await UserService.login(email, password);
       if (user) {
         this.setUser(user);
-        this.setLoginState("LOGGED_IN");
+        this.setLoginState('LOGGED_IN');
 
         return user;
       }
     } catch (e) {
-      this.setLoginState("LOGIN_ERROR");
+      this.setLoginState('LOGIN_ERROR');
       throw e;
     }
 
@@ -56,11 +54,11 @@ class AccountStore {
     try {
       const user = await UserService.getMe();
       this.setUser(user);
-      this.setLoginState("LOGGED_IN");
+      this.setLoginState('LOGGED_IN');
 
       return user;
     } catch (e) {
-      this.setLoginState("LOGIN_ERROR");
+      this.setLoginState('LOGIN_ERROR');
       throw e;
     }
   };
@@ -72,14 +70,14 @@ class AccountStore {
   public logout = async (): Promise<void> => {
     await UserService.logout();
 
-    this.setLoginState("LOGGED_OUT");
+    this.setLoginState('LOGGED_OUT');
     this.setUser(undefined);
 
     if (this.sensorContext.clearMySensors) {
       this.sensorContext.clearMySensors();
     }
 
-    addToast(new Toast({ message: "Logout successful", type: "success" }));
+    addToast(new Toast({ message: 'Logout successful', type: 'success' }));
   };
 }
 

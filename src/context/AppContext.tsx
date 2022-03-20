@@ -1,7 +1,7 @@
-import { makeAutoObservable } from "mobx";
-import React, { createContext } from "react";
-import DomainTypeEnum from "types/DomainTypeEnum";
-import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
+import { makeAutoObservable } from 'mobx';
+import React, { createContext } from 'react';
+import DomainTypeEnum from 'types/DomainTypeEnum';
+import { DateRange, DateRangeEnum, DateRegex } from 'utils/date.range';
 
 export const AppContext = createContext<AppStore>(null);
 
@@ -10,10 +10,7 @@ class AppStore {
 
   public groupBy: DateRangeEnum = DateRangeEnum.day;
 
-  public date: DateRegex = DateRange.getDateString(
-    new Date(),
-    DateRangeEnum.day
-  );
+  public date: DateRegex = DateRange.getDateString(new Date(), DateRangeEnum.day);
 
   public domain: DomainTypeEnum = DomainTypeEnum.FULL;
 
@@ -40,9 +37,5 @@ class AppStore {
 }
 
 export function AppContextProvider(props) {
-  return (
-    <AppContext.Provider value={new AppStore()}>
-      {props.children}
-    </AppContext.Provider>
-  );
+  return <AppContext.Provider value={new AppStore()}>{props.children}</AppContext.Provider>;
 }

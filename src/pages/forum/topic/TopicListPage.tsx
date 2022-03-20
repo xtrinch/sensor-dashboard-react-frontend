@@ -1,36 +1,29 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Plus from "@material-ui/icons/Add";
-import ColoredButton from "components/ColoredButton";
-import TopBar from "components/TopBar";
-import { AccountContext } from "context/AccountContext";
-import { CategoryContext } from "context/CategoryContext";
-import { TopicContext } from "context/TopicContext";
-import { ForumRoutes, getAddTopicRoute } from "pages/forum/ForumRoutes";
-import TopicItem from "pages/forum/topic/components/TopicItem";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ColorsEnum from "types/ColorsEnum";
-import { PermissionsEnum } from "types/PermissionEnum";
-import Topic from "types/Topic";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Plus from '@material-ui/icons/Add';
+import ColoredButton from 'components/ColoredButton';
+import TopBar from 'components/TopBar';
+import { AccountContext } from 'context/AccountContext';
+import { CategoryContext } from 'context/CategoryContext';
+import { TopicContext } from 'context/TopicContext';
+import { ForumRoutes, getAddTopicRoute } from 'pages/forum/ForumRoutes';
+import TopicItem from 'pages/forum/topic/components/TopicItem';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ColorsEnum from 'types/ColorsEnum';
+import { PermissionsEnum } from 'types/PermissionEnum';
+import Topic from 'types/Topic';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      textAlign: "center",
-      marginTop: "30px",
-      marginBottom: "30px",
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      textAlign: 'center',
+      marginTop: '30px',
+      marginBottom: '30px',
     },
   });
 
@@ -56,17 +49,11 @@ const TopicListPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar
-        alignItems="center"
-        backEnabled
-        backTo={ForumRoutes.FORUM}
-        color={ColorsEnum.OLIVE}
-      >
-        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
+      <TopBar alignItems="center" backEnabled backTo={ForumRoutes.FORUM} color={ColorsEnum.OLIVE}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           {category?.name}
         </Typography>
-        {(user?.isAllowed([PermissionsEnum.Topic__create]) ||
-          !category.protected) && (
+        {(user?.isAllowed([PermissionsEnum.Topic__create]) || !category.protected) && (
           <ColoredButton
             startIcon={<Plus />}
             onClick={() => history.push(getAddTopicRoute(category.id))}
@@ -84,9 +71,7 @@ const TopicListPage: React.FunctionComponent<
               <TableRow>
                 <TableCell>Topic name</TableCell>
                 <TableCell>Comments</TableCell>
-                <TableCell style={{ paddingLeft: "0px" }}>
-                  Last comment
-                </TableCell>
+                <TableCell style={{ paddingLeft: '0px' }}>Last comment</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
@@ -99,10 +84,7 @@ const TopicListPage: React.FunctionComponent<
         )}
       </Container>
       {topics.length === 0 && (
-        <Typography
-          variant="body2"
-          style={{ margin: "30px 0px", textAlign: "center" }}
-        >
+        <Typography variant="body2" style={{ margin: '30px 0px', textAlign: 'center' }}>
           No topics added
         </Typography>
       )}

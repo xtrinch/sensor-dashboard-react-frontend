@@ -1,33 +1,26 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Plus from "@material-ui/icons/Add";
-import ColoredButton from "components/ColoredButton";
-import TopBar from "components/TopBar";
-import { RadioContext } from "context/RadioContext";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import RadioItem from "pages/dashboard/radios/components/RadioItem";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ColorsEnum from "types/ColorsEnum";
-import Radio from "types/Radio";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Plus from '@material-ui/icons/Add';
+import ColoredButton from 'components/ColoredButton';
+import TopBar from 'components/TopBar';
+import { RadioContext } from 'context/RadioContext';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import RadioItem from 'pages/dashboard/radios/components/RadioItem';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ColorsEnum from 'types/ColorsEnum';
+import Radio from 'types/Radio';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      textAlign: "center",
-      marginTop: "30px",
-      marginBottom: "30px",
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      textAlign: 'center',
+      marginTop: '30px',
+      marginBottom: '30px',
     },
   });
 
@@ -42,7 +35,7 @@ const RadioListPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center" color={ColorsEnum.BLUE}>
-        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           Radio list
         </Typography>
         <ColoredButton
@@ -75,10 +68,7 @@ const RadioListPage: React.FunctionComponent<
         )}
       </Container>
       {radios.length === 0 && (
-        <Typography
-          variant="body2"
-          style={{ margin: "30px 0px", textAlign: "center" }}
-        >
+        <Typography variant="body2" style={{ margin: '30px 0px', textAlign: 'center' }}>
           No radios added
         </Typography>
       )}

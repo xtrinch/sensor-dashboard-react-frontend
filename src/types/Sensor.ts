@@ -1,10 +1,10 @@
-import { parseISO } from "date-fns";
-import { AbstractEntity } from "types/AbstractEntity";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import { IotDeviceInterface } from "types/IotDeviceInterface";
-import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import SensorTypeEnum from "types/SensorTypeEnum";
-import User, { UserId } from "types/User";
+import { parseISO } from 'date-fns';
+import { AbstractEntity } from 'types/AbstractEntity';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import { IotDeviceInterface } from 'types/IotDeviceInterface';
+import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
+import SensorTypeEnum from 'types/SensorTypeEnum';
+import User, { UserId } from 'types/User';
 
 export type SensorId = string;
 
@@ -12,8 +12,8 @@ class Sensor extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {
     super(s);
 
-    this.name = s?.name || "";
-    this.displayName = s?.displayName || "";
+    this.name = s?.name || '';
+    this.displayName = s?.displayName || '';
     this.type = s?.type || undefined;
     this.visible = s?.visible || true;
     this.expanded = false;
@@ -65,31 +65,31 @@ class Sensor extends AbstractEntity implements IotDeviceInterface {
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {
       domain: [0, 2000],
-      unit: "m",
+      unit: 'm',
     },
     [MeasurementTypeEnum.GAS]: {
       domain: [0, 30],
-      unit: "kΩ",
+      unit: 'kΩ',
     },
     [MeasurementTypeEnum.HUMIDITY]: {
       domain: [0, 100],
-      unit: "%",
+      unit: '%',
     },
     [MeasurementTypeEnum.PRESSURE]: {
       domain: [900, 1050],
-      unit: "hPa",
+      unit: 'hPa',
     },
     [MeasurementTypeEnum.TEMPERATURE]: {
       domain: [-20, 40],
-      unit: "°C",
+      unit: '°C',
     },
     [MeasurementTypeEnum.BATTERY_VOLTAGE]: {
       domain: [0, 5],
-      unit: "V",
+      unit: 'V',
     },
     [MeasurementTypeEnum.RAW_BATTERY_VOLTAGE]: {
       domain: [0, 8192], // 13 bit ADC
-      unit: "",
+      unit: '',
     },
   };
 }

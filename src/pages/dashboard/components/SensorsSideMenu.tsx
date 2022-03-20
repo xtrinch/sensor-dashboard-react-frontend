@@ -1,64 +1,57 @@
-import {
-  createStyles,
-  Divider,
-  Fab,
-  Grid,
-  List,
-  ListItem,
-} from "@material-ui/core";
-import PlusIcon from "@material-ui/icons/Add";
-import { CSSProperties, withStyles, WithStyles } from "@material-ui/styles";
-import Link from "components/Link";
-import SideMenuItem from "components/SideMenuItem";
-import { AccountContext } from "context/AccountContext";
-import { AppContext } from "context/AppContext";
-import { DisplayContext } from "context/DisplayContext";
-import { ForwarderContext } from "context/ForwarderContext";
-import { RadioContext } from "context/RadioContext";
-import { SensorContext } from "context/SensorContext";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import ColorsEnum from "types/ColorsEnum";
-import Sensor from "types/Sensor";
-import { observer } from "mobx-react-lite";
+import { createStyles, Divider, Fab, Grid, List, ListItem } from '@material-ui/core';
+import PlusIcon from '@material-ui/icons/Add';
+import { CSSProperties, withStyles, WithStyles } from '@material-ui/styles';
+import Link from 'components/Link';
+import SideMenuItem from 'components/SideMenuItem';
+import { AccountContext } from 'context/AccountContext';
+import { AppContext } from 'context/AppContext';
+import { DisplayContext } from 'context/DisplayContext';
+import { ForwarderContext } from 'context/ForwarderContext';
+import { RadioContext } from 'context/RadioContext';
+import { SensorContext } from 'context/SensorContext';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import ColorsEnum from 'types/ColorsEnum';
+import Sensor from 'types/Sensor';
+import { observer } from 'mobx-react-lite';
 
 const styles = () =>
   createStyles({
     subheader: {
-      textTransform: "none",
-      fontSize: "12px",
+      textTransform: 'none',
+      fontSize: '12px',
       backgroundColor: ColorsEnum.BGLIGHT,
-      lineHeight: "19px",
-      textAlign: "right",
+      lineHeight: '19px',
+      textAlign: 'right',
     },
     listTitle: {
-      textTransform: "uppercase",
-      padding: "5px 16px",
-      minHeight: "40px",
+      textTransform: 'uppercase',
+      padding: '5px 16px',
+      minHeight: '40px',
       // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
       // backgroundColor: ColorsEnum.BLUE,
-      color: "white",
-      fontWeight: "bold",
+      color: 'white',
+      fontWeight: 'bold',
       borderBottom: `2px solid ${ColorsEnum.BLUE}`,
     },
     logoContainer: {
-      display: "flex",
-      justifyContent: "center",
-      width: "40px",
-      height: "70px",
-      "& img": {
-        width: "70px",
+      display: 'flex',
+      justifyContent: 'center',
+      width: '40px',
+      height: '70px',
+      '& img': {
+        width: '70px',
       },
     },
     sensorFab: {
-      width: "30px",
-      height: "30px",
-      minHeight: "30px",
+      width: '30px',
+      height: '30px',
+      minHeight: '30px',
       color: ColorsEnum.BLUE,
-      backgroundColor: "transparent",
-      "& .MuiSvgIcon-root": {
-        fontSize: "25px!important",
+      backgroundColor: 'transparent',
+      '& .MuiSvgIcon-root': {
+        fontSize: '25px!important',
       },
     },
   });
@@ -105,17 +98,14 @@ const SensorsSideMenu: React.FunctionComponent<
   const { classes } = props;
   return (
     <div style={props.style}>
-      {loginState === "LOGGED_IN" && (
+      {loginState === 'LOGGED_IN' && (
         <>
           <Grid container className={classes.listTitle} alignItems="center">
             <Grid item xs>
               My sensors
             </Grid>
             <Grid item>
-              <Link
-                to={DashboardRoutes.ADD_SENSOR}
-                onClick={appContext.drawerToggle}
-              >
+              <Link to={DashboardRoutes.ADD_SENSOR} onClick={appContext.drawerToggle}>
                 <Fab color="primary" size="small" className={classes.sensorFab}>
                   <PlusIcon />
                 </Fab>
@@ -146,15 +136,8 @@ const SensorsSideMenu: React.FunctionComponent<
                 <Grid item>My packet forwarders</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link
-                      to={DashboardRoutes.ADD_FORWARDER}
-                      onClick={appContext.drawerToggle}
-                    >
-                      <Fab
-                        color="primary"
-                        size="small"
-                        className={classes.sensorFab}
-                      >
+                    <Link to={DashboardRoutes.ADD_FORWARDER} onClick={appContext.drawerToggle}>
+                      <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />
                       </Fab>
                     </Link>
@@ -166,33 +149,17 @@ const SensorsSideMenu: React.FunctionComponent<
           <Divider />
           <List disablePadding>
             {forwarders.map((forwarder) => (
-              <SideMenuItem
-                item={forwarder}
-                key={forwarder.id}
-                type="forwarder"
-              />
+              <SideMenuItem item={forwarder} key={forwarder.id} type="forwarder" />
             ))}
           </List>
           <List disablePadding>
-            <ListItem
-              button
-              className={classes.listTitle}
-              alignItems="center"
-              onClick={goToRadios}
-            >
+            <ListItem button className={classes.listTitle} alignItems="center" onClick={goToRadios}>
               <Grid container alignItems="center" justify="space-between">
                 <Grid item>My radios</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link
-                      to={DashboardRoutes.ADD_RADIO}
-                      onClick={appContext.drawerToggle}
-                    >
-                      <Fab
-                        color="primary"
-                        size="small"
-                        className={classes.sensorFab}
-                      >
+                    <Link to={DashboardRoutes.ADD_RADIO} onClick={appContext.drawerToggle}>
+                      <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />
                       </Fab>
                     </Link>
@@ -218,15 +185,8 @@ const SensorsSideMenu: React.FunctionComponent<
                 <Grid item>My display devices</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link
-                      to={DashboardRoutes.ADD_DISPLAY}
-                      onClick={appContext.drawerToggle}
-                    >
-                      <Fab
-                        color="primary"
-                        size="small"
-                        className={classes.sensorFab}
-                      >
+                    <Link to={DashboardRoutes.ADD_DISPLAY} onClick={appContext.drawerToggle}>
+                      <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />
                       </Fab>
                     </Link>

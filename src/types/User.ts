@@ -1,7 +1,7 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
-import { parseISO } from "date-fns";
-import { AbstractEntity } from "types/AbstractEntity";
-import { PermissionsEnum } from "types/PermissionEnum";
+import { IsEmail, IsString, MinLength } from 'class-validator';
+import { parseISO } from 'date-fns';
+import { AbstractEntity } from 'types/AbstractEntity';
+import { PermissionsEnum } from 'types/PermissionEnum';
 
 export type UserId = string;
 
@@ -9,8 +9,8 @@ class User extends AbstractEntity {
   constructor(s?: any) {
     super(s);
 
-    this.username = s?.username || "";
-    this.email = s?.email || "";
+    this.username = s?.username || '';
+    this.email = s?.email || '';
     this.id = s?.id;
     this.name = s?.name;
     this.surname = s?.surname;

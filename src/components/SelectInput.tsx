@@ -1,8 +1,8 @@
-import { TextFieldProps } from "@material-ui/core";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import { Autocomplete, AutocompleteProps } from "@material-ui/lab";
-import TextInput from "components/TextInput";
-import React from "react";
+import { TextFieldProps } from '@material-ui/core';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { Autocomplete, AutocompleteProps } from '@material-ui/lab';
+import TextInput from 'components/TextInput';
+import React from 'react';
 
 const styles = (theme) =>
   createStyles({
@@ -34,7 +34,7 @@ const SelectInput: React.FunctionComponent<
             error={rest.error}
             helperText={rest.helperText}
             placeholder={rest.placeholder}
-            margin={rest.margin || "normal"}
+            margin={rest.margin || 'normal'}
             variant={rest.variant}
             fullWidth
           />

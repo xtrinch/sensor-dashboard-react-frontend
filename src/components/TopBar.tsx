@@ -6,35 +6,35 @@ import {
   IconButton,
   WithStyles,
   withStyles,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import { AppContext } from "context/AppContext";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import ColorsEnum from "types/ColorsEnum";
-import { observer } from "mobx-react-lite";
+} from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { AppContext } from 'context/AppContext';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import ColorsEnum from 'types/ColorsEnum';
+import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "13px 20px",
-      [theme.breakpoints.up("md")]: {
-        left: "270px",
+      padding: '13px 20px',
+      [theme.breakpoints.up('md')]: {
+        left: '270px',
       },
-      boxShadow: "none",
-      minHeight: "60px",
-      justifyContent: "center",
+      boxShadow: 'none',
+      minHeight: '60px',
+      justifyContent: 'center',
     },
     menuIcon: {
-      [theme.breakpoints.up("md")]: {
-        display: "none",
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
       },
     },
     back: {
-      position: "absolute",
-      left: "20px",
+      position: 'absolute',
+      left: '20px',
     },
   });
 
@@ -66,26 +66,20 @@ const TopBar: React.FunctionComponent<
     >
       {backEnabled && (
         <div className={classes.back}>
-          <Fab
-            size="small"
-            onClick={() => history.push(backTo)}
-            style={{ backgroundColor: color }}
-          >
+          <Fab size="small" onClick={() => history.push(backTo)} style={{ backgroundColor: color }}>
             <NavigateBeforeIcon />
           </Fab>
         </div>
       )}
-      <Grid container spacing={5} style={{ justifyContent: "center" }}>
+      <Grid container spacing={5} style={{ justifyContent: 'center' }}>
         <Grid item className={classes.menuIcon} xs={1}>
-          <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
-          >
+          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <IconButton
               aria-label="open drawer"
               onClick={handleDrawerToggle}
               size="medium"
               color="secondary"
-              style={{ padding: "6px" }}
+              style={{ padding: '6px' }}
               edge={false}
             >
               <MenuIcon />
@@ -100,8 +94,8 @@ const TopBar: React.FunctionComponent<
             xs={backEnabled ? 10 : 11}
             style={{
               justifyContent: props.alignItems,
-              alignItems: "center",
-              display: "flex",
+              alignItems: 'center',
+              display: 'flex',
             }}
           >
             {props.children}

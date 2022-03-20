@@ -1,32 +1,25 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Plus from "@material-ui/icons/Add";
-import ColoredButton from "components/ColoredButton";
-import TopBar from "components/TopBar";
-import { DisplayContext } from "context/DisplayContext";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import DisplayItem from "pages/dashboard/displays/components/DisplayItem";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ColorsEnum from "types/ColorsEnum";
-import Display from "types/Display";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Plus from '@material-ui/icons/Add';
+import ColoredButton from 'components/ColoredButton';
+import TopBar from 'components/TopBar';
+import { DisplayContext } from 'context/DisplayContext';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import DisplayItem from 'pages/dashboard/displays/components/DisplayItem';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ColorsEnum from 'types/ColorsEnum';
+import Display from 'types/Display';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      textAlign: "center",
-      marginTop: "30px",
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      textAlign: 'center',
+      marginTop: '30px',
     },
   });
 
@@ -42,7 +35,7 @@ const DisplayListPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center">
-        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           My display devices
         </Typography>
         <ColoredButton
@@ -74,11 +67,7 @@ const DisplayListPage: React.FunctionComponent<
           </Table>
         )}
         {displays.length === 0 && (
-          <Typography
-            variant="body2"
-            component="p"
-            style={{ margin: "30px 0px" }}
-          >
+          <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No displays added
           </Typography>
         )}

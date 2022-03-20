@@ -1,36 +1,29 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TopBar from "components/TopBar";
-import { UserContext } from "context/UserContext";
-import UserItem from "pages/users/components/UserItem";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import ColorsEnum from "types/ColorsEnum";
-import User from "types/User";
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import TopBar from 'components/TopBar';
+import { UserContext } from 'context/UserContext';
+import UserItem from 'pages/users/components/UserItem';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ColorsEnum from 'types/ColorsEnum';
+import User from 'types/User';
 
 const styles = (theme) =>
   createStyles({
     root: {
       backgroundColor: ColorsEnum.BGLIGHT,
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      textAlign: "center",
-      marginTop: "30px",
-      marginBottom: "30px",
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      textAlign: 'center',
+      marginTop: '30px',
+      marginBottom: '30px',
     },
     actionButton: {
       backgroundColor: ColorsEnum.OLIVE,
       color: ColorsEnum.WHITE,
-      width: "fit-content",
+      width: 'fit-content',
     },
   });
 
@@ -71,11 +64,7 @@ const UserListPage: React.FunctionComponent<
           </Table>
         )}
         {users.length === 0 && (
-          <Typography
-            variant="body2"
-            component="p"
-            style={{ margin: "30px 0px" }}
-          >
+          <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No users added
           </Typography>
         )}

@@ -1,13 +1,13 @@
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import { CategoryContext } from "context/CategoryContext";
-import { CommentContextProvider } from "context/CommentContext";
-import { TopicContextProvider } from "context/TopicContext";
-import { ForumRoutes } from "pages/forum/ForumRoutes";
-import AddTopicPage from "pages/forum/topic/AddTopicPage";
-import TopicListPage from "pages/forum/topic/TopicListPage";
-import TopicPage from "pages/forum/topic/TopicPage";
-import React, { useContext } from "react";
-import { Route, RouteComponentProps, withRouter } from "react-router";
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { CategoryContext } from 'context/CategoryContext';
+import { CommentContextProvider } from 'context/CommentContext';
+import { TopicContextProvider } from 'context/TopicContext';
+import { ForumRoutes } from 'pages/forum/ForumRoutes';
+import AddTopicPage from 'pages/forum/topic/AddTopicPage';
+import TopicListPage from 'pages/forum/topic/TopicListPage';
+import TopicPage from 'pages/forum/topic/TopicPage';
+import React, { useContext } from 'react';
+import { Route, RouteComponentProps, withRouter } from 'react-router';
 
 const styles = (theme) => createStyles({});
 
@@ -37,10 +37,7 @@ const ForumIndexPage: React.FunctionComponent<
         exact
         path={ForumRoutes.TOPIC}
         render={({ match }) => (
-          <CommentContextProvider
-            categoryId={category.id}
-            topicId={match.params.topicId}
-          >
+          <CommentContextProvider categoryId={category.id} topicId={match.params.topicId}>
             <TopicPage />
           </CommentContextProvider>
         )}

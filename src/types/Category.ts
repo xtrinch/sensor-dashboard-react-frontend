@@ -1,6 +1,6 @@
-import { AbstractEntity } from "types/AbstractEntity";
-import Comment, { CommentId } from "types/Comment";
-import Topic, { TopicId } from "types/Topic";
+import { AbstractEntity } from 'types/AbstractEntity';
+import Comment, { CommentId } from 'types/Comment';
+import Topic, { TopicId } from 'types/Topic';
 
 export type CategoryId = string;
 
@@ -8,8 +8,8 @@ class Category extends AbstractEntity {
   constructor(s?: any) {
     super(s);
 
-    this.name = s?.name || "";
-    this.description = s?.description || "";
+    this.name = s?.name || '';
+    this.description = s?.description || '';
     this.id = s?.id || 0;
     this.protected = s?.protected || false;
     this.numTopics = s?.numTopics || 0;

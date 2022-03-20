@@ -21,7 +21,11 @@ const CommentContext = createContext<{
   listComments?: (page: number) => Promise<void>;
 }>({});
 
-function CommentContextProvider(props: { categoryId: CategoryId; topicId: TopicId; children: any }) {
+function CommentContextProvider(props: {
+  categoryId: CategoryId;
+  topicId: TopicId;
+  children: any;
+}) {
   const { categoryId, topicId } = props;
   let { reload: reloadCategories } = useContext(CategoryContext);
   let { reload: reloadTopics } = useContext(TopicContext);
@@ -111,7 +115,9 @@ function CommentContextProvider(props: { categoryId: CategoryId; topicId: TopicI
   }, [state]);
 
   return (
-    <CommentContext.Provider value={{ state, updateComment, deleteComment, addComment, listComments }}>
+    <CommentContext.Provider
+      value={{ state, updateComment, deleteComment, addComment, listComments }}
+    >
       {props.children}
     </CommentContext.Provider>
   );

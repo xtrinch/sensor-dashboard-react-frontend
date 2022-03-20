@@ -1,56 +1,56 @@
-import { createStyles, Grid, ListSubheader } from "@material-ui/core";
-import { withStyles, WithStyles } from "@material-ui/styles";
-import Logo from "assets/transistor.svg"; // with import
-import Link from "components/Link";
-import MainMenu from "components/MainMenu";
-import { AccountContext } from "context/AccountContext";
-import { AppContext } from "context/AppContext";
-import { openConfirmation } from "context/ConfirmationContext";
-import { getUserRoute } from "pages/users/UserRoutes";
-import React, { useContext } from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import ColorsEnum from "types/ColorsEnum";
-import { Routes } from "utils/Routes";
-import { observer } from "mobx-react-lite";
+import { createStyles, Grid, ListSubheader } from '@material-ui/core';
+import { withStyles, WithStyles } from '@material-ui/styles';
+import Logo from 'assets/transistor.svg'; // with import
+import Link from 'components/Link';
+import MainMenu from 'components/MainMenu';
+import { AccountContext } from 'context/AccountContext';
+import { AppContext } from 'context/AppContext';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { getUserRoute } from 'pages/users/UserRoutes';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import ColorsEnum from 'types/ColorsEnum';
+import { Routes } from 'utils/Routes';
+import { observer } from 'mobx-react-lite';
 
 const styles = () =>
   createStyles({
     root: {
-      width: "270px",
-      height: "100%",
+      width: '270px',
+      height: '100%',
     },
     subheader: {
-      textTransform: "none",
-      fontSize: "12px",
+      textTransform: 'none',
+      fontSize: '12px',
       backgroundColor: ColorsEnum.BGLIGHT,
-      lineHeight: "19px",
-      textAlign: "right",
+      lineHeight: '19px',
+      textAlign: 'right',
     },
     listTitle: {
-      textTransform: "uppercase",
-      padding: "5px 16px",
-      minHeight: "40px",
+      textTransform: 'uppercase',
+      padding: '5px 16px',
+      minHeight: '40px',
       // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
       backgroundColor: ColorsEnum.BGLIGHTER,
-      color: "white",
+      color: 'white',
     },
     logoContainer: {
-      display: "flex",
-      justifyContent: "center",
-      width: "40px",
-      height: "70px",
-      "& img": {
-        width: "70px",
+      display: 'flex',
+      justifyContent: 'center',
+      width: '40px',
+      height: '70px',
+      '& img': {
+        width: '70px',
       },
     },
     sensorFab: {
-      width: "30px",
-      height: "30px",
-      minHeight: "30px",
+      width: '30px',
+      height: '30px',
+      minHeight: '30px',
       color: ColorsEnum.BLUE,
-      backgroundColor: "transparent",
-      "& .MuiSvgIcon-root": {
-        fontSize: "25px!important",
+      backgroundColor: 'transparent',
+      '& .MuiSvgIcon-root': {
+        fontSize: '25px!important',
       },
     },
   });
@@ -68,36 +68,36 @@ const SideMenu: React.FunctionComponent<
     const onConfirm = async () => {
       await logout();
       appContext.drawerToggle();
-      history.push("/");
+      history.push('/');
     };
-    openConfirmation(onConfirm, null, "Are you sure you want to logout?");
+    openConfirmation(onConfirm, null, 'Are you sure you want to logout?');
   };
 
   const { classes } = props;
   return (
     <div className={classes.root}>
       <ListSubheader disableGutters className={classes.subheader}>
-        <Grid container style={{ padding: "15px" }} justify="space-between">
+        <Grid container style={{ padding: '15px' }} justify="space-between">
           <Grid item className={classes.logoContainer}>
             <Link to="/" onClick={appContext.drawerToggle}>
               <img alt="logo" src={Logo} />
             </Link>
           </Grid>
-          {(loginState === "LOGGED_OUT" || loginState === "LOGIN_ERROR") && (
+          {(loginState === 'LOGGED_OUT' || loginState === 'LOGIN_ERROR') && (
             <Grid item>
               <Link to={Routes.LOGIN} onClick={appContext.drawerToggle}>
                 Login
-              </Link>{" "}
+              </Link>{' '}
               &nbsp; | &nbsp;
               <Link to={Routes.REGISTER} onClick={appContext.drawerToggle}>
                 Register
               </Link>
             </Grid>
           )}
-          {loginState === "LOGGED_IN" && (
+          {loginState === 'LOGGED_IN' && (
             <Grid item>
               <div>
-                Logged in as{" "}
+                Logged in as{' '}
                 <Link to={getUserRoute(user?.id)} color={ColorsEnum.YELLOW}>
                   {user?.username}
                 </Link>

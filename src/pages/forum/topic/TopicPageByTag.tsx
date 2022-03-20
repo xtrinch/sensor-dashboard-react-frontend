@@ -40,9 +40,9 @@ const styles = (theme) =>
     },
   });
 
-const TopicPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ tag: string }>> = (
-  props
-) => {
+const TopicPage: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{ tag: string }>
+> = (props) => {
   const {
     classes,
     match: { params },
@@ -126,7 +126,11 @@ const TopicPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
                 </IconButton>
               )}
               {user?.isAllowed([PermissionsEnum.Topic__delete]) && (
-                <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(topic)}>
+                <IconButton
+                  aria-label="settings"
+                  size="small"
+                  onClick={() => deleteWithConfirmation(topic)}
+                >
                   <Delete />
                 </IconButton>
               )}

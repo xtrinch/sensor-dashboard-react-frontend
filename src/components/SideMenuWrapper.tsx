@@ -5,19 +5,19 @@ import {
   Hidden,
   withStyles,
   WithStyles,
-} from "@material-ui/core";
-import SideMenu from "components/SideMenu";
-import { AppContext } from "context/AppContext";
-import React, { useContext } from "react";
-import ColorsEnum from "types/ColorsEnum";
-import { observer } from "mobx-react-lite";
+} from '@material-ui/core';
+import SideMenu from 'components/SideMenu';
+import { AppContext } from 'context/AppContext';
+import React, { useContext } from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import { observer } from 'mobx-react-lite';
 
 const menuWidth = 270;
 
 const styles = (theme) =>
   createStyles({
     drawer: {
-      [theme.breakpoints.up("md")]: {
+      [theme.breakpoints.up('md')]: {
         width: menuWidth,
         flexShrink: 0,
       },
@@ -27,9 +27,7 @@ const styles = (theme) =>
     },
   });
 
-const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
-  props
-) => {
+const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const appContext = useContext(AppContext);
 
   const { classes } = props;

@@ -9,65 +9,65 @@ import {
   ListItemText,
   withStyles,
   WithStyles,
-} from "@material-ui/core";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import LockIcon from "@material-ui/icons/Lock";
-import SettingsIcon from "@material-ui/icons/Settings";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import Link from "components/Link";
-import { AccountContext } from "context/AccountContext";
-import { AppContext } from "context/AppContext";
-import { SensorContext } from "context/SensorContext";
-import { differenceInMinutes } from "date-fns";
-import React, { Context, Fragment, useContext } from "react";
-import ColorsEnum from "types/ColorsEnum";
-import { IotDeviceInterface } from "types/IotDeviceInterface";
-import Sensor from "types/Sensor";
-import { observer } from "mobx-react-lite";
+} from '@material-ui/core';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LockIcon from '@material-ui/icons/Lock';
+import SettingsIcon from '@material-ui/icons/Settings';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import Link from 'components/Link';
+import { AccountContext } from 'context/AccountContext';
+import { AppContext } from 'context/AppContext';
+import { SensorContext } from 'context/SensorContext';
+import { differenceInMinutes } from 'date-fns';
+import React, { Context, Fragment, useContext } from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import { IotDeviceInterface } from 'types/IotDeviceInterface';
+import Sensor from 'types/Sensor';
+import { observer } from 'mobx-react-lite';
 
 interface SideMenuItemProps {
   item: IotDeviceInterface;
   visibility?: boolean;
   expandable?: boolean;
-  type: "sensor" | "display" | "forwarder" | "radio";
+  type: 'sensor' | 'display' | 'forwarder' | 'radio';
   context?: Context<any>;
 }
 
 const styles = () =>
   createStyles({
     active: {
-      position: "relative",
-      "&::before": {
+      position: 'relative',
+      '&::before': {
         backgroundColor: `${ColorsEnum.OLIVE}`,
-        height: "100%",
-        width: "5px",
-        position: "absolute",
-        left: "0px",
+        height: '100%',
+        width: '5px',
+        position: 'absolute',
+        left: '0px',
         bottom: 0,
         content: '""',
-        display: "block",
+        display: 'block',
       },
     },
     private: {
-      display: "inline-flex",
+      display: 'inline-flex',
       color: ColorsEnum.GOLD,
-      marginLeft: "-3px",
+      marginLeft: '-3px',
     },
     itemFab: {
-      width: "30px",
-      height: "30px",
-      minHeight: "30px",
-      maxHeight: "30px",
-      color: "white",
-      marginLeft: "10px",
+      width: '30px',
+      height: '30px',
+      minHeight: '30px',
+      maxHeight: '30px',
+      color: 'white',
+      marginLeft: '10px',
     },
   });
 
-const SideMenuItem: React.FunctionComponent<
-  SideMenuItemProps & WithStyles<typeof styles>
-> = (props) => {
+const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeof styles>> = (
+  props
+) => {
   const { item, classes } = props;
 
   const { user } = useContext(AccountContext);
@@ -105,16 +105,12 @@ const SideMenuItem: React.FunctionComponent<
           toggleExpand(e, item as IotDeviceInterface);
         }}
         className={
-          differenceInMinutes(item.lastSeenAt, new Date()) > -60
-            ? classes.active
-            : undefined
+          differenceInMinutes(item.lastSeenAt, new Date()) > -60 ? classes.active : undefined
         }
       >
         {/* <WifiIcon /> */}
         {expandable && (
-          <ListItemIcon>
-            {item.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </ListItemIcon>
+          <ListItemIcon>{item.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
         )}
         <ListItemText>
           <Grid container spacing={2}>
@@ -131,10 +127,7 @@ const SideMenuItem: React.FunctionComponent<
         </ListItemText>
         {item.userId === user?.id && (
           <div onClick={(e) => e.stopPropagation()}>
-            <Link
-              to={`/dashboard/${type}s/${item.id}`}
-              onClick={appContext.drawerToggle}
-            >
+            <Link to={`/dashboard/${type}s/${item.id}`} onClick={appContext.drawerToggle}>
               <Fab color="secondary" size="small" className={classes.itemFab}>
                 <SettingsIcon />
               </Fab>
@@ -150,11 +143,7 @@ const SideMenuItem: React.FunctionComponent<
               toggleVisibility(e, item);
             }}
           >
-            {(item as IotDeviceInterface).visible ? (
-              <VisibilityIcon />
-            ) : (
-              <VisibilityOffIcon />
-            )}
+            {(item as IotDeviceInterface).visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
           </Fab>
         )}
         {/* <Fab
@@ -167,11 +156,7 @@ const SideMenuItem: React.FunctionComponent<
         </Fab> */}
       </ListItem>
       {expandable && (
-        <Collapse
-          in={(item as IotDeviceInterface).expanded}
-          timeout="auto"
-          unmountOnExit
-        >
+        <Collapse in={(item as IotDeviceInterface).expanded} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {(item as Sensor).measurementTypes.map((m, index) => (
               <ListItem button key={index}>

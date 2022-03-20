@@ -1,21 +1,21 @@
-import { createStyles, Grid, WithStyles, withStyles } from "@material-ui/core";
-import ConnectSensorPage from "pages/ConnectSensorPage";
-import SensorsSideMenu from "pages/dashboard/components/SensorsSideMenu";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import AddDisplayPage from "pages/dashboard/displays/AddDisplayPage";
-import DisplayInfoPage from "pages/dashboard/displays/DisplayInfoPage";
-import DisplayListPage from "pages/dashboard/displays/DisplayListPage";
-import AddForwarderPage from "pages/dashboard/forwarders/AddForwarderPage";
-import ForwarderInfoPage from "pages/dashboard/forwarders/ForwarderInfoPage";
-import ForwarderListPage from "pages/dashboard/forwarders/ForwarderListPage";
-import AddRadioPage from "pages/dashboard/radios/AddRadioPage";
-import RadioListPage from "pages/dashboard/radios/RadioListPage";
-import AddSensorPage from "pages/dashboard/sensors/AddSensorPage";
-import SensorInfoPage from "pages/dashboard/sensors/SensorInfoPage";
-import SensorsPage from "pages/dashboard/sensors/SensorsPage";
-import TopicPageByTag from "pages/forum/topic/TopicPageByTag";
-import React from "react";
-import { Route } from "react-router-dom";
+import { createStyles, Grid, WithStyles, withStyles } from '@material-ui/core';
+import ConnectSensorPage from 'pages/ConnectSensorPage';
+import SensorsSideMenu from 'pages/dashboard/components/SensorsSideMenu';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import AddDisplayPage from 'pages/dashboard/displays/AddDisplayPage';
+import DisplayInfoPage from 'pages/dashboard/displays/DisplayInfoPage';
+import DisplayListPage from 'pages/dashboard/displays/DisplayListPage';
+import AddForwarderPage from 'pages/dashboard/forwarders/AddForwarderPage';
+import ForwarderInfoPage from 'pages/dashboard/forwarders/ForwarderInfoPage';
+import ForwarderListPage from 'pages/dashboard/forwarders/ForwarderListPage';
+import AddRadioPage from 'pages/dashboard/radios/AddRadioPage';
+import RadioListPage from 'pages/dashboard/radios/RadioListPage';
+import AddSensorPage from 'pages/dashboard/sensors/AddSensorPage';
+import SensorInfoPage from 'pages/dashboard/sensors/SensorInfoPage';
+import SensorsPage from 'pages/dashboard/sensors/SensorsPage';
+import TopicPageByTag from 'pages/forum/topic/TopicPageByTag';
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 const styles = () => createStyles({});
 
@@ -67,17 +67,17 @@ class DashboardIndexPage extends React.Component<WithStyles<typeof styles>> {
             <TopicPageByTag />
           </Route>
         </Grid>
-        <Grid item style={{ width: "270px" }}>
+        <Grid item style={{ width: '270px' }}>
           <SensorsSideMenu
             style={{
-              position: "fixed",
-              right: "0",
-              paddingTop: "65px",
-              backgroundColor: "rgb(58,65,73)",
+              position: 'fixed',
+              right: '0',
+              paddingTop: '65px',
+              backgroundColor: 'rgb(58,65,73)',
               zIndex: 1000,
-              width: "270px",
-              height: "calc(100vh)",
-              overflow: "auto",
+              width: '270px',
+              height: 'calc(100vh)',
+              overflow: 'auto',
             }}
           />
         </Grid>

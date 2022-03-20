@@ -1,5 +1,5 @@
-import BoardTypeEnum from "types/BoardTypeEnum";
-import User, { UserId } from "types/User";
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import User, { UserId } from 'types/User';
 
 export interface IotDeviceInterface {
   id: string;

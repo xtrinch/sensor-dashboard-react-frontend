@@ -78,7 +78,12 @@ const AddTopicPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="center" backEnabled backTo={getTopicListRoute(params.id)} color={ColorsEnum.OLIVE}>
+      <TopBar
+        alignItems="center"
+        backEnabled
+        backTo={getTopicListRoute(params.id)}
+        color={ColorsEnum.OLIVE}
+      >
         <Typography component="h1" variant="h4">
           {isEdit() ? 'Edit' : 'Add'} topic
         </Typography>
@@ -109,7 +114,11 @@ const AddTopicPage: React.FunctionComponent<
               editorState={formik.values.description}
               onEditorStateChange={(value) => formik.setFieldValue('description', value)}
             />
-            <ColoredButton type="submit" style={{ marginTop: '20px' }} colorVariety={ColorsEnum.OLIVE}>
+            <ColoredButton
+              type="submit"
+              style={{ marginTop: '20px' }}
+              colorVariety={ColorsEnum.OLIVE}
+            >
               Submit
             </ColoredButton>
           </form>

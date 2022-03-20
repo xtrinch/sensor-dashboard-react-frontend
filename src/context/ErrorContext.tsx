@@ -1,4 +1,4 @@
-import React, { Context, createContext, Dispatch, useReducer } from "react";
+import React, { Context, createContext, Dispatch, useReducer } from 'react';
 
 export interface Error {
   statusCode: string;
@@ -10,11 +10,11 @@ export const setError = (error: Error, dispatch?: React.Dispatch<any>) => {
   if (!dp) {
     dp = ErrorContext.dispatch;
   }
-  dp({ type: "setError", payload: error });
+  dp({ type: 'setError', payload: error });
 };
 
 export const clearError = (dispatch: React.Dispatch<any>) => {
-  dispatch({ type: "clearError" });
+  dispatch({ type: 'clearError' });
 };
 
 type ErrorContextState = {
@@ -25,27 +25,22 @@ const initialState: ErrorContextState = {
   error: null,
 };
 
-export type ErrorActionTypes =
-  | { type: "setError"; payload: Error }
-  | { type: "clearError" };
+export type ErrorActionTypes = { type: 'setError'; payload: Error } | { type: 'clearError' };
 
-const ErrorContext = createContext<[ErrorContextState, React.Dispatch<any>]>(
-  null
-) as Context<[ErrorContextState, Dispatch<any>]> & {
+const ErrorContext = createContext<[ErrorContextState, React.Dispatch<any>]>(null) as Context<
+  [ErrorContextState, Dispatch<any>]
+> & {
   dispatch: React.Dispatch<any>;
 };
 
-let reducer = (
-  state: ErrorContextState,
-  action: ErrorActionTypes
-): ErrorContextState => {
+let reducer = (state: ErrorContextState, action: ErrorActionTypes): ErrorContextState => {
   switch (action.type) {
-    case "setError":
+    case 'setError':
       return {
         ...state,
         error: action.payload,
       };
-    case "clearError":
+    case 'clearError':
       return {
         ...state,
         error: null,
@@ -59,11 +54,7 @@ let reducer = (
 function ErrorContextProvider(props) {
   let [state, dispatch] = useReducer(reducer, initialState);
 
-  return (
-    <ErrorContext.Provider value={[state, dispatch]}>
-      {props.children}
-    </ErrorContext.Provider>
-  );
+  return <ErrorContext.Provider value={[state, dispatch]}>{props.children}</ErrorContext.Provider>;
 }
 
 export { ErrorContext, ErrorContextProvider };

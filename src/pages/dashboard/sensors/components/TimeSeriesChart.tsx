@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   AxisDomain,
   CartesianGrid,
@@ -11,8 +11,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-} from "recharts";
-import ColorsEnum, { GraphColors } from "types/ColorsEnum";
+} from 'recharts';
+import ColorsEnum, { GraphColors } from 'types/ColorsEnum';
 
 export interface ChartPoint {
   name: string;
@@ -52,7 +52,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
           stroke={ColorsEnum.GRAY}
           //allowDataOverflow={false}
-          interval={"preserveStartEnd"}
+          interval={'preserveStartEnd'}
           domain={[ticks[0], ticks[ticks.length - 1]]}
           //unit={props.unit.x}
         />
@@ -65,12 +65,12 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           stroke={ColorsEnum.GRAY}
         />
         {/* <ZAxis range={[props.dotSize, props.dotSize]} /> */}
-        <Legend verticalAlign="top" height={25} iconType={"circle"} />
+        <Legend verticalAlign="top" height={25} iconType={'circle'} />
         <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
         {data.length > 0 && (
           <Tooltip
             formatter={(value, unit, payload, index) =>
-              unit === "Time"
+              unit === 'Time'
                 ? `${payload.payload.labelTime}`
                 : `${value} (${payload.payload.labelTime})`
             }
@@ -79,7 +79,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             labelFormatter={(label: string | number) => ``}
             contentStyle={{
               backgroundColor: ColorsEnum.BGDARK,
-              borderWidth: "1px",
+              borderWidth: '1px',
               borderColor: ColorsEnum.BGLIGHTER,
             }}
           />
@@ -91,7 +91,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             name={chartData[index]?.label}
             strokeWidth={1}
             isAnimationActive={false}
-            fill={GraphColors[line.ordering] || "white"} // dot color
+            fill={GraphColors[line.ordering] || 'white'} // dot color
             id={`${line.name}`}
             stroke={GraphColors[line.ordering]}
             dot={{ r: 1.5 }}
@@ -102,14 +102,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           x={nowX}
           stroke={ColorsEnum.OLIVE}
           strokeWidth={1}
-          label={
-            <Label
-              value="now"
-              offset={5}
-              position="insideTopLeft"
-              fill={ColorsEnum.GRAY}
-            />
-          }
+          label={<Label value="now" offset={5} position="insideTopLeft" fill={ColorsEnum.GRAY} />}
         />
       </ComposedChart>
     </ResponsiveContainer>

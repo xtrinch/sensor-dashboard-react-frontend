@@ -1,37 +1,37 @@
-import { Grid } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { ForwarderContext } from "context/ForwarderContext";
-import { getForwarderRoute } from "pages/dashboard/DashboardRoutes";
-import React, { useContext, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
+import { Grid } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { ForwarderContext } from 'context/ForwarderContext';
+import { getForwarderRoute } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
 
 const styles = (theme) =>
   createStyles({
     paper: {
       marginTop: theme.spacing(30),
-      forwarder: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      forwarder: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {
@@ -49,10 +49,10 @@ const AddForwarderPage: React.FunctionComponent<
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
-    name: "",
-    location: "",
-    timezone: "",
-    boardType: "" as BoardTypeEnum,
+    name: '',
+    location: '',
+    timezone: '',
+    boardType: '' as BoardTypeEnum,
   });
 
   const [success, setSuccess] = useState(false);
@@ -101,7 +101,7 @@ const AddForwarderPage: React.FunctionComponent<
                   name="name"
                   value={data.name}
                   autoFocus
-                  onChange={(e) => fieldChange(e.target.value, "name")}
+                  onChange={(e) => fieldChange(e.target.value, 'name')}
                   error={!!errors.name}
                   helperText={errors.name}
                 />
@@ -115,14 +115,14 @@ const AddForwarderPage: React.FunctionComponent<
                   id="location"
                   autoComplete="current-location"
                   value={data.location}
-                  onChange={(e) => fieldChange(e.target.value, "location")}
+                  onChange={(e) => fieldChange(e.target.value, 'location')}
                   error={!!errors.location}
                   helperText={errors.location}
                 />
                 <SelectInput
                   id="select"
                   value={data.boardType}
-                  onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+                  onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
                   fullWidth
                   label="Board type"
                   error={!!errors.boardType}
@@ -132,7 +132,7 @@ const AddForwarderPage: React.FunctionComponent<
                 <ColoredButton
                   type="submit"
                   fullWidth
-                  style={{ marginTop: "20px" }}
+                  style={{ marginTop: '20px' }}
                   colorVariety={ColorsEnum.BLUE}
                 >
                   Submit
@@ -141,7 +141,7 @@ const AddForwarderPage: React.FunctionComponent<
             </>
           )}
           {success && (
-            <Grid container spacing={10} direction={"column"}>
+            <Grid container spacing={10} direction={'column'}>
               <Grid item>Forwarder successfully added.</Grid>
               <Grid item>Redirecting to forwarder info page...</Grid>
             </Grid>

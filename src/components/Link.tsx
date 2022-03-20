@@ -1,12 +1,7 @@
-import {
-  createStyles,
-  Link as MaterialLink,
-  withStyles,
-  WithStyles,
-} from "@material-ui/core";
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import ColorsEnum from "types/ColorsEnum";
+import { createStyles, Link as MaterialLink, withStyles, WithStyles } from '@material-ui/core';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import ColorsEnum from 'types/ColorsEnum';
 
 interface LinkProps {
   style?: any;
@@ -21,20 +16,18 @@ interface LinkProps {
 const styles = () =>
   createStyles({
     link: {
-      "&:hover": {
+      '&:hover': {
         //color: `${ColorsEnum.VIOLET}!important`
       },
-      cursor: "pointer",
-      fontStyle: "normal",
-      fontSize: "13px",
+      cursor: 'pointer',
+      fontStyle: 'normal',
+      fontSize: '13px',
       color: (props: LinkProps) => props.color || ColorsEnum.BLUE,
-      textDecoration: "none",
+      textDecoration: 'none',
     },
   });
 
-const Link: React.FunctionComponent<LinkProps & WithStyles<typeof styles>> = (
-  props
-) => {
+const Link: React.FunctionComponent<LinkProps & WithStyles<typeof styles>> = (props) => {
   const { to, target, style, classes, children, href, id, onClick } = props;
 
   return (
@@ -42,7 +35,7 @@ const Link: React.FunctionComponent<LinkProps & WithStyles<typeof styles>> = (
       {props.to ? (
         <RouterLink
           style={style}
-          to={to || "#"}
+          to={to || '#'}
           target={target}
           className={classes.link}
           id={id}

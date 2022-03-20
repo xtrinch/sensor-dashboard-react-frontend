@@ -61,9 +61,9 @@ interface ConnectProps {
   maxRtcRecords?: number;
 }
 
-const ConnectSensorPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
-  props
-) => {
+const ConnectSensorPage: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
+> = (props) => {
   const {
     classes,
     match: {
@@ -77,7 +77,13 @@ const ConnectSensorPage: React.FunctionComponent<WithStyles<typeof styles> & Rou
     if (!port) return;
 
     const data: Uint8Array[] = [];
-    const { timeBetweenMeasurements, wifiPassword, wifiSSID, accessToken, maxRtcRecords } = formik.values;
+    const {
+      timeBetweenMeasurements,
+      wifiPassword,
+      wifiSSID,
+      accessToken,
+      maxRtcRecords,
+    } = formik.values;
 
     const stringified = JSON.stringify({
       timeBetweenMeasurements,
@@ -194,7 +200,12 @@ const ConnectSensorPage: React.FunctionComponent<WithStyles<typeof styles> & Rou
             Connect to device
           </Button>
         ) : (
-          <Button variant="contained" className={classes.disconnectButton} startIcon={<Close />} onClick={disconnect}>
+          <Button
+            variant="contained"
+            className={classes.disconnectButton}
+            startIcon={<Close />}
+            onClick={disconnect}
+          >
             Disconnect
           </Button>
         )}

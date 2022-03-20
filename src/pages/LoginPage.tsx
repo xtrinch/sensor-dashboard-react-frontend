@@ -56,7 +56,9 @@ const styles = (theme) =>
     },
   });
 
-const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{}>> = (props) => {
+const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{}>> = (
+  props
+) => {
   const { classes, history } = props;
   const { reloadDisplays } = useContext(DisplayContext);
 
@@ -153,8 +155,16 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
           <div style={{ color: ColorsEnum.RED }}>
             {accountContext.loginState === 'LOGIN_ERROR' && 'Invalid email or password'}
           </div>
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-          <ColoredButton type="submit" fullWidth style={{ marginTop: '20px' }} colorVariety={ColorsEnum.BLUE}>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <ColoredButton
+            type="submit"
+            fullWidth
+            style={{ marginTop: '20px' }}
+            colorVariety={ColorsEnum.BLUE}
+          >
             Sign in
           </ColoredButton>
           <Grid container style={{ marginTop: '10px' }}>
@@ -171,8 +181,12 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
           </Grid>
         </form>
         <div style={{ marginTop: '30px' }}>
-          <a href={`${config.sensorDashboardUrl}/google/redirect`} className={classes.loginWithGoogle}>
-            Login with Google <img src={GoogleLogo} alt="google-logo" style={{ marginLeft: '5px' }} />
+          <a
+            href={`${config.sensorDashboardUrl}/google/redirect`}
+            className={classes.loginWithGoogle}
+          >
+            Login with Google{' '}
+            <img src={GoogleLogo} alt="google-logo" style={{ marginLeft: '5px' }} />
           </a>
         </div>
       </div>

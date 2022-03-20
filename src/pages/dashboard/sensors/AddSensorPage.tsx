@@ -1,34 +1,32 @@
-import { Checkbox, FormControlLabel } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { SensorContext } from "context/SensorContext";
-import { getSensorRoute } from "pages/dashboard/DashboardRoutes";
-import React, { useContext, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import { listTimeZones } from "timezone-support";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
-import MeasurementTypeEnum, {
-  MeasurementTypeLabelsEnum,
-} from "types/MeasurementTypeEnum";
-import SensorTypeEnum from "types/SensorTypeEnum";
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { SensorContext } from 'context/SensorContext';
+import { getSensorRoute } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { listTimeZones } from 'timezone-support';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
+import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
+import SensorTypeEnum from 'types/SensorTypeEnum';
 
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: "30px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      marginTop: '30px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
       border: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
     avatar: {
@@ -36,16 +34,16 @@ const styles = (theme) =>
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
-      "& >*": {
-        width: "100%",
+      '& >*': {
+        width: '100%',
       },
-      "& >.MuiFormControl-root, >.MuiAutocomplete-root": {
-        width: "calc(50% - 10px)",
-        display: "inline-flex",
-        "&:nth-of-type(2n+1)": {
-          marginRight: "20px",
+      '& >.MuiFormControl-root, >.MuiAutocomplete-root': {
+        width: 'calc(50% - 10px)',
+        display: 'inline-flex',
+        '&:nth-of-type(2n+1)': {
+          marginRight: '20px',
         },
       },
     },
@@ -64,12 +62,12 @@ const AddSensorPage: React.FunctionComponent<
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
-    name: "",
-    displayName: "",
+    name: '',
+    displayName: '',
     measurementTypes: [],
     sensorTypes: [],
-    location: "",
-    boardType: "" as BoardTypeEnum,
+    location: '',
+    boardType: '' as BoardTypeEnum,
     timezone: null,
     private: false,
   });
@@ -116,7 +114,7 @@ const AddSensorPage: React.FunctionComponent<
                   name="name"
                   value={data.name}
                   autoFocus
-                  onChange={(e) => fieldChange(e.target.value, "name")}
+                  onChange={(e) => fieldChange(e.target.value, 'name')}
                   error={!!errors.name}
                   helperText={errors.name}
                 />
@@ -125,7 +123,7 @@ const AddSensorPage: React.FunctionComponent<
                   label="Sensor display name"
                   name="displayName"
                   value={data.displayName}
-                  onChange={(e) => fieldChange(e.target.value, "displayName")}
+                  onChange={(e) => fieldChange(e.target.value, 'displayName')}
                   error={!!errors.displayName}
                   helperText={errors.displayName}
                 />
@@ -136,14 +134,14 @@ const AddSensorPage: React.FunctionComponent<
                   id="location"
                   autoComplete="current-location"
                   value={data.location}
-                  onChange={(e) => fieldChange(e.target.value, "location")}
+                  onChange={(e) => fieldChange(e.target.value, 'location')}
                   error={!!errors.location}
                   helperText={errors.location}
                 />
                 <SelectInput
                   id="select"
                   value={data.boardType}
-                  onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+                  onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
                   options={Object.keys(BoardTypeEnum)}
                   label="Board type"
                   error={!!errors.boardType}
@@ -155,7 +153,7 @@ const AddSensorPage: React.FunctionComponent<
                   fullWidth
                   options={listTimeZones()}
                   getOptionLabel={(option) => option}
-                  onChange={(e, newVal) => fieldChange(newVal, "timezone")}
+                  onChange={(e, newVal) => fieldChange(newVal, 'timezone')}
                   label="Timezone"
                   error={!!errors.timezone}
                   helperText={errors.timezone}
@@ -167,7 +165,7 @@ const AddSensorPage: React.FunctionComponent<
                   fullWidth
                   options={Object.values(SensorTypeEnum)}
                   getOptionLabel={(option) => option}
-                  onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
+                  onChange={(e, newVal) => fieldChange(newVal, 'sensorTypes')}
                   label="Sensor types"
                   error={!!errors.sensorTypes}
                   helperText={errors.sensorTypes}
@@ -179,9 +177,7 @@ const AddSensorPage: React.FunctionComponent<
                   fullWidth
                   options={Object.values(MeasurementTypeEnum)}
                   getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
-                  onChange={(e, newVal) =>
-                    fieldChange(newVal, "measurementTypes")
-                  }
+                  onChange={(e, newVal) => fieldChange(newVal, 'measurementTypes')}
                   label="Measurement types"
                   error={!!errors.measurementTypes}
                   helperText={errors.measurementTypes}
@@ -190,17 +186,15 @@ const AddSensorPage: React.FunctionComponent<
                   control={
                     <Checkbox
                       checked={data.private || false}
-                      onChange={(_e, checked) =>
-                        fieldChange(checked, "private")
-                      }
+                      onChange={(_e, checked) => fieldChange(checked, 'private')}
                     />
                   }
                   label="Private"
                 />
-                <div style={{ textAlign: "center" }}>
+                <div style={{ textAlign: 'center' }}>
                   <ColoredButton
                     type="submit"
-                    style={{ marginTop: "20px" }}
+                    style={{ marginTop: '20px' }}
                     colorVariety={ColorsEnum.BLUE}
                   >
                     Submit

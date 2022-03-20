@@ -121,14 +121,24 @@ const TopicPage: React.FunctionComponent<
 
   return (
     <>
-      <TopBar alignItems="center" backEnabled backTo={getTopicListRoute(topic.categoryId)} color={ColorsEnum.OLIVE}>
+      <TopBar
+        alignItems="center"
+        backEnabled
+        backTo={getTopicListRoute(topic.categoryId)}
+        color={ColorsEnum.OLIVE}
+      >
         <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           {topic.name}
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="md">
         <div className={classes.pagination}>
-          <Pagination count={totalPages || 1} page={page} shape="rounded" onChange={(e, p) => listComments(p)} />
+          <Pagination
+            count={totalPages || 1}
+            page={page}
+            shape="rounded"
+            onChange={(e, p) => listComments(p)}
+          />
         </div>
         <div style={{ display: 'flex' }} className={classes.root}>
           <div
@@ -167,7 +177,11 @@ const TopicPage: React.FunctionComponent<
                 </IconButton>
               )}
               {user?.isAllowed([PermissionsEnum.Topic__delete]) && (
-                <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(topic)}>
+                <IconButton
+                  aria-label="settings"
+                  size="small"
+                  onClick={() => deleteWithConfirmation(topic)}
+                >
                   <Delete />
                 </IconButton>
               )}
@@ -200,7 +214,11 @@ const TopicPage: React.FunctionComponent<
               editorState={formik.values?.description}
               onEditorStateChange={(value) => formik.setFieldValue('description', value)}
             />
-            <ColoredButton type="submit" style={{ marginTop: '20px' }} colorVariety={ColorsEnum.OLIVE}>
+            <ColoredButton
+              type="submit"
+              style={{ marginTop: '20px' }}
+              colorVariety={ColorsEnum.OLIVE}
+            >
               Submit
             </ColoredButton>
           </form>

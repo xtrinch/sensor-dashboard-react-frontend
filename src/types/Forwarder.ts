@@ -1,8 +1,8 @@
-import { parseISO } from "date-fns";
-import { AbstractEntity } from "types/AbstractEntity";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import { IotDeviceInterface } from "types/IotDeviceInterface";
-import User, { UserId } from "types/User";
+import { parseISO } from 'date-fns';
+import { AbstractEntity } from 'types/AbstractEntity';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import { IotDeviceInterface } from 'types/IotDeviceInterface';
+import User, { UserId } from 'types/User';
 
 export type ForwarderId = string;
 
@@ -10,7 +10,7 @@ class Forwarder extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {
     super(s);
 
-    this.name = s?.name || "";
+    this.name = s?.name || '';
     this.id = s?.id;
     this.userId = s?.userId;
     this.user = s?.user ? new User(s.user) : null;

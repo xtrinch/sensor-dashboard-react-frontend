@@ -1,9 +1,9 @@
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import UserListPage from "pages/users/UserListPage";
-import UserPage from "pages/users/UserPage";
-import { UserRoutes } from "pages/users/UserRoutes";
-import React from "react";
-import { Route, RouteComponentProps, withRouter } from "react-router";
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import UserListPage from 'pages/users/UserListPage';
+import UserPage from 'pages/users/UserPage';
+import { UserRoutes } from 'pages/users/UserRoutes';
+import React from 'react';
+import { Route, RouteComponentProps, withRouter } from 'react-router';
 
 const styles = (theme) => createStyles({});
 

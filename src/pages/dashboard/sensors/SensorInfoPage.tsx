@@ -1,40 +1,38 @@
-import { Button, Checkbox, FormControlLabel } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import { Settings } from "@material-ui/icons";
-import DeleteIcon from "@material-ui/icons/Delete";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { openConfirmation } from "context/ConfirmationContext";
-import { SensorContext } from "context/SensorContext";
-import { format } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import SensorService from "services/SensorService";
-import { listTimeZones } from "timezone-support";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
-import MeasurementTypeEnum, {
-  MeasurementTypeLabelsEnum,
-} from "types/MeasurementTypeEnum";
-import Sensor, { SensorId } from "types/Sensor";
-import SensorTypeEnum from "types/SensorTypeEnum";
-import { DATETIME_REGEX } from "utils/date.range";
-import { getConnectSensorRoute } from "../DashboardRoutes";
+import { Button, Checkbox, FormControlLabel } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import { Settings } from '@material-ui/icons';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { SensorContext } from 'context/SensorContext';
+import { format } from 'date-fns';
+import React, { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import SensorService from 'services/SensorService';
+import { listTimeZones } from 'timezone-support';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
+import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
+import Sensor, { SensorId } from 'types/Sensor';
+import SensorTypeEnum from 'types/SensorTypeEnum';
+import { DATETIME_REGEX } from 'utils/date.range';
+import { getConnectSensorRoute } from '../DashboardRoutes';
 
 const styles = (theme) =>
   createStyles({
     paper: {
-      margin: "30px 0px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      margin: '30px 0px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
       border: `1px solid ${ColorsEnum.GRAYDARK}`,
     },
     avatar: {
@@ -42,16 +40,16 @@ const styles = (theme) =>
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
-      "& >*": {
-        width: "100%",
-        display: "inline-block",
+      '& >*': {
+        width: '100%',
+        display: 'inline-block',
       },
-      "& >.MuiFormControl-root, >.MuiAutocomplete-root": {
-        width: "calc(50% - 10px)",
-        "&:nth-of-type(2n+1)": {
-          marginRight: "20px",
+      '& >.MuiFormControl-root, >.MuiAutocomplete-root': {
+        width: 'calc(50% - 10px)',
+        '&:nth-of-type(2n+1)': {
+          marginRight: '20px',
         },
       },
     },
@@ -62,7 +60,7 @@ const styles = (theme) =>
     connectButton: {
       backgroundColor: ColorsEnum.GREEN,
       color: ColorsEnum.WHITE,
-      marginRight: "20px",
+      marginRight: '20px',
     },
   });
 
@@ -82,11 +80,11 @@ const SensorInfoPage: React.FunctionComponent<
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
-    name: "",
-    displayName: "",
-    location: "",
-    boardType: "" as BoardTypeEnum,
-    timezone: "",
+    name: '',
+    displayName: '',
+    location: '',
+    boardType: '' as BoardTypeEnum,
+    timezone: '',
     private: false,
     sensorTypes: [],
     measurementTypes: [],
@@ -97,12 +95,12 @@ const SensorInfoPage: React.FunctionComponent<
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
       await deleteSensor(sensor.id);
-      history.push("/");
+      history.push('/');
     };
     openConfirmation(
       onConfirm,
       null,
-      "Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements."
+      'Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements.'
     );
   };
 
@@ -145,7 +143,7 @@ const SensorInfoPage: React.FunctionComponent<
   return (
     <>
       <TopBar alignItems="center">
-        <Typography component="h1" variant="h4" style={{ marginRight: "30px" }}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '30px' }}>
           Sensor board info
         </Typography>
         <Button
@@ -174,25 +172,21 @@ const SensorInfoPage: React.FunctionComponent<
               name="accessToken"
               label="Sensor access token"
               disabled
-              value={sensor?.accessToken || ""}
+              value={sensor?.accessToken || ''}
             />
             <TextInput
               id="accessToken"
               name="accessToken"
               label="Last seen at"
               disabled
-              value={
-                sensor?.lastSeenAt
-                  ? format(sensor?.lastSeenAt, DATETIME_REGEX)
-                  : "Never"
-              }
+              value={sensor?.lastSeenAt ? format(sensor?.lastSeenAt, DATETIME_REGEX) : 'Never'}
             />
             <TextInput
               id="name"
               label="Sensor name"
               name="name"
               value={data.name}
-              onChange={(e) => fieldChange(e.target.value, "name")}
+              onChange={(e) => fieldChange(e.target.value, 'name')}
               error={!!errors.name}
               helperText={errors.name}
             />
@@ -201,7 +195,7 @@ const SensorInfoPage: React.FunctionComponent<
               label="Sensor display name"
               name="displayName"
               value={data.displayName}
-              onChange={(e) => fieldChange(e.target.value, "displayName")}
+              onChange={(e) => fieldChange(e.target.value, 'displayName')}
               error={!!errors.displayName}
               helperText={errors.displayName}
             />
@@ -212,7 +206,7 @@ const SensorInfoPage: React.FunctionComponent<
               id="location"
               autoComplete="current-location"
               value={data.location}
-              onChange={(e) => fieldChange(e.target.value, "location")}
+              onChange={(e) => fieldChange(e.target.value, 'location')}
               error={!!errors.location}
               helperText={errors.location}
             />
@@ -220,7 +214,7 @@ const SensorInfoPage: React.FunctionComponent<
               id="boardType"
               value={data.boardType}
               options={Object.keys(BoardTypeEnum)}
-              onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+              onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
               label="Board type"
               variant="outlined"
               margin="normal"
@@ -233,7 +227,7 @@ const SensorInfoPage: React.FunctionComponent<
               options={listTimeZones()}
               fullWidth
               getOptionLabel={(option) => option}
-              onChange={(e, newVal) => fieldChange(newVal, "timezone")}
+              onChange={(e, newVal) => fieldChange(newVal, 'timezone')}
               label="Timezone"
               error={!!errors.timezone}
               helperText={errors.timezone}
@@ -245,7 +239,7 @@ const SensorInfoPage: React.FunctionComponent<
               fullWidth
               options={Object.values(SensorTypeEnum)}
               getOptionLabel={(option) => option}
-              onChange={(e, newVal) => fieldChange(newVal, "sensorTypes")}
+              onChange={(e, newVal) => fieldChange(newVal, 'sensorTypes')}
               label="Sensor types"
               error={!!errors.sensorTypes}
               helperText={errors.sensorTypes}
@@ -256,7 +250,7 @@ const SensorInfoPage: React.FunctionComponent<
               value={data.measurementTypes}
               options={Object.values(MeasurementTypeEnum)}
               getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
-              onChange={(e, newVal) => fieldChange(newVal, "measurementTypes")}
+              onChange={(e, newVal) => fieldChange(newVal, 'measurementTypes')}
               label="Measurement types"
               error={!!errors.measurementTypes}
               helperText={errors.measurementTypes}
@@ -265,15 +259,15 @@ const SensorInfoPage: React.FunctionComponent<
               control={
                 <Checkbox
                   checked={data.private || false}
-                  onChange={(e, checked) => fieldChange(checked, "private")}
+                  onChange={(e, checked) => fieldChange(checked, 'private')}
                 />
               }
               label="Private"
             />
-            <div style={{ textAlign: "center" }}>
+            <div style={{ textAlign: 'center' }}>
               <ColoredButton
                 type="submit"
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: '20px' }}
                 colorVariety={ColorsEnum.BLUE}
               >
                 Update

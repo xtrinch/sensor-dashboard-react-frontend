@@ -1,6 +1,6 @@
 enum DomainTypeEnum {
-  FULL = "FULL",
-  AUTO = "AUTO",
+  FULL = 'FULL',
+  AUTO = 'AUTO',
 }
 
 export default DomainTypeEnum;

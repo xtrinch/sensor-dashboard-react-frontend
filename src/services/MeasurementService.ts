@@ -1,14 +1,14 @@
-import Measurement from "types/Measurement";
-import { getHeaders, getUrl, processResponse } from "utils/http";
+import Measurement from 'types/Measurement';
+import { getHeaders, getUrl, processResponse } from 'utils/http';
 
 export default class MeasurementService {
   public static listMeasurements = async (queryParams) => {
-    const url = getUrl("/measurements", queryParams);
+    const url = getUrl('/measurements', queryParams);
 
     const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: getHeaders({ contentType: "application/json" }),
+      method: 'GET',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
     });
 
     const result = await processResponse(resp);

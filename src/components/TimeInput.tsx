@@ -1,27 +1,24 @@
-import DateFnsUtils from "@date-io/date-fns";
-import { createStyles, IconButton } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
-import withStyles, {
-  CSSProperties,
-  WithStyles,
-} from "@material-ui/core/styles/withStyles";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import ArrowForward from "@material-ui/icons/ArrowForward";
-import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
-import "date-fns";
-import { addHours, getHours, isFuture } from "date-fns";
-import React from "react";
-import ColorsEnum from "types/ColorsEnum";
-import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
-import { getZeroPaddedNumber } from "utils/number";
+import DateFnsUtils from '@date-io/date-fns';
+import { createStyles, IconButton } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import withStyles, { CSSProperties, WithStyles } from '@material-ui/core/styles/withStyles';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import 'date-fns';
+import { addHours, getHours, isFuture } from 'date-fns';
+import React from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import { DateRange, DateRangeEnum, DateRegex } from 'utils/date.range';
+import { getZeroPaddedNumber } from 'utils/number';
 
 const styles = (theme) =>
   createStyles({
     timepicker: {
-      "& input": {
-        textAlign: "center",
+      '& input': {
+        textAlign: 'center',
         backgroundColor: ColorsEnum.BGLIGHTER,
-        width: "100px",
+        width: '100px',
       },
     },
   });
@@ -33,9 +30,7 @@ interface TimeInputProps {
   label?: string;
 }
 
-const TimeInput: React.FunctionComponent<
-  TimeInputProps & WithStyles<typeof styles>
-> = (props) => {
+const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styles>> = (props) => {
   const { label, date, onChange, classes } = props;
 
   const onChangeDate = (d: Date) => {
@@ -58,7 +53,7 @@ const TimeInput: React.FunctionComponent<
       <Grid container alignItems="center" spacing={4}>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(-1)}>
-            <ArrowBack style={{ cursor: "pointer" }} />
+            <ArrowBack style={{ cursor: 'pointer' }} />
           </IconButton>
         </Grid>
         <Grid item>
@@ -72,18 +67,18 @@ const TimeInput: React.FunctionComponent<
             inputVariant="outlined"
             ampm={false}
             size="small"
-            views={["hours"]}
+            views={['hours']}
             labelFunc={(date) =>
-              `${getZeroPaddedNumber(
-                getHours(date)
-              )}:00 - ${getZeroPaddedNumber(getHours(date) + 1)}:00`
+              `${getZeroPaddedNumber(getHours(date))}:00 - ${getZeroPaddedNumber(
+                getHours(date) + 1
+              )}:00`
             }
             autoOk
           />
         </Grid>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(1)}>
-            <ArrowForward style={{ cursor: "pointer" }} />
+            <ArrowForward style={{ cursor: 'pointer' }} />
           </IconButton>
         </Grid>
       </Grid>

@@ -1,5 +1,5 @@
-import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import { SensorId } from "types/Sensor";
+import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
+import { SensorId } from 'types/Sensor';
 
 class Measurement {
   constructor(m?: Measurement) {

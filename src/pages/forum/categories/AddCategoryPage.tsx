@@ -30,9 +30,9 @@ const styles = (theme) =>
     },
   });
 
-const AddCategoryPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
-  props
-) => {
+const AddCategoryPage: React.FunctionComponent<
+  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
+> = (props) => {
   const {
     classes,
     history,

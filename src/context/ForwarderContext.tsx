@@ -42,7 +42,10 @@ function ForwarderContextProvider(props) {
     return s;
   };
 
-  const updateForwarder = async (id: ForwarderId, forwarder: Partial<Forwarder>): Promise<Forwarder> => {
+  const updateForwarder = async (
+    id: ForwarderId,
+    forwarder: Partial<Forwarder>
+  ): Promise<Forwarder> => {
     const s = await ForwarderService.updateForwarder(id, forwarder);
     const forwarders = state.forwarders;
     const forwarderIndex = forwarders.findIndex((sd) => sd.id === s.id);
@@ -83,7 +86,9 @@ function ForwarderContextProvider(props) {
   }, [state]);
 
   return (
-    <ForwarderContext.Provider value={{ state, updateForwarder, deleteForwarder, addForwarder, reload }}>
+    <ForwarderContext.Provider
+      value={{ state, updateForwarder, deleteForwarder, addForwarder, reload }}
+    >
       {props.children}
     </ForwarderContext.Provider>
   );

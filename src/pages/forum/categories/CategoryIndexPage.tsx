@@ -1,9 +1,9 @@
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import AddCategoryPage from "pages/forum/categories/AddCategoryPage";
-import CategoryListPage from "pages/forum/categories/CategoryListPage";
-import { ForumRoutes } from "pages/forum/ForumRoutes";
-import React from "react";
-import { Route, RouteComponentProps, withRouter } from "react-router";
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import AddCategoryPage from 'pages/forum/categories/AddCategoryPage';
+import CategoryListPage from 'pages/forum/categories/CategoryListPage';
+import { ForumRoutes } from 'pages/forum/ForumRoutes';
+import React from 'react';
+import { Route, RouteComponentProps, withRouter } from 'react-router';
 
 const styles = (theme) => createStyles({});
 

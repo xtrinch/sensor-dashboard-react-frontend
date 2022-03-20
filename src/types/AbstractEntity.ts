@@ -1,4 +1,4 @@
-import { parseISO } from "date-fns";
+import { parseISO } from 'date-fns';
 
 export abstract class AbstractEntity {
   constructor(s) {

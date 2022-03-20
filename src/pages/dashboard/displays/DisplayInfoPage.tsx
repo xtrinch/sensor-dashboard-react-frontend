@@ -1,47 +1,45 @@
-import Avatar from "@material-ui/core/Avatar";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import DeleteIcon from "@material-ui/icons/Delete";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { openConfirmation } from "context/ConfirmationContext";
-import { DisplayContext } from "context/DisplayContext";
-import { SensorContext } from "context/SensorContext";
-import { format } from "date-fns";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import DisplayService from "services/DisplayService";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
-import Display, { DisplayId } from "types/Display";
-import DisplayTypeEnum from "types/DisplayTypeEnum";
-import MeasurementTypeEnum, {
-  MeasurementTypeLabelsEnum,
-} from "types/MeasurementTypeEnum";
-import { DATETIME_REGEX } from "utils/date.range";
+import Avatar from '@material-ui/core/Avatar';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { DisplayContext } from 'context/DisplayContext';
+import { SensorContext } from 'context/SensorContext';
+import { format } from 'date-fns';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import DisplayService from 'services/DisplayService';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
+import Display, { DisplayId } from 'types/Display';
+import DisplayTypeEnum from 'types/DisplayTypeEnum';
+import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
+import { DATETIME_REGEX } from 'utils/date.range';
 
 const styles = (theme) =>
   createStyles({
     paper: {
-      marginTop: "30px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      marginTop: '30px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {
@@ -53,9 +51,9 @@ const styles = (theme) =>
       color: ColorsEnum.WHITE,
     },
     action: {
-      position: "absolute",
-      right: "25px",
-      bottom: "25px",
+      position: 'absolute',
+      right: '25px',
+      bottom: '25px',
     },
   });
 
@@ -73,13 +71,13 @@ const DisplayInfoPage: React.FunctionComponent<
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
   const [data, setData] = useState({
-    name: "",
-    location: "",
-    boardType: "" as BoardTypeEnum,
-    timezone: "",
+    name: '',
+    location: '',
+    boardType: '' as BoardTypeEnum,
+    timezone: '',
     measurementTypes: [],
     sensorIds: [],
-    displayType: "" as DisplayTypeEnum,
+    displayType: '' as DisplayTypeEnum,
   });
 
   const {
@@ -94,11 +92,7 @@ const DisplayInfoPage: React.FunctionComponent<
       await deleteDisplay(display.id);
       history.push(DashboardRoutes.DISPLAY_LIST);
     };
-    openConfirmation(
-      onConfirm,
-      null,
-      "Are you sure you want to delete display?"
-    );
+    openConfirmation(onConfirm, null, 'Are you sure you want to delete display?');
   };
 
   useEffect(() => {
@@ -164,7 +158,7 @@ const DisplayInfoPage: React.FunctionComponent<
               name="accessToken"
               label="Display access token"
               disabled
-              value={display?.accessToken || ""}
+              value={display?.accessToken || ''}
             />
             <TextInput
               variant="outlined"
@@ -174,11 +168,7 @@ const DisplayInfoPage: React.FunctionComponent<
               name="accessToken"
               label="Last seen at"
               disabled
-              value={
-                display?.lastSeenAt
-                  ? format(display?.lastSeenAt, DATETIME_REGEX)
-                  : "Never"
-              }
+              value={display?.lastSeenAt ? format(display?.lastSeenAt, DATETIME_REGEX) : 'Never'}
             />
             <TextInput
               variant="outlined"
@@ -188,7 +178,7 @@ const DisplayInfoPage: React.FunctionComponent<
               label="Display name"
               name="name"
               value={data.name}
-              onChange={(e) => fieldChange(e.target.value, "name")}
+              onChange={(e) => fieldChange(e.target.value, 'name')}
               error={!!errors.name}
               helperText={errors.name}
             />
@@ -202,13 +192,13 @@ const DisplayInfoPage: React.FunctionComponent<
               id="location"
               autoComplete="current-location"
               value={data.location}
-              onChange={(e) => fieldChange(e.target.value, "location")}
+              onChange={(e) => fieldChange(e.target.value, 'location')}
               error={!!errors.location}
               helperText={errors.location}
             />
             <SelectInput
               value={data.boardType}
-              onChange={(e, newVal) => fieldChange(newVal, "boardType")}
+              onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
               fullWidth
               options={Object.keys(BoardTypeEnum)}
               error={!!errors.boardType}
@@ -216,7 +206,7 @@ const DisplayInfoPage: React.FunctionComponent<
             />
             <SelectInput
               value={data.displayType}
-              onChange={(e, newVal) => fieldChange(newVal, "displayType")}
+              onChange={(e, newVal) => fieldChange(newVal, 'displayType')}
               fullWidth
               options={Object.keys(DisplayTypeEnum)}
               label="Display type"
@@ -232,7 +222,7 @@ const DisplayInfoPage: React.FunctionComponent<
               fullWidth
               options={Object.values(MeasurementTypeEnum)}
               getOptionLabel={(option) => MeasurementTypeLabelsEnum[option]}
-              onChange={(e, newVal) => fieldChange(newVal, "measurementTypes")}
+              onChange={(e, newVal) => fieldChange(newVal, 'measurementTypes')}
               label="Measurement types"
               error={!!errors.measurementTypes}
               helperText={errors.measurementTypes}
@@ -243,10 +233,8 @@ const DisplayInfoPage: React.FunctionComponent<
               value={data.sensorIds}
               fullWidth
               options={sensors.map((s) => s.id)}
-              getOptionLabel={(option) =>
-                sensors.find((s) => s.id === option)?.name
-              }
-              onChange={(e, newVal) => fieldChange(newVal, "sensorIds")}
+              getOptionLabel={(option) => sensors.find((s) => s.id === option)?.name}
+              onChange={(e, newVal) => fieldChange(newVal, 'sensorIds')}
               label="Sensors"
               error={!!errors.sensorIds}
               helperText={errors.sensorIds}
@@ -254,7 +242,7 @@ const DisplayInfoPage: React.FunctionComponent<
             <ColoredButton
               type="submit"
               fullWidth
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: '20px' }}
               colorVariety={ColorsEnum.BLUE}
             >
               Update

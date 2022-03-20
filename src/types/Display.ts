@@ -1,11 +1,11 @@
-import { parseISO } from "date-fns";
-import { AbstractEntity } from "types/AbstractEntity";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import DisplayTypeEnum from "types/DisplayTypeEnum";
-import { IotDeviceInterface } from "types/IotDeviceInterface";
-import MeasurementTypeEnum from "types/MeasurementTypeEnum";
-import Sensor, { SensorId } from "types/Sensor";
-import User, { UserId } from "types/User";
+import { parseISO } from 'date-fns';
+import { AbstractEntity } from 'types/AbstractEntity';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import DisplayTypeEnum from 'types/DisplayTypeEnum';
+import { IotDeviceInterface } from 'types/IotDeviceInterface';
+import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
+import Sensor, { SensorId } from 'types/Sensor';
+import User, { UserId } from 'types/User';
 
 export type DisplayId = string;
 
@@ -13,7 +13,7 @@ class Display extends AbstractEntity implements IotDeviceInterface {
   constructor(s) {
     super(s);
 
-    this.name = s?.name || "";
+    this.name = s?.name || '';
     this.id = s?.id;
     this.userId = s?.userId;
     this.user = s?.user ? new User(s.user) : null;
@@ -21,9 +21,7 @@ class Display extends AbstractEntity implements IotDeviceInterface {
     this.location = s?.location;
     this.accessToken = s?.accessToken;
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
-    this.sensors = s?.sensors
-      ? s.sensors.map((sensor) => new Sensor(sensor))
-      : [];
+    this.sensors = s?.sensors ? s.sensors.map((sensor) => new Sensor(sensor)) : [];
     this.sensorIds = s?.sensorIds || [];
     this.measurementTypes = s?.measurementTypes || [];
     this.displayType = s?.displayType;
