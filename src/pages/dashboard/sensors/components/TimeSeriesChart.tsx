@@ -20,7 +20,6 @@ export interface ChartPoint {
   labelTime: string;
 }
 interface TimeSeriesChartInterface {
-  dotSize: number;
   ticks: number[];
   chartData: {
     name: string;
@@ -51,10 +50,8 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           minTickGap={0}
           tick={{ fontSize: 13, fill: ColorsEnum.PINK }}
           stroke={ColorsEnum.GRAY}
-          //allowDataOverflow={false}
           interval={'preserveStartEnd'}
           domain={[ticks[0], ticks[ticks.length - 1]]}
-          //unit={props.unit.x}
         />
         <YAxis
           domain={domain}

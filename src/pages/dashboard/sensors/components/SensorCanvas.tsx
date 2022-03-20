@@ -60,14 +60,14 @@ interface SensorCanvasProps {
 }
 
 const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeof styles>> = (
-  props
+  props,
 ) => {
   const { type, classes, date, groupBy, measurements, domain } = props;
   const {
     state: { sensors, mySensors },
   } = useContext(SensorContext);
   const allSensors = uniqBy([...mySensors, ...sensors], (s: Sensor) => s.id).filter(
-    (s) => s.visible
+    (s) => s.visible,
   );
 
   const groupByProperties = {
@@ -113,22 +113,22 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
     },
   };
 
-  let chartData = allSensors.map((s, index) => ({
+  const chartData = allSensors.map((s, index) => ({
     name: `${s.id}`,
     sensorId: s.id,
     ordering: index,
     label: s.name,
   }));
 
-  let data: ChartPoint[] = measurements.map((m: Measurement) => ({
+  const data: ChartPoint[] = measurements.map((m: Measurement) => ({
     name: `${m.sensorId}`,
     time: groupByProperties[groupBy].getTimeDomain(DateRange.getRegexGroups(m.createdAt)),
     labelTime: m.createdAt,
     [m.sensorId]: m.measurement,
   }));
 
-  let newData: ChartPoint[] = [];
-  for (let d of data) {
+  const newData: ChartPoint[] = [];
+  for (const d of data) {
     const item = newData.find((dd) => dd.labelTime === d.labelTime);
     if (item) {
       item[d.name] = d[d.name];

@@ -26,7 +26,6 @@ const styles = (theme) =>
 interface TimeInputProps {
   date: DateRegex;
   onChange: (date: string) => void;
-  style?: CSSProperties;
   label?: string;
 }
 

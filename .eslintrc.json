@@ -45,7 +45,18 @@
     "jsx-a11y/click-events-have-key-events": "warn",
     "react/jsx-one-expression-per-line": "off",
     "object-curly-newline": "off",
-    "react/prefer-stateless-function": "warn"
+    "react/prefer-stateless-function": "warn",
+    "implicit-arrow-linebreak": "off",
+    "no-spaced-func": "off",
+    "arrow-body-style": "off",
+    "indent": "warn",
+    "react/jsx-wrap-multilines": "off",
+    "react/self-closing-comp": "off",
+    "no-confusing-arrow": "off",
+    "func-call-spacing": "off",
+    "function-paren-newline": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/jsx-boolean-value": "off"
   },
   "settings": {
     "import/resolver": {

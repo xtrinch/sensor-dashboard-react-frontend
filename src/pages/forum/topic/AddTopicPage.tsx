@@ -62,9 +62,7 @@ const AddTopicPage: React.FunctionComponent<
     enableReinitialize: true,
   });
 
-  const isEdit = () => {
-    return !!params.topicId;
-  };
+  const isEdit = () => !!params.topicId;
 
   useEffect(() => {
     const setData = async () => {
