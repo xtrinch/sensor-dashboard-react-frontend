@@ -32,6 +32,7 @@ interface SideMenuItemProps {
   visibility?: boolean;
   expandable?: boolean;
   type: 'sensor' | 'display' | 'forwarder' | 'radio';
+  context?: Context<any>;
 }
 
 const styles = () =>

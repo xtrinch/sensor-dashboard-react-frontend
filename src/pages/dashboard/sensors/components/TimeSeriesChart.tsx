@@ -34,6 +34,7 @@ interface TimeSeriesChartInterface {
     y: string;
   };
   nowX: number;
+  dotSize: number;
 }
 
 const TimeSeriesChart = (props: TimeSeriesChartInterface) => {

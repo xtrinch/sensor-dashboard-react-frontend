@@ -59,6 +59,7 @@ interface WYSIGEditorProps {
   editorState?: string;
   onEditorStateChange?: (change: string) => void;
   readOnly?: boolean;
+  style?: CSSProperties;
 }
 
 const WYSIGEditor: React.FunctionComponent<WithStyles<typeof styles> & WYSIGEditorProps> = (
