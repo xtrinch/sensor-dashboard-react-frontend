@@ -44,9 +44,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   const {
     state: { sensors, mySensors, sensorsLoaded, mySensorsLoaded },
   } = useContext(SensorContext);
-  const {
-    state: { loginState },
-  } = useContext(AccountContext);
+  const { loginState } = useContext(AccountContext);
   const [{ date, groupBy, domain }] = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);

@@ -32,9 +32,7 @@ function SensorContextProvider(props) {
     mySensors: [],
     mySensorsLoaded: false,
   });
-  let {
-    state: { loginState, user },
-  } = useContext(AccountContext);
+  let { loginState, user } = useContext(AccountContext);
 
   const clearMySensors = () => {
     setState({ ...state, mySensors: [] });

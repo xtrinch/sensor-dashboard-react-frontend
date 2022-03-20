@@ -37,9 +37,7 @@ const CategoryListPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const {
     state: { categories },

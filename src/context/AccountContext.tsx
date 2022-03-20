@@ -6,79 +6,74 @@ import { Toast } from "types/Toast";
 import User from "types/User";
 
 const AccountContext = createContext<{
-  state?: {
-    user: User;
-    accessToken: string;
-    loginState: "LOGGED_OUT" | "LOGGED_IN" | "LOGIN_ERROR" | string;
-  };
+  user?: User;
+  loginState?: "LOGGED_OUT" | "LOGGED_IN" | "LOGIN_ERROR" | string;
   login?: (email: string, password: string) => Promise<User>;
   loginWithGoogle?: (idToken: string) => Promise<User>;
   register?: (user: Partial<User>) => Promise<User>;
   logout?: () => Promise<void>;
+  getMyData?: () => Promise<User>;
 }>({});
 
 function AccountContextProvider(props) {
   const { clearMySensors } = useContext(SensorContext);
 
-  let [state, setState] = useState({
-    user: localStorage.getItem("user")
+  let [user, setUser] = useState(() =>
+    localStorage.getItem("user")
       ? new User(JSON.parse(localStorage.getItem("user")))
-      : null,
-    loginState: localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT",
-    accessToken: localStorage.getItem("accessToken"),
-  });
+      : null
+  );
+
+  let [loginState, setLoginState] = useState(() =>
+    localStorage.getItem("user") ? "LOGGED_IN" : "LOGGED_OUT"
+  );
 
   const setStateWithSideEffects = (newState: any) => {
     // save to local storage
-    newState.user
-      ? localStorage.setItem("user", JSON.stringify(newState.user))
-      : localStorage.removeItem("user");
-    newState.accessToken
-      ? localStorage.setItem("accessToken", newState.accessToken)
-      : localStorage.removeItem("accessToken");
-    setState(newState);
+    if (newState.loginState) {
+      setLoginState(newState.loginState);
+      if (newState.loginState === "LOGGED_OUT") {
+        localStorage.removeItem("user");
+      }
+    }
+    if (newState.user) {
+      localStorage.setItem("user", JSON.stringify(newState.user));
+    }
+    setUser(newState.user);
   };
 
   const login = async (email: string, password: string): Promise<User> => {
     try {
-      const { accessToken, user } = await UserService.login(email, password);
-      if (accessToken) {
+      const { user } = await UserService.login(email, password);
+      if (user) {
         setStateWithSideEffects({
-          ...state,
-          loginState: "LOGGED_IN",
           user: user,
-          accessToken: accessToken,
+          loginState: "LOGGED_IN",
         });
 
         return user;
       }
     } catch (e) {
-      setStateWithSideEffects({ ...state, loginState: "LOGIN_ERROR" });
+      setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
       throw e;
     }
 
     return null;
   };
 
-  const loginWithGoogle = async (idToken: string): Promise<User> => {
+  const getMyData = async (): Promise<User> => {
     try {
-      const { accessToken, user } = await UserService.loginWithGoogle(idToken);
-      if (accessToken) {
-        setStateWithSideEffects({
-          ...state,
-          loginState: "LOGGED_IN",
-          user: user,
-          accessToken: accessToken,
-        });
+      const user = await UserService.getMe();
+      setStateWithSideEffects({
+        user,
+        loginState: "LOGGED_IN",
+      });
 
-        return user;
-      }
+      return user;
     } catch (e) {
-      setStateWithSideEffects({ ...state, loginState: "LOGIN_ERROR" });
+      setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
       throw e;
     }
-
-    return null;
   };
 
   const register = async (user: Partial<User>) => {
@@ -86,11 +81,11 @@ function AccountContextProvider(props) {
   };
 
   const logout = async (): Promise<void> => {
+    await UserService.logout();
+
     setStateWithSideEffects({
-      ...state,
       loginState: "LOGGED_OUT",
       user: undefined,
-      accessToken: undefined,
     });
 
     if (clearMySensors) {
@@ -102,7 +97,7 @@ function AccountContextProvider(props) {
 
   return (
     <AccountContext.Provider
-      value={{ state, login, logout, register, loginWithGoogle }}
+      value={{ user, loginState, login, logout, register, getMyData }}
     >
       {props.children}
     </AccountContext.Provider>

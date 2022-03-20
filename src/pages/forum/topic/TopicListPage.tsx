@@ -42,9 +42,7 @@ const TopicListPage: React.FunctionComponent<
     history,
     match: { params },
   } = props;
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const {
     state: { topics },

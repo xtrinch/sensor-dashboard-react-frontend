@@ -15,9 +15,19 @@ export default class UserService {
     const result = await processResponse(resp);
 
     return {
-      accessToken: result.accessToken,
       user: new User(result.user),
     };
+  };
+
+  public static logout = async () => {
+    const url = getUrl("/auth/logout");
+
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    await processResponse(resp);
   };
 
   public static loginWithGoogle = async (idToken: string) => {
@@ -78,6 +88,20 @@ export default class UserService {
 
   public static getUser = async (id: UserId): Promise<User> => {
     const url = getUrl(`/users/${id}`);
+
+    const resp = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+      headers: getHeaders({ contentType: "application/json" }),
+    });
+
+    const result = await processResponse(resp);
+    const s = new User(result);
+    return s;
+  };
+
+  public static getMe = async (): Promise<User> => {
+    const url = getUrl(`/users/me`);
 
     const resp = await fetch(url, {
       method: "GET",

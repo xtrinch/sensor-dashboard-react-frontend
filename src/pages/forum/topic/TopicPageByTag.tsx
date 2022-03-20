@@ -51,9 +51,7 @@ const TopicPage: React.FunctionComponent<
 
   const { deleteTopic } = useContext(TopicContext);
 
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const [topic, setTopic] = useState(null);
 

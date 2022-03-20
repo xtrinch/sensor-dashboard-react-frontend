@@ -83,9 +83,7 @@ const SensorsSideMenu: React.FunctionComponent<
   const {
     state: { forwarders },
   } = useContext(ForwarderContext);
-  const {
-    state: { loginState, user },
-  } = useContext(AccountContext);
+  const { loginState, user } = useContext(AccountContext);
 
   const goToDisplays = () => {
     drawerToggle();

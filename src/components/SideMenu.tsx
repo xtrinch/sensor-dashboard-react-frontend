@@ -60,10 +60,7 @@ const SideMenu: React.FunctionComponent<
   SideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { history } = props;
-  const {
-    logout,
-    state: { loginState, user },
-  } = useContext(AccountContext);
+  const { logout, loginState, user } = useContext(AccountContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -99,8 +96,8 @@ const SideMenu: React.FunctionComponent<
             <Grid item>
               <div>
                 Logged in as{" "}
-                <Link to={getUserRoute(user.id)} color={ColorsEnum.YELLOW}>
-                  {user.username}
+                <Link to={getUserRoute(user?.id)} color={ColorsEnum.YELLOW}>
+                  {user?.username}
                 </Link>
               </div>
               <Link onClick={() => logoutWithConfirmation()}>Logout</Link>

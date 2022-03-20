@@ -66,9 +66,7 @@ const TopicPage: React.FunctionComponent<
     listComments,
   } = useContext(CommentContext);
 
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const [topic, setTopic] = useState(null);
 

@@ -21,9 +21,7 @@ function DisplayContextProvider(props) {
     displays: [],
     displaysLoaded: false,
   });
-  let {
-    state: { loginState },
-  } = useContext(AccountContext);
+  let { loginState } = useContext(AccountContext);
 
   const reloadDisplays = async (loginState: string) => {
     if (loginState === "LOGGED_OUT") {

@@ -29,9 +29,7 @@ const CommentItem: React.FunctionComponent<
 > = (props) => {
   const { comment } = props;
   const { deleteComment } = useContext(CommentContext);
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const deleteWithConfirmation = (comment: Comment) => {
     const onConfirm = async () => {

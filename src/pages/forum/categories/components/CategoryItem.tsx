@@ -58,9 +58,7 @@ const CategoryItem: React.FunctionComponent<
   const { deleteCategory, decreaseInSequence, increaseInSequence } = useContext(
     CategoryContext
   );
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const deleteWithConfirmation = (category: Category) => {
     const onConfirm = async () => {

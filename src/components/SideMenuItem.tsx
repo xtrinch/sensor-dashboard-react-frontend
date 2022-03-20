@@ -69,9 +69,7 @@ const SideMenuItem: React.FunctionComponent<
 > = (props) => {
   const { item, classes } = props;
 
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
   const { toggleSensorVisibility, updateSensor } = useContext(SensorContext);
 
   const toggleVisibility = async (e: any, item: IotDeviceInterface) => {

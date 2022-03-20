@@ -52,9 +52,7 @@ const TopicItem: React.FunctionComponent<
 > = (props) => {
   const { topic, classes, history } = props;
   const { deleteTopic } = useContext(TopicContext);
-  const {
-    state: { user },
-  } = useContext(AccountContext);
+  const { user } = useContext(AccountContext);
 
   const deleteWithConfirmation = (topic: Topic) => {
     const onConfirm = async () => {

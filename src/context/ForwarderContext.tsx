@@ -24,9 +24,7 @@ function ForwarderContextProvider(props) {
     forwarders: [],
     forwardersLoaded: false,
   });
-  let {
-    state: { loginState },
-  } = useContext(AccountContext);
+  let { loginState } = useContext(AccountContext);
 
   const reload = async () => {
     if (loginState === "LOGGED_OUT") {
