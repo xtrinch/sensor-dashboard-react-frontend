@@ -10,6 +10,7 @@ interface LinkProps {
   target?: string;
   id?: string;
   to?: string;
+  color?: string;
 }
 
 const styles = () =>

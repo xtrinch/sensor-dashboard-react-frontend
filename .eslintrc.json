@@ -56,7 +56,8 @@
     "func-call-spacing": "off",
     "function-paren-newline": "off",
     "react/jsx-curly-brace-presence": "off",
-    "react/jsx-boolean-value": "off"
+    "react/jsx-boolean-value": "off",
+    "react/no-unused-prop-types": "off"
   },
   "settings": {
     "import/resolver": {
