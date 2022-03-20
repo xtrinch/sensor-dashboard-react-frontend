@@ -1,10 +1,10 @@
-import { CategoryContext } from "context/CategoryContext";
-import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import TopicService from "services/TopicService";
-import Category from "types/Category";
-import { Toast } from "types/Toast";
-import Topic, { TopicId } from "types/Topic";
+import { CategoryContext } from 'context/CategoryContext';
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import TopicService from 'services/TopicService';
+import Category from 'types/Category';
+import { Toast } from 'types/Toast';
+import Topic, { TopicId } from 'types/Topic';
 
 const TopicContext = createContext<{
   state?: {
@@ -33,10 +33,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     setState({ ...state, topics: topicData, topicsLoaded: true });
   };
 
-  const updateTopic = async (
-    id: TopicId,
-    topic: Partial<Topic>
-  ): Promise<Topic> => {
+  const updateTopic = async (id: TopicId, topic: Partial<Topic>): Promise<Topic> => {
     const s = await TopicService.updateTopic(id, topic);
 
     const topics = state.topics;
@@ -46,8 +43,8 @@ function TopicContextProvider(props: { category: Category; children: any }) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the topic",
-        type: "success",
+        message: 'Successfully updated the topic',
+        type: 'success',
       })
     );
 
@@ -63,8 +60,8 @@ function TopicContextProvider(props: { category: Category; children: any }) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the topic",
-        type: "success",
+        message: 'Successfully deleted the topic',
+        type: 'success',
       })
     );
 
@@ -75,9 +72,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     const s = await TopicService.addTopic(topic);
     setState({ ...state, topics: [...state.topics, s] });
 
-    addToast(
-      new Toast({ message: "Successfully added a topic", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a topic', type: 'success' }));
 
     reloadCategories();
 
@@ -88,12 +83,10 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     if (!state.topicsLoaded) {
       reload();
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
-    <TopicContext.Provider
-      value={{ state, updateTopic, deleteTopic, addTopic, reload }}
-    >
+    <TopicContext.Provider value={{ state, updateTopic, deleteTopic, addTopic, reload }}>
       {props.children}
     </TopicContext.Provider>
   );

@@ -1,40 +1,40 @@
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import { Delete } from "@material-ui/icons";
-import ColoredButton from "components/ColoredButton";
-import SelectInput from "components/SelectInput";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { openConfirmation } from "context/ConfirmationContext";
-import { RadioContext } from "context/RadioContext";
-import { format } from "date-fns";
-import { useFormik } from "formik";
-import { DashboardRoutes } from "pages/dashboard/DashboardRoutes";
-import React, { useContext, useEffect, useState } from "react";
-import ReactJson, { InteractionProps } from "react-json-view";
-import { RouteComponentProps, withRouter } from "react-router";
-import RadioService from "services/RadioService";
-import BoardTypeEnum from "types/BoardTypeEnum";
-import ColorsEnum from "types/ColorsEnum";
-import Radio from "types/Radio";
-import { DATETIME_REGEX } from "utils/date.range";
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import { Delete } from '@material-ui/icons';
+import ColoredButton from 'components/ColoredButton';
+import SelectInput from 'components/SelectInput';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { openConfirmation } from 'context/ConfirmationContext';
+import { RadioContext } from 'context/RadioContext';
+import { format } from 'date-fns';
+import { useFormik } from 'formik';
+import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import React, { useContext, useEffect, useState } from 'react';
+import ReactJson, { InteractionProps } from 'react-json-view';
+import { RouteComponentProps, withRouter } from 'react-router';
+import RadioService from 'services/RadioService';
+import BoardTypeEnum from 'types/BoardTypeEnum';
+import ColorsEnum from 'types/ColorsEnum';
+import Radio from 'types/Radio';
+import { DATETIME_REGEX } from 'utils/date.range';
 
 const styles = (theme) =>
   createStyles({
     paper: {
       marginTop: theme.spacing(30),
-      radio: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      radio: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "15px",
+      padding: '15px',
     },
   });
 
-const AddRadioPage: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
-> = (props) => {
+const AddRadioPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
+  props
+) => {
   const {
     classes,
     history,
@@ -42,13 +42,11 @@ const AddRadioPage: React.FunctionComponent<
   } = props;
 
   const [radio, setRadio] = useState(() => new Radio({}));
-  const {
-    addRadio,
-    updateRadio,
-    deleteRadio,
-    sendConfig,
-    readConfig,
-  } = useContext(RadioContext);
+  const { addRadio, updateRadio, deleteRadio, sendConfig, readConfig } = useContext(RadioContext);
+
+  const isEdit = () => {
+    return !!params.id;
+  };
 
   const submitForm = async (values: Radio, { setStatus }) => {
     try {
@@ -74,10 +72,6 @@ const AddRadioPage: React.FunctionComponent<
     enableReinitialize: true,
   });
 
-  const isEdit = () => {
-    return !!params.id;
-  };
-
   useEffect(() => {
     const setData = async () => {
       if (isEdit()) {
@@ -86,14 +80,14 @@ const AddRadioPage: React.FunctionComponent<
       }
     };
     setData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
       await deleteRadio(radio.id);
-      history.push("/");
+      history.push('/');
     };
-    openConfirmation(onConfirm, null, "Are you sure you want to delete radio?");
+    openConfirmation(onConfirm, null, 'Are you sure you want to delete radio?');
   };
 
   const requestConfigWithConfirmation = () => {
@@ -103,7 +97,7 @@ const AddRadioPage: React.FunctionComponent<
     openConfirmation(
       onConfirm,
       null,
-      "Are you sure you want to request configuration from radio? Existing cloud configuration will be overwritten."
+      'Are you sure you want to request configuration from radio? Existing cloud configuration will be overwritten.'
     );
   };
 
@@ -112,23 +106,14 @@ const AddRadioPage: React.FunctionComponent<
       await updateRadio(radio.id, formik.values);
       await sendConfig(radio.id);
     };
-    openConfirmation(
-      onConfirm,
-      null,
-      "Are you sure you want to send config to the radio?"
-    );
+    openConfirmation(onConfirm, null, 'Are you sure you want to send config to the radio?');
   };
 
   return (
     <>
-      <TopBar
-        alignItems="center"
-        backEnabled
-        backTo={DashboardRoutes.RADIO_LIST}
-        color={ColorsEnum.BLUE}
-      >
-        <Typography component="h1" variant="h4" style={{ marginRight: "20px" }}>
-          {isEdit() ? "Edit" : "Add"} radio
+      <TopBar alignItems="center" backEnabled backTo={DashboardRoutes.RADIO_LIST} color={ColorsEnum.BLUE}>
+        <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
+          {isEdit() ? 'Edit' : 'Add'} radio
         </Typography>
         {isEdit() && (
           <>
@@ -137,7 +122,7 @@ const AddRadioPage: React.FunctionComponent<
               onClick={requestConfigWithConfirmation}
               colorVariety={ColorsEnum.BLUE}
               size="small"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: '20px' }}
             >
               Read config
             </ColoredButton>
@@ -146,7 +131,7 @@ const AddRadioPage: React.FunctionComponent<
               onClick={sendConfigWithConfirmation}
               colorVariety={ColorsEnum.BLUE}
               size="small"
-              style={{ marginRight: "20px" }}
+              style={{ marginRight: '20px' }}
             >
               Send config
             </ColoredButton>
@@ -171,7 +156,7 @@ const AddRadioPage: React.FunctionComponent<
                   name="accessToken"
                   label="Sensor access token"
                   disabled
-                  value={radio?.accessToken || ""}
+                  value={radio?.accessToken || ''}
                   fullWidth
                 />
                 <TextInput
@@ -179,11 +164,7 @@ const AddRadioPage: React.FunctionComponent<
                   name="accessToken"
                   label="Last seen at"
                   disabled
-                  value={
-                    radio?.lastSeenAt
-                      ? format(radio?.lastSeenAt, DATETIME_REGEX)
-                      : "Never"
-                  }
+                  value={radio?.lastSeenAt ? format(radio?.lastSeenAt, DATETIME_REGEX) : 'Never'}
                   fullWidth
                 />
               </>
@@ -209,9 +190,7 @@ const AddRadioPage: React.FunctionComponent<
             />
             <SelectInput
               value={formik.values.boardType || null}
-              onChange={(e, newVal) =>
-                formik.setFieldValue("boardType", newVal)
-              }
+              onChange={(e, newVal) => formik.setFieldValue('boardType', newVal)}
               options={Object.keys(BoardTypeEnum)}
               label="Board type"
               error={!!formik.status?.boardType}
@@ -234,27 +213,23 @@ const AddRadioPage: React.FunctionComponent<
                 src={formik.values.config}
                 theme="monokai"
                 onEdit={(edit: InteractionProps) => {
-                  formik.setFieldValue("config", edit.updated_src);
+                  formik.setFieldValue('config', edit.updated_src);
                 }}
                 onAdd={(edit: InteractionProps) => {
-                  formik.setFieldValue("config", edit.updated_src);
+                  formik.setFieldValue('config', edit.updated_src);
                 }}
                 onDelete={(edit: InteractionProps) => {
-                  formik.setFieldValue("config", edit.updated_src);
+                  formik.setFieldValue('config', edit.updated_src);
                 }}
                 enableClipboard={false}
                 collapsed={false}
                 displayObjectSize={false}
                 displayDataTypes={false}
-                defaultValue={""}
-                style={{ marginTop: "5px", padding: "10px" }}
+                defaultValue={''}
+                style={{ marginTop: '5px', padding: '10px' }}
               />
             )}
-            <ColoredButton
-              type="submit"
-              style={{ marginTop: "20px" }}
-              colorVariety={ColorsEnum.BLUE}
-            >
+            <ColoredButton type="submit" style={{ marginTop: '20px' }} colorVariety={ColorsEnum.BLUE}>
               Submit
             </ColoredButton>
           </form>

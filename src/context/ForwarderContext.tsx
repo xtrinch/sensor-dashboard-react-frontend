@@ -1,19 +1,16 @@
-import { AccountContext } from "context/AccountContext";
-import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import ForwarderService from "services/ForwarderService";
-import Forwarder, { ForwarderId } from "types/Forwarder";
-import { Toast } from "types/Toast";
+import { AccountContext } from 'context/AccountContext';
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import ForwarderService from 'services/ForwarderService';
+import Forwarder, { ForwarderId } from 'types/Forwarder';
+import { Toast } from 'types/Toast';
 
 const ForwarderContext = createContext<{
   state?: {
     forwardersLoaded: boolean;
     forwarders: Forwarder[];
   };
-  updateForwarder?: (
-    id: ForwarderId,
-    forwarder: Forwarder
-  ) => Promise<Forwarder>;
+  updateForwarder?: (id: ForwarderId, forwarder: Forwarder) => Promise<Forwarder>;
   deleteForwarder?: (id: ForwarderId) => Promise<boolean>;
   addForwarder?: (forwarder: Partial<Forwarder>) => Promise<Forwarder>;
   reload?: () => Promise<void>;
@@ -27,7 +24,7 @@ function ForwarderContextProvider(props) {
   let { loginState } = useContext(AccountContext);
 
   const reload = async () => {
-    if (loginState === "LOGGED_OUT") {
+    if (loginState === 'LOGGED_OUT') {
       return;
     }
 
@@ -36,23 +33,16 @@ function ForwarderContextProvider(props) {
     setState({ ...state, forwarders: forwarderData, forwardersLoaded: true });
   };
 
-  const addForwarder = async (
-    forwarder: Partial<Forwarder>
-  ): Promise<Forwarder> => {
+  const addForwarder = async (forwarder: Partial<Forwarder>): Promise<Forwarder> => {
     const s = await ForwarderService.addForwarder(forwarder);
     setState({ ...state, forwarders: [...state.forwarders, s] });
 
-    addToast(
-      new Toast({ message: "Successfully added a forwarder", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a forwarder', type: 'success' }));
 
     return s;
   };
 
-  const updateForwarder = async (
-    id: ForwarderId,
-    forwarder: Partial<Forwarder>
-  ): Promise<Forwarder> => {
+  const updateForwarder = async (id: ForwarderId, forwarder: Partial<Forwarder>): Promise<Forwarder> => {
     const s = await ForwarderService.updateForwarder(id, forwarder);
     const forwarders = state.forwarders;
     const forwarderIndex = forwarders.findIndex((sd) => sd.id === s.id);
@@ -61,8 +51,8 @@ function ForwarderContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the forwarder",
-        type: "success",
+        message: 'Successfully updated the forwarder',
+        type: 'success',
       })
     );
 
@@ -78,8 +68,8 @@ function ForwarderContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the forwarder",
-        type: "success",
+        message: 'Successfully deleted the forwarder',
+        type: 'success',
       })
     );
 
@@ -90,12 +80,10 @@ function ForwarderContextProvider(props) {
     if (!state.forwardersLoaded) {
       reload();
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
-    <ForwarderContext.Provider
-      value={{ state, updateForwarder, deleteForwarder, addForwarder, reload }}
-    >
+    <ForwarderContext.Provider value={{ state, updateForwarder, deleteForwarder, addForwarder, reload }}>
       {props.children}
     </ForwarderContext.Provider>
   );

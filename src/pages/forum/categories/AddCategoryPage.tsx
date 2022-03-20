@@ -1,38 +1,38 @@
-import { Checkbox, FormControlLabel } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ColoredButton from "components/ColoredButton";
-import TextInput from "components/TextInput";
-import TopBar from "components/TopBar";
-import { CategoryContext } from "context/CategoryContext";
-import { useFormik } from "formik";
-import { ForumRoutes } from "pages/forum/ForumRoutes";
-import React, { useContext, useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import CategoryService from "services/CategoryService";
-import Category from "types/Category";
-import ColorsEnum from "types/ColorsEnum";
+import { Checkbox, FormControlLabel } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import ColoredButton from 'components/ColoredButton';
+import TextInput from 'components/TextInput';
+import TopBar from 'components/TopBar';
+import { CategoryContext } from 'context/CategoryContext';
+import { useFormik } from 'formik';
+import { ForumRoutes } from 'pages/forum/ForumRoutes';
+import React, { useContext, useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import CategoryService from 'services/CategoryService';
+import Category from 'types/Category';
+import ColorsEnum from 'types/ColorsEnum';
 
 const styles = (theme) =>
   createStyles({
     paper: {
       marginTop: theme.spacing(30),
-      category: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      category: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
   });
 
-const AddCategoryPage: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
-> = (props) => {
+const AddCategoryPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
+  props
+) => {
   const {
     classes,
     history,
@@ -77,28 +77,19 @@ const AddCategoryPage: React.FunctionComponent<
       }
     };
     setData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      <TopBar
-        alignItems="center"
-        backEnabled
-        backTo={ForumRoutes.FORUM}
-        color={ColorsEnum.OLIVE}
-      >
+      <TopBar alignItems="center" backEnabled backTo={ForumRoutes.FORUM} color={ColorsEnum.OLIVE}>
         <Typography component="h1" variant="h4">
-          {isEdit() ? "Edit" : "Add"} category
+          {isEdit() ? 'Edit' : 'Add'} category
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="xs">
         <div className={classes.paper}>
           <>
-            <form
-              className={classes.form}
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
+            <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
               <TextInput
                 id="name"
                 variant="outlined"
@@ -129,9 +120,7 @@ const AddCategoryPage: React.FunctionComponent<
                   control={
                     <Checkbox
                       checked={formik.values.protected}
-                      onChange={(e, checked) =>
-                        formik.setFieldValue("protected", checked)
-                      }
+                      onChange={(e, checked) => formik.setFieldValue('protected', checked)}
                     />
                   }
                   label="Protected"
@@ -139,7 +128,7 @@ const AddCategoryPage: React.FunctionComponent<
               </div>
               <ColoredButton
                 type="submit"
-                style={{ marginTop: "20px", minWidth: "200px" }}
+                style={{ marginTop: '20px', minWidth: '200px' }}
                 colorVariety={ColorsEnum.OLIVE}
               >
                 Submit

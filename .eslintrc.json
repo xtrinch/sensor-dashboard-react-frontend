@@ -23,13 +23,11 @@
     "import/prefer-default-export": "off",
     "react-hooks/exhaustive-deps": "off",
     "quotes": "off",
-    "react/jsx-filename-extension": [
-      2,
-      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
-    ],
+    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "react/prop-types": "off",
     "react/destructuring-assignment": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "max-classes-per-file": "off"
   },
   "settings": {
     "import/resolver": {

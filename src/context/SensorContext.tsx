@@ -1,10 +1,10 @@
-import { AccountContext } from "context/AccountContext";
-import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import SensorService from "services/SensorService";
-import Sensor, { SensorId } from "types/Sensor";
-import { Toast } from "types/Toast";
-import User from "types/User";
+import { AccountContext } from 'context/AccountContext';
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import SensorService from 'services/SensorService';
+import Sensor, { SensorId } from 'types/Sensor';
+import { Toast } from 'types/Toast';
+import User from 'types/User';
 
 const SensorContext = createContext<{
   state?: {
@@ -13,11 +13,7 @@ const SensorContext = createContext<{
     mySensors: Sensor[];
     mySensorsLoaded: boolean;
   };
-  updateSensor?: (
-    id: SensorId,
-    sensor: Sensor,
-    skipApiCall?: boolean
-  ) => Promise<Sensor>;
+  updateSensor?: (id: SensorId, sensor: Sensor, skipApiCall?: boolean) => Promise<Sensor>;
   deleteSensor?: (id: SensorId) => Promise<boolean>;
   addSensor?: (sensor: Partial<Sensor>) => Promise<Sensor>;
   reloadSensors?: (loginState: string, user: User) => Promise<void>;
@@ -42,7 +38,7 @@ function SensorContextProvider(props) {
     try {
       let resp = await SensorService.listSensors({ page: 1, limit: 1000 });
       let sensorData = resp.items;
-      if (loginState === "LOGGED_IN") {
+      if (loginState === 'LOGGED_IN') {
         sensorData.map((s) => {
           s.visible = false;
           if (s.userId === user?.id) {
@@ -52,7 +48,7 @@ function SensorContextProvider(props) {
         });
       }
       let mySensorData = [];
-      if (loginState === "LOGGED_IN") {
+      if (loginState === 'LOGGED_IN') {
         const resp = await SensorService.listMySensors();
         resp.items.map((s) => {
           s.visible = true;
@@ -80,18 +76,12 @@ function SensorContextProvider(props) {
       mySensors: [...state.mySensors, s],
     });
 
-    addToast(
-      new Toast({ message: "Successfully added a sensor", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a sensor', type: 'success' }));
 
     return s;
   };
 
-  const updateSensor = async (
-    id: SensorId,
-    sensor: Partial<Sensor>,
-    skipApiCall?: boolean
-  ): Promise<Sensor> => {
+  const updateSensor = async (id: SensorId, sensor: Partial<Sensor>, skipApiCall?: boolean): Promise<Sensor> => {
     let s;
     if (skipApiCall) {
       s = sensor;
@@ -105,8 +95,8 @@ function SensorContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the sensor",
-        type: "success",
+        message: 'Successfully updated the sensor',
+        type: 'success',
       })
     );
 
@@ -122,8 +112,8 @@ function SensorContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the sensor",
-        type: "success",
+        message: 'Successfully deleted the sensor',
+        type: 'success',
       })
     );
 
@@ -148,7 +138,7 @@ function SensorContextProvider(props) {
       }
     };
     fetch();
-  }, [loginState]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loginState]);
 
   return (
     <SensorContext.Provider

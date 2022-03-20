@@ -1,8 +1,8 @@
-import { addToast } from "context/ToastContext";
-import React, { createContext, useEffect, useState } from "react";
-import RadioService from "services/RadioService";
-import Radio, { RadioId } from "types/Radio";
-import { Toast } from "types/Toast";
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useEffect, useState } from 'react';
+import RadioService from 'services/RadioService';
+import Radio, { RadioId } from 'types/Radio';
+import { Toast } from 'types/Toast';
 
 const RadioContext = createContext<{
   state?: {
@@ -30,10 +30,7 @@ function RadioContextProvider(props: { children: any }) {
     setState({ ...state, radios: radioData, radiosLoaded: true });
   };
 
-  const updateRadio = async (
-    id: RadioId,
-    radio: Partial<Radio>
-  ): Promise<Radio> => {
+  const updateRadio = async (id: RadioId, radio: Partial<Radio>): Promise<Radio> => {
     const s = await RadioService.updateRadio(id, radio);
 
     const radios = state.radios;
@@ -43,8 +40,8 @@ function RadioContextProvider(props: { children: any }) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the radio",
-        type: "success",
+        message: 'Successfully updated the radio',
+        type: 'success',
       })
     );
 
@@ -56,8 +53,8 @@ function RadioContextProvider(props: { children: any }) {
 
     addToast(
       new Toast({
-        message: "Read config command sent, refresh page to see results.",
-        type: "success",
+        message: 'Read config command sent, refresh page to see results.',
+        type: 'success',
       })
     );
   };
@@ -67,8 +64,8 @@ function RadioContextProvider(props: { children: any }) {
 
     addToast(
       new Toast({
-        message: "Send config command sent",
-        type: "success",
+        message: 'Send config command sent',
+        type: 'success',
       })
     );
   };
@@ -82,8 +79,8 @@ function RadioContextProvider(props: { children: any }) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the radio",
-        type: "success",
+        message: 'Successfully deleted the radio',
+        type: 'success',
       })
     );
 
@@ -94,9 +91,7 @@ function RadioContextProvider(props: { children: any }) {
     const s = await RadioService.addRadio(radio);
     setState({ ...state, radios: [...state.radios, s] });
 
-    addToast(
-      new Toast({ message: "Successfully added a radio", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a radio', type: 'success' }));
 
     return s;
   };
@@ -105,7 +100,7 @@ function RadioContextProvider(props: { children: any }) {
     if (!state.radiosLoaded) {
       reload();
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <RadioContext.Provider

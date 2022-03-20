@@ -1,9 +1,9 @@
-import { AccountContext } from "context/AccountContext";
-import { addToast } from "context/ToastContext";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import DisplayService from "services/DisplayService";
-import Display, { DisplayId } from "types/Display";
-import { Toast } from "types/Toast";
+import { AccountContext } from 'context/AccountContext';
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import DisplayService from 'services/DisplayService';
+import Display, { DisplayId } from 'types/Display';
+import { Toast } from 'types/Toast';
 
 const DisplayContext = createContext<{
   state?: {
@@ -24,7 +24,7 @@ function DisplayContextProvider(props) {
   let { loginState } = useContext(AccountContext);
 
   const reloadDisplays = async (loginState: string) => {
-    if (loginState === "LOGGED_OUT") {
+    if (loginState === 'LOGGED_OUT') {
       return;
     }
 
@@ -37,17 +37,12 @@ function DisplayContextProvider(props) {
     const s = await DisplayService.addDisplay(display);
     setState({ ...state, displays: [...state.displays, s] });
 
-    addToast(
-      new Toast({ message: "Successfully added a display", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a display', type: 'success' }));
 
     return s;
   };
 
-  const updateDisplay = async (
-    id: DisplayId,
-    display: Partial<Display>
-  ): Promise<Display> => {
+  const updateDisplay = async (id: DisplayId, display: Partial<Display>): Promise<Display> => {
     const s = await DisplayService.updateDisplay(id, display);
     const displays = state.displays;
     const displayIndex = displays.findIndex((sd) => sd.id === s.id);
@@ -56,8 +51,8 @@ function DisplayContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the display",
-        type: "success",
+        message: 'Successfully updated the display',
+        type: 'success',
       })
     );
 
@@ -73,8 +68,8 @@ function DisplayContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the display",
-        type: "success",
+        message: 'Successfully deleted the display',
+        type: 'success',
       })
     );
 
@@ -85,7 +80,7 @@ function DisplayContextProvider(props) {
     if (!state.displaysLoaded) {
       reloadDisplays(loginState);
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <DisplayContext.Provider

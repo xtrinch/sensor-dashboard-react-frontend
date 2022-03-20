@@ -1,8 +1,8 @@
-import { addToast } from "context/ToastContext";
-import React, { createContext, useEffect, useState } from "react";
-import CategoryService from "services/CategoryService";
-import Category, { CategoryId } from "types/Category";
-import { Toast } from "types/Toast";
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useEffect, useState } from 'react';
+import CategoryService from 'services/CategoryService';
+import Category, { CategoryId } from 'types/Category';
+import { Toast } from 'types/Toast';
 
 const CategoryContext = createContext<{
   state?: {
@@ -30,10 +30,7 @@ function CategoryContextProvider(props) {
     setState({ ...state, categories: categoryData, categoriesLoaded: true });
   };
 
-  const updateCategory = async (
-    id: CategoryId,
-    category: Partial<Category>
-  ): Promise<Category> => {
+  const updateCategory = async (id: CategoryId, category: Partial<Category>): Promise<Category> => {
     const s = await CategoryService.updateCategory(id, category);
 
     const categories = state.categories;
@@ -43,8 +40,8 @@ function CategoryContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the category",
-        type: "success",
+        message: 'Successfully updated the category',
+        type: 'success',
       })
     );
 
@@ -58,8 +55,8 @@ function CategoryContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the category",
-        type: "success",
+        message: 'Successfully updated the category',
+        type: 'success',
       })
     );
 
@@ -73,8 +70,8 @@ function CategoryContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully updated the category",
-        type: "success",
+        message: 'Successfully updated the category',
+        type: 'success',
       })
     );
 
@@ -90,23 +87,19 @@ function CategoryContextProvider(props) {
 
     addToast(
       new Toast({
-        message: "Successfully deleted the category",
-        type: "success",
+        message: 'Successfully deleted the category',
+        type: 'success',
       })
     );
 
     return true;
   };
 
-  const addCategory = async (
-    category: Partial<Category>
-  ): Promise<Category> => {
+  const addCategory = async (category: Partial<Category>): Promise<Category> => {
     const s = await CategoryService.addCategory(category);
     setState({ ...state, categories: [...state.categories, s] });
 
-    addToast(
-      new Toast({ message: "Successfully added a category", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully added a category', type: 'success' }));
 
     return s;
   };
@@ -115,7 +108,7 @@ function CategoryContextProvider(props) {
     if (!state.categoriesLoaded) {
       reload();
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <CategoryContext.Provider

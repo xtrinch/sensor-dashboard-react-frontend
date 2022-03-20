@@ -1,8 +1,8 @@
-import { addToast } from "context/ToastContext";
-import React, { createContext, useEffect, useState } from "react";
-import UserService from "services/UserService";
-import { Toast } from "types/Toast";
-import User, { UserId } from "types/User";
+import { addToast } from 'context/ToastContext';
+import React, { createContext, useEffect, useState } from 'react';
+import UserService from 'services/UserService';
+import { Toast } from 'types/Toast';
+import User, { UserId } from 'types/User';
 
 const UserContext = createContext<{
   state?: {
@@ -34,9 +34,7 @@ function UserContextProvider(props) {
     users[userIndex] = s;
     setState({ ...state, users: [...users] });
 
-    addToast(
-      new Toast({ message: "Successfully updated the user", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully updated the user', type: 'success' }));
 
     return s;
   };
@@ -48,9 +46,7 @@ function UserContextProvider(props) {
     state.users.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
-      new Toast({ message: "Successfully deleted the user", type: "success" })
-    );
+    addToast(new Toast({ message: 'Successfully deleted the user', type: 'success' }));
 
     return true;
   };
@@ -59,13 +55,9 @@ function UserContextProvider(props) {
     if (!state.usersLoaded) {
       reload();
     }
-  }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state]);
 
-  return (
-    <UserContext.Provider value={{ state, updateUser, deleteUser }}>
-      {props.children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ state, updateUser, deleteUser }}>{props.children}</UserContext.Provider>;
 }
 
 export { UserContext, UserContextProvider };

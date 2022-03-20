@@ -1,40 +1,40 @@
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { createStyles, WithStyles, withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Close from "@material-ui/icons/Close";
-import SettingsInputAntennaIcon from "@material-ui/icons/SettingsInputAntenna";
-import SettingsInputHdmiIcon from "@material-ui/icons/SettingsInputHdmi";
-import TopBar from "components/TopBar";
-import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import SensorService from "services/SensorService";
-import ColorsEnum from "types/ColorsEnum";
-import Sensor, { SensorId } from "types/Sensor";
-import { Port, Serial } from "utils/serial";
-import { addToast } from "context/ToastContext";
-import { Toast } from "types/Toast";
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import Close from '@material-ui/icons/Close';
+import SettingsInputAntennaIcon from '@material-ui/icons/SettingsInputAntenna';
+import SettingsInputHdmiIcon from '@material-ui/icons/SettingsInputHdmi';
+import TopBar from 'components/TopBar';
+import { useFormik } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
+import SensorService from 'services/SensorService';
+import ColorsEnum from 'types/ColorsEnum';
+import Sensor, { SensorId } from 'types/Sensor';
+import { Port, Serial } from 'utils/serial';
+import { addToast } from 'context/ToastContext';
+import { Toast } from 'types/Toast';
 
 const styles = (theme) =>
   createStyles({
     paper: {
-      margin: "30px 0px",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      margin: '30px 0px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       backgroundColor: ColorsEnum.BGLIGHT,
-      padding: "30px",
+      padding: '30px',
     },
     avatar: {
       margin: theme.spacing(1),
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: "100%", // Fix IE 11 issue.
+      width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
     },
     submit: {
@@ -44,12 +44,12 @@ const styles = (theme) =>
     connectButton: {
       backgroundColor: ColorsEnum.GREEN,
       color: ColorsEnum.WHITE,
-      marginRight: "20px",
+      marginRight: '20px',
     },
     disconnectButton: {
       backgroundColor: ColorsEnum.ERROR,
       color: ColorsEnum.WHITE,
-      marginRight: "20px",
+      marginRight: '20px',
     },
   });
 
@@ -61,9 +61,9 @@ interface ConnectProps {
   maxRtcRecords?: number;
 }
 
-const ConnectSensorPage: React.FunctionComponent<
-  WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
-> = (props) => {
+const ConnectSensorPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{ id: string }>> = (
+  props
+) => {
   const {
     classes,
     match: {
@@ -77,13 +77,7 @@ const ConnectSensorPage: React.FunctionComponent<
     if (!port) return;
 
     const data: Uint8Array[] = [];
-    const {
-      timeBetweenMeasurements,
-      wifiPassword,
-      wifiSSID,
-      accessToken,
-      maxRtcRecords,
-    } = formik.values;
+    const { timeBetweenMeasurements, wifiPassword, wifiSSID, accessToken, maxRtcRecords } = formik.values;
 
     const stringified = JSON.stringify({
       timeBetweenMeasurements,
@@ -100,22 +94,22 @@ const ConnectSensorPage: React.FunctionComponent<
         await port.send(d.buffer);
         const read = await port.readLoop();
 
-        if (read === "success") {
+        if (read === 'success') {
           addToast(
             new Toast({
-              message: "Successfully configured the device.",
-              type: "success",
+              message: 'Successfully configured the device.',
+              type: 'success',
             })
           );
-        } else if (read === "failure") {
+        } else if (read === 'failure') {
           addToast(
             new Toast({
-              message: "Failed to configure the device.",
-              type: "failure",
+              message: 'Failed to configure the device.',
+              type: 'failure',
             })
           );
         }
-        console.log("Received:");
+        console.log('Received:');
         console.log(read);
       } catch (e) {
         console.log(e);
@@ -127,8 +121,8 @@ const ConnectSensorPage: React.FunctionComponent<
   const formik = useFormik<ConnectProps>({
     initialValues: {
       accessToken: sensor?.accessToken,
-      wifiSSID: "",
-      wifiPassword: "",
+      wifiSSID: '',
+      wifiPassword: '',
       timeBetweenMeasurements: 10,
       maxRtcRecords: 4,
     },
@@ -182,12 +176,12 @@ const ConnectSensorPage: React.FunctionComponent<
 
   useEffect(() => {
     checkIfAlreadyConnected();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <TopBar alignItems="center" backEnabled>
-        <Typography component="h1" variant="h5" style={{ marginRight: "30px" }}>
+        <Typography component="h1" variant="h5" style={{ marginRight: '30px' }}>
           Device configuration: {sensor?.name}
         </Typography>
         {!port ? (
@@ -195,19 +189,12 @@ const ConnectSensorPage: React.FunctionComponent<
             variant="contained"
             className={classes.connectButton}
             startIcon={<SettingsInputHdmiIcon />}
-            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>
-              connect(port)
-            }
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => connect(port)}
           >
             Connect to device
           </Button>
         ) : (
-          <Button
-            variant="contained"
-            className={classes.disconnectButton}
-            startIcon={<Close />}
-            onClick={disconnect}
-          >
+          <Button variant="contained" className={classes.disconnectButton} startIcon={<Close />} onClick={disconnect}>
             Disconnect
           </Button>
         )}
@@ -218,11 +205,7 @@ const ConnectSensorPage: React.FunctionComponent<
           <Avatar className={classes.avatar}>
             <SettingsInputAntennaIcon />
           </Avatar>
-          <form
-            className={classes.form}
-            noValidate
-            onSubmit={formik.handleSubmit}
-          >
+          <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -231,7 +214,7 @@ const ConnectSensorPage: React.FunctionComponent<
               name="accessToken"
               label="Sensor access token"
               disabled
-              value={sensor?.accessToken || ""}
+              value={sensor?.accessToken || ''}
             />
             <TextField
               variant="outlined"
@@ -262,9 +245,7 @@ const ConnectSensorPage: React.FunctionComponent<
               type="number"
               value={formik.values.timeBetweenMeasurements}
               id="timeBetweenMeasurements"
-              onChange={(e) =>
-                formik.setFieldValue("timeBetweenMeasurements", e.target.value)
-              }
+              onChange={(e) => formik.setFieldValue('timeBetweenMeasurements', e.target.value)}
               disabled={!port}
             />
             <TextField
@@ -276,9 +257,7 @@ const ConnectSensorPage: React.FunctionComponent<
               type="number"
               value={formik.values.maxRtcRecords}
               id="maxRtcRecords"
-              onChange={(e) =>
-                formik.setFieldValue("maxRtcRecords", e.target.value)
-              }
+              onChange={(e) => formik.setFieldValue('maxRtcRecords', e.target.value)}
               disabled={!port}
             />
             <Button
@@ -287,7 +266,7 @@ const ConnectSensorPage: React.FunctionComponent<
               variant="contained"
               color="primary"
               className={classes.submit}
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: '20px' }}
               disabled={!port}
             >
               Send to device

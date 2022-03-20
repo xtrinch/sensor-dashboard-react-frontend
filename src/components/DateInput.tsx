@@ -1,17 +1,10 @@
-import DateFnsUtils from "@date-io/date-fns";
-import { createStyles, Grid, IconButton } from "@material-ui/core";
-import withStyles, {
-  CSSProperties,
-  WithStyles,
-} from "@material-ui/core/styles/withStyles";
-import ArrowBack from "@material-ui/icons/ArrowBack";
-import ArrowForward from "@material-ui/icons/ArrowForward";
-import {
-  DatePicker,
-  DatePickerView,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-import clsx from "clsx";
+import DateFnsUtils from '@date-io/date-fns';
+import { createStyles, Grid, IconButton } from '@material-ui/core';
+import withStyles, { CSSProperties, WithStyles } from '@material-ui/core/styles/withStyles';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import { DatePicker, DatePickerView, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import clsx from 'clsx';
 import {
   addDays,
   addMonths,
@@ -26,76 +19,70 @@ import {
   startOfMonth,
   startOfWeek,
   startOfYear,
-} from "date-fns";
-import React, { useEffect } from "react";
-import ColorsEnum from "types/ColorsEnum";
-import {
-  DateRange,
-  DateRangeEnum,
-  DateRegex,
-  DATE_REGEX,
-  MONTH_YEAR_REGEX,
-} from "utils/date.range";
-import { observer } from "mobx-react-lite";
+} from 'date-fns';
+import React, { useEffect } from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import { DateRange, DateRangeEnum, DateRegex, DATE_REGEX, MONTH_YEAR_REGEX } from 'utils/date.range';
+import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
     datepicker: {
-      "& fieldset": {},
-      "& input": {
-        textAlign: "center",
-        cursor: "pointer",
-        paddingTop: "11px",
-        paddingBottom: "10px",
+      '& fieldset': {},
+      '& input': {
+        textAlign: 'center',
+        cursor: 'pointer',
+        paddingTop: '11px',
+        paddingBottom: '10px',
       },
       backgroundColor: ColorsEnum.BGLIGHTER,
       border: `1px solid ${ColorsEnum.GRAYDARK}`,
-      borderRadius: "0px",
-      "&:hover:before": {
-        borderBottom: "0px",
+      borderRadius: '0px',
+      '&:hover:before': {
+        borderBottom: '0px',
       },
-      "&:before": {
-        borderBottom: "0px",
+      '&:before': {
+        borderBottom: '0px',
       },
     },
     dayWrapper: {
-      position: "relative",
+      position: 'relative',
     },
     day: {
       width: 36,
       height: 36,
       fontSize: theme.typography.caption.fontSize,
-      margin: "0 2px",
-      color: "inherit",
+      margin: '0 2px',
+      color: 'inherit',
     },
     customDayHighlight: {
-      position: "absolute",
+      position: 'absolute',
       top: 0,
       bottom: 0,
-      left: "2px",
-      right: "2px",
+      left: '2px',
+      right: '2px',
       border: `1px solid ${theme.palette.secondary.main}`,
-      borderRadius: "50%",
+      borderRadius: '50%',
     },
     nonCurrentMonthDay: {
       color: theme.palette.text.disabled,
     },
     highlightNonCurrentMonthDay: {
-      color: "#676767",
+      color: '#676767',
     },
     highlight: {
       background: theme.palette.primary.main,
       color: theme.palette.common.white,
     },
     firstHighlight: {
-      extend: "highlight",
-      borderTopLeftRadius: "50%",
-      borderBottomLeftRadius: "50%",
+      extend: 'highlight',
+      borderTopLeftRadius: '50%',
+      borderBottomLeftRadius: '50%',
     },
     endHighlight: {
-      extend: "highlight",
-      borderTopRightRadius: "50%",
-      borderBottomRightRadius: "50%",
+      extend: 'highlight',
+      borderTopRightRadius: '50%',
+      borderBottomRightRadius: '50%',
     },
   });
 export interface DateInputProps {
@@ -107,9 +94,7 @@ export interface DateInputProps {
   groupBy?: DateRangeEnum; // date selector input state
 }
 
-const DateInput: React.FunctionComponent<
-  DateInputProps & WithStyles<typeof styles>
-> = (props) => {
+const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styles>> = (props) => {
   const { groupBy, onChange, date, classes } = props;
 
   const onChangeDate = (d: Date) => {
@@ -122,7 +107,7 @@ const DateInput: React.FunctionComponent<
   useEffect(() => {
     // reset date on group change
     onChangeDate(new Date());
-  }, [groupBy]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [groupBy]);
 
   const renderLabel = (date, invalidLabel) => {
     if (!isValid(date)) {
@@ -138,9 +123,9 @@ const DateInput: React.FunctionComponent<
       case DateRangeEnum.week:
         return `Week of ${format(startOfWeek(date), DATE_REGEX)}`;
       case DateRangeEnum.year:
-        return `${format(startOfYear(date), "yyyy")}`;
+        return `${format(startOfYear(date), 'yyyy')}`;
       default:
-        return "";
+        return '';
     }
   };
 
@@ -184,7 +169,7 @@ const DateInput: React.FunctionComponent<
     return (
       <div className={wrapperClassName}>
         <IconButton className={dayClassName}>
-          <span> {format(dateClone, "d")} </span>
+          <span> {format(dateClone, 'd')} </span>
         </IconButton>
       </div>
     );
@@ -194,15 +179,15 @@ const DateInput: React.FunctionComponent<
     switch (props.groupBy) {
       case DateRangeEnum.day:
       case DateRangeEnum.hour:
-        return ["year", "month", "date"];
+        return ['year', 'month', 'date'];
       case DateRangeEnum.month:
-        return ["month", "year"];
+        return ['month', 'year'];
       case DateRangeEnum.week:
-        return ["year", "month", "date"];
+        return ['year', 'month', 'date'];
       case DateRangeEnum.year:
-        return ["year"];
+        return ['year'];
       default:
-        return ["year", "month", "date"];
+        return ['year', 'month', 'date'];
     }
   };
 
@@ -236,22 +221,17 @@ const DateInput: React.FunctionComponent<
 
   return (
     <div style={{ ...props.style }}>
-      <Grid
-        container
-        alignItems="center"
-        spacing={4}
-        style={{ flexWrap: "nowrap" }}
-      >
+      <Grid container alignItems="center" spacing={4} style={{ flexWrap: 'nowrap' }}>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(-1)}>
-            <ArrowBack style={{ cursor: "pointer" }} />
+            <ArrowBack style={{ cursor: 'pointer' }} />
           </IconButton>
         </Grid>
         <Grid item>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
               size="small"
-              style={{ maxWidth: "170px", flex: "1" }}
+              style={{ maxWidth: '170px', flex: '1' }}
               views={getView()}
               label=""
               format="MM/dd/yyyy"
@@ -264,7 +244,7 @@ const DateInput: React.FunctionComponent<
               }}
               renderDay={renderDate}
               labelFunc={renderLabel}
-              margin={"none"}
+              margin={'none'}
               disableFuture={true}
               autoOk
             />
@@ -272,7 +252,7 @@ const DateInput: React.FunctionComponent<
         </Grid>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(1)}>
-            <ArrowForward style={{ cursor: "pointer" }} />
+            <ArrowForward style={{ cursor: 'pointer' }} />
           </IconButton>
         </Grid>
       </Grid>
