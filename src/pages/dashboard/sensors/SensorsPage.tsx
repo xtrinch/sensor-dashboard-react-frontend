@@ -17,6 +17,7 @@ import MeasurementService from "services/MeasurementService";
 import ColorsEnum from "types/ColorsEnum";
 import MeasurementTypeEnum from "types/MeasurementTypeEnum";
 import Sensor from "types/Sensor";
+import { observer } from "mobx-react-lite";
 
 const styles = (theme) =>
   createStyles({
@@ -45,7 +46,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
     state: { sensors, mySensors, sensorsLoaded, mySensorsLoaded },
   } = useContext(SensorContext);
   const { loginState } = useContext(AccountContext);
-  const [{ date, groupBy, domain }] = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
@@ -61,7 +62,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       return;
     }
     const resp = await MeasurementService.listMeasurements({
-      createdAtRange: date,
+      createdAtRange: appContext.date,
       measurementTypes: uniq(
         allSensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
@@ -70,16 +71,23 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
       sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [date, sensors, mySensors, sensorsLoaded, mySensorsLoaded, loginState]);
+  }, [
+    appContext.date,
+    sensors,
+    mySensors,
+    sensorsLoaded,
+    mySensorsLoaded,
+    loginState,
+  ]);
 
   useEffect(() => {
-    if (!date || sensors.length === 0) {
+    if (!appContext.date || sensors.length === 0) {
       setMeasurements({});
       return;
     }
 
     getMeasurements();
-  }, [date, getMeasurements, sensors]);
+  }, [appContext.date, getMeasurements, sensors]);
 
   const sensorTypes = (): MeasurementTypeEnum[] => {
     // collect all returned measurement types
@@ -117,9 +125,9 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
             <SensorCanvas
               key={type}
               type={type}
-              date={date}
-              groupBy={groupBy}
-              domain={domain}
+              date={appContext.date}
+              groupBy={appContext.groupBy}
+              domain={appContext.domain}
               measurements={measurements[type] || []}
             />
           ))}
@@ -129,4 +137,4 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (
   );
 };
 
-export default withStyles(styles)(SensorsPage);
+export default withStyles(styles)(observer(SensorsPage));

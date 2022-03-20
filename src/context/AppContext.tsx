@@ -1,59 +1,48 @@
-import React, { Context, createContext, Dispatch, useReducer } from "react";
+import { makeAutoObservable } from "mobx";
+import React, { createContext } from "react";
 import DomainTypeEnum from "types/DomainTypeEnum";
 import { DateRange, DateRangeEnum, DateRegex } from "utils/date.range";
 
-export const drawerToggle = () => {
-  AppContext.dispatch({ type: "toggle" });
-};
+export const AppContext = createContext<AppStore>(null);
 
-export const setDomain = (domain: DomainTypeEnum) => {
-  AppContext.dispatch({ type: "setDomain", payload: domain });
-};
+class AppStore {
+  public menuOpen: boolean = false;
 
-type AppContextState = {
-  menuOpen: boolean;
-  groupBy: DateRangeEnum;
-  date: DateRegex;
-  domain: DomainTypeEnum;
-};
+  public groupBy: DateRangeEnum = DateRangeEnum.day;
 
-const initialState: AppContextState = {
-  menuOpen: false,
-  groupBy: DateRangeEnum.day,
-  date: DateRange.getDateString(new Date(), DateRangeEnum.day),
-  domain: DomainTypeEnum.FULL,
-};
+  public date: DateRegex = DateRange.getDateString(
+    new Date(),
+    DateRangeEnum.day
+  );
 
-const AppContext = createContext<[AppContextState, React.Dispatch<any>]>(
-  null
-) as Context<[AppContextState, Dispatch<any>]> & {
-  dispatch: React.Dispatch<any>;
-};
+  public domain: DomainTypeEnum = DomainTypeEnum.FULL;
 
-let reducer = (state: AppContextState, action): AppContextState => {
-  switch (action.type) {
-    case "toggle":
-      return { ...state, menuOpen: !state.menuOpen };
-    case "setDate":
-      return { ...state, date: action.payload };
-    case "setGroupBy":
-      return { ...state, groupBy: action.payload };
-    case "setDomain":
-      return { ...state, domain: action.payload };
-    default: {
-      return state;
-    }
+  constructor() {
+    makeAutoObservable(this);
   }
-};
 
-function AppContextProvider(props) {
-  let [state, dispatch] = useReducer(reducer, initialState);
+  public drawerToggle = () => {
+    this.menuOpen = !this.menuOpen;
+  };
 
+  public setDate = (date: DateRegex) => {
+    console.log(date);
+    this.date = date;
+  };
+
+  public setGroupBy = (groupBy: DateRangeEnum) => {
+    this.groupBy = groupBy;
+  };
+
+  public setDomain = (domain: DomainTypeEnum) => {
+    this.domain = domain;
+  };
+}
+
+export function AppContextProvider(props) {
   return (
-    <AppContext.Provider value={[state, dispatch]}>
+    <AppContext.Provider value={new AppStore()}>
       {props.children}
     </AppContext.Provider>
   );
 }
-
-export { AppContext, AppContextProvider };

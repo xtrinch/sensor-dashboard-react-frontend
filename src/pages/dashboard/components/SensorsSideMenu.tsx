@@ -11,7 +11,7 @@ import { CSSProperties, withStyles, WithStyles } from "@material-ui/styles";
 import Link from "components/Link";
 import SideMenuItem from "components/SideMenuItem";
 import { AccountContext } from "context/AccountContext";
-import { drawerToggle } from "context/AppContext";
+import { AppContext } from "context/AppContext";
 import { DisplayContext } from "context/DisplayContext";
 import { ForwarderContext } from "context/ForwarderContext";
 import { RadioContext } from "context/RadioContext";
@@ -21,6 +21,7 @@ import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
 import Sensor from "types/Sensor";
+import { observer } from "mobx-react-lite";
 
 const styles = () =>
   createStyles({
@@ -70,6 +71,7 @@ const SensorsSideMenu: React.FunctionComponent<
   SensorsSideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
   const { history } = props;
+  const appContext = useContext(AppContext);
 
   const {
     state: { sensors, mySensors },
@@ -86,17 +88,17 @@ const SensorsSideMenu: React.FunctionComponent<
   const { loginState, user } = useContext(AccountContext);
 
   const goToDisplays = () => {
-    drawerToggle();
+    appContext.drawerToggle();
     history.push(DashboardRoutes.DISPLAY_LIST);
   };
 
   const goToForwarders = () => {
-    drawerToggle();
+    appContext.drawerToggle();
     history.push(DashboardRoutes.FORWARDER_LIST);
   };
 
   const goToRadios = () => {
-    drawerToggle();
+    appContext.drawerToggle();
     history.push(DashboardRoutes.RADIO_LIST);
   };
 
@@ -110,7 +112,10 @@ const SensorsSideMenu: React.FunctionComponent<
               My sensors
             </Grid>
             <Grid item>
-              <Link to={DashboardRoutes.ADD_SENSOR} onClick={drawerToggle}>
+              <Link
+                to={DashboardRoutes.ADD_SENSOR}
+                onClick={appContext.drawerToggle}
+              >
                 <Fab color="primary" size="small" className={classes.sensorFab}>
                   <PlusIcon />
                 </Fab>
@@ -143,7 +148,7 @@ const SensorsSideMenu: React.FunctionComponent<
                   <div onClick={(e) => e.stopPropagation()}>
                     <Link
                       to={DashboardRoutes.ADD_FORWARDER}
-                      onClick={drawerToggle}
+                      onClick={appContext.drawerToggle}
                     >
                       <Fab
                         color="primary"
@@ -179,7 +184,10 @@ const SensorsSideMenu: React.FunctionComponent<
                 <Grid item>My radios</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <Link to={DashboardRoutes.ADD_RADIO} onClick={drawerToggle}>
+                    <Link
+                      to={DashboardRoutes.ADD_RADIO}
+                      onClick={appContext.drawerToggle}
+                    >
                       <Fab
                         color="primary"
                         size="small"
@@ -212,7 +220,7 @@ const SensorsSideMenu: React.FunctionComponent<
                   <div onClick={(e) => e.stopPropagation()}>
                     <Link
                       to={DashboardRoutes.ADD_DISPLAY}
-                      onClick={drawerToggle}
+                      onClick={appContext.drawerToggle}
                     >
                       <Fab
                         color="primary"
@@ -259,4 +267,4 @@ const SensorsSideMenu: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(withRouter(SensorsSideMenu));
+export default withStyles(styles)(withRouter(observer(SensorsSideMenu)));

@@ -22,7 +22,11 @@
     "no-unused-vars": "off", // see https://github.com/typescript-eslint/typescript-eslint/issues/1197
     "import/prefer-default-export": "off",
     "react-hooks/exhaustive-deps": "off",
-    "quotes": "off"
+    "quotes": "off",
+    "react/jsx-filename-extension": [
+      2,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ]
   },
   "settings": {
     "import/resolver": {

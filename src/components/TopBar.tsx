@@ -13,6 +13,7 @@ import { AppContext } from "context/AppContext";
 import React, { useContext } from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import ColorsEnum from "types/ColorsEnum";
+import { observer } from "mobx-react-lite";
 
 const styles = (theme) =>
   createStyles({
@@ -50,10 +51,10 @@ const TopBar: React.FunctionComponent<
 > = (props) => {
   const { classes, backEnabled, history, backTo, color } = props;
 
-  const [, dispatch] = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   const handleDrawerToggle = () => {
-    dispatch({ type: "toggle" });
+    appContext.drawerToggle();
   };
 
   return (
@@ -111,4 +112,4 @@ const TopBar: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(TopBar));
+export default withRouter(withStyles(styles)(observer(TopBar)));

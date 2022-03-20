@@ -6,7 +6,7 @@ import UserService from "services/UserService";
 import { Toast } from "types/Toast";
 import User from "types/User";
 
-const AccountContext = createContext<AccountStore>(null);
+export const AccountContext = createContext<AccountStore>(null);
 
 class AccountStore {
   public user: User = localStorage.getItem("user")
@@ -83,7 +83,7 @@ class AccountStore {
   };
 }
 
-function AccountContextProvider(props) {
+export function AccountContextProvider(props) {
   const sensorContext = useContext(SensorContext);
 
   return (
@@ -92,5 +92,3 @@ function AccountContextProvider(props) {
     </AccountContext.Provider>
   );
 }
-
-export { AccountContext, AccountContextProvider };

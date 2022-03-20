@@ -27,7 +27,7 @@ import {
   startOfWeek,
   startOfYear,
 } from "date-fns";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import ColorsEnum from "types/ColorsEnum";
 import {
   DateRange,
@@ -36,6 +36,7 @@ import {
   DATE_REGEX,
   MONTH_YEAR_REGEX,
 } from "utils/date.range";
+import { observer } from "mobx-react-lite";
 
 const styles = (theme) =>
   createStyles({
@@ -111,20 +112,17 @@ const DateInput: React.FunctionComponent<
 > = (props) => {
   const { groupBy, onChange, date, classes } = props;
 
-  const onChangeDate = useCallback(
-    (d: Date) => {
-      const date = new Date(d);
-      let dateString = DateRange.getDateString(date, groupBy);
+  const onChangeDate = (d: Date) => {
+    const date = new Date(d);
+    let dateString = DateRange.getDateString(date, groupBy);
 
-      onChange(dateString);
-    },
-    [groupBy, onChange]
-  );
+    onChange(dateString);
+  };
 
   useEffect(() => {
     // reset date on group change
     onChangeDate(new Date());
-  }, [groupBy, onChangeDate]);
+  }, [groupBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const renderLabel = (date, invalidLabel) => {
     if (!isValid(date)) {
@@ -282,4 +280,4 @@ const DateInput: React.FunctionComponent<
   );
 };
 
-export default withStyles(styles)(DateInput);
+export default withStyles(styles)(observer(DateInput));

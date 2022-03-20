@@ -18,13 +18,14 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import Link from "components/Link";
 import { AccountContext } from "context/AccountContext";
-import { drawerToggle } from "context/AppContext";
+import { AppContext } from "context/AppContext";
 import { SensorContext } from "context/SensorContext";
 import { differenceInMinutes } from "date-fns";
 import React, { Context, Fragment, useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
 import { IotDeviceInterface } from "types/IotDeviceInterface";
 import Sensor from "types/Sensor";
+import { observer } from "mobx-react-lite";
 
 interface SideMenuItemProps {
   item: IotDeviceInterface;
@@ -71,6 +72,7 @@ const SideMenuItem: React.FunctionComponent<
 
   const { user } = useContext(AccountContext);
   const { toggleSensorVisibility, updateSensor } = useContext(SensorContext);
+  const appContext = useContext(AppContext);
 
   const toggleVisibility = async (e: any, item: IotDeviceInterface) => {
     e.stopPropagation();
@@ -129,7 +131,10 @@ const SideMenuItem: React.FunctionComponent<
         </ListItemText>
         {item.userId === user?.id && (
           <div onClick={(e) => e.stopPropagation()}>
-            <Link to={`/dashboard/${type}s/${item.id}`} onClick={drawerToggle}>
+            <Link
+              to={`/dashboard/${type}s/${item.id}`}
+              onClick={appContext.drawerToggle}
+            >
               <Fab color="secondary" size="small" className={classes.itemFab}>
                 <SettingsIcon />
               </Fab>
@@ -182,4 +187,4 @@ const SideMenuItem: React.FunctionComponent<
 
 SideMenuItem.defaultProps = {};
 
-export default withStyles(styles)(SideMenuItem);
+export default withStyles(styles)(observer(SideMenuItem));

@@ -7,9 +7,10 @@ import {
   WithStyles,
 } from "@material-ui/core";
 import SideMenu from "components/SideMenu";
-import { AppContext, drawerToggle } from "context/AppContext";
+import { AppContext } from "context/AppContext";
 import React, { useContext } from "react";
 import ColorsEnum from "types/ColorsEnum";
+import { observer } from "mobx-react-lite";
 
 const menuWidth = 270;
 
@@ -29,7 +30,7 @@ const styles = (theme) =>
 const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
   props
 ) => {
-  const [{ menuOpen }] = useContext(AppContext);
+  const appContext = useContext(AppContext);
 
   const { classes } = props;
 
@@ -52,8 +53,8 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
         <Drawer
           variant="temporary"
           anchor="left"
-          open={menuOpen}
-          onClose={drawerToggle}
+          open={appContext.menuOpen}
+          onClose={appContext.drawerToggle}
           classes={{
             paper: classes.drawerPaper,
           }}
@@ -68,4 +69,4 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (
   );
 };
 
-export default withStyles(styles)(SideMenuWrapper);
+export default withStyles(styles)(observer(SideMenuWrapper));
