@@ -19,33 +19,33 @@ class AccountStore {
     makeAutoObservable(this);
   }
 
-  public setStateWithSideEffects = (newState: any) => {
-    // save to local storage
-    if (newState.loginState) {
-      this.loginState = newState.loginState;
-      if (newState.loginState === "LOGGED_OUT") {
-        localStorage.removeItem("user");
-      }
+  private setUser = (user: User) => {
+    this.user = user;
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
     }
-    if (newState.user) {
-      localStorage.setItem("user", JSON.stringify(newState.user));
+  };
+
+  private setLoginState = (
+    loginState: "LOGGED_IN" | "LOGGED_OUT" | "LOGIN_ERROR"
+  ) => {
+    this.loginState = loginState;
+    if (loginState === "LOGGED_OUT") {
+      localStorage.removeItem("user");
     }
-    this.user = newState.user;
   };
 
   public login = async (email: string, password: string): Promise<User> => {
     try {
       const { user } = await UserService.login(email, password);
       if (user) {
-        this.setStateWithSideEffects({
-          user: user,
-          loginState: "LOGGED_IN",
-        });
+        this.setUser(user);
+        this.setLoginState("LOGGED_IN");
 
         return user;
       }
     } catch (e) {
-      this.setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
+      this.setLoginState("LOGIN_ERROR");
       throw e;
     }
 
@@ -55,14 +55,12 @@ class AccountStore {
   public getMyData = async (): Promise<User> => {
     try {
       const user = await UserService.getMe();
-      this.setStateWithSideEffects({
-        user,
-        loginState: "LOGGED_IN",
-      });
+      this.setUser(user);
+      this.setLoginState("LOGGED_IN");
 
       return user;
     } catch (e) {
-      this.setStateWithSideEffects({ loginState: "LOGIN_ERROR" });
+      this.setLoginState("LOGIN_ERROR");
       throw e;
     }
   };
@@ -74,10 +72,8 @@ class AccountStore {
   public logout = async (): Promise<void> => {
     await UserService.logout();
 
-    this.setStateWithSideEffects({
-      loginState: "LOGGED_OUT",
-      user: undefined,
-    });
+    this.setLoginState("LOGGED_OUT");
+    this.setUser(undefined);
 
     if (this.sensorContext.clearMySensors) {
       this.sensorContext.clearMySensors();
