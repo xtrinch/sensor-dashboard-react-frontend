@@ -63,9 +63,7 @@ class AccountStore {
     }
   };
 
-  public register = async (user: Partial<User>) => {
-    return UserService.register(user);
-  };
+  public register = async (user: Partial<User>) => UserService.register(user);
 
   public logout = async (): Promise<void> => {
     await UserService.logout();

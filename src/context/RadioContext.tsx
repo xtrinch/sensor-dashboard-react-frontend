@@ -18,7 +18,7 @@ const RadioContext = createContext<{
 }>({});
 
 function RadioContextProvider(props: { children: any }) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     radios: [],
     radiosLoaded: false,
   });
@@ -33,7 +33,7 @@ function RadioContextProvider(props: { children: any }) {
   const updateRadio = async (id: RadioId, radio: Partial<Radio>): Promise<Radio> => {
     const s = await RadioService.updateRadio(id, radio);
 
-    const radios = state.radios;
+    const { radios } = state;
     const radioIndex = radios.findIndex((s) => s.id === id);
     radios[radioIndex] = s;
     setState({ ...state, radios: [...radios] });
@@ -42,7 +42,7 @@ function RadioContextProvider(props: { children: any }) {
       new Toast({
         message: 'Successfully updated the radio',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -55,7 +55,7 @@ function RadioContextProvider(props: { children: any }) {
       new Toast({
         message: 'Read config command sent, refresh page to see results.',
         type: 'success',
-      })
+      }),
     );
   };
 
@@ -66,7 +66,7 @@ function RadioContextProvider(props: { children: any }) {
       new Toast({
         message: 'Send config command sent',
         type: 'success',
-      })
+      }),
     );
   };
 
@@ -81,7 +81,7 @@ function RadioContextProvider(props: { children: any }) {
       new Toast({
         message: 'Successfully deleted the radio',
         type: 'success',
-      })
+      }),
     );
 
     return true;

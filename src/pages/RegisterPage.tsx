@@ -35,7 +35,7 @@ const styles = (theme) =>
   });
 
 const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{}>> = (
-  props
+  props,
 ) => {
   const { classes, history } = props;
   const [registerSuccess, setRegisterSuccess] = useState(false);
@@ -196,7 +196,7 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
           </>
         )}
         {registerSuccess && (
-          <Grid container spacing={10} direction={'column'}>
+          <Grid container spacing={10} direction="column">
             <Grid item>Registration successful! You can now login.</Grid>
             <Grid item>Redirecting to home page...</Grid>
           </Grid>

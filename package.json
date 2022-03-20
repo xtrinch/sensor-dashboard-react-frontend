@@ -38,7 +38,7 @@
     "start": "react-scripts start",
     "build": "react-scripts --openssl-legacy-provider --max_old_space_size=4096 build",
     "test": "react-scripts test",
-    "format": "eslint src/**/**.ts --fix && prettier --write \"./src/**/*.{ts,tsx}\" --check --loglevel error"
+    "format": "eslint src/**/**.{ts,tsx} --fix && prettier --write \"./src/**/*.{ts,tsx}\" --check --loglevel error"
   },
   "eslintConfig": {
     "extends": "react-app"

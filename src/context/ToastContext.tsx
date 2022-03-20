@@ -32,7 +32,7 @@ const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(nul
 };
 
 function ToastContextProvider(props) {
-  let reducer = (state: ToastContextState, action: ToastActionTypes): ToastContextState => {
+  const reducer = (state: ToastContextState, action: ToastActionTypes): ToastContextState => {
     switch (action.type) {
       case 'addToast':
         return {
@@ -50,7 +50,7 @@ function ToastContextProvider(props) {
     }
   };
 
-  let [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return <ToastContext.Provider value={[state, dispatch]}>{props.children}</ToastContext.Provider>;
 }

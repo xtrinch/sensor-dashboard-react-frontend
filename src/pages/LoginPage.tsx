@@ -57,7 +57,7 @@ const styles = (theme) =>
   });
 
 const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteComponentProps<{}>> = (
-  props
+  props,
 ) => {
   const { classes, history } = props;
   const { reloadDisplays } = useContext(DisplayContext);
@@ -175,7 +175,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
             </Grid>
             <Grid item>
               <Link to={Routes.REGISTER} color={ColorsEnum.BLUE}>
-                {"Don't have an account? Sign Up"}
+                Don&apos;t have an account? Sign Up
               </Link>
             </Grid>
           </Grid>

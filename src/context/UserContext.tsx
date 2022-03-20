@@ -14,7 +14,7 @@ const UserContext = createContext<{
 }>({});
 
 function UserContextProvider(props) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     users: [],
     usersLoaded: false,
   });
@@ -29,7 +29,7 @@ function UserContextProvider(props) {
   const updateUser = async (id: UserId, user: Partial<User>): Promise<User> => {
     const s = await UserService.updateUser(id, user);
 
-    const users = state.users;
+    const { users } = state;
     const userIndex = users.findIndex((s) => s.id === id);
     users[userIndex] = s;
     setState({ ...state, users: [...users] });

@@ -18,7 +18,7 @@ const CategoryContext = createContext<{
 }>({});
 
 function CategoryContextProvider(props) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     categories: [],
     categoriesLoaded: false,
   });
@@ -33,7 +33,7 @@ function CategoryContextProvider(props) {
   const updateCategory = async (id: CategoryId, category: Partial<Category>): Promise<Category> => {
     const s = await CategoryService.updateCategory(id, category);
 
-    const categories = state.categories;
+    const { categories } = state;
     const categoryIndex = categories.findIndex((s) => s.id === id);
     categories[categoryIndex] = s;
     setState({ ...state, categories: [...categories] });
@@ -42,7 +42,7 @@ function CategoryContextProvider(props) {
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -57,7 +57,7 @@ function CategoryContextProvider(props) {
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -72,7 +72,7 @@ function CategoryContextProvider(props) {
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -89,7 +89,7 @@ function CategoryContextProvider(props) {
       new Toast({
         message: 'Successfully deleted the category',
         type: 'success',
-      })
+      }),
     );
 
     return true;

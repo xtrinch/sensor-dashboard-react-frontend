@@ -105,7 +105,7 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
 
   const onChangeDate = (d: Date) => {
     const date = new Date(d);
-    let dateString = DateRange.getDateString(date, groupBy);
+    const dateString = DateRange.getDateString(date, groupBy);
 
     onChange(dateString);
   };
@@ -250,8 +250,8 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
               }}
               renderDay={renderDate}
               labelFunc={renderLabel}
-              margin={'none'}
-              disableFuture={true}
+              margin="none"
+              disableFuture
               autoOk
             />
           </MuiPickersUtilsProvider>

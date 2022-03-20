@@ -108,7 +108,7 @@ export class DateRange {
   }
 
   public static getFromTo(
-    range: DateRegexGroupsInterface
+    range: DateRegexGroupsInterface,
   ): {
     from: Date;
     to: Date;
@@ -170,7 +170,7 @@ export class DateRange {
         break;
       case DateRangeEnum.minute:
         dateString = `${getYear(date)}/${getMonth(date) + 1}/${getDate(date)} ${getHours(
-          date
+          date,
         )}:${getMinutes(date)}`;
         break;
       case DateRangeEnum.week:

@@ -22,13 +22,13 @@ const SensorContext = createContext<{
 }>({});
 
 function SensorContextProvider(props) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     sensors: [],
     sensorsLoaded: false,
     mySensors: [],
     mySensorsLoaded: false,
   });
-  let { loginState, user } = useContext(AccountContext);
+  const { loginState, user } = useContext(AccountContext);
 
   const clearMySensors = () => {
     setState({ ...state, mySensors: [] });
@@ -36,8 +36,8 @@ function SensorContextProvider(props) {
 
   const reloadSensors = async (loginState: string, user: User) => {
     try {
-      let resp = await SensorService.listSensors({ page: 1, limit: 1000 });
-      let sensorData = resp.items;
+      const resp = await SensorService.listSensors({ page: 1, limit: 1000 });
+      const sensorData = resp.items;
       if (loginState === 'LOGGED_IN') {
         sensorData.map((s) => {
           s.visible = false;
@@ -84,7 +84,7 @@ function SensorContextProvider(props) {
   const updateSensor = async (
     id: SensorId,
     sensor: Partial<Sensor>,
-    skipApiCall?: boolean
+    skipApiCall?: boolean,
   ): Promise<Sensor> => {
     let s;
     if (skipApiCall) {
@@ -92,7 +92,7 @@ function SensorContextProvider(props) {
     } else {
       s = await SensorService.updateSensor(id, sensor);
     }
-    const sensors = state.sensors;
+    const { sensors } = state;
     const sensorIndex = sensors.findIndex((sd) => sd.id === s.id);
     sensors[sensorIndex] = s;
     setState({ ...state, sensors: [...sensors] });
@@ -101,7 +101,7 @@ function SensorContextProvider(props) {
       new Toast({
         message: 'Successfully updated the sensor',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -118,7 +118,7 @@ function SensorContextProvider(props) {
       new Toast({
         message: 'Successfully deleted the sensor',
         type: 'success',
-      })
+      }),
     );
 
     return true;
@@ -129,7 +129,7 @@ function SensorContextProvider(props) {
     if (!sensor.visible) {
       sensor.expanded = false;
     }
-    const sensors = state.sensors;
+    const { sensors } = state;
     const sensorIndex = sensors.findIndex((sd) => sd.id === sensor.id);
     sensors[sensorIndex] = sensor;
     setState({ ...state, sensors: [...sensors] });

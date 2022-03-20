@@ -19,9 +19,9 @@ const TopicContext = createContext<{
 
 function TopicContextProvider(props: { category: Category; children: any }) {
   const { category } = props;
-  let { reload: reloadCategories } = useContext(CategoryContext);
+  const { reload: reloadCategories } = useContext(CategoryContext);
 
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     topics: [],
     topicsLoaded: false,
   });
@@ -36,7 +36,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
   const updateTopic = async (id: TopicId, topic: Partial<Topic>): Promise<Topic> => {
     const s = await TopicService.updateTopic(id, topic);
 
-    const topics = state.topics;
+    const { topics } = state;
     const topicIndex = topics.findIndex((s) => s.id === id);
     topics[topicIndex] = s;
     setState({ ...state, topics: [...topics] });
@@ -45,7 +45,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
       new Toast({
         message: 'Successfully updated the topic',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -62,7 +62,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
       new Toast({
         message: 'Successfully deleted the topic',
         type: 'success',
-      })
+      }),
     );
 
     return true;
@@ -86,7 +86,15 @@ function TopicContextProvider(props: { category: Category; children: any }) {
   }, [state]);
 
   return (
-    <TopicContext.Provider value={{ state, updateTopic, deleteTopic, addTopic, reload }}>
+    <TopicContext.Provider
+      value={{
+        state,
+        updateTopic,
+        deleteTopic,
+        addTopic,
+        reload,
+      }}
+    >
       {props.children}
     </TopicContext.Provider>
   );

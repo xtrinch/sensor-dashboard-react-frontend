@@ -60,11 +60,12 @@ export class Port {
     await this.device.selectConfiguration(1);
     // }
 
-    // find the interface which has 0xff interface class as its alternate and its interface number is 0 for esp, 2 for arduino
+    // find the interface which has 0xff interface class as its alternate
+    // and its interface number is 0 for esp, 2 for arduino
     this.interface = (this.device.configuration.interfaces || []).find(
       (c) =>
         !!c.alternates.find((a) => a.interfaceClass === 0xff) &&
-        c.interfaceNumber === this.interfaceNumber
+        c.interfaceNumber === this.interfaceNumber,
     );
     if (!this.interface) {
       throw new Error('Interface not found');
@@ -99,7 +100,8 @@ export class Serial {
     return devices.map((device) => new Port(device));
   }
 
-  // if this is the first time the user has visited the page then it won’t have permission to access any devices
+  // if this is the first time the user has visited the page then it won’t have
+  // permission to access any devices
   public static async requestPort(ownFilters?: USBDeviceFilter[]): Promise<Port | null> {
     let device;
 
@@ -113,7 +115,8 @@ export class Serial {
       return null;
     } finally {
       if (device) {
-        return new Port(device);
+        const port = new Port(device);
+        return port;
       }
       return null;
     }

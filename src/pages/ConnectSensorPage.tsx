@@ -95,7 +95,7 @@ const ConnectSensorPage: React.FunctionComponent<
 
     data.push(new Uint8Array([...new TextEncoder().encode(stringified), 0]));
 
-    for (let d of data) {
+    for (const d of data) {
       try {
         await port.send(d.buffer);
         const read = await port.readLoop();
@@ -105,14 +105,14 @@ const ConnectSensorPage: React.FunctionComponent<
             new Toast({
               message: 'Successfully configured the device.',
               type: 'success',
-            })
+            }),
           );
         } else if (read === 'failure') {
           addToast(
             new Toast({
               message: 'Failed to configure the device.',
               type: 'failure',
-            })
+            }),
           );
         }
         console.log('Received:');

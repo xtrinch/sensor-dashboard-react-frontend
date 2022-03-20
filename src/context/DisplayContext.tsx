@@ -17,11 +17,11 @@ const DisplayContext = createContext<{
 }>({});
 
 function DisplayContextProvider(props) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     displays: [],
     displaysLoaded: false,
   });
-  let { loginState } = useContext(AccountContext);
+  const { loginState } = useContext(AccountContext);
 
   const reloadDisplays = async (loginState: string) => {
     if (loginState === 'LOGGED_OUT') {
@@ -44,7 +44,7 @@ function DisplayContextProvider(props) {
 
   const updateDisplay = async (id: DisplayId, display: Partial<Display>): Promise<Display> => {
     const s = await DisplayService.updateDisplay(id, display);
-    const displays = state.displays;
+    const { displays } = state;
     const displayIndex = displays.findIndex((sd) => sd.id === s.id);
     displays[displayIndex] = s;
     setState({ ...state, displays: [...displays] });
@@ -53,7 +53,7 @@ function DisplayContextProvider(props) {
       new Toast({
         message: 'Successfully updated the display',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -70,7 +70,7 @@ function DisplayContextProvider(props) {
       new Toast({
         message: 'Successfully deleted the display',
         type: 'success',
-      })
+      }),
     );
 
     return true;

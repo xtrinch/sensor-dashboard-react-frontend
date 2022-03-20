@@ -65,14 +65,14 @@ export type ConfirmationActionTypes =
   | { type: 'closing' };
 
 const ConfirmationContext = createContext<[ConfirmationContextState, React.Dispatch<any>]>(
-  null
+  null,
 ) as Context<[ConfirmationContextState, Dispatch<any>]> & {
   dispatch: React.Dispatch<any>;
 };
 
-let reducer = (
+const reducer = (
   state: ConfirmationContextState,
-  action: ConfirmationActionTypes
+  action: ConfirmationActionTypes,
 ): ConfirmationContextState => {
   switch (action.type) {
     case 'openConfirmation':
@@ -101,7 +101,7 @@ let reducer = (
 };
 
 function ConfirmationContextProvider(props) {
-  let [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <ConfirmationContext.Provider value={[state, dispatch]}>

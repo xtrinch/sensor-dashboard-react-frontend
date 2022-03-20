@@ -17,11 +17,11 @@ const ForwarderContext = createContext<{
 }>({});
 
 function ForwarderContextProvider(props) {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     forwarders: [],
     forwardersLoaded: false,
   });
-  let { loginState } = useContext(AccountContext);
+  const { loginState } = useContext(AccountContext);
 
   const reload = async () => {
     if (loginState === 'LOGGED_OUT') {
@@ -44,10 +44,10 @@ function ForwarderContextProvider(props) {
 
   const updateForwarder = async (
     id: ForwarderId,
-    forwarder: Partial<Forwarder>
+    forwarder: Partial<Forwarder>,
   ): Promise<Forwarder> => {
     const s = await ForwarderService.updateForwarder(id, forwarder);
-    const forwarders = state.forwarders;
+    const { forwarders } = state;
     const forwarderIndex = forwarders.findIndex((sd) => sd.id === s.id);
     forwarders[forwarderIndex] = s;
     setState({ ...state, forwarders: [...forwarders] });
@@ -56,7 +56,7 @@ function ForwarderContextProvider(props) {
       new Toast({
         message: 'Successfully updated the forwarder',
         type: 'success',
-      })
+      }),
     );
 
     return s;
@@ -73,7 +73,7 @@ function ForwarderContextProvider(props) {
       new Toast({
         message: 'Successfully deleted the forwarder',
         type: 'success',
-      })
+      }),
     );
 
     return true;
@@ -87,7 +87,13 @@ function ForwarderContextProvider(props) {
 
   return (
     <ForwarderContext.Provider
-      value={{ state, updateForwarder, deleteForwarder, addForwarder, reload }}
+      value={{
+        state,
+        updateForwarder,
+        deleteForwarder,
+        addForwarder,
+        reload,
+      }}
     >
       {props.children}
     </ForwarderContext.Provider>

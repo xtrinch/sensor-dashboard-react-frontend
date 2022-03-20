@@ -66,7 +66,7 @@ const styles = () =>
   });
 
 const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeof styles>> = (
-  props
+  props,
 ) => {
   const { item, classes } = props;
 
@@ -97,7 +97,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
   const { visibility, expandable, type } = props;
 
   return (
-    <Fragment>
+    <>
       <ListItem
         divider
         button
@@ -120,7 +120,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
               </Grid>
             )}
             <Grid item>
-              {item.name}, {item.location}
+              {item.name},{item.location}
             </Grid>
           </Grid>
           {item.userId !== user?.id && <>({item.user?.username})</>}
@@ -166,7 +166,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
           </List>
         </Collapse>
       )}
-    </Fragment>
+    </>
   );
 };
 

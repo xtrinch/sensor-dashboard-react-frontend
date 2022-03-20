@@ -33,7 +33,7 @@ const ErrorContext = createContext<[ErrorContextState, React.Dispatch<any>]>(nul
   dispatch: React.Dispatch<any>;
 };
 
-let reducer = (state: ErrorContextState, action: ErrorActionTypes): ErrorContextState => {
+const reducer = (state: ErrorContextState, action: ErrorActionTypes): ErrorContextState => {
   switch (action.type) {
     case 'setError':
       return {
@@ -52,7 +52,7 @@ let reducer = (state: ErrorContextState, action: ErrorActionTypes): ErrorContext
 };
 
 function ErrorContextProvider(props) {
-  let [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return <ErrorContext.Provider value={[state, dispatch]}>{props.children}</ErrorContext.Provider>;
 }

@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: ColorsEnum.WHITE,
       color: ColorsEnum.WHITE,
     },
-  })
+  }),
 );
 
 const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>> = (props) => {
@@ -93,7 +93,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
       <Tabs
         className={classes.container}
         value={
-          pathname.indexOf('about') >= 0 ? 'about' : '/' + (pathname.split('/')[1] || 'dashboard')
+          pathname.indexOf('about') >= 0 ? 'about' : `/${pathname.split('/')[1] || 'dashboard'}`
         }
       >
         <Tab
@@ -127,7 +127,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
           onClick={() => {
             history.push(getTopicByTagRoute('about'));
           }}
-          value={'about'}
+          value="about"
         />
       </Tabs>
     </>

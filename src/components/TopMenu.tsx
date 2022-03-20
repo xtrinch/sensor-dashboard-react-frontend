@@ -6,8 +6,8 @@ import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import DomainTypeEnum from 'types/DomainTypeEnum';
 import { DateRangeEnum } from 'utils/date.range';
-import TimeInput from './TimeInput';
 import { observer } from 'mobx-react-lite';
+import TimeInput from './TimeInput';
 
 const styles = (theme) =>
   createStyles({

@@ -30,7 +30,19 @@
     "max-classes-per-file": "off",
     "react/require-default-props": "off",
     "no-empty": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "comma-dangle": "off",
+    "no-param-reassign": "warn",
+    "no-use-before-define": "off",
+    "import/no-extraneous-dependencies": "warn",
+    "react/jsx-props-no-spreading": "off",
+    "no-await-in-loop": "warn",
+    "no-shadow": "warn",
+    "react/no-array-index-key": "off",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "jsx-a11y/anchor-is-valid": "warn",
+    "no-unsafe-finally": "off",
+    "jsx-a11y/click-events-have-key-events": "warn"
   },
   "settings": {
     "import/resolver": {

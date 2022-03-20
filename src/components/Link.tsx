@@ -17,7 +17,7 @@ const styles = () =>
   createStyles({
     link: {
       '&:hover': {
-        //color: `${ColorsEnum.VIOLET}!important`
+        // color: `${ColorsEnum.VIOLET}!important`
       },
       cursor: 'pointer',
       fontStyle: 'normal',

@@ -5,8 +5,8 @@ import withStyles, { CSSProperties, WithStyles } from '@material-ui/core/styles/
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
-import 'date-fns';
 import { addHours, getHours, isFuture } from 'date-fns';
+
 import React from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import { DateRange, DateRangeEnum, DateRegex } from 'utils/date.range';
@@ -34,7 +34,7 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
   const { label, date, onChange, classes } = props;
 
   const onChangeDate = (d: Date) => {
-    let dateString = DateRange.getDateString(d, DateRangeEnum.hour);
+    const dateString = DateRange.getDateString(d, DateRangeEnum.hour);
 
     onChange(dateString);
   };
@@ -70,7 +70,7 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
             views={['hours']}
             labelFunc={(date) =>
               `${getZeroPaddedNumber(getHours(date))}:00 - ${getZeroPaddedNumber(
-                getHours(date) + 1
+                getHours(date) + 1,
               )}:00`
             }
             autoOk
