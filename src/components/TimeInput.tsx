@@ -1,13 +1,14 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { IconButton } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import Grid from '@mui/material/Grid';
-import { CSSProperties } from '@mui/material/styles';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
+import DesktopTimePicker from '@mui/lab/DesktopTimePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { addHours, getHours, isFuture } from 'date-fns';
 
 import React from 'react';
@@ -51,7 +52,7 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
   };
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container alignItems="center" spacing={4}>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(-1)}>
@@ -59,23 +60,23 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
           </IconButton>
         </Grid>
         <Grid item>
-          <TimePicker
+          <DesktopTimePicker
             className={classes.timepicker}
-            margin="none"
-            id="time-picker"
+            // id="time-picker"
             label={label}
             value={DateRange.parse(date).from}
             onChange={onChangeDate}
-            inputVariant="outlined"
+            // inputVariant="outlined"
             ampm={false}
-            size="small"
+            // size="small"
             views={['hours']}
-            labelFunc={(date) =>
-              `${getZeroPaddedNumber(getHours(date))}:00 - ${getZeroPaddedNumber(
-                getHours(date) + 1,
-              )}:00`
-            }
-            autoOk
+            // labelFunc={(date) =>
+            //   `${getZeroPaddedNumber(getHours(date))}:00 - ${getZeroPaddedNumber(
+            //     getHours(date) + 1,
+            //   )}:00`
+            // }
+            // autoOk
+            renderInput={(props) => <TextField label="Date" helperText="Something" />}
           />
         </Grid>
         <Grid item>
@@ -84,7 +85,7 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
           </IconButton>
         </Grid>
       </Grid>
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   );
 };
 

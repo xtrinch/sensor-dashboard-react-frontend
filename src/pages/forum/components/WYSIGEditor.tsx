@@ -1,8 +1,7 @@
-import { CSSProperties } from '@mui/material/styles';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import ReactMde from 'react-mde';
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import * as Showdown from 'showdown';

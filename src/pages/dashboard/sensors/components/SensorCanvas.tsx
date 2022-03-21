@@ -14,7 +14,6 @@ import {
 import { uniqBy } from 'lodash';
 import TimeSeriesChart, { ChartPoint } from 'pages/dashboard/sensors/components/TimeSeriesChart';
 import React, { useContext } from 'react';
-import { AxisDomain } from 'recharts';
 import ColorsEnum from 'types/ColorsEnum';
 import DomainTypeEnum from 'types/DomainTypeEnum';
 import Measurement from 'types/Measurement';
@@ -22,6 +21,9 @@ import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/Measuremen
 import Sensor from 'types/Sensor';
 import { DateRange, DateRangeEnum, DateRegex, DateRegexGroupsInterface } from 'utils/date.range';
 import { getSpacePaddedNumber, getZeroPaddedNumber } from 'utils/number';
+
+// TODO
+type AxisDomain = any;
 
 const styles = () =>
   createStyles({

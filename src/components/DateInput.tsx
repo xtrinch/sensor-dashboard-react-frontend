@@ -1,12 +1,14 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Grid, IconButton } from '@mui/material';
+import { Grid, IconButton, TextField } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
-import { CSSProperties } from '@mui/material/styles';
 import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import { DatePicker, DatePickerView, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DatePicker from '@mui/lab/DatePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+
 import clsx from 'clsx';
 import {
   addDays,
@@ -23,7 +25,7 @@ import {
   startOfWeek,
   startOfYear,
 } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import {
   DateRange,
@@ -33,6 +35,7 @@ import {
   MONTH_YEAR_REGEX,
 } from 'utils/date.range';
 import { observer } from 'mobx-react-lite';
+import { DatePickerView } from '@mui/lab/DatePicker/shared';
 
 const styles = (theme) =>
   createStyles({
@@ -187,15 +190,15 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
     switch (props.groupBy) {
       case DateRangeEnum.day:
       case DateRangeEnum.hour:
-        return ['year', 'month', 'date'];
+        return ['year', 'month', 'day'];
       case DateRangeEnum.month:
         return ['month', 'year'];
       case DateRangeEnum.week:
-        return ['year', 'month', 'date'];
+        return ['year', 'month', 'day'];
       case DateRangeEnum.year:
         return ['year'];
       default:
-        return ['year', 'month', 'date'];
+        return ['year', 'month', 'day'];
     }
   };
 
@@ -237,27 +240,27 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
           </IconButton>
         </Grid>
         <Grid item>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              size="small"
-              style={{ maxWidth: '170px', flex: '1' }}
+              // style={{ maxWidth: '170px', flex: '1' }}
               views={getView()}
               label=""
-              format="MM/dd/yyyy"
+              inputFormat="MM/dd/yyyy"
               value={DateRange.parse(date).from}
               onChange={(e: Date) => onChangeDate(e)}
-              inputVariant="filled"
+              // inputVariant="filled"
               disabled={props.disabled ? props.disabled : false}
               InputProps={{
                 className: classes.datepicker,
               }}
               renderDay={renderDate}
-              labelFunc={renderLabel}
-              margin="none"
+              // labelFunc={renderLabel}
+              // margin="none"
               disableFuture
-              autoOk
+              // autoOk
+              renderInput={(props) => <TextField {...props} />}
             />
-          </MuiPickersUtilsProvider>
+          </LocalizationProvider>
         </Grid>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(1)}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  AxisDomain,
   CartesianGrid,
   ComposedChart,
   Label,
@@ -13,6 +12,9 @@ import {
   YAxis,
 } from 'recharts';
 import ColorsEnum, { GraphColors } from 'types/ColorsEnum';
+
+// TODO
+type AxisDomain = any;
 
 export interface ChartPoint {
   name: string;

@@ -1,9 +1,8 @@
-import { Container, IconButton, Typography } from '@mui/material';
+import { Container, IconButton, Typography, Pagination } from '@mui/material';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import { Delete, Settings } from '@mui/icons-material';
-import { Pagination } from '@mui/material';
 import ColoredButton from 'components/ColoredButton';
 import Link from 'components/Link';
 import TextInput from 'components/TextInput';
@@ -86,9 +85,9 @@ const TopicPage: React.FunctionComponent<
     setData();
   }, []);
 
-  const deleteWithConfirmation = (topic: Topic) => {
+  const deleteWithConfirmation = (t: Topic) => {
     const onConfirm = async () => {
-      await deleteTopic(topic.id);
+      await deleteTopic(t.id);
     };
     openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
   };
@@ -195,8 +194,8 @@ const TopicPage: React.FunctionComponent<
           </div>
         </div>
         <div className={classes.root}>
-          {comments.map((comment, index) => (
-            <CommentItem comment={comment} key={index} />
+          {comments.map((c, index) => (
+            <CommentItem comment={c} key={index} />
           ))}
         </div>
         <div className={classes.root}>

@@ -1,4 +1,4 @@
-import { createTheme, adaptV4Theme } from '@mui/material';
+import { adaptV4Theme, createTheme } from '@mui/material';
 import ColorsEnum from 'types/ColorsEnum';
 
 const theme = createTheme(
@@ -161,10 +161,10 @@ const theme = createTheme(
             backgroundColor: ColorsEnum.BGLIGHTER,
           },
         },
-        inputMarginDense: {
-          paddingTop: '11px',
-          paddingBottom: '11px',
-        },
+        // inputMarginDense: {
+        //   paddingTop: '11px',
+        //   paddingBottom: '11px',
+        // },
       },
     },
     props: {

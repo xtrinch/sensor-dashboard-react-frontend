@@ -2,7 +2,7 @@ import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import { Autocomplete, TextFieldProps } from '@mui/material';
-import { AutocompleteProps } from '@mui/lab';
+// import { AutocompleteProps } from '@mui/lab';
 import TextInput from 'components/TextInput';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface ISelectInputProps {
 
 const SelectInput: React.FunctionComponent<
   WithStyles<typeof styles> &
-    AutocompleteProps<any, false | true, false, false> &
+    // AutocompleteProps<any, false | true, false, false> &
     TextFieldProps &
     ISelectInputProps &
     any
