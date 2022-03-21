@@ -109,8 +109,8 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
   const { groupBy, onChange, date, classes } = props;
 
   const onChangeDate = (d: Date) => {
-    const date = new Date(d);
-    const dateString = DateRange.getDateString(date, groupBy);
+    const parsedDate = new Date(d);
+    const dateString = DateRange.getDateString(parsedDate, groupBy);
 
     onChange(dateString);
   };
@@ -120,21 +120,21 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
     onChangeDate(new Date());
   }, [groupBy]);
 
-  const renderLabel = (date, invalidLabel) => {
-    if (!isValid(date)) {
+  const renderLabel = (d: Date, invalidLabel: string) => {
+    if (!isValid(d)) {
       return invalidLabel;
     }
 
     switch (props.groupBy) {
       case DateRangeEnum.day:
       case DateRangeEnum.hour:
-        return `${format(date, DATE_REGEX)}`;
+        return `${format(d, DATE_REGEX)}`;
       case DateRangeEnum.month:
-        return `${format(startOfMonth(date), MONTH_YEAR_REGEX)}`;
+        return `${format(startOfMonth(d), MONTH_YEAR_REGEX)}`;
       case DateRangeEnum.week:
-        return `Week of ${format(startOfWeek(date), DATE_REGEX)}`;
+        return `Week of ${format(startOfWeek(d), DATE_REGEX)}`;
       case DateRangeEnum.year:
-        return `${format(startOfYear(date), 'yyyy')}`;
+        return `${format(startOfYear(d), 'yyyy')}`;
       default:
         return '';
     }
@@ -244,20 +244,16 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
             <DatePicker
               // style={{ maxWidth: '170px', flex: '1' }}
               views={getView()}
-              label=""
               inputFormat="MM/dd/yyyy"
               value={DateRange.parse(date).from}
               onChange={(e: Date) => onChangeDate(e)}
-              // inputVariant="filled"
               disabled={props.disabled ? props.disabled : false}
               InputProps={{
                 className: classes.datepicker,
               }}
               renderDay={renderDate}
-              // labelFunc={renderLabel}
-              // margin="none"
+              label={<>{renderLabel(DateRange.parse(date).from, 'Invalid date')}</>}
               disableFuture
-              // autoOk
               renderInput={(props) => <TextField {...props} />}
             />
           </LocalizationProvider>

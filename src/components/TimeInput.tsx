@@ -63,20 +63,20 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
           <DesktopTimePicker
             className={classes.timepicker}
             // id="time-picker"
-            label={label}
+            // label={label}
             value={DateRange.parse(date).from}
             onChange={onChangeDate}
             // inputVariant="outlined"
             ampm={false}
             // size="small"
             views={['hours']}
-            // labelFunc={(date) =>
-            //   `${getZeroPaddedNumber(getHours(date))}:00 - ${getZeroPaddedNumber(
-            //     getHours(date) + 1,
-            //   )}:00`
-            // }
-            // autoOk
-            renderInput={(props) => <TextField label="Date" helperText="Something" />}
+            label={
+              <>
+                {`${getZeroPaddedNumber(getHours(DateRange.parse(date).from))}:00`} -{' '}
+                {`${getZeroPaddedNumber(getHours(DateRange.parse(date).from) + 1)}:00`}
+              </>
+            }
+            renderInput={(props) => <TextField {...props} />}
           />
         </Grid>
         <Grid item>
