@@ -100,10 +100,6 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
           differenceInMinutes(item.lastSeenAt, new Date()) > -60 ? classes.active : undefined
         }
       >
-        {/* <WifiIcon /> */}
-        {expandable && (
-          <ListItemIcon>{item.expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}</ListItemIcon>
-        )}
         <ListItemText>
           <Grid container spacing={2}>
             {item.private && (
@@ -138,14 +134,6 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
             {(item as IotDeviceInterface).visible ? <VisibilityIcon /> : <VisibilityOffIcon />}
           </Fab>
         )}
-        {/* <Fab
-          color="secondary"
-          size="small"
-          className={classes.itemFab}
-          onClick={() => removeIotDeviceInterface(item)}
-        >
-          <RemoveIcon />
-        </Fab> */}
       </ListItem>
       {expandable && (
         <Collapse in={(item as IotDeviceInterface).expanded} timeout="auto" unmountOnExit>
