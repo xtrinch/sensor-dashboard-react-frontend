@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
@@ -12,6 +11,7 @@ import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import User from 'types/User';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const styles = (theme) =>
   createStyles({
@@ -49,25 +49,31 @@ const UserListPage: React.FunctionComponent<
         </Typography>
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
-        <CssBaseline />
-        {userContext.users.length !== 0 && (
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Username</TableCell>
-                <TableCell>Created at</TableCell>
-                <TableCell>Last seen at</TableCell>
-                <TableCell>Group</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {userContext.users?.map((user: User) => (
-                <UserItem user={user} key={user.id} />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+        <InfiniteScroll
+          dataLength={userContext.totalItems}
+          next={() => userContext.reload({ page: userContext.page + 1 })}
+          hasMore={userContext.totalItems > userContext.users?.length}
+          loader={<h4>Loading...</h4>}
+        >
+          {userContext.users.length !== 0 && (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Username</TableCell>
+                  <TableCell>Created at</TableCell>
+                  <TableCell>Last seen at</TableCell>
+                  <TableCell>Group</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {userContext.users?.map((user: User) => (
+                  <UserItem user={user} key={user.id} />
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </InfiniteScroll>
         {userContext.users.length === 0 && (
           <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No users added

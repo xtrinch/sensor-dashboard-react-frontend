@@ -138,7 +138,7 @@ const SensorsSideMenu: React.FunctionComponent<
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My packet forwarders</Grid>
                 <Grid item>
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div role="button" onClick={(e) => e.stopPropagation()}>
                     <Link to={DashboardRoutes.ADD_FORWARDER} onClick={appContext.drawerToggle}>
                       <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />
@@ -160,7 +160,7 @@ const SensorsSideMenu: React.FunctionComponent<
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My radios</Grid>
                 <Grid item>
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div role="button" onClick={(e) => e.stopPropagation()}>
                     <Link to={DashboardRoutes.ADD_RADIO} onClick={appContext.drawerToggle}>
                       <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />
@@ -187,7 +187,7 @@ const SensorsSideMenu: React.FunctionComponent<
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My display devices</Grid>
                 <Grid item>
-                  <div onClick={(e) => e.stopPropagation()}>
+                  <div role="button" onClick={(e) => e.stopPropagation()}>
                     <Link to={DashboardRoutes.ADD_DISPLAY} onClick={appContext.drawerToggle}>
                       <Fab color="primary" size="small" className={classes.sensorFab}>
                         <PlusIcon />

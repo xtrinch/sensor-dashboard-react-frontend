@@ -14,17 +14,26 @@ class UserStore {
 
   public totalItems: number = 0;
 
+  public page: number = 1;
+
+  public limit: number = 20;
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  public reload = async () => {
-    const resp = await UserService.listUsers();
+  public reload = async (params: { page: number } = { page: 1 }) => {
+    this.page = params.page;
+    const resp = await UserService.listUsers({ limit: this.limit, ...params });
     const userData = resp.items;
 
-    this.users = userData;
-    this.usersLoaded = true;
     this.totalItems = resp.meta?.totalItems;
+    if (this.page === 1) {
+      this.users = userData;
+    } else {
+      this.users.push(...userData);
+    }
+    this.usersLoaded = true;
   };
 
   public updateUser = async (id: UserId, user: Partial<User>): Promise<User> => {

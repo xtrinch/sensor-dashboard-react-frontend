@@ -65,10 +65,10 @@ export default class UserService {
     return new User(result);
   };
 
-  public static listUsers = async () => {
+  public static listUsers = async (params: { page: number; limit: number }) => {
     const url = getUrl('/users');
 
-    const resp = await fetch(url, {
+    const resp = await fetch(`${url}?${new URLSearchParams(params as any)}`, {
       method: 'GET',
       credentials: 'include',
       headers: getHeaders({ contentType: 'application/json' }),
