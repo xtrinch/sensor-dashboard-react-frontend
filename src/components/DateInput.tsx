@@ -5,7 +5,7 @@ import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import DatePicker from '@mui/lab/DatePicker';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
@@ -44,11 +44,10 @@ const styles = (theme) =>
       '& input': {
         textAlign: 'center',
         cursor: 'pointer',
-        paddingTop: '11px',
+        paddingTop: '9px',
         paddingBottom: '10px',
       },
       backgroundColor: ColorsEnum.BGLIGHTER,
-      border: `1px solid ${ColorsEnum.GRAYDARK}`,
       borderRadius: '0px',
       '&:hover:before': {
         borderBottom: '0px',
@@ -241,10 +240,8 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
         </Grid>
         <Grid item>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              // style={{ maxWidth: '170px', flex: '1' }}
+            <MobileDatePicker
               views={getView()}
-              inputFormat="MM/dd/yyyy"
               value={DateRange.parse(date).from}
               onChange={(e: Date) => onChangeDate(e)}
               disabled={props.disabled ? props.disabled : false}
@@ -254,7 +251,13 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
               renderDay={renderDate}
               label={<>{renderLabel(DateRange.parse(date).from, 'Invalid date')}</>}
               disableFuture
-              renderInput={(props) => <TextField {...props} />}
+              renderInput={(props) => (
+                <TextField
+                  value={renderLabel(DateRange.parse(date).from, 'Invalid date')}
+                  style={{ maxWidth: '170px', flex: '1' }}
+                  className={classes.datepicker}
+                />
+              )}
             />
           </LocalizationProvider>
         </Grid>

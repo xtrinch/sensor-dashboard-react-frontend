@@ -25,13 +25,19 @@ const useStyles = makeStyles((theme: Theme) =>
         opacity: 1,
         color: 'white',
         minHeight: '40px',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        position: 'relative',
+        paddingLeft: '40px',
         '&:before': {
+          display: 'block',
           content: "''",
           width: '10px',
           height: '10px',
-          position: 'relative',
-          left: '5px',
-          top: '-1px',
+          position: 'absolute',
+          left: '15px',
+          top: '14px',
         },
         '& .MuiTab-wrapper': {
           alignItems: 'flex-start',
@@ -99,12 +105,12 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
         }
       >
         <Tab
-          label="IOT dashboard"
           className={classes.dashboard}
           onClick={() => {
             history.push(DashboardRoutes.DASHBOARD);
           }}
           value={DashboardRoutes.DASHBOARD}
+          label={'IOT dashboard'}
         />
         <Tab
           label="Forum"

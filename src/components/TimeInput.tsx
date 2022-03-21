@@ -6,7 +6,7 @@ import { WithStyles } from '@mui/styles';
 import withStyles from '@mui/styles/withStyles';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import DesktopTimePicker from '@mui/lab/DesktopTimePicker';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { addHours, getHours, isFuture } from 'date-fns';
@@ -23,6 +23,9 @@ const styles = (theme) =>
         textAlign: 'center',
         backgroundColor: ColorsEnum.BGLIGHTER,
         width: '100px',
+        cursor: 'pointer',
+        paddingTop: '9px',
+        paddingBottom: '10px',
       },
     },
   });
@@ -60,15 +63,10 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
           </IconButton>
         </Grid>
         <Grid item>
-          <DesktopTimePicker
-            className={classes.timepicker}
-            // id="time-picker"
-            // label={label}
+          <MobileTimePicker
             value={DateRange.parse(date).from}
             onChange={onChangeDate}
-            // inputVariant="outlined"
             ampm={false}
-            // size="small"
             views={['hours']}
             label={
               <>
@@ -76,7 +74,15 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
                 {`${getZeroPaddedNumber(getHours(DateRange.parse(date).from) + 1)}:00`}
               </>
             }
-            renderInput={(props) => <TextField {...props} />}
+            renderInput={(props) => (
+              <TextField
+                value={`${getZeroPaddedNumber(
+                  getHours(DateRange.parse(date).from),
+                )}:00 - ${getZeroPaddedNumber(getHours(DateRange.parse(date).from) + 1)}:00`}
+                style={{ maxWidth: '170px', flex: '1' }}
+                className={classes.timepicker}
+              />
+            )}
           />
         </Grid>
         <Grid item>

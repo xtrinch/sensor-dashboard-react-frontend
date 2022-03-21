@@ -21,6 +21,7 @@ const styles = (theme) =>
       boxShadow: 'none',
       minHeight: '60px',
       justifyContent: 'center',
+      backgroundImage: 'unset',
     },
     menuIcon: {
       [theme.breakpoints.up('md')]: {
