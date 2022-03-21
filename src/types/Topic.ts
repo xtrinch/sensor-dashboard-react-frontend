@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { AbstractEntity } from 'types/AbstractEntity';
 import { CategoryId } from 'types/Category';
 import Comment, { CommentId } from 'types/Comment';
@@ -5,10 +6,8 @@ import User, { UserId } from 'types/User';
 
 export type TopicId = string;
 
-class Topic extends AbstractEntity {
+class Topic implements AbstractEntity {
   constructor(s?: any) {
-    super(s);
-
     this.name = s?.name || '';
     this.description = s?.description;
     this.id = s?.id || 0;
@@ -19,7 +18,13 @@ class Topic extends AbstractEntity {
     this.lastCommentId = s?.lastCommentId;
     this.numComments = s?.numComments;
     this.tag = s?.tag;
+    this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
+    this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
   }
+
+  public createdAt: Date;
+
+  public updatedAt: Date;
 
   public id: TopicId;
 

@@ -1,15 +1,12 @@
 import { parseISO } from 'date-fns';
 import { AbstractEntity } from 'types/AbstractEntity';
 import BoardTypeEnum from 'types/BoardTypeEnum';
-import { IotDeviceInterface } from 'types/IotDeviceInterface';
 import User, { UserId } from 'types/User';
 
 export type RadioId = string;
 
-class Radio extends AbstractEntity implements IotDeviceInterface {
+class Radio implements AbstractEntity {
   constructor(s) {
-    super(s);
-
     this.name = s?.name || '';
     this.displayName = s?.displayName || '';
     this.id = s?.id;
@@ -23,7 +20,13 @@ class Radio extends AbstractEntity implements IotDeviceInterface {
     this.expanded = s?.expanded;
     this.private = s?.private;
     this.config = s?.config || { presets: [] };
+    this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
+    this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
   }
+
+  public createdAt: Date;
+
+  public updatedAt: Date;
 
   public id: RadioId;
 

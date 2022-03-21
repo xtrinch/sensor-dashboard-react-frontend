@@ -5,7 +5,6 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import SensorService from 'services/SensorService';
 import Sensor, { SensorId } from 'types/Sensor';
 import { Toast } from 'types/Toast';
-import User from 'types/User';
 
 export const SensorContext = createContext<SensorStore>(null);
 

@@ -1,17 +1,15 @@
 import { parseISO } from 'date-fns';
+import { makeAutoObservable } from 'mobx';
 import { AbstractEntity } from 'types/AbstractEntity';
 import BoardTypeEnum from 'types/BoardTypeEnum';
-import { IotDeviceInterface } from 'types/IotDeviceInterface';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import SensorTypeEnum from 'types/SensorTypeEnum';
 import User, { UserId } from 'types/User';
 
 export type SensorId = string;
 
-class Sensor extends AbstractEntity implements IotDeviceInterface {
+class Sensor implements AbstractEntity {
   constructor(s) {
-    super(s);
-
     this.name = s?.name || '';
     this.displayName = s?.displayName || '';
     this.type = s?.type || undefined;
@@ -28,7 +26,15 @@ class Sensor extends AbstractEntity implements IotDeviceInterface {
     this.lastSeenAt = s?.lastSeenAt ? parseISO(s.lastSeenAt) : null;
     this.private = s?.private;
     this.sensorTypes = s?.sensorTypes;
+    this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
+    this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
+
+    makeAutoObservable(this);
   }
+
+  public createdAt: Date;
+
+  public updatedAt: Date;
 
   public id: SensorId;
 
