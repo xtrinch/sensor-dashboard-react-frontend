@@ -62,7 +62,9 @@
     "react/function-component-definition": "off",
     "react/jsx-no-useless-fragment": "off",
     "react/jsx-no-constructed-context-values": "warn",
-    "react/jsx-no-duplicate-props": "warn"
+    "react/jsx-no-duplicate-props": "warn",
+    "class-methods-use-this": "off",
+    "no-undef": "warn"
   },
   "settings": {
     "import/resolver": {
