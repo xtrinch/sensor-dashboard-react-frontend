@@ -17,6 +17,8 @@ import ColorsEnum from 'types/ColorsEnum';
 import { GroupEnum } from 'types/GroupEnum';
 import User from 'types/User';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { AccountContext } from 'context/AccountContext';
+import { PermissionsEnum } from 'types/PermissionEnum';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,6 +46,7 @@ const UserItem: React.FunctionComponent<
 > = (props) => {
   const { user, classes } = props;
   const { deleteUser, updateUser } = useContext(UserContext);
+  const accountContext = useContext(AccountContext);
 
   const deleteWithConfirmation = (user: User) => {
     const onConfirm = async () => {
@@ -74,12 +77,19 @@ const UserItem: React.FunctionComponent<
           placeholder="Group"
           margin="none"
           variant="standard"
+          disabled={!accountContext.user?.isAllowed([PermissionsEnum.User__update])}
         />
       </TableCell>
       <TableCell style={{ width: '100px' }}>
-        <IconButton aria-label="settings" size="small" onClick={() => deleteWithConfirmation(user)}>
-          <DeleteIcon />
-        </IconButton>
+        {accountContext.user?.isAllowed([PermissionsEnum.User__delete]) && (
+          <IconButton
+            aria-label="settings"
+            size="small"
+            onClick={() => deleteWithConfirmation(user)}
+          >
+            <DeleteIcon />
+          </IconButton>
+        )}
       </TableCell>
     </TableRow>
   );

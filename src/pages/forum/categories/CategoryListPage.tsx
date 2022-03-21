@@ -44,7 +44,7 @@ const CategoryListPage: React.FunctionComponent<
         <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           Forum
         </Typography>
-        {user?.isAllowed([PermissionsEnum.Category__delete]) && (
+        {user?.isAllowed([PermissionsEnum.Category__create]) && (
           <ColoredButton
             startIcon={<Plus />}
             onClick={() => history.push(ForumRoutes.ADD_CATEGORY)}
