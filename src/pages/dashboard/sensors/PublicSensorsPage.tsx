@@ -33,47 +33,34 @@ const styles = (theme) =>
     },
   });
 
-const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
+const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
   const sensorContext = useContext(SensorContext);
-  const { loginState } = useContext(AccountContext);
   const appContext = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (
-      !sensorContext.sensorsLoaded ||
-      (!sensorContext.mySensorsLoaded && loginState === 'LOGGED_IN')
-    ) {
+    if (!sensorContext.sensorsLoaded) {
       return;
     }
 
-    const allSensors = [...sensorContext.sensors, ...sensorContext.mySensors];
-
-    if (allSensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+    if (sensorContext.sensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
       return;
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: appContext.date,
       measurementTypes: uniq(
-        allSensors.reduce((acc, sensor: Sensor) => {
+        sensorContext.sensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
         }, []),
       ),
-      sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
+      sensorIds: sensorContext.sensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [
-    appContext.date,
-    sensorContext.sensors,
-    sensorContext.mySensors,
-    sensorContext.sensorsLoaded,
-    sensorContext.mySensorsLoaded,
-    loginState,
-  ]);
+  }, [appContext.date, sensorContext.sensors, sensorContext.sensorsLoaded]);
 
   useEffect(() => {
     if (!appContext.date || sensorContext.sensors.length === 0) {
@@ -133,4 +120,4 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
   );
 };
 
-export default withStyles(styles)(observer(SensorsPage));
+export default withStyles(styles)(observer(PublicSensorsPage));

@@ -93,6 +93,9 @@ class App extends React.Component<WithStyles<typeof styles>> {
                                       <Route path={DashboardRoutes.DASHBOARD}>
                                         <DashboardIndexPage />
                                       </Route>
+                                      <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
+                                        <DashboardIndexPage />
+                                      </Route>
                                       <Route path={UserRoutes.USERS}>
                                         <UserIndexPage />
                                       </Route>

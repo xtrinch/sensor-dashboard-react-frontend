@@ -12,7 +12,7 @@ import { RadioContext } from 'context/RadioContext';
 import { SensorContext } from 'context/SensorContext';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import React, { useContext } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, useLocation, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import Sensor from 'types/Sensor';
 import { observer } from 'mobx-react-lite';
@@ -65,12 +65,12 @@ interface SensorsSideMenuProps {
 const SensorsSideMenu: React.FunctionComponent<
   SensorsSideMenuProps & WithStyles<typeof styles> & RouteComponentProps<{}>
 > = (props) => {
+  const location = useLocation();
+
   const { history } = props;
   const appContext = useContext(AppContext);
 
-  const {
-    state: { sensors, mySensors },
-  } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
   const {
     state: { displays },
   } = useContext(DisplayContext);
@@ -101,7 +101,7 @@ const SensorsSideMenu: React.FunctionComponent<
   return (
     // @ts-ignore
     <div style={props.style}>
-      {loginState === 'LOGGED_IN' && (
+      {loginState === 'LOGGED_IN' && location.pathname.includes('personal') && (
         <>
           <Grid container className={classes.listTitle} alignItems="center">
             <Grid item xs>
@@ -117,7 +117,7 @@ const SensorsSideMenu: React.FunctionComponent<
           </Grid>
           <Divider />
           <List disablePadding>
-            {mySensors.map((sensor: Sensor) => (
+            {sensorContext.mySensors.map((sensor: Sensor) => (
               <SideMenuItem
                 item={sensor}
                 key={sensor.id}
@@ -206,26 +206,28 @@ const SensorsSideMenu: React.FunctionComponent<
           </List>
         </>
       )}
-      <Grid container className={classes.listTitle} alignItems="center">
-        <Grid item xs>
-          All sensors
-        </Grid>
-      </Grid>
-      <Divider />
-      <List disablePadding>
-        {sensors
-          .filter((s) => s.userId !== user?.id)
-          .map((sensor: Sensor) => (
-            <SideMenuItem
-              context={SensorContext}
-              item={sensor}
-              key={sensor.id}
-              type="sensor"
-              expandable
-              visibility
-            />
-          ))}
-      </List>
+      {!location.pathname.includes('personal') && (
+        <>
+          <Grid container className={classes.listTitle} alignItems="center">
+            <Grid item xs>
+              All sensors
+            </Grid>
+          </Grid>
+          <Divider />
+          <List disablePadding>
+            {sensorContext.sensors.map((sensor: Sensor) => (
+              <SideMenuItem
+                context={SensorContext}
+                item={sensor}
+                key={sensor.id}
+                type="sensor"
+                expandable
+                visibility
+              />
+            ))}
+          </List>
+        </>
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ import User from 'types/User';
 
 export const AccountContext = createContext<AccountStore>(null);
 
-class AccountStore {
+export class AccountStore {
   public user: User = localStorage.getItem('user')
     ? new User(JSON.parse(localStorage.getItem('user')))
     : null;

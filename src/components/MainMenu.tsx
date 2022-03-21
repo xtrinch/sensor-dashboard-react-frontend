@@ -4,9 +4,11 @@ import makeStyles from '@mui/styles/makeStyles';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import { ForumRoutes, getTopicByTagRoute } from 'pages/forum/ForumRoutes';
 import { UserRoutes } from 'pages/users/UserRoutes';
-import React from 'react';
+import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
+import clsx from 'clsx';
+import { AccountContext, AccountStore } from 'context/AccountContext';
 
 interface MainMenuProps {}
 
@@ -19,32 +21,80 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .MuiTabs-flexContainer': {
         flexDirection: 'column',
       },
-      '& .MuiTab-root': {
-        width: '100%',
-        maxWidth: '100%',
-        opacity: 1,
-        color: 'white',
-        minHeight: '40px',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        position: 'relative',
-        paddingLeft: '40px',
-        '&:before': {
-          display: 'block',
-          content: "''",
-          width: '10px',
-          height: '10px',
-          position: 'absolute',
-          left: '15px',
-          top: '14px',
-        },
-        '& .MuiTab-wrapper': {
-          alignItems: 'flex-start',
-          marginLeft: '18px',
-        },
+      '& .MuiTabs-indicator': {
+        display: 'none',
       },
-      '& .Mui-selected': {
+    },
+    dashboard: {
+      '&:before, &:after': {
+        backgroundColor: ColorsEnum.BLUE,
+        color: `${ColorsEnum.BLUE}`,
+      },
+      borderColor: ColorsEnum.BLUE,
+    },
+    forum: {
+      '&:before, &:after': {
+        backgroundColor: ColorsEnum.OLIVE,
+      },
+      borderColor: ColorsEnum.OLIVE,
+    },
+    users: {
+      '&:before, &:after': {
+        backgroundColor: ColorsEnum.YELLOW,
+      },
+      borderColor: ColorsEnum.YELLOW,
+    },
+    about: {
+      '&:before, &:after': {
+        backgroundColor: ColorsEnum.WHITE,
+      },
+      borderColor: ColorsEnum.WHITE,
+    },
+    subTab: {
+      alignItems: 'flex-start',
+      paddingLeft: '60px',
+      minHeight: '30px',
+      color: 'white',
+      '&:before': {
+        display: 'block',
+        content: "'>'",
+        width: '10px',
+        height: '10px',
+        position: 'absolute',
+        left: '35px',
+        top: '12px',
+        backgroundColor: 'transparent!important',
+        // color: 'white',
+      },
+      '&:not(.Mui-selected):before': {
+        color: 'white',
+      },
+    },
+    tab: {
+      width: '100%',
+      maxWidth: '100%',
+      opacity: 1,
+      minHeight: '40px',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      position: 'relative',
+      paddingLeft: '40px',
+      color: 'white!important',
+      '&:before': {
+        display: 'block',
+        content: "''",
+        width: '10px',
+        height: '10px',
+        position: 'absolute',
+        left: '15px',
+        top: '14px',
+      },
+      '& .MuiTab-wrapper': {
+        alignItems: 'flex-start',
+        marginLeft: '18px',
+      },
+      '&.Mui-selected': {
         '&:after': {
           content: "''",
           left: 0,
@@ -54,37 +104,6 @@ const useStyles = makeStyles((theme: Theme) =>
           position: 'absolute',
         },
       },
-      '& .MuiTabs-indicator': {
-        display: 'none',
-      },
-    },
-    dashboard: {
-      '&:before, &:after': {
-        backgroundColor: ColorsEnum.BLUE,
-      },
-      borderColor: ColorsEnum.BLUE,
-      color: ColorsEnum.BLUE,
-    },
-    forum: {
-      '&:before, &:after': {
-        backgroundColor: ColorsEnum.OLIVE,
-      },
-      borderColor: ColorsEnum.OLIVE,
-      color: ColorsEnum.OLIVE,
-    },
-    users: {
-      '&:before, &:after': {
-        backgroundColor: ColorsEnum.YELLOW,
-      },
-      borderColor: ColorsEnum.YELLOW,
-      color: ColorsEnum.YELLOW,
-    },
-    about: {
-      '&:before, &:after': {
-        backgroundColor: ColorsEnum.WHITE,
-      },
-      borderColor: ColorsEnum.WHITE,
-      color: ColorsEnum.WHITE,
     },
   }),
 );
@@ -96,6 +115,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
     location: { pathname },
   } = props;
 
+  const accountStore = useContext(AccountContext);
   return (
     <>
       <Tabs
@@ -105,16 +125,46 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
         }
       >
         <Tab
-          className={classes.dashboard}
+          className={clsx(
+            classes.tab,
+            classes.dashboard,
+            pathname.indexOf('dashboard') >= 0 && 'Mui-selected',
+          )}
           onClick={() => {
             history.push(DashboardRoutes.DASHBOARD);
           }}
           value={DashboardRoutes.DASHBOARD}
-          label={'IOT dashboard'}
+          label={'IOT'}
         />
         <Tab
+          className={clsx(classes.subTab, classes.dashboard)}
+          onClick={() => {
+            history.push(DashboardRoutes.DASHBOARD);
+          }}
+          value={DashboardRoutes.DASHBOARD}
+          label={'Public'}
+        />
+        {accountStore.loginState === 'LOGGED_IN' && (
+          <Tab
+            className={clsx(classes.subTab, classes.dashboard)}
+            onClick={() => {
+              history.push(DashboardRoutes.PERSONAL_DASHBOARD);
+            }}
+            value={DashboardRoutes.PERSONAL_DASHBOARD}
+            label={'Personal'}
+          />
+        )}
+        {/* <Tab
+          className={clsx(classes.subTab, classes.dashboard)}
+          onClick={() => {
+            history.push(DashboardRoutes.CANVAS);
+          }}
+          value={DashboardRoutes.CANVAS}
+          label={'Canvas'}
+        /> */}
+        <Tab
           label="Forum"
-          className={classes.forum}
+          className={clsx(classes.tab, classes.forum)}
           onClick={() => {
             history.push(ForumRoutes.FORUM);
           }}
@@ -122,7 +172,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
         />
         <Tab
           label="Users"
-          className={classes.users}
+          className={clsx(classes.tab, classes.users)}
           onClick={() => {
             history.push(UserRoutes.USERS);
           }}
@@ -131,7 +181,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
 
         <Tab
           label="About"
-          className={classes.about}
+          className={clsx(classes.tab, classes.about)}
           onClick={() => {
             history.push(getTopicByTagRoute('about'));
           }}

@@ -72,7 +72,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
   });
 
   const accountContext = useContext(AccountContext);
-  const { reloadSensors } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
   const query = useQuery();
 
   const getUserDataAndRedirect = async () => {
@@ -89,7 +89,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
   }, []);
 
   const uponLoginSuccess = async (user: User) => {
-    await reloadSensors('LOGGED_IN', user);
+    await sensorContext.reloadSensors();
     await reloadDisplays('LOGGED_IN');
     history.push('/');
   };

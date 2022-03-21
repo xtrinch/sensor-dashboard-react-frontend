@@ -18,6 +18,8 @@ export const DashboardRoutes = {
   FORWARDER_LIST: '/dashboard/forwarders',
   RADIO_LIST: '/dashboard/radios',
   TOPIC_BY_TAG: '/dashboard/static/:tag',
+  PERSONAL_DASHBOARD: '/dashboard-personal',
+  CANVAS: '/dashboard-canvas',
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard/sensors/${id}`;

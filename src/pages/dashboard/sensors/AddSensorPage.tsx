@@ -59,7 +59,7 @@ const AddSensorPage: React.FunctionComponent<
   WithStyles<typeof styles> & RouteComponentProps<{ id: string }>
 > = (props) => {
   const { classes, history } = props;
-  const { addSensor } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
@@ -80,7 +80,7 @@ const AddSensorPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      const sensor = await addSensor(data);
+      const sensor = await sensorContext.addSensor(data);
       if (sensor) {
         setSuccess(true);
         history.push(getSensorRoute(sensor.id));

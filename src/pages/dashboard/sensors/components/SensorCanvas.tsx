@@ -74,12 +74,11 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
   props,
 ) => {
   const { type, classes, date, groupBy, measurements, domain } = props;
-  const {
-    state: { sensors, mySensors },
-  } = useContext(SensorContext);
-  const allSensors = uniqBy([...mySensors, ...sensors], (s: Sensor) => s.id).filter(
-    (s) => s.visible,
-  );
+  const sensorContext = useContext(SensorContext);
+  const allSensors = uniqBy(
+    [...sensorContext.mySensors, ...sensorContext.sensors],
+    (s: Sensor) => s.id,
+  ).filter((s) => s.visible);
 
   const groupByProperties = {
     [DateRangeEnum.hour]: {

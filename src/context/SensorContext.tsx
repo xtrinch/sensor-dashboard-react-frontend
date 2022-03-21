@@ -1,54 +1,46 @@
-import { AccountContext } from 'context/AccountContext';
+import { AccountContext, AccountStore } from 'context/AccountContext';
 import { addToast } from 'context/ToastContext';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { makeAutoObservable } from 'mobx';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import SensorService from 'services/SensorService';
 import Sensor, { SensorId } from 'types/Sensor';
 import { Toast } from 'types/Toast';
 import User from 'types/User';
 
-const SensorContext = createContext<{
-  state?: {
-    sensorsLoaded: boolean;
-    sensors: Sensor[];
-    mySensors: Sensor[];
-    mySensorsLoaded: boolean;
-  };
-  updateSensor?: (id: SensorId, sensor: Sensor, skipApiCall?: boolean) => Promise<Sensor>;
-  deleteSensor?: (id: SensorId) => Promise<boolean>;
-  addSensor?: (sensor: Partial<Sensor>) => Promise<Sensor>;
-  reloadSensors?: (loginState: string, user: User) => Promise<void>;
-  toggleSensorVisibility?: (sensor: Sensor) => void;
-  clearMySensors?: () => void;
-}>({});
+export const SensorContext = createContext<SensorStore>(null);
 
-function SensorContextProvider(props) {
-  const [state, setState] = useState({
-    sensors: [],
-    sensorsLoaded: false,
-    mySensors: [],
-    mySensorsLoaded: false,
-  });
-  const { loginState, user } = useContext(AccountContext);
+export class SensorStore {
+  public sensorsLoaded: boolean;
 
-  const clearMySensors = () => {
-    setState({ ...state, mySensors: [] });
+  public sensors: Sensor[];
+
+  public mySensors: Sensor[];
+
+  public mySensorsLoaded: boolean;
+
+  constructor(public accountStore: AccountStore) {
+    makeAutoObservable(this);
+  }
+
+  public clearMySensors = () => {
+    this.mySensors = [];
   };
 
-  const reloadSensors = async (loginState: string, user: User) => {
+  public reloadSensors = async () => {
     try {
       const resp = await SensorService.listSensors({ page: 1, limit: 1000 });
       const sensorData = resp.items;
-      if (loginState === 'LOGGED_IN') {
+      if (this.accountStore.loginState === 'LOGGED_IN') {
         sensorData.map((s) => {
           s.visible = false;
-          if (s.userId === user?.id) {
+          if (s.userId === this.accountStore.user?.id) {
             s.visible = true;
           }
           return s;
         });
       }
       let mySensorData = [];
-      if (loginState === 'LOGGED_IN') {
+      if (this.accountStore.loginState === 'LOGGED_IN') {
         const resp = await SensorService.listMySensors();
         resp.items.map((s) => {
           s.visible = true;
@@ -56,32 +48,26 @@ function SensorContextProvider(props) {
         });
         mySensorData = resp.items;
       }
-      setState((s) => ({
-        ...s,
-        sensors: sensorData,
-        sensorsLoaded: true,
-        mySensors: mySensorData,
-        mySensorsLoaded: true,
-      }));
+      this.sensors = sensorData;
+      this.sensorsLoaded = true;
+      this.mySensors = mySensorData;
+      this.mySensorsLoaded = true;
     } catch (error) {
-      setState({ ...state, sensorsLoaded: true });
+      this.sensorsLoaded = true;
     }
   };
 
-  const addSensor = async (sensor: Partial<Sensor>): Promise<Sensor> => {
+  public addSensor = async (sensor: Partial<Sensor>): Promise<Sensor> => {
     const s = await SensorService.addSensor(sensor);
-    setState({
-      ...state,
-      sensors: [...state.sensors, s],
-      mySensors: [...state.mySensors, s],
-    });
+    this.sensors.push(s);
+    this.mySensors.push(s);
 
     addToast(new Toast({ message: 'Successfully added a sensor', type: 'success' }));
 
     return s;
   };
 
-  const updateSensor = async (
+  public updateSensor = async (
     id: SensorId,
     sensor: Partial<Sensor>,
     skipApiCall?: boolean,
@@ -92,10 +78,8 @@ function SensorContextProvider(props) {
     } else {
       s = await SensorService.updateSensor(id, sensor);
     }
-    const { sensors } = state;
-    const sensorIndex = sensors.findIndex((sd) => sd.id === s.id);
-    sensors[sensorIndex] = s;
-    setState({ ...state, sensors: [...sensors] });
+    const sensorIndex = this.sensors.findIndex((sd) => sd.id === s.id);
+    this.sensors[sensorIndex] = s;
 
     addToast(
       new Toast({
@@ -107,12 +91,11 @@ function SensorContextProvider(props) {
     return s;
   };
 
-  const deleteSensor = async (id: SensorId): Promise<boolean> => {
+  public deleteSensor = async (id: SensorId): Promise<boolean> => {
     await SensorService.deleteSensor(id);
 
-    const idx = state.sensors.findIndex((s) => s.id === id);
-    state.sensors.splice(idx, 1);
-    setState({ ...state });
+    const idx = this.sensors.findIndex((s) => s.id === id);
+    this.sensors.splice(idx, 1);
 
     addToast(
       new Toast({
@@ -124,41 +107,19 @@ function SensorContextProvider(props) {
     return true;
   };
 
-  const toggleSensorVisibility = async (sensor: Sensor) => {
+  public toggleSensorVisibility = async (sensor: Sensor) => {
     sensor.visible = !sensor.visible;
     if (!sensor.visible) {
       sensor.expanded = false;
     }
-    const { sensors } = state;
-    const sensorIndex = sensors.findIndex((sd) => sd.id === sensor.id);
-    sensors[sensorIndex] = sensor;
-    setState({ ...state, sensors: [...sensors] });
+    const sensorIndex = this.sensors.findIndex((sd) => sd.id === sensor.id);
+    this.sensors[sensorIndex] = sensor;
   };
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (!state.sensorsLoaded) {
-        await reloadSensors(loginState, user);
-      }
-    };
-    fetch();
-  }, [loginState]);
-
-  return (
-    <SensorContext.Provider
-      value={{
-        state,
-        addSensor,
-        deleteSensor,
-        updateSensor,
-        toggleSensorVisibility,
-        clearMySensors,
-        reloadSensors,
-      }}
-    >
-      {props.children}
-    </SensorContext.Provider>
-  );
 }
 
-export { SensorContext, SensorContextProvider };
+export function SensorContextProvider(props) {
+  const accountStore = useContext(AccountContext);
+  const sensorStore = useMemo(() => new SensorStore(accountStore), []);
+
+  return <SensorContext.Provider value={sensorStore}>{props.children}</SensorContext.Provider>;
+}

@@ -63,7 +63,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
   const { item, classes } = props;
 
   const { user } = useContext(AccountContext);
-  const { toggleSensorVisibility, updateSensor } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
   const appContext = useContext(AppContext);
 
   const toggleVisibility = async (e: any, item: IotDeviceInterface) => {
@@ -72,7 +72,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
     if (!props.visibility) {
       return;
     }
-    toggleSensorVisibility(item as Sensor);
+    sensorContext.toggleSensorVisibility(item as Sensor);
   };
 
   const toggleExpand = async (e: any, item: IotDeviceInterface) => {
@@ -83,7 +83,7 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
     }
 
     item.expanded = !item.expanded;
-    updateSensor(item.id, (item as unknown) as Sensor, true);
+    sensorContext.updateSensor(item.id, (item as unknown) as Sensor, true);
   };
 
   const { visibility, expandable, type } = props;

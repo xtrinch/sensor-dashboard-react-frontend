@@ -77,7 +77,7 @@ const SensorInfoPage: React.FunctionComponent<
     history,
   } = props;
 
-  const { deleteSensor, updateSensor } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
@@ -96,7 +96,7 @@ const SensorInfoPage: React.FunctionComponent<
 
   const deleteWithConfirmation = () => {
     const onConfirm = async () => {
-      await deleteSensor(sensor.id);
+      await sensorContext.deleteSensor(sensor.id);
       history.push('/');
     };
     openConfirmation(
@@ -130,7 +130,7 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateSensor((id as unknown) as SensorId, new Sensor(data));
+      await sensorContext.updateSensor((id as unknown) as SensorId, new Sensor(data));
       setErrors({});
     } catch (e) {
       setErrors(e);

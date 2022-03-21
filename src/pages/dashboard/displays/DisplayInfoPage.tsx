@@ -82,9 +82,7 @@ const DisplayInfoPage: React.FunctionComponent<
     displayType: '' as DisplayTypeEnum,
   });
 
-  const {
-    state: { sensors },
-  } = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
   const { deleteDisplay, updateDisplay } = useContext(DisplayContext);
 
   const [display, setDisplay] = useState(null);
@@ -234,8 +232,8 @@ const DisplayInfoPage: React.FunctionComponent<
               id="sensorIds"
               value={data.sensorIds}
               fullWidth
-              options={sensors.map((s) => s.id)}
-              getOptionLabel={(option) => sensors.find((s) => s.id === option)?.name}
+              options={sensorContext.sensors.map((s) => s.id)}
+              getOptionLabel={(option) => sensorContext.sensors.find((s) => s.id === option)?.name}
               onChange={(e, newVal) => fieldChange(newVal, 'sensorIds')}
               label="Sensors"
               error={!!errors.sensorIds}
