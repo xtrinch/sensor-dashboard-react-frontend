@@ -1,6 +1,7 @@
-import { createStyles, Divider, Fab, Grid, List, ListItem } from '@material-ui/core';
-import PlusIcon from '@material-ui/icons/Add';
-import { CSSProperties, withStyles, WithStyles } from '@material-ui/styles';
+import { Divider, Fab, Grid, List, ListItem } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import PlusIcon from '@mui/icons-material/Add';
+import { CSSProperties, withStyles, WithStyles } from '@mui/styles';
 import Link from 'components/Link';
 import SideMenuItem from 'components/SideMenuItem';
 import { AccountContext } from 'context/AccountContext';
@@ -97,6 +98,7 @@ const SensorsSideMenu: React.FunctionComponent<
 
   const { classes } = props;
   return (
+    // @ts-ignore
     <div style={props.style}>
       {loginState === 'LOGGED_IN' && (
         <>
@@ -132,7 +134,7 @@ const SensorsSideMenu: React.FunctionComponent<
               alignItems="center"
               onClick={goToForwarders}
             >
-              <Grid container alignItems="center" justify="space-between">
+              <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My packet forwarders</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
@@ -154,7 +156,7 @@ const SensorsSideMenu: React.FunctionComponent<
           </List>
           <List disablePadding>
             <ListItem button className={classes.listTitle} alignItems="center" onClick={goToRadios}>
-              <Grid container alignItems="center" justify="space-between">
+              <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My radios</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>
@@ -181,7 +183,7 @@ const SensorsSideMenu: React.FunctionComponent<
               alignItems="center"
               onClick={goToDisplays}
             >
-              <Grid container alignItems="center" justify="space-between">
+              <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>My display devices</Grid>
                 <Grid item>
                   <div onClick={(e) => e.stopPropagation()}>

@@ -1,5 +1,6 @@
-import { createStyles, Grid, ListSubheader } from '@material-ui/core';
-import { withStyles, WithStyles } from '@material-ui/styles';
+import { Grid, ListSubheader } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import { withStyles, WithStyles } from '@mui/styles';
 import Logo from 'assets/transistor.svg'; // with import
 import Link from 'components/Link';
 import MainMenu from 'components/MainMenu';
@@ -77,7 +78,7 @@ const SideMenu: React.FunctionComponent<
   return (
     <div className={classes.root}>
       <ListSubheader disableGutters className={classes.subheader}>
-        <Grid container style={{ padding: '15px' }} justify="space-between">
+        <Grid container style={{ padding: '15px' }} justifyContent="space-between">
           <Grid item className={classes.logoContainer}>
             <Link to="/" onClick={appContext.drawerToggle}>
               <img alt="logo" src={Logo} />

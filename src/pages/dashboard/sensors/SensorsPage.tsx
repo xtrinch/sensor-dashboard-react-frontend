@@ -1,11 +1,7 @@
-import {
-  Box,
-  CircularProgress,
-  createStyles,
-  Typography,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
+import { Box, CircularProgress, Typography } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import TopMenu from 'components/TopMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
@@ -64,7 +60,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
       measurementTypes: uniq(
         allSensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
-        }, [])
+        }, []),
       ),
       sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
     });

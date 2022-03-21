@@ -1,9 +1,12 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { createStyles, IconButton } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import withStyles, { CSSProperties, WithStyles } from '@material-ui/core/styles/withStyles';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowForward from '@material-ui/icons/ArrowForward';
+import { IconButton } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import Grid from '@mui/material/Grid';
+import { CSSProperties } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
 import { addHours, getHours, isFuture } from 'date-fns';
 

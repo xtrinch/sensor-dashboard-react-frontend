@@ -1,7 +1,10 @@
-import { TableCell, TableRow } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { TableCell, TableRow } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Theme } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'components/Link';
 import SelectInput from 'components/SelectInput';
 import { openConfirmation } from 'context/ConfirmationContext';

@@ -1,4 +1,6 @@
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { CategoryContextProvider } from 'context/CategoryContext';
 import CategoryIndexPage from 'pages/forum/categories/CategoryIndexPage';
 import { ForumRoutes } from 'pages/forum/ForumRoutes';

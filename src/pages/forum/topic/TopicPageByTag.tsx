@@ -1,6 +1,8 @@
-import { Container, IconButton, Typography } from '@material-ui/core';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Delete, Settings } from '@material-ui/icons';
+import { Container, IconButton, Typography } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { Delete, Settings } from '@mui/icons-material';
 import Link from 'components/Link';
 import TopBar from 'components/TopBar';
 import { AccountContext } from 'context/AccountContext';

@@ -1,4 +1,6 @@
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import UserListPage from 'pages/users/UserListPage';
 import UserPage from 'pages/users/UserPage';
 import { UserRoutes } from 'pages/users/UserRoutes';

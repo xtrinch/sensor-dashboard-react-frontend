@@ -1,7 +1,9 @@
-import Container from '@material-ui/core/Container';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { Delete } from '@material-ui/icons';
+import Container from '@mui/material/Container';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import { Delete } from '@mui/icons-material';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
@@ -97,7 +99,7 @@ const AddRadioPage: React.FunctionComponent<
     openConfirmation(
       onConfirm,
       null,
-      'Are you sure you want to request configuration from radio? Existing cloud configuration will be overwritten.'
+      'Are you sure you want to request configuration from radio? Existing cloud configuration will be overwritten.',
     );
   };
 

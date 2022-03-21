@@ -1,4 +1,7 @@
-import { createStyles, Dialog, Grid, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Dialog, Grid, Typography } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
 import { close, confirm, ConfirmationContext } from 'context/ConfirmationContext';
 import React, { useContext } from 'react';
@@ -35,7 +38,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (pro
       <Typography variant="body2" style={{ marginBottom: '30px' }}>
         {confirmationContext.content}
       </Typography>
-      <Grid container justify="center" spacing={10}>
+      <Grid container justifyContent="center" spacing={10}>
         <Grid item>
           <ColoredButton
             onClick={() => close(confirmationContext)}

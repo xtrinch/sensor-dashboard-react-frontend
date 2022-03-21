@@ -1,5 +1,7 @@
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import Button, { ButtonProps } from '@mui/material/Button';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import React from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 

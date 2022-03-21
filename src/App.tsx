@@ -1,4 +1,7 @@
-import { createStyles, Grid, MuiThemeProvider, WithStyles, withStyles } from '@material-ui/core';
+import { Grid, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import ConfirmationBox from 'components/ConfirmationBox';
 import ErrorBox from 'components/ErrorBox';
 import SideMenuWrapper from 'components/SideMenuWrapper';
@@ -57,61 +60,63 @@ class App extends React.Component<WithStyles<typeof styles>> {
     const { classes } = this.props;
     return (
       <BrowserRouter>
-        <MuiThemeProvider theme={theme}>
-          <AccountContextProvider>
-            <AppContextProvider>
-              <SensorContextProvider>
-                <ConfirmationContextProvider>
-                  <DisplayContextProvider>
-                    <UserContextProvider>
-                      <ForwarderContextProvider>
-                        <RadioContextProvider>
-                          <ToastContextProvider>
-                            <ErrorContextProvider>
-                              <Wrapper>
-                                <ToastBox />
-                                <ConfirmationBox />
-                                <ErrorBox />
-                                <Grid container className={classes.app}>
-                                  <Grid item>
-                                    <SideMenuWrapper />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <AccountContextProvider>
+              <AppContextProvider>
+                <SensorContextProvider>
+                  <ConfirmationContextProvider>
+                    <DisplayContextProvider>
+                      <UserContextProvider>
+                        <ForwarderContextProvider>
+                          <RadioContextProvider>
+                            <ToastContextProvider>
+                              <ErrorContextProvider>
+                                <Wrapper>
+                                  <ToastBox />
+                                  <ConfirmationBox />
+                                  <ErrorBox />
+                                  <Grid container className={classes.app}>
+                                    <Grid item>
+                                      <SideMenuWrapper />
+                                    </Grid>
+                                    <Grid item style={{ flex: '1' }}>
+                                      <Route exact path="/">
+                                        <Redirect to={DashboardRoutes.DASHBOARD} />
+                                      </Route>
+                                      <Route path={ForumRoutes.FORUM}>
+                                        <ForumIndexPage />
+                                      </Route>
+                                      <Route path={ForumRoutes.TOPIC_BY_TAG}>
+                                        <ForumIndexPage />
+                                      </Route>
+                                      <Route path={DashboardRoutes.DASHBOARD}>
+                                        <DashboardIndexPage />
+                                      </Route>
+                                      <Route path={UserRoutes.USERS}>
+                                        <UserIndexPage />
+                                      </Route>
+                                      <Route exact path={Routes.LOGIN}>
+                                        <LoginPage />
+                                      </Route>
+                                      <Route exact path={Routes.REGISTER}>
+                                        <RegisterPage />
+                                      </Route>
+                                    </Grid>
                                   </Grid>
-                                  <Grid item style={{ flex: '1' }}>
-                                    <Route exact path="/">
-                                      <Redirect to={DashboardRoutes.DASHBOARD} />
-                                    </Route>
-                                    <Route path={ForumRoutes.FORUM}>
-                                      <ForumIndexPage />
-                                    </Route>
-                                    <Route path={ForumRoutes.TOPIC_BY_TAG}>
-                                      <ForumIndexPage />
-                                    </Route>
-                                    <Route path={DashboardRoutes.DASHBOARD}>
-                                      <DashboardIndexPage />
-                                    </Route>
-                                    <Route path={UserRoutes.USERS}>
-                                      <UserIndexPage />
-                                    </Route>
-                                    <Route exact path={Routes.LOGIN}>
-                                      <LoginPage />
-                                    </Route>
-                                    <Route exact path={Routes.REGISTER}>
-                                      <RegisterPage />
-                                    </Route>
-                                  </Grid>
-                                </Grid>
-                              </Wrapper>
-                            </ErrorContextProvider>
-                          </ToastContextProvider>
-                        </RadioContextProvider>
-                      </ForwarderContextProvider>
-                    </UserContextProvider>
-                  </DisplayContextProvider>
-                </ConfirmationContextProvider>
-              </SensorContextProvider>
-            </AppContextProvider>
-          </AccountContextProvider>
-        </MuiThemeProvider>
+                                </Wrapper>
+                              </ErrorContextProvider>
+                            </ToastContextProvider>
+                          </RadioContextProvider>
+                        </ForwarderContextProvider>
+                      </UserContextProvider>
+                    </DisplayContextProvider>
+                  </ConfirmationContextProvider>
+                </SensorContextProvider>
+              </AppContextProvider>
+            </AccountContextProvider>
+          </ThemeProvider>
+        </StyledEngineProvider>
       </BrowserRouter>
     );
   }

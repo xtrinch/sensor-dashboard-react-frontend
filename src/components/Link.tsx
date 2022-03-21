@@ -1,4 +1,7 @@
-import { createStyles, Link as MaterialLink, withStyles, WithStyles } from '@material-ui/core';
+import { Link as MaterialLink } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';

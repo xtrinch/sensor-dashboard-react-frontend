@@ -1,4 +1,7 @@
-import { Button, ButtonGroup, createStyles, Grid, WithStyles, withStyles } from '@material-ui/core';
+import { Button, ButtonGroup, Grid } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import DateInput from 'components/DateInput';
 import TopBar from 'components/TopBar';
 import { AppContext } from 'context/AppContext';
@@ -40,7 +43,7 @@ const styles = (theme) =>
       boxShadow: 'none',
     },
     dateGridItem: {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         marginRight: '0px',
         marginLeft: 'auto',
       },

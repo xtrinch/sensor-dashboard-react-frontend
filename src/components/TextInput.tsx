@@ -1,6 +1,8 @@
-import { FormControl, InputLabel, TextField } from '@material-ui/core';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { FormControl, InputLabel, TextField } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { TextFieldProps } from '@mui/material/TextField';
 import React from 'react';
 
 const styles = (theme) =>

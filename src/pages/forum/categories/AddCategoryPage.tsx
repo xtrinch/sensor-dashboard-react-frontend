@@ -1,7 +1,9 @@
-import { Checkbox, FormControlLabel } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import Container from '@mui/material/Container';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
 import ColoredButton from 'components/ColoredButton';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';

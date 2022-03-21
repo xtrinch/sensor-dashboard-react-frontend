@@ -1,5 +1,6 @@
-import { Card, createStyles, Typography } from '@material-ui/core';
-import { withStyles, WithStyles } from '@material-ui/styles';
+import { Card, Typography } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import { withStyles, WithStyles } from '@mui/styles';
 import { SensorContext } from 'context/SensorContext';
 import {
   addDays,

@@ -1,6 +1,9 @@
-import { createStyles, Grid, IconButton, WithStyles, withStyles } from '@material-ui/core';
-import Check from '@material-ui/icons/Check';
-import Close from '@material-ui/icons/Close';
+import { Grid, IconButton } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Check from '@mui/icons-material/Check';
+import Close from '@mui/icons-material/Close';
 import { removeToast, ToastContext } from 'context/ToastContext';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';

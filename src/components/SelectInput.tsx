@@ -1,6 +1,8 @@
-import { TextFieldProps } from '@material-ui/core';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import { Autocomplete, AutocompleteProps } from '@material-ui/lab';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { Autocomplete, TextFieldProps } from '@mui/material';
+import { AutocompleteProps } from '@mui/lab';
 import TextInput from 'components/TextInput';
 import React from 'react';
 

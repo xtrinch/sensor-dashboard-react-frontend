@@ -1,7 +1,9 @@
-import { Container, IconButton, Typography } from '@material-ui/core';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Delete, Settings } from '@material-ui/icons';
-import { Pagination } from '@material-ui/lab';
+import { Container, IconButton, Typography } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { Delete, Settings } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 import ColoredButton from 'components/ColoredButton';
 import Link from 'components/Link';
 import TextInput from 'components/TextInput';
@@ -78,7 +80,7 @@ const TopicPage: React.FunctionComponent<
           categoryId: params.id,
           topicId: params.topicId,
           name: `Re: ${s.name}`,
-        })
+        }),
       );
     };
     setData();
@@ -102,7 +104,7 @@ const TopicPage: React.FunctionComponent<
           categoryId: params.id,
           topicId: params.topicId,
           name: `Re: ${topic.name}`,
-        })
+        }),
       );
     } catch (e) {
       setStatus(e);

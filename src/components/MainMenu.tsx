@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Tab, Tabs, Theme } from '@material-ui/core';
+import { Tab, Tabs, Theme } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import { ForumRoutes, getTopicByTagRoute } from 'pages/forum/ForumRoutes';
 import { UserRoutes } from 'pages/users/UserRoutes';

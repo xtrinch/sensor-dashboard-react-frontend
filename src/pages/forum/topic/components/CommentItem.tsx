@@ -1,7 +1,10 @@
-import { Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles';
-import { Delete, Settings } from '@material-ui/icons';
+import { Typography } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Theme } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { Delete, Settings } from '@mui/icons-material';
 import Link from 'components/Link';
 import { AccountContext } from 'context/AccountContext';
 import { CommentContext } from 'context/CommentContext';

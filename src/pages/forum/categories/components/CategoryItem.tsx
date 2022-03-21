@@ -1,8 +1,11 @@
-import { TableCell, TableRow } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
-import { ArrowDownward, ArrowUpward, Lock, Settings } from '@material-ui/icons';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { TableCell, TableRow } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Theme } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import { ArrowDownward, ArrowUpward, Lock, Settings } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { AccountContext } from 'context/AccountContext';
 import { CategoryContext } from 'context/CategoryContext';
 import { openConfirmation } from 'context/ConfirmationContext';

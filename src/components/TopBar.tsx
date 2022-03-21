@@ -1,14 +1,9 @@
-import {
-  AppBar,
-  createStyles,
-  Fab,
-  Grid,
-  IconButton,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import { AppBar, Fab, Grid, IconButton } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import MenuIcon from '@mui/icons-material/Menu';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { AppContext } from 'context/AppContext';
 import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';

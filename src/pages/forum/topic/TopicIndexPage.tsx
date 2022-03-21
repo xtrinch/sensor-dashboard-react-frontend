@@ -1,4 +1,6 @@
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import { CategoryContext } from 'context/CategoryContext';
 import { CommentContextProvider } from 'context/CommentContext';
 import { TopicContextProvider } from 'context/TopicContext';

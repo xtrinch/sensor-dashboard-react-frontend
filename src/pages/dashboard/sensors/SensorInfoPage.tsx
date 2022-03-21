@@ -1,10 +1,12 @@
-import { Button, Checkbox, FormControlLabel } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { Settings } from '@material-ui/icons';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import { Settings } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
@@ -100,7 +102,7 @@ const SensorInfoPage: React.FunctionComponent<
     openConfirmation(
       onConfirm,
       null,
-      'Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements.'
+      'Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements.',
     );
   };
 

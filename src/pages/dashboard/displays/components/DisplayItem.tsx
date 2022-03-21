@@ -1,8 +1,11 @@
-import { TableCell, TableRow } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { TableCell, TableRow } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Theme } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { openConfirmation } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { format } from 'date-fns';

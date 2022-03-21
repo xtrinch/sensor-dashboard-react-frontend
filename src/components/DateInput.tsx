@@ -1,8 +1,11 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { createStyles, Grid, IconButton } from '@material-ui/core';
-import withStyles, { CSSProperties, WithStyles } from '@material-ui/core/styles/withStyles';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowForward from '@material-ui/icons/ArrowForward';
+import { Grid, IconButton } from '@mui/material';
+import createStyles from '@mui/styles/createStyles';
+import { CSSProperties } from '@mui/material/styles';
+import { WithStyles } from '@mui/styles';
+import withStyles from '@mui/styles/withStyles';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { DatePicker, DatePickerView, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import clsx from 'clsx';
 import {
@@ -173,7 +176,7 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
 
     return (
       <div className={wrapperClassName}>
-        <IconButton className={dayClassName}>
+        <IconButton className={dayClassName} size="large">
           <span> {format(dateClone, 'd')} </span>
         </IconButton>
       </div>
@@ -225,7 +228,8 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
   };
 
   return (
-    <div style={{ ...props.style }}>
+    // @ts-ignore
+    <div style={props.style}>
       <Grid container alignItems="center" spacing={4} style={{ flexWrap: 'nowrap' }}>
         <Grid item>
           <IconButton size="small" onClick={() => changeDate(-1)}>

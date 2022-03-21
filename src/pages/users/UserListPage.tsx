@@ -1,7 +1,9 @@
-import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import TopBar from 'components/TopBar';
 import { UserContext } from 'context/UserContext';
 import UserItem from 'pages/users/components/UserItem';

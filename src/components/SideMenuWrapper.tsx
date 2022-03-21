@@ -1,11 +1,7 @@
-import {
-  createStyles,
-  CssBaseline,
-  Drawer,
-  Hidden,
-  withStyles,
-  WithStyles,
-} from '@material-ui/core';
+import { CssBaseline, Drawer, Hidden } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import SideMenu from 'components/SideMenu';
 import { AppContext } from 'context/AppContext';
 import React, { useContext } from 'react';
@@ -35,7 +31,7 @@ const SideMenuWrapper: React.FunctionComponent<WithStyles<typeof styles>> = (pro
   return (
     <div>
       <CssBaseline />
-      <Hidden smDown>
+      <Hidden mdDown>
         <Drawer
           variant="permanent"
           anchor="left"

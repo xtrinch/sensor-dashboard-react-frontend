@@ -1,21 +1,13 @@
-import {
-  Collapse,
-  createStyles,
-  Fab,
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  withStyles,
-  WithStyles,
-} from '@material-ui/core';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import LockIcon from '@material-ui/icons/Lock';
-import SettingsIcon from '@material-ui/icons/Settings';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { Collapse, Fab, Grid, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LockIcon from '@mui/icons-material/Lock';
+import SettingsIcon from '@mui/icons-material/Settings';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Link from 'components/Link';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';

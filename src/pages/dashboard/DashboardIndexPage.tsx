@@ -1,4 +1,7 @@
-import { createStyles, Grid, WithStyles, withStyles } from '@material-ui/core';
+import { Grid } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import ConnectSensorPage from 'pages/ConnectSensorPage';
 import SensorsSideMenu from 'pages/dashboard/components/SensorsSideMenu';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';

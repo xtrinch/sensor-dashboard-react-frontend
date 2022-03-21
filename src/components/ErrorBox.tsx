@@ -1,4 +1,7 @@
-import { createStyles, Dialog, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { Dialog, Typography } from '@mui/material';
+import { WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
 import { clearError, ErrorContext } from 'context/ErrorContext';
 import React, { useContext } from 'react';
