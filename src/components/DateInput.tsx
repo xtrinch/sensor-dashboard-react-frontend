@@ -47,6 +47,8 @@ const styles = (theme) =>
         paddingTop: '9px',
         paddingBottom: '10px',
       },
+      maxWidth: '170px',
+      flex: '1',
       backgroundColor: ColorsEnum.BGLIGHTER,
       borderRadius: '0px',
       '&:hover:before': {
@@ -139,11 +141,11 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
     }
   };
 
-  const renderDate = (date, selectedDate, dayInCurrentMonth) => {
+  const renderDate = (date: any, selectedDate: any[], pickersDayProps) => {
     const dateClone = new Date(date);
-    const selectedDateClone = new Date(selectedDate);
-    let start;
-    let end;
+    const selectedDateClone = new Date(selectedDate[0]);
+    let start: Date;
+    let end: Date;
 
     switch (props.groupBy) {
       case DateRangeEnum.hour:
@@ -172,12 +174,12 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
     });
 
     const dayClassName = clsx(classes.day, {
-      [classes.nonCurrentMonthDay]: !dayInCurrentMonth,
-      [classes.highlightNonCurrentMonthDay]: !dayInCurrentMonth && dayIsBetween,
+      [classes.nonCurrentMonthDay]: false,
+      [classes.highlightNonCurrentMonthDay]: false,
     });
 
     return (
-      <div className={wrapperClassName}>
+      <div className={wrapperClassName} onClick={() => pickersDayProps.onDaySelect(dateClone)}>
         <IconButton className={dayClassName} size="large">
           <span> {format(dateClone, 'd')} </span>
         </IconButton>
@@ -189,15 +191,15 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
     switch (props.groupBy) {
       case DateRangeEnum.day:
       case DateRangeEnum.hour:
-        return ['year', 'month', 'day'];
+        return ['year', 'day', 'month'];
       case DateRangeEnum.month:
         return ['month', 'year'];
       case DateRangeEnum.week:
-        return ['year', 'month', 'day'];
+        return ['year', 'day', 'month'];
       case DateRangeEnum.year:
         return ['year'];
       default:
-        return ['year', 'month', 'day'];
+        throw new Error('Date range invalid');
     }
   };
 
@@ -244,7 +246,6 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
               views={getView()}
               value={DateRange.parse(date).from}
               onChange={(e: Date) => onChangeDate(e)}
-              disabled={props.disabled ? props.disabled : false}
               InputProps={{
                 className: classes.datepicker,
               }}
@@ -254,7 +255,6 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
               renderInput={(props) => (
                 <TextField
                   label=""
-                  defaultValue={null}
                   ref={props.ref}
                   inputRef={props.inputRef}
                   disabled={props.disabled}
@@ -262,7 +262,6 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
                     ...props.inputProps,
                     value: renderLabel(DateRange.parse(date).from, 'Invalid date'),
                   }}
-                  style={{ maxWidth: '170px', flex: '1' }}
                   className={classes.datepicker}
                 />
               )}
