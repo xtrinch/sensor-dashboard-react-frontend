@@ -78,12 +78,15 @@ const CategoryItem: React.FunctionComponent<
       <TableCell style={{ padding: '0px', width: '180px' }}>
         {category.lastTopic && (
           <>
-            <Link to={getTopicRoute(category.lastTopic?.categoryId, category.lastTopic?.id)}>
+            <Link
+              color={ColorsEnum.GREEN}
+              to={getTopicRoute(category.lastTopic?.categoryId, category.lastTopic?.id)}
+            >
               {category.lastTopic?.name}
             </Link>
             <br />
             by{' '}
-            <Link to={getUserRoute(category.lastTopic?.user?.id)}>
+            <Link color={ColorsEnum.GREEN} to={getUserRoute(category.lastTopic?.user?.id)}>
               {category.lastTopic?.user?.username}
             </Link>
             <br />
@@ -98,12 +101,13 @@ const CategoryItem: React.FunctionComponent<
           <>
             <Link
               to={getTopicRoute(category.lastComment?.categoryId, category.lastComment?.topicId)}
+              color={ColorsEnum.GREEN}
             >
               {category.lastComment?.name}
             </Link>
             <br />
             by{' '}
-            <Link to={getUserRoute(category.lastComment?.user?.id)}>
+            <Link to={getUserRoute(category.lastComment?.user?.id)} color={ColorsEnum.GREEN}>
               {category.lastComment?.user?.username}
             </Link>
             <br />
