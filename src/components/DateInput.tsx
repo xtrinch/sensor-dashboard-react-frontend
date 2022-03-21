@@ -253,7 +253,15 @@ const DateInput: React.FunctionComponent<DateInputProps & WithStyles<typeof styl
               disableFuture
               renderInput={(props) => (
                 <TextField
-                  value={renderLabel(DateRange.parse(date).from, 'Invalid date')}
+                  label=""
+                  defaultValue={null}
+                  ref={props.ref}
+                  inputRef={props.inputRef}
+                  disabled={props.disabled}
+                  inputProps={{
+                    ...props.inputProps,
+                    value: renderLabel(DateRange.parse(date).from, 'Invalid date'),
+                  }}
                   style={{ maxWidth: '170px', flex: '1' }}
                   className={classes.datepicker}
                 />

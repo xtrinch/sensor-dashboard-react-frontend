@@ -61,7 +61,8 @@
     "react/jsx-curly-newline": "off",
     "react/function-component-definition": "off",
     "react/jsx-no-useless-fragment": "off",
-    "react/jsx-no-constructed-context-values": "warn"
+    "react/jsx-no-constructed-context-values": "warn",
+    "react/jsx-no-duplicate-props": "warn"
   },
   "settings": {
     "import/resolver": {

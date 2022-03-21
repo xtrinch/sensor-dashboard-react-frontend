@@ -35,10 +35,14 @@ const styles = () =>
       padding: '15px',
       '& svg': {
         overflow: 'visible',
+        position: 'relative',
+        top: '-1px',
       },
       '&:nth-of-type(2n + 1)': {
         borderRight: `1px solid ${ColorsEnum.BGLIGHTER}`,
       },
+      backgroundImage: 'unset',
+      fontSize: '12px',
     },
     picker: {
       marginRight: '10px',

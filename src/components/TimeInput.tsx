@@ -76,9 +76,17 @@ const TimeInput: React.FunctionComponent<TimeInputProps & WithStyles<typeof styl
             }
             renderInput={(props) => (
               <TextField
-                value={`${getZeroPaddedNumber(
-                  getHours(DateRange.parse(date).from),
-                )}:00 - ${getZeroPaddedNumber(getHours(DateRange.parse(date).from) + 1)}:00`}
+                label=""
+                defaultValue={null}
+                ref={props.ref}
+                inputRef={props.inputRef}
+                disabled={props.disabled}
+                inputProps={{
+                  ...props.inputProps,
+                  value: `${getZeroPaddedNumber(
+                    getHours(DateRange.parse(date).from),
+                  )}:00 - ${getZeroPaddedNumber(getHours(DateRange.parse(date).from) + 1)}:00`,
+                }}
                 style={{ maxWidth: '170px', flex: '1' }}
                 className={classes.timepicker}
               />

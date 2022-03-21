@@ -35,6 +35,7 @@ const styles = () =>
       color: 'white',
       fontWeight: 'bold',
       borderBottom: `2px solid ${ColorsEnum.BLUE}`,
+      fontSize: '12px',
     },
     logoContainer: {
       display: 'flex',
