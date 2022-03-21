@@ -1,67 +1,57 @@
 import { addToast } from 'context/ToastContext';
+import { makeAutoObservable } from 'mobx';
 import React, { createContext, useEffect, useState } from 'react';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User, { UserId } from 'types/User';
 
-const UserContext = createContext<{
-  state?: {
-    usersLoaded: boolean;
-    users: User[];
-  };
-  updateUser?: (id: UserId, user: User) => Promise<User>;
-  deleteUser?: (id: UserId) => Promise<boolean>;
-}>({});
+const UserContext = createContext<UserStore>(null);
 
-function UserContextProvider(props) {
-  const [state, setState] = useState({
-    users: [],
-    usersLoaded: false,
-  });
+class UserStore {
+  public users: User[] = [];
 
-  const reload = async () => {
+  public usersLoaded: boolean = false;
+
+  public totalItems: number = 0;
+
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  public reload = async () => {
     const resp = await UserService.listUsers();
     const userData = resp.items;
 
-    setState({ ...state, users: userData, usersLoaded: true });
+    this.users = userData;
+    this.usersLoaded = true;
+    this.totalItems = resp.meta?.totalItems;
   };
 
-  const updateUser = async (id: UserId, user: Partial<User>): Promise<User> => {
+  public updateUser = async (id: UserId, user: Partial<User>): Promise<User> => {
     const s = await UserService.updateUser(id, user);
 
-    const { users } = state;
-    const userIndex = users.findIndex((s) => s.id === id);
-    users[userIndex] = s;
-    setState({ ...state, users: [...users] });
+    const userIndex = this.users.findIndex((s) => s.id === id);
+    this.users[userIndex] = s;
 
     addToast(new Toast({ message: 'Successfully updated the user', type: 'success' }));
 
     return s;
   };
 
-  const deleteUser = async (id: UserId): Promise<boolean> => {
+  public deleteUser = async (id: UserId): Promise<boolean> => {
     await UserService.deleteUser(id);
 
-    const idx = state.users.findIndex((s) => s.id === id);
-    state.users.splice(idx, 1);
-    setState({ ...state });
+    const idx = this.users.findIndex((s) => s.id === id);
+    this.users.splice(idx, 1);
 
     addToast(new Toast({ message: 'Successfully deleted the user', type: 'success' }));
 
     return true;
   };
+}
 
-  useEffect(() => {
-    if (!state.usersLoaded) {
-      reload();
-    }
-  }, [state]);
-
-  return (
-    <UserContext.Provider value={{ state, updateUser, deleteUser }}>
-      {props.children}
-    </UserContext.Provider>
-  );
+function UserContextProvider(props) {
+  return <UserContext.Provider value={new UserStore()}>{props.children}</UserContext.Provider>;
 }
 
 export { UserContext, UserContextProvider };

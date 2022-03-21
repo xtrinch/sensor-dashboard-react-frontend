@@ -6,8 +6,9 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import TopBar from 'components/TopBar';
 import { UserContext } from 'context/UserContext';
+import { observer } from 'mobx-react-lite';
 import UserItem from 'pages/users/components/UserItem';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import User from 'types/User';
@@ -34,9 +35,11 @@ const UserListPage: React.FunctionComponent<
 > = (props) => {
   const { classes } = props;
 
-  const {
-    state: { users },
-  } = useContext(UserContext);
+  const userContext = useContext(UserContext);
+
+  useEffect(() => {
+    userContext.reload();
+  }, []);
 
   return (
     <>
@@ -47,7 +50,7 @@ const UserListPage: React.FunctionComponent<
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
         <CssBaseline />
-        {users.length !== 0 && (
+        {userContext.users.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -59,13 +62,13 @@ const UserListPage: React.FunctionComponent<
               </TableRow>
             </TableHead>
             <TableBody>
-              {users?.map((user: User) => (
+              {userContext.users?.map((user: User) => (
                 <UserItem user={user} key={user.id} />
               ))}
             </TableBody>
           </Table>
         )}
-        {users.length === 0 && (
+        {userContext.users.length === 0 && (
           <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No users added
           </Typography>
@@ -75,4 +78,4 @@ const UserListPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(UserListPage));
+export default withRouter(withStyles(styles)(observer(UserListPage)));
