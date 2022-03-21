@@ -103,16 +103,22 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
       )}
       {measurements && (
         <div className={classes.root}>
-          {sensorTypes().map((type: MeasurementTypeEnum) => (
-            <SensorCanvas
-              key={type}
-              type={type}
-              date={appContext.date}
-              groupBy={appContext.groupBy}
-              domain={appContext.domain}
-              measurements={measurements[type] || []}
-            />
-          ))}
+          {sensorTypes().map((type: MeasurementTypeEnum) => {
+            // filter out measurement types without any measurements
+            if (!measurements[type]?.length) {
+              return null;
+            }
+            return (
+              <SensorCanvas
+                key={type}
+                type={type}
+                date={appContext.date}
+                groupBy={appContext.groupBy}
+                domain={appContext.domain}
+                measurements={measurements[type]}
+              />
+            );
+          })}
         </div>
       )}
     </div>

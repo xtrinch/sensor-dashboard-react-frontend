@@ -11,8 +11,11 @@ import {
   startOfWeek,
   startOfYear,
 } from 'date-fns';
-import { uniqBy } from 'lodash';
-import TimeSeriesChart, { ChartPoint } from 'pages/dashboard/sensors/components/TimeSeriesChart';
+import { compact, uniqBy } from 'lodash';
+import TimeSeriesChart, {
+  ChartData,
+  ChartPoint,
+} from 'pages/dashboard/sensors/components/TimeSeriesChart';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import DomainTypeEnum from 'types/DomainTypeEnum';
@@ -66,6 +69,7 @@ interface SensorCanvasProps {
   domain: DomainTypeEnum;
 }
 
+// one canvas per measurement type
 const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeof styles>> = (
   props,
 ) => {
@@ -120,12 +124,20 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
     },
   };
 
-  const chartData = allSensors.map((s, index) => ({
-    name: `${s.id}`,
-    sensorId: s.id,
-    ordering: index,
-    label: s.name,
-  }));
+  const chartData: ChartData[] = compact(
+    allSensors.map((s, index) => {
+      // filter out sensor without any measurements
+      if (!measurements.find((m) => m.sensorId === s.id)) {
+        return null;
+      }
+      return {
+        name: `${s.id}`,
+        sensorId: s.id,
+        ordering: index,
+        label: s.name,
+      };
+    }),
+  );
 
   const data: ChartPoint[] = measurements.map((m: Measurement) => ({
     name: `${m.sensorId}`,

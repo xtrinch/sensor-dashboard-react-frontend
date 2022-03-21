@@ -21,14 +21,16 @@ export interface ChartPoint {
   time: number;
   labelTime: string;
 }
+
+export interface ChartData {
+  name: string;
+  ordering: number;
+  label: string;
+}
 interface TimeSeriesChartInterface {
   ticks: number[];
-  chartData: {
-    name: string;
-    ordering: number;
-    label: string;
-  }[];
-  data: ChartPoint[];
+  chartData: ChartData[]; // info about sensors - one in array per each sensor
+  data: ChartPoint[]; // actual datapoints
   domain: [AxisDomain, AxisDomain];
   tickFormatter: (value: any) => any;
   unit: {
@@ -65,7 +67,6 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
           stroke={ColorsEnum.GRAY}
         />
         {/* <ZAxis range={[props.dotSize, props.dotSize]} /> */}
-        <Legend verticalAlign="top" height={25} iconType={'circle'} />
         <CartesianGrid stroke={ColorsEnum.BGLIGHT} />
         {data.length > 0 && (
           <Tooltip
@@ -98,6 +99,7 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             connectNulls={true}
           />
         ))}
+        <Legend verticalAlign="top" height={25} iconType={'circle'} />
         <ReferenceLine
           x={nowX}
           stroke={ColorsEnum.OLIVE}
