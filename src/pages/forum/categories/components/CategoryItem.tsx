@@ -13,11 +13,12 @@ import { format } from 'date-fns';
 import { getCategoryEditRoute, getTopicListRoute, getTopicRoute } from 'pages/forum/ForumRoutes';
 import { getUserRoute } from 'pages/users/UserRoutes';
 import React, { useContext } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Category from 'types/Category';
 import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
+import Link from 'components/Link';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,7 +67,9 @@ const CategoryItem: React.FunctionComponent<
       </TableCell>
       <TableCell style={{ paddingLeft: '0px' }}>
         <div>
-          <Link to={getTopicListRoute(category.id)}>{category.name}</Link>
+          <Link color={ColorsEnum.GREEN} to={getTopicListRoute(category.id)}>
+            {category.name}
+          </Link>
         </div>
         <div>{category.description}</div>
       </TableCell>
