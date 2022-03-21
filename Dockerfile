@@ -1,7 +1,7 @@
 # build environment
 FROM node:alpine as build
 
-ENV NODE_OPTIONS=--max_old_space_size=2048
+ENV NODE_OPTIONS=--max_old_space_size=4096
 
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
