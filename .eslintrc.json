@@ -37,7 +37,7 @@
     "import/no-extraneous-dependencies": "warn",
     "react/jsx-props-no-spreading": "off",
     "no-await-in-loop": "warn",
-    "no-shadow": "warn",
+    "no-shadow": "off",
     "react/no-array-index-key": "off",
     "jsx-a11y/no-static-element-interactions": "warn",
     "jsx-a11y/anchor-is-valid": "warn",
