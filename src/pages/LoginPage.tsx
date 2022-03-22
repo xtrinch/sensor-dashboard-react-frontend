@@ -89,7 +89,6 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
   }, []);
 
   const uponLoginSuccess = async (user: User) => {
-    await sensorContext.reloadSensors();
     await reloadDisplays('LOGGED_IN');
     history.push('/');
   };

@@ -23,23 +23,9 @@ import TopicPageByTag from 'pages/forum/topic/TopicPageByTag';
 import React, { useContext, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import PublicSensorsPage from './sensors/PublicSensorsPage';
+import SensorCanvasPage from './sensors/SensorCanvasPage';
 
 const DashboardIndexPage = () => {
-  const sensorStore = useContext(SensorContext);
-  const accountStore = useContext(AccountContext);
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (!sensorStore.sensorsLoaded) {
-        await sensorStore.reloadSensors();
-      }
-    };
-    fetch();
-  }, [accountStore.loginState]);
-
-  if (!sensorStore.sensorsLoaded || !sensorStore.mySensorsLoaded) {
-    return null;
-  }
   return (
     <Grid container>
       <Grid item style={{ flex: 1 }}>
@@ -48,6 +34,9 @@ const DashboardIndexPage = () => {
         </Route>
         <Route exact path={DashboardRoutes.PERSONAL_DASHBOARD}>
           <MySensorsPage />
+        </Route>
+        <Route exact path={DashboardRoutes.CANVAS}>
+          <SensorCanvasPage />
         </Route>
         <Route exact path={DashboardRoutes.ADD_SENSOR}>
           <AddSensorPage />

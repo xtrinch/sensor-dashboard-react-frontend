@@ -11,9 +11,9 @@ export const SensorContext = createContext<SensorStore>(null);
 export class SensorStore {
   public sensorsLoaded: boolean;
 
-  public sensors: Sensor[];
+  public sensors: Sensor[] = [];
 
-  public mySensors: Sensor[];
+  public mySensors: Sensor[] = [];
 
   public mySensorsLoaded: boolean;
 
@@ -25,8 +25,10 @@ export class SensorStore {
     this.mySensors = [];
   };
 
-  public reloadSensors = async () => {
+  public listSensors = async () => {
     try {
+      // to circumvent the fact we do not have loading statuses
+      this.sensors = [];
       const resp = await SensorService.listSensors({ page: 1, limit: 1000 });
       const sensorData = resp.items;
       if (this.accountStore.loginState === 'LOGGED_IN') {
@@ -38,6 +40,18 @@ export class SensorStore {
           return s;
         });
       }
+
+      this.sensors = sensorData;
+      this.sensorsLoaded = true;
+    } catch (error) {
+      this.sensorsLoaded = true;
+    }
+  };
+
+  public listMySensors = async () => {
+    try {
+      // to circumvent the fact we do not have loading statuses
+      this.mySensors = [];
       let mySensorData = [];
       if (this.accountStore.loginState === 'LOGGED_IN') {
         const resp = await SensorService.listMySensors();
@@ -47,12 +61,10 @@ export class SensorStore {
         });
         mySensorData = resp.items;
       }
-      this.sensors = sensorData;
-      this.sensorsLoaded = true;
       this.mySensors = mySensorData;
       this.mySensorsLoaded = true;
     } catch (error) {
-      this.sensorsLoaded = true;
+      this.mySensorsLoaded = true;
     }
   };
 

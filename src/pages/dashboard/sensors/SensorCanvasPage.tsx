@@ -33,46 +33,44 @@ const styles = (theme) =>
     },
   });
 
-const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
+const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const sensorStore = useContext(SensorContext);
+  const sensorContext = useContext(SensorContext);
+  const { loginState } = useContext(AccountContext);
   const appContext = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (sensorStore.mySensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+    if (!sensorContext.mySensorsLoaded && loginState === 'LOGGED_IN') {
+      return;
+    }
+
+    if (sensorContext.mySensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
       return;
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: appContext.date,
       measurementTypes: uniq(
-        sensorStore.mySensors.reduce((acc, sensor: Sensor) => {
+        sensorContext.mySensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
         }, []),
       ),
-      sensorIds: sensorStore.mySensors.filter((s) => s.visible).map((s) => s.id),
+      sensorIds: sensorContext.mySensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [appContext.date, sensorStore.mySensorsLoaded]);
+  }, [appContext.date, sensorContext.mySensorsLoaded, loginState]);
 
   useEffect(() => {
-    const fetch = async () => {
-      await sensorStore.listMySensors();
-    };
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    if (!appContext.date || !sensorStore.mySensors?.length) {
+    if (!appContext.date || sensorContext.mySensors.length === 0) {
       setMeasurements({});
       return;
     }
 
     getMeasurements();
-  }, [appContext.date, sensorStore.mySensors]);
+  }, [appContext.date, getMeasurements, sensorContext.mySensors]);
 
   const sensorTypes = useMemo((): MeasurementTypeEnum[] => {
     if (!measurements) {
@@ -80,9 +78,12 @@ const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props
     }
 
     // collect all returned measurement types
-    let sensorTypes: MeasurementTypeEnum[] = sensorStore.mySensors.reduce((acc, sensor: Sensor) => {
-      return [...acc, ...sensor.measurementTypes];
-    }, []);
+    let sensorTypes: MeasurementTypeEnum[] = sensorContext.mySensors.reduce(
+      (acc, sensor: Sensor) => {
+        return [...acc, ...sensor.measurementTypes];
+      },
+      [],
+    );
 
     // filter duplicates
     sensorTypes = uniq(sensorTypes);
@@ -96,12 +97,12 @@ const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props
     });
     sensorTypes = compact(sensorTypes);
     return sensorTypes;
-  }, [sensorStore.mySensors, measurements]);
+  }, [sensorContext.mySensors, measurements]);
 
   return (
     <div style={{ width: '100%' }}>
       <TopMenu />
-      {sensorStore.mySensors.length === 0 && (
+      {sensorContext.mySensors.length === 0 && (
         <Box style={{ textAlign: 'center', marginTop: '50px' }}>
           <Typography variant="h5">No sensors found. Try adding some.</Typography>
         </Box>
@@ -132,4 +133,4 @@ const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props
   );
 };
 
-export default withStyles(styles)(observer(MySensorsPage));
+export default withStyles(styles)(observer(SensorCanvasPage));

@@ -36,40 +36,48 @@ const styles = (theme) =>
 const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const sensorContext = useContext(SensorContext);
+  const sensorStore = useContext(SensorContext);
+  const accountStore = useContext(AccountContext);
   const appContext = useContext(AppContext);
 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (!sensorContext.sensorsLoaded) {
+    if (!sensorStore.sensorsLoaded) {
       return;
     }
 
-    if (sensorContext.sensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+    if (sensorStore.sensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
       return;
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: appContext.date,
       measurementTypes: uniq(
-        sensorContext.sensors.reduce((acc, sensor: Sensor) => {
+        sensorStore.sensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
         }, []),
       ),
-      sensorIds: sensorContext.sensors.filter((s) => s.visible).map((s) => s.id),
+      sensorIds: sensorStore.sensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [appContext.date, sensorContext.sensors, sensorContext.sensorsLoaded]);
+  }, [appContext.date, sensorStore.sensors]);
 
   useEffect(() => {
-    if (!appContext.date || sensorContext.sensors.length === 0) {
+    const fetch = async () => {
+      await sensorStore.listSensors();
+    };
+    fetch();
+  }, [accountStore.loginState]);
+
+  useEffect(() => {
+    if (!appContext.date || !sensorStore.sensors?.length) {
       setMeasurements({});
       return;
     }
 
     getMeasurements();
-  }, [appContext.date, getMeasurements, sensorContext.sensors]);
+  }, [appContext.date, sensorStore.sensors]);
 
   const sensorTypes = useMemo((): MeasurementTypeEnum[] => {
     if (!measurements) {
@@ -77,7 +85,7 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
     }
 
     // collect all returned measurement types
-    let sensorTypes: MeasurementTypeEnum[] = sensorContext.sensors.reduce((acc, sensor: Sensor) => {
+    let sensorTypes: MeasurementTypeEnum[] = sensorStore.sensors.reduce((acc, sensor: Sensor) => {
       return [...acc, ...sensor.measurementTypes];
     }, []);
 
@@ -93,12 +101,12 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
     });
     sensorTypes = compact(sensorTypes);
     return sensorTypes;
-  }, [sensorContext.sensors, measurements]);
+  }, [sensorStore.sensors, measurements]);
 
   return (
     <div style={{ width: '100%' }}>
       <TopMenu />
-      {sensorContext.sensors.length === 0 && (
+      {!sensorStore.sensors?.length && (
         <Box style={{ textAlign: 'center', marginTop: '50px' }}>
           <Typography variant="h5">No sensors found. Try adding some.</Typography>
         </Box>
