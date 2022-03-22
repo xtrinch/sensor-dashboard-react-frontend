@@ -56,7 +56,7 @@ const AddCategoryPage: React.FunctionComponent<
         history.push(ForumRoutes.FORUM);
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       setStatus(e);
     }
   };

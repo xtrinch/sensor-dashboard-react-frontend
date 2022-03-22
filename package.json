@@ -24,6 +24,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-json-view": "^1.21.1",
     "react-mde": "^11.0.6",
+    "react-router": "^5.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",
     "recharts": "^2.1.9",
