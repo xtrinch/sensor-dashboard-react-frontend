@@ -18,6 +18,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import { IotDeviceInterface } from 'types/IotDeviceInterface';
 import Sensor from 'types/Sensor';
 import { observer } from 'mobx-react-lite';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface SideMenuItemProps {
   item: IotDeviceInterface;
@@ -56,10 +57,10 @@ const styles = () =>
     },
   });
 
-const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeof styles>> = (
-  props,
-) => {
-  const { item, classes } = props;
+const SideMenuItem: React.FunctionComponent<
+  SideMenuItemProps & WithStyles<typeof styles> & RouteComponentProps<{}>
+> = (props) => {
+  const { item, classes, history } = props;
 
   const { user } = useContext(AccountContext);
   const sensorContext = useContext(SensorContext);
@@ -93,8 +94,11 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
         divider
         button
         onClick={(e) => {
-          toggleExpand(e, item as IotDeviceInterface);
+          if (item.userId === user?.id) {
+            history.push(`/dashboard/${type}s/${item.id}`);
+          }
         }}
+        style={{ cursor: item.userId === user?.id ? 'pointer' : 'unset' }}
         className={
           differenceInMinutes(item.lastSeenAt, new Date()) > -60 ? classes.active : undefined
         }
@@ -112,15 +116,6 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
           </Grid>
           {item.userId !== user?.id && <>({item.user?.username})</>}
         </ListItemText>
-        {item.userId === user?.id && (
-          <div onClick={(e) => e.stopPropagation()}>
-            <Link to={`/dashboard/${type}s/${item.id}`} onClick={appContext.drawerToggle}>
-              <Fab color="secondary" size="small" className={classes.itemFab}>
-                <SettingsIcon />
-              </Fab>
-            </Link>
-          </div>
-        )}
         {visibility && (
           <Fab
             color="secondary"
@@ -151,4 +146,4 @@ const SideMenuItem: React.FunctionComponent<SideMenuItemProps & WithStyles<typeo
 
 SideMenuItem.defaultProps = {};
 
-export default withStyles(styles)(observer(SideMenuItem));
+export default withStyles(styles)(withRouter(observer(SideMenuItem)));

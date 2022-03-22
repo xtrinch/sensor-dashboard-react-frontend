@@ -6,9 +6,9 @@ import TopMenu from 'components/TopMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
 import { SensorContext } from 'context/SensorContext';
-import { uniq } from 'lodash';
+import { compact, uniq } from 'lodash';
 import SensorCanvas from 'pages/dashboard/sensors/components/SensorCanvas';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import MeasurementService from 'services/MeasurementService';
 import ColorsEnum from 'types/ColorsEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
@@ -33,7 +33,7 @@ const styles = (theme) =>
     },
   });
 
-const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
+const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
   const sensorContext = useContext(SensorContext);
@@ -43,63 +43,66 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
   const [measurements, setMeasurements] = useState(null);
 
   const getMeasurements = useCallback(async () => {
-    if (
-      !sensorContext.sensorsLoaded ||
-      (!sensorContext.mySensorsLoaded && loginState === 'LOGGED_IN')
-    ) {
+    if (!sensorContext.mySensorsLoaded && loginState === 'LOGGED_IN') {
       return;
     }
 
-    const allSensors = [...sensorContext.sensors, ...sensorContext.mySensors];
-
-    if (allSensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
+    if (sensorContext.mySensors.filter((s) => s.visible).map((s) => s.id).length === 0) {
       setMeasurements({});
       return;
     }
     const resp = await MeasurementService.listMeasurements({
       createdAtRange: appContext.date,
       measurementTypes: uniq(
-        allSensors.reduce((acc, sensor: Sensor) => {
+        sensorContext.mySensors.reduce((acc, sensor: Sensor) => {
           return [...acc, ...sensor.measurementTypes];
         }, []),
       ),
-      sensorIds: allSensors.filter((s) => s.visible).map((s) => s.id),
+      sensorIds: sensorContext.mySensors.filter((s) => s.visible).map((s) => s.id),
     });
     setMeasurements(resp);
-  }, [
-    appContext.date,
-    sensorContext.sensors,
-    sensorContext.mySensors,
-    sensorContext.sensorsLoaded,
-    sensorContext.mySensorsLoaded,
-    loginState,
-  ]);
+  }, [appContext.date, sensorContext.mySensorsLoaded, loginState]);
 
   useEffect(() => {
-    if (!appContext.date || sensorContext.sensors.length === 0) {
+    if (!appContext.date || sensorContext.mySensors.length === 0) {
       setMeasurements({});
       return;
     }
 
     getMeasurements();
-  }, [appContext.date, getMeasurements, sensorContext.sensors]);
+  }, [appContext.date, getMeasurements, sensorContext.mySensors]);
 
-  const sensorTypes = (): MeasurementTypeEnum[] => {
+  const sensorTypes = useMemo((): MeasurementTypeEnum[] => {
+    if (!measurements) {
+      return [];
+    }
+
     // collect all returned measurement types
-    let sensorTypes: MeasurementTypeEnum[] = sensorContext.sensors.reduce((acc, sensor: Sensor) => {
-      return [...acc, ...sensor.measurementTypes];
-    }, []);
+    let sensorTypes: MeasurementTypeEnum[] = sensorContext.mySensors.reduce(
+      (acc, sensor: Sensor) => {
+        return [...acc, ...sensor.measurementTypes];
+      },
+      [],
+    );
 
     // filter duplicates
     sensorTypes = uniq(sensorTypes);
 
+    // filter out measurement types without any measurements
+    sensorTypes = sensorTypes.map((type) => {
+      if (!measurements[type]?.length) {
+        return null;
+      }
+      return type;
+    });
+    sensorTypes = compact(sensorTypes);
     return sensorTypes;
-  };
+  }, [sensorContext.mySensors, measurements]);
 
   return (
     <div style={{ width: '100%' }}>
       <TopMenu />
-      {sensorContext.sensors.length === 0 && (
+      {sensorContext.mySensors.length === 0 && (
         <Box style={{ textAlign: 'center', marginTop: '50px' }}>
           <Typography variant="h5">No sensors found. Try adding some.</Typography>
         </Box>
@@ -111,11 +114,7 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
       )}
       {measurements && (
         <div className={classes.root}>
-          {sensorTypes().map((type: MeasurementTypeEnum) => {
-            // filter out measurement types without any measurements
-            if (!measurements[type]?.length) {
-              return null;
-            }
+          {sensorTypes.map((type: MeasurementTypeEnum) => {
             return (
               <SensorCanvas
                 key={type}
@@ -127,10 +126,11 @@ const SensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) 
               />
             );
           })}
+          {!sensorTypes.length && <div style={{ padding: '20px' }}>No results</div>}
         </div>
       )}
     </div>
   );
 };
 
-export default withStyles(styles)(observer(SensorsPage));
+export default withStyles(styles)(observer(MySensorsPage));

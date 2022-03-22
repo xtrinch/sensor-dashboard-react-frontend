@@ -18,7 +18,7 @@ import AddRadioPage from 'pages/dashboard/radios/AddRadioPage';
 import RadioListPage from 'pages/dashboard/radios/RadioListPage';
 import AddSensorPage from 'pages/dashboard/sensors/AddSensorPage';
 import SensorInfoPage from 'pages/dashboard/sensors/SensorInfoPage';
-import SensorsPage from 'pages/dashboard/sensors/SensorsPage';
+import MySensorsPage from 'pages/dashboard/sensors/MySensorsPage';
 import TopicPageByTag from 'pages/forum/topic/TopicPageByTag';
 import React, { useContext, useEffect } from 'react';
 import { Route } from 'react-router-dom';
@@ -47,7 +47,7 @@ const DashboardIndexPage = () => {
           <PublicSensorsPage />
         </Route>
         <Route exact path={DashboardRoutes.PERSONAL_DASHBOARD}>
-          <SensorsPage />
+          <MySensorsPage />
         </Route>
         <Route exact path={DashboardRoutes.ADD_SENSOR}>
           <AddSensorPage />

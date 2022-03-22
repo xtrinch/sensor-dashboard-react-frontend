@@ -111,10 +111,9 @@ export class SensorStore {
     if (!sensor.visible) {
       sensor.expanded = false;
     }
-    const sensorIndex = this.sensors.findIndex((sd) => sd.id === sensor.id);
-    this.sensors[sensorIndex] = sensor;
     // bust the reference so the callback can react
     this.sensors = [...this.sensors];
+    this.mySensors = [...this.mySensors];
   };
 }
 

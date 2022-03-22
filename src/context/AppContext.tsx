@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import React, { createContext } from 'react';
+import React, { createContext, useMemo } from 'react';
 import DomainTypeEnum from 'types/DomainTypeEnum';
 import { DateRange, DateRangeEnum, DateRegex } from 'utils/date.range';
 
@@ -36,5 +36,7 @@ class AppStore {
 }
 
 export function AppContextProvider(props) {
-  return <AppContext.Provider value={new AppStore()}>{props.children}</AppContext.Provider>;
+  const appStore = useMemo(() => new AppStore(), []);
+
+  return <AppContext.Provider value={appStore}>{props.children}</AppContext.Provider>;
 }

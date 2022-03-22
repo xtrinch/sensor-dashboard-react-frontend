@@ -6,9 +6,9 @@ import TopMenu from 'components/TopMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
 import { SensorContext } from 'context/SensorContext';
-import { uniq } from 'lodash';
+import { compact, uniq } from 'lodash';
 import SensorCanvas from 'pages/dashboard/sensors/components/SensorCanvas';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import MeasurementService from 'services/MeasurementService';
 import ColorsEnum from 'types/ColorsEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
@@ -71,7 +71,11 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
     getMeasurements();
   }, [appContext.date, getMeasurements, sensorContext.sensors]);
 
-  const sensorTypes = (): MeasurementTypeEnum[] => {
+  const sensorTypes = useMemo((): MeasurementTypeEnum[] => {
+    if (!measurements) {
+      return [];
+    }
+
     // collect all returned measurement types
     let sensorTypes: MeasurementTypeEnum[] = sensorContext.sensors.reduce((acc, sensor: Sensor) => {
       return [...acc, ...sensor.measurementTypes];
@@ -80,8 +84,16 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
     // filter duplicates
     sensorTypes = uniq(sensorTypes);
 
+    // filter out measurement types without any measurements
+    sensorTypes = sensorTypes.map((type) => {
+      if (!measurements[type]?.length) {
+        return null;
+      }
+      return type;
+    });
+    sensorTypes = compact(sensorTypes);
     return sensorTypes;
-  };
+  }, [sensorContext.sensors, measurements]);
 
   return (
     <div style={{ width: '100%' }}>
@@ -98,11 +110,7 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
       )}
       {measurements && (
         <div className={classes.root}>
-          {sensorTypes().map((type: MeasurementTypeEnum) => {
-            // filter out measurement types without any measurements
-            if (!measurements[type]?.length) {
-              return null;
-            }
+          {sensorTypes.map((type: MeasurementTypeEnum) => {
             return (
               <SensorCanvas
                 key={type}
@@ -114,6 +122,7 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
               />
             );
           })}
+          {!sensorTypes.length && <div style={{ padding: '20px' }}>No results</div>}
         </div>
       )}
     </div>
