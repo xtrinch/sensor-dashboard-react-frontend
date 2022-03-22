@@ -117,33 +117,6 @@ const SensorsSideMenu: React.FunctionComponent<
               <SideMenuItem item={sensor} key={sensor.id} type="sensor" visibility />
             ))}
           </List>
-          <List disablePadding>
-            <ListItem
-              button
-              className={classes.listTitle}
-              alignItems="center"
-              onClick={goToForwarders}
-            >
-              <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item>My packet forwarders</Grid>
-                <Grid item>
-                  <div role="button" onClick={(e) => e.stopPropagation()}>
-                    <Link to={DashboardRoutes.ADD_FORWARDER} onClick={appContext.drawerToggle}>
-                      <Fab color="primary" size="small" className={classes.sensorFab}>
-                        <PlusIcon />
-                      </Fab>
-                    </Link>
-                  </div>
-                </Grid>
-              </Grid>
-            </ListItem>
-          </List>
-          <Divider />
-          <List disablePadding>
-            {forwarders.map((forwarder) => (
-              <SideMenuItem item={forwarder} key={forwarder.id} type="forwarder" />
-            ))}
-          </List>
           <Divider />
           <List disablePadding>
             <ListItem

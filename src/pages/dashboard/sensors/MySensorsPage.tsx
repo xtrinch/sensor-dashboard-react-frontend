@@ -14,6 +14,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import Sensor from 'types/Sensor';
 import { observer } from 'mobx-react-lite';
+import { DisplayContext } from 'context/DisplayContext';
 
 const styles = (theme) =>
   createStyles({
@@ -37,7 +38,9 @@ const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props
   const { classes } = props;
 
   const sensorStore = useContext(SensorContext);
+  const accountStore = useContext(AccountContext);
   const appContext = useContext(AppContext);
+  const displayStore = useContext(DisplayContext);
 
   const [measurements, setMeasurements] = useState(null);
 
@@ -61,6 +64,7 @@ const MySensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (props
   useEffect(() => {
     const fetch = async () => {
       await sensorStore.listMySensors();
+      await displayStore.reloadDisplays(accountStore.loginState);
     };
     fetch();
   }, []);

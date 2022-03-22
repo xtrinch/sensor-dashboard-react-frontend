@@ -78,12 +78,6 @@ function DisplayContextProvider(props) {
     return true;
   };
 
-  useEffect(() => {
-    if (!state.displaysLoaded) {
-      reloadDisplays(loginState);
-    }
-  }, [state]);
-
   return (
     <DisplayContext.Provider
       value={{
