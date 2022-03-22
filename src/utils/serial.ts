@@ -1,3 +1,4 @@
+/* eslint no-undef: "off" */
 // dependency: @types/w3c-web-usb
 
 const filters: USBDeviceFilter[] = [
@@ -54,7 +55,6 @@ export class Port {
   }
 
   public async connect() {
-    console.log(this.device);
     await this.device.open();
     // if (this.device.configuration === null) {
     await this.device.selectConfiguration(1);
@@ -110,7 +110,7 @@ export class Serial {
         filters: ownFilters || filters,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       // if we don't select any device, this requestDevice throws an error
       return null;
     } finally {

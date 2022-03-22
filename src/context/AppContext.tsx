@@ -23,7 +23,6 @@ class AppStore {
   };
 
   public setDate = (date: DateRegex) => {
-    console.log(date);
     this.date = date;
   };
 

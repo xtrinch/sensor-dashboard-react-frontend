@@ -24,6 +24,8 @@ import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/Measuremen
 import Sensor from 'types/Sensor';
 import { DateRange, DateRangeEnum, DateRegex, DateRegexGroupsInterface } from 'utils/date.range';
 import { getSpacePaddedNumber, getZeroPaddedNumber } from 'utils/number';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react-lite';
 
 // TODO
 type AxisDomain = any;
@@ -185,4 +187,4 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
   );
 };
 
-export default withStyles(styles)(SensorCanvas);
+export default withStyles(styles)(observer(SensorCanvas));

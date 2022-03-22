@@ -78,7 +78,7 @@ const SensorsSideMenu: React.FunctionComponent<
   const {
     state: { forwarders },
   } = useContext(ForwarderContext);
-  const { loginState, user } = useContext(AccountContext);
+  const { loginState } = useContext(AccountContext);
 
   const goToDisplays = () => {
     appContext.drawerToggle();
@@ -97,7 +97,6 @@ const SensorsSideMenu: React.FunctionComponent<
 
   const { classes } = props;
   return (
-    // @ts-ignore
     <div style={props.style}>
       {loginState === 'LOGGED_IN' && location.pathname.includes('personal') && (
         <>
@@ -116,13 +115,7 @@ const SensorsSideMenu: React.FunctionComponent<
           <Divider />
           <List disablePadding>
             {sensorContext.mySensors.map((sensor: Sensor) => (
-              <SideMenuItem
-                item={sensor}
-                key={sensor.id}
-                type="sensor"
-                visibility
-                context={SensorContext}
-              />
+              <SideMenuItem item={sensor} key={sensor.id} type="sensor" visibility />
             ))}
           </List>
           <List disablePadding>
@@ -213,13 +206,7 @@ const SensorsSideMenu: React.FunctionComponent<
           <Divider />
           <List disablePadding>
             {sensorContext.sensors.map((sensor: Sensor) => (
-              <SideMenuItem
-                context={SensorContext}
-                item={sensor}
-                key={sensor.id}
-                type="sensor"
-                visibility
-              />
+              <SideMenuItem item={sensor} key={sensor.id} type="sensor" visibility />
             ))}
           </List>
         </>
