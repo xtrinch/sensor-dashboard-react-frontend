@@ -1,9 +1,4 @@
 import { Grid } from '@mui/material';
-import { WithStyles } from '@mui/styles';
-import createStyles from '@mui/styles/createStyles';
-import withStyles from '@mui/styles/withStyles';
-import { AccountContext, AccountStore } from 'context/AccountContext';
-import { SensorContext } from 'context/SensorContext';
 import { observer } from 'mobx-react-lite';
 import ConnectSensorPage from 'pages/ConnectSensorPage';
 import SensorsSideMenu from 'pages/dashboard/components/SensorsSideMenu';
@@ -20,12 +15,14 @@ import AddSensorPage from 'pages/dashboard/sensors/AddSensorPage';
 import SensorInfoPage from 'pages/dashboard/sensors/SensorInfoPage';
 import MySensorsPage from 'pages/dashboard/sensors/MySensorsPage';
 import TopicPageByTag from 'pages/forum/topic/TopicPageByTag';
-import React, { useContext, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import React from 'react';
+import { Route, useLocation } from 'react-router-dom';
 import PublicSensorsPage from './sensors/PublicSensorsPage';
 import SensorCanvasPage from './sensors/SensorCanvasPage';
 
 const DashboardIndexPage = () => {
+  const location = useLocation();
+
   return (
     <Grid container>
       <Grid item style={{ flex: 1 }}>
@@ -79,18 +76,20 @@ const DashboardIndexPage = () => {
         </Route>
       </Grid>
       <Grid item style={{ width: '270px' }}>
-        <SensorsSideMenu
-          style={{
-            position: 'fixed',
-            right: '0',
-            paddingTop: '65px',
-            backgroundColor: 'rgb(58,65,73)',
-            zIndex: 1000,
-            width: '270px',
-            height: 'calc(100vh)',
-            overflow: 'auto',
-          }}
-        />
+        {location.pathname.indexOf('canvas') < 0 && (
+          <SensorsSideMenu
+            style={{
+              position: 'fixed',
+              right: '0',
+              paddingTop: '65px',
+              backgroundColor: 'rgb(58,65,73)',
+              zIndex: 1000,
+              width: '270px',
+              height: 'calc(100vh)',
+              overflow: 'auto',
+            }}
+          />
+        )}
       </Grid>
     </Grid>
   );

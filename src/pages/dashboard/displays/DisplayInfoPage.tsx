@@ -43,6 +43,9 @@ const styles = (theme) =>
     form: {
       width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
+      '& >.MuiFormControl-root, >.MuiAutocomplete-root': {
+        marginTop: '20px',
+      },
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -232,8 +235,10 @@ const DisplayInfoPage: React.FunctionComponent<
               id="sensorIds"
               value={data.sensorIds}
               fullWidth
-              options={sensorContext.sensors.map((s) => s.id)}
-              getOptionLabel={(option) => sensorContext.sensors.find((s) => s.id === option)?.name}
+              options={sensorContext.mySensors.map((s) => s.id)}
+              getOptionLabel={(option) =>
+                sensorContext.mySensors.find((s) => s.id === option)?.name
+              }
               onChange={(e, newVal) => fieldChange(newVal, 'sensorIds')}
               label="Sensors"
               error={!!errors.sensorIds}

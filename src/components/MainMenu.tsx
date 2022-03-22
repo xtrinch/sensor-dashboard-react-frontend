@@ -155,7 +155,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
             label={'Personal'}
           />
         )}
-        {accountStore.loginState === 'LOGGED_IN' && false && (
+        {accountStore.loginState === 'LOGGED_IN' && (
           <Tab
             className={clsx(classes.subTab, classes.dashboard)}
             onClick={() => {

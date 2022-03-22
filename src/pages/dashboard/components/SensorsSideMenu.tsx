@@ -144,28 +144,7 @@ const SensorsSideMenu: React.FunctionComponent<
               <SideMenuItem item={forwarder} key={forwarder.id} type="forwarder" />
             ))}
           </List>
-          <List disablePadding>
-            <ListItem button className={classes.listTitle} alignItems="center" onClick={goToRadios}>
-              <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item>My radios</Grid>
-                <Grid item>
-                  <div role="button" onClick={(e) => e.stopPropagation()}>
-                    <Link to={DashboardRoutes.ADD_RADIO} onClick={appContext.drawerToggle}>
-                      <Fab color="primary" size="small" className={classes.sensorFab}>
-                        <PlusIcon />
-                      </Fab>
-                    </Link>
-                  </div>
-                </Grid>
-              </Grid>
-            </ListItem>
-          </List>
           <Divider />
-          <List disablePadding>
-            {radios.map((forwarder) => (
-              <SideMenuItem item={forwarder} key={forwarder.id} type="radio" />
-            ))}
-          </List>
           <List disablePadding>
             <ListItem
               button

@@ -96,6 +96,9 @@ const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
                                     <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
                                       <DashboardIndexPage />
                                     </Route>
+                                    <Route path={DashboardRoutes.CANVAS}>
+                                      <DashboardIndexPage />
+                                    </Route>
                                     <Route path={UserRoutes.USERS}>
                                       <UserIndexPage />
                                     </Route>

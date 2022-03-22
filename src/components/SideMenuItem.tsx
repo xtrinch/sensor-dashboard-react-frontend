@@ -95,7 +95,7 @@ const SideMenuItem: React.FunctionComponent<
         button
         onClick={(e) => {
           if (item.userId === user?.id) {
-            history.push(`/dashboard/${type}s/${item.id}`);
+            history.push(`/dashboard-personal/${type}s/${item.id}`);
           }
         }}
         style={{ cursor: item.userId === user?.id ? 'pointer' : 'unset' }}
