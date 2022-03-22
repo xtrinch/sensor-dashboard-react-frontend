@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: ColorsEnum.WHITE,
     },
     subTab: {
+      fontWeight: 'normal',
       alignItems: 'flex-start',
       paddingLeft: '60px',
       minHeight: '30px',
@@ -64,13 +65,13 @@ const useStyles = makeStyles((theme: Theme) =>
         left: '35px',
         top: '12px',
         backgroundColor: 'transparent!important',
-        // color: 'white',
       },
       '&:not(.Mui-selected):before': {
         color: 'white',
       },
     },
     tab: {
+      fontWeight: 'normal',
       width: '100%',
       maxWidth: '100%',
       opacity: 1,

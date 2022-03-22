@@ -30,10 +30,8 @@ const styles = () =>
       textTransform: 'uppercase',
       padding: '5px 16px',
       minHeight: '40px',
-      // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
-      // backgroundColor: ColorsEnum.BLUE,
       color: 'white',
-      fontWeight: 'bold',
+      fontWeight: 'normal',
       borderBottom: `2px solid ${ColorsEnum.BLUE}`,
       fontSize: '12px',
     },
@@ -122,7 +120,6 @@ const SensorsSideMenu: React.FunctionComponent<
                 item={sensor}
                 key={sensor.id}
                 type="sensor"
-                expandable
                 visibility
                 context={SensorContext}
               />
@@ -221,7 +218,6 @@ const SensorsSideMenu: React.FunctionComponent<
                 item={sensor}
                 key={sensor.id}
                 type="sensor"
-                expandable
                 visibility
               />
             ))}
