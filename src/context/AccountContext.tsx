@@ -1,7 +1,7 @@
 import { SensorContext } from 'context/SensorContext';
 import { addToast } from 'context/ToastContext';
 import { makeAutoObservable } from 'mobx';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User from 'types/User';
@@ -81,10 +81,7 @@ export class AccountStore {
 
 export function AccountContextProvider(props) {
   const sensorContext = useContext(SensorContext);
+  const accountStore = useMemo(() => new AccountStore(sensorContext), []);
 
-  return (
-    <AccountContext.Provider value={new AccountStore(sensorContext)}>
-      {props.children}
-    </AccountContext.Provider>
-  );
+  return <AccountContext.Provider value={accountStore}>{props.children}</AccountContext.Provider>;
 }

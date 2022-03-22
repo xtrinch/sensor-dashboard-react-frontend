@@ -1,6 +1,6 @@
 import { addToast } from 'context/ToastContext';
 import { makeAutoObservable } from 'mobx';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User, { UserId } from 'types/User';
@@ -60,7 +60,9 @@ class UserStore {
 }
 
 function UserContextProvider(props) {
-  return <UserContext.Provider value={new UserStore()}>{props.children}</UserContext.Provider>;
+  const userStore = useMemo(() => new UserStore(), []);
+
+  return <UserContext.Provider value={userStore}>{props.children}</UserContext.Provider>;
 }
 
 export { UserContext, UserContextProvider };
