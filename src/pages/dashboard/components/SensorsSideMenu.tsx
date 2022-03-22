@@ -27,11 +27,10 @@ const styles = () =>
       textAlign: 'right',
     },
     listTitle: {
-      textTransform: 'uppercase',
+      fontWeight: 'bold',
       padding: '5px 16px',
       minHeight: '40px',
       color: 'white',
-      fontWeight: 'normal',
       borderBottom: `2px solid ${ColorsEnum.BLUE}`,
       fontSize: '12px',
     },

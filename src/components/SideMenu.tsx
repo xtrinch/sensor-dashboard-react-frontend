@@ -28,10 +28,8 @@ const styles = () =>
       textAlign: 'right',
     },
     listTitle: {
-      textTransform: 'uppercase',
       padding: '5px 16px',
       minHeight: '40px',
-      // borderTop: `1px solid ${ColorsEnum.GRAYDARK}`,
       backgroundColor: ColorsEnum.BGLIGHTER,
       color: 'white',
     },

@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderColor: ColorsEnum.WHITE,
     },
     subTab: {
-      fontWeight: 'normal',
+      textTransform: 'none',
       alignItems: 'flex-start',
       paddingLeft: '60px',
       minHeight: '30px',
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     tab: {
-      fontWeight: 'normal',
+      textTransform: 'none',
       width: '100%',
       maxWidth: '100%',
       opacity: 1,
