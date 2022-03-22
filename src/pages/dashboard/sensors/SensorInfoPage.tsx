@@ -24,6 +24,7 @@ import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/Measuremen
 import Sensor, { SensorId } from 'types/Sensor';
 import SensorTypeEnum from 'types/SensorTypeEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { observer } from 'mobx-react-lite';
 import { getConnectSensorRoute } from '../DashboardRoutes';
 
 const styles = (theme) =>
@@ -108,7 +109,7 @@ const SensorInfoPage: React.FunctionComponent<
 
   useEffect(() => {
     const getSensor = async () => {
-      const s = await SensorService.getSensor((id as unknown) as SensorId);
+      const s = await SensorService.getSensor(id as unknown as SensorId);
       setSensor(s);
       setData((d) => ({
         ...d,
@@ -130,9 +131,10 @@ const SensorInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await sensorContext.updateSensor((id as unknown) as SensorId, new Sensor(data));
+      await sensorContext.updateSensor(id as unknown as SensorId, new Sensor(data));
       setErrors({});
     } catch (e) {
+      console.log(e);
       setErrors(e);
     }
   };
@@ -282,4 +284,4 @@ const SensorInfoPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(SensorInfoPage));
+export default withRouter(withStyles(styles)(observer(SensorInfoPage)));

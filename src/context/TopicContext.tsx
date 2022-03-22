@@ -1,10 +1,10 @@
 import { CategoryContext } from 'context/CategoryContext';
-import { addToast } from 'context/ToastContext';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import TopicService from 'services/TopicService';
 import Category from 'types/Category';
 import { Toast } from 'types/Toast';
 import Topic, { TopicId } from 'types/Topic';
+import { ToastContext } from './ToastContext';
 
 const TopicContext = createContext<{
   state?: {
@@ -19,6 +19,8 @@ const TopicContext = createContext<{
 
 function TopicContextProvider(props: { category: Category; children: any }) {
   const { category } = props;
+
+  const toastStore = useContext(ToastContext);
   const { reload: reloadCategories } = useContext(CategoryContext);
 
   const [state, setState] = useState({
@@ -41,7 +43,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     topics[topicIndex] = s;
     setState({ ...state, topics: [...topics] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the topic',
         type: 'success',
@@ -58,7 +60,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     state.topics.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the topic',
         type: 'success',
@@ -72,7 +74,7 @@ function TopicContextProvider(props: { category: Category; children: any }) {
     const s = await TopicService.addTopic(topic);
     setState({ ...state, topics: [...state.topics, s] });
 
-    addToast(new Toast({ message: 'Successfully added a topic', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a topic', type: 'success' }));
 
     reloadCategories();
 

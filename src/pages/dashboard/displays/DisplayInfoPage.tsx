@@ -97,7 +97,7 @@ const DisplayInfoPage: React.FunctionComponent<
 
   useEffect(() => {
     const getDisplay = async () => {
-      const s = await DisplayService.getDisplay((id as unknown) as DisplayId);
+      const s = await DisplayService.getDisplay(id as unknown as DisplayId);
       setDisplay(s);
       setData((d) => ({
         ...d,
@@ -117,7 +117,7 @@ const DisplayInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateDisplay((id as unknown) as DisplayId, new Display(data));
+      await updateDisplay(id as unknown as DisplayId, new Display(data));
     } catch (e) {
       setErrors(e);
     }

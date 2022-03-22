@@ -17,6 +17,7 @@ import { SensorContextProvider } from 'context/SensorContext';
 import { ToastContextProvider } from 'context/ToastContext';
 import { UserContextProvider } from 'context/UserContext';
 import theme from 'layout/Theme';
+import { observer } from 'mobx-react-lite';
 import DashboardIndexPage from 'pages/dashboard/DashboardIndexPage';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import ForumIndexPage from 'pages/forum/ForumIndexPage';
@@ -55,13 +56,13 @@ const styles = () =>
     },
   });
 
-class App extends React.Component<WithStyles<typeof styles>> {
-  render() {
-    const { classes } = this.props;
-    return (
-      <BrowserRouter>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
+const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
+  const { classes } = props;
+  return (
+    <BrowserRouter>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <ToastContextProvider>
             <AccountContextProvider>
               <AppContextProvider>
                 <SensorContextProvider>
@@ -70,46 +71,44 @@ class App extends React.Component<WithStyles<typeof styles>> {
                       <UserContextProvider>
                         <ForwarderContextProvider>
                           <RadioContextProvider>
-                            <ToastContextProvider>
-                              <ErrorContextProvider>
-                                <Wrapper>
-                                  <ToastBox />
-                                  <ConfirmationBox />
-                                  <ErrorBox />
-                                  <Grid container className={classes.app}>
-                                    <Grid item>
-                                      <SideMenuWrapper />
-                                    </Grid>
-                                    <Grid item style={{ flex: '1' }}>
-                                      <Route exact path="/">
-                                        <Redirect to={DashboardRoutes.DASHBOARD} />
-                                      </Route>
-                                      <Route path={ForumRoutes.FORUM}>
-                                        <ForumIndexPage />
-                                      </Route>
-                                      <Route path={ForumRoutes.TOPIC_BY_TAG}>
-                                        <ForumIndexPage />
-                                      </Route>
-                                      <Route path={DashboardRoutes.DASHBOARD}>
-                                        <DashboardIndexPage />
-                                      </Route>
-                                      <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
-                                        <DashboardIndexPage />
-                                      </Route>
-                                      <Route path={UserRoutes.USERS}>
-                                        <UserIndexPage />
-                                      </Route>
-                                      <Route exact path={Routes.LOGIN}>
-                                        <LoginPage />
-                                      </Route>
-                                      <Route exact path={Routes.REGISTER}>
-                                        <RegisterPage />
-                                      </Route>
-                                    </Grid>
+                            <ErrorContextProvider>
+                              <Wrapper>
+                                <ToastBox />
+                                <ConfirmationBox />
+                                <ErrorBox />
+                                <Grid container className={classes.app}>
+                                  <Grid item>
+                                    <SideMenuWrapper />
                                   </Grid>
-                                </Wrapper>
-                              </ErrorContextProvider>
-                            </ToastContextProvider>
+                                  <Grid item style={{ flex: '1' }}>
+                                    <Route exact path="/">
+                                      <Redirect to={DashboardRoutes.DASHBOARD} />
+                                    </Route>
+                                    <Route path={ForumRoutes.FORUM}>
+                                      <ForumIndexPage />
+                                    </Route>
+                                    <Route path={ForumRoutes.TOPIC_BY_TAG}>
+                                      <ForumIndexPage />
+                                    </Route>
+                                    <Route path={DashboardRoutes.DASHBOARD}>
+                                      <DashboardIndexPage />
+                                    </Route>
+                                    <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
+                                      <DashboardIndexPage />
+                                    </Route>
+                                    <Route path={UserRoutes.USERS}>
+                                      <UserIndexPage />
+                                    </Route>
+                                    <Route exact path={Routes.LOGIN}>
+                                      <LoginPage />
+                                    </Route>
+                                    <Route exact path={Routes.REGISTER}>
+                                      <RegisterPage />
+                                    </Route>
+                                  </Grid>
+                                </Grid>
+                              </Wrapper>
+                            </ErrorContextProvider>
                           </RadioContextProvider>
                         </ForwarderContextProvider>
                       </UserContextProvider>
@@ -118,11 +117,11 @@ class App extends React.Component<WithStyles<typeof styles>> {
                 </SensorContextProvider>
               </AppContextProvider>
             </AccountContextProvider>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </BrowserRouter>
-    );
-  }
-}
+          </ToastContextProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </BrowserRouter>
+  );
+};
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(observer(App));

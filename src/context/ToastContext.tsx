@@ -1,58 +1,31 @@
-import React, { Context, createContext, Dispatch, useReducer } from 'react';
+import { makeAutoObservable } from 'mobx';
+import React, { createContext, useMemo } from 'react';
 import { Toast } from 'types/Toast';
 
-export const addToast = (toast: Toast) => {
-  ToastContext.dispatch({ type: 'addToast', payload: toast });
+export class ToastStore {
+  public toasts: Toast[] = [];
 
-  setTimeout(() => {
-    removeToast(toast);
-  }, 5000);
-};
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-export const removeToast = (toast: Toast) => {
-  ToastContext.dispatch({ type: 'removeToast', payload: toast });
-};
-
-type ToastContextState = {
-  toasts: Toast[];
-};
-
-const initialState: ToastContextState = {
-  toasts: [],
-};
-
-export type ToastActionTypes =
-  | { type: 'addToast'; payload: Toast }
-  | { type: 'removeToast'; payload: Toast };
-
-const ToastContext = createContext<[ToastContextState, React.Dispatch<any>]>(null) as Context<
-  [ToastContextState, Dispatch<any>]
-> & {
-  dispatch: React.Dispatch<any>;
-};
-
-function ToastContextProvider(props) {
-  const reducer = (state: ToastContextState, action: ToastActionTypes): ToastContextState => {
-    switch (action.type) {
-      case 'addToast':
-        return {
-          ...state,
-          toasts: [...state.toasts, action.payload],
-        };
-      case 'removeToast':
-        return {
-          ...state,
-          toasts: state.toasts.filter((toast) => toast.id !== action.payload.id),
-        };
-      default: {
-        return { ...state };
-      }
-    }
+  public removeToast = (id: string) => {
+    this.toasts = this.toasts.filter((toast) => toast.id !== id);
   };
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  public addToast = (newToast: Toast) => {
+    this.toasts.push(newToast);
 
-  return <ToastContext.Provider value={[state, dispatch]}>{props.children}</ToastContext.Provider>;
+    setTimeout(() => {
+      this.removeToast(newToast.id);
+    }, 5000);
+  };
 }
 
-export { ToastContext, ToastContextProvider };
+export const ToastContext = createContext<ToastStore>(null);
+
+export function ToastContextProvider(props) {
+  const toastStore = useMemo(() => new ToastStore(), []);
+
+  return <ToastContext.Provider value={toastStore}>{props.children}</ToastContext.Provider>;
+}

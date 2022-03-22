@@ -40,7 +40,7 @@ export default class ForwarderService {
 
   public static updateForwarder = async (
     id: ForwarderId,
-    forwarder: Partial<Forwarder>
+    forwarder: Partial<Forwarder>,
   ): Promise<Forwarder> => {
     const url = getUrl(`/forwarders/${id}`);
 

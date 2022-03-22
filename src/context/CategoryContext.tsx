@@ -1,8 +1,8 @@
-import { addToast } from 'context/ToastContext';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import CategoryService from 'services/CategoryService';
 import Category, { CategoryId } from 'types/Category';
 import { Toast } from 'types/Toast';
+import { ToastContext } from './ToastContext';
 
 const CategoryContext = createContext<{
   state?: {
@@ -22,6 +22,7 @@ function CategoryContextProvider(props) {
     categories: [],
     categoriesLoaded: false,
   });
+  const toastStore = useContext(ToastContext);
 
   const reload = async (): Promise<void> => {
     const resp = await CategoryService.listCategories();
@@ -38,7 +39,7 @@ function CategoryContextProvider(props) {
     categories[categoryIndex] = s;
     setState({ ...state, categories: [...categories] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
@@ -53,7 +54,7 @@ function CategoryContextProvider(props) {
 
     reload();
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
@@ -68,7 +69,7 @@ function CategoryContextProvider(props) {
 
     reload();
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
@@ -85,7 +86,7 @@ function CategoryContextProvider(props) {
     state.categories.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the category',
         type: 'success',
@@ -99,7 +100,7 @@ function CategoryContextProvider(props) {
     const s = await CategoryService.addCategory(category);
     setState({ ...state, categories: [...state.categories, s] });
 
-    addToast(new Toast({ message: 'Successfully added a category', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a category', type: 'success' }));
 
     return s;
   };

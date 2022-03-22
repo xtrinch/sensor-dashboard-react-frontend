@@ -1,9 +1,9 @@
 import { AccountContext } from 'context/AccountContext';
-import { addToast } from 'context/ToastContext';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import DisplayService from 'services/DisplayService';
 import Display, { DisplayId } from 'types/Display';
 import { Toast } from 'types/Toast';
+import { ToastContext } from './ToastContext';
 
 const DisplayContext = createContext<{
   state?: {
@@ -17,6 +17,8 @@ const DisplayContext = createContext<{
 }>({});
 
 function DisplayContextProvider(props) {
+  const toastStore = useContext(ToastContext);
+
   const [state, setState] = useState({
     displays: [],
     displaysLoaded: false,
@@ -37,7 +39,7 @@ function DisplayContextProvider(props) {
     const s = await DisplayService.addDisplay(display);
     setState({ ...state, displays: [...state.displays, s] });
 
-    addToast(new Toast({ message: 'Successfully added a display', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a display', type: 'success' }));
 
     return s;
   };
@@ -49,7 +51,7 @@ function DisplayContextProvider(props) {
     displays[displayIndex] = s;
     setState({ ...state, displays: [...displays] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the display',
         type: 'success',
@@ -66,7 +68,7 @@ function DisplayContextProvider(props) {
     state.displays.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the display',
         type: 'success',

@@ -40,7 +40,7 @@ export default class DisplayService {
 
   public static updateDisplay = async (
     id: DisplayId,
-    display: Partial<Display>
+    display: Partial<Display>,
   ): Promise<Display> => {
     const url = getUrl(`/displays/${id}`);
 

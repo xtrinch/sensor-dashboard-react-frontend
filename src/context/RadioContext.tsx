@@ -1,8 +1,8 @@
-import { addToast } from 'context/ToastContext';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import RadioService from 'services/RadioService';
 import Radio, { RadioId } from 'types/Radio';
 import { Toast } from 'types/Toast';
+import { ToastContext } from './ToastContext';
 
 const RadioContext = createContext<{
   state?: {
@@ -18,6 +18,8 @@ const RadioContext = createContext<{
 }>({});
 
 function RadioContextProvider(props: { children: any }) {
+  const toastStore = useContext(ToastContext);
+
   const [state, setState] = useState({
     radios: [],
     radiosLoaded: false,
@@ -38,7 +40,7 @@ function RadioContextProvider(props: { children: any }) {
     radios[radioIndex] = s;
     setState({ ...state, radios: [...radios] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the radio',
         type: 'success',
@@ -51,7 +53,7 @@ function RadioContextProvider(props: { children: any }) {
   const readConfig = async (id: RadioId): Promise<void> => {
     await RadioService.readConfig(id);
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Read config command sent, refresh page to see results.',
         type: 'success',
@@ -62,7 +64,7 @@ function RadioContextProvider(props: { children: any }) {
   const sendConfig = async (id: RadioId): Promise<void> => {
     await RadioService.sendConfig(id);
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Send config command sent',
         type: 'success',
@@ -77,7 +79,7 @@ function RadioContextProvider(props: { children: any }) {
     state.radios.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the radio',
         type: 'success',
@@ -91,7 +93,7 @@ function RadioContextProvider(props: { children: any }) {
     const s = await RadioService.addRadio(radio);
     setState({ ...state, radios: [...state.radios, s] });
 
-    addToast(new Toast({ message: 'Successfully added a radio', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a radio', type: 'success' }));
 
     return s;
   };

@@ -60,7 +60,7 @@ export default class CommentService {
 
   public static updateComment = async (
     id: CommentId,
-    comment: Partial<Comment>
+    comment: Partial<Comment>,
   ): Promise<Comment> => {
     const url = getUrl(`/comments/${id}`);
 

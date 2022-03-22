@@ -15,8 +15,8 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import { Routes } from 'utils/Routes';
 import Link from 'components/Link';
-import { addToast } from 'context/ToastContext';
 import { Toast } from 'types/Toast';
+import { ToastContext } from 'context/ToastContext';
 
 const styles = (theme) =>
   createStyles({
@@ -43,6 +43,7 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
 ) => {
   const { classes, history } = props;
   const { register } = useContext(AccountContext);
+  const toastStore = useContext(ToastContext);
 
   const [data, setData] = useState({
     name: '',
@@ -68,7 +69,7 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
       const user = await register(data);
 
       if (user) {
-        addToast(
+        toastStore.addToast(
           new Toast({ message: 'Registration successful. You can now login', type: 'success' }),
         );
         history.push('/');

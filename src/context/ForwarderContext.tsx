@@ -1,9 +1,9 @@
 import { AccountContext } from 'context/AccountContext';
-import { addToast } from 'context/ToastContext';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import ForwarderService from 'services/ForwarderService';
 import Forwarder, { ForwarderId } from 'types/Forwarder';
 import { Toast } from 'types/Toast';
+import { ToastContext } from './ToastContext';
 
 const ForwarderContext = createContext<{
   state?: {
@@ -17,6 +17,8 @@ const ForwarderContext = createContext<{
 }>({});
 
 function ForwarderContextProvider(props) {
+  const toastStore = useContext(ToastContext);
+
   const [state, setState] = useState({
     forwarders: [],
     forwardersLoaded: false,
@@ -37,7 +39,7 @@ function ForwarderContextProvider(props) {
     const s = await ForwarderService.addForwarder(forwarder);
     setState({ ...state, forwarders: [...state.forwarders, s] });
 
-    addToast(new Toast({ message: 'Successfully added a forwarder', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a forwarder', type: 'success' }));
 
     return s;
   };
@@ -52,7 +54,7 @@ function ForwarderContextProvider(props) {
     forwarders[forwarderIndex] = s;
     setState({ ...state, forwarders: [...forwarders] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the forwarder',
         type: 'success',
@@ -69,7 +71,7 @@ function ForwarderContextProvider(props) {
     state.forwarders.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the forwarder',
         type: 'success',

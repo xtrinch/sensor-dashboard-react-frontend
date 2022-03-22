@@ -1,10 +1,10 @@
-import { SensorContext } from 'context/SensorContext';
-import { addToast } from 'context/ToastContext';
+import { SensorContext, SensorStore } from 'context/SensorContext';
 import { makeAutoObservable } from 'mobx';
 import React, { createContext, useContext, useMemo } from 'react';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User from 'types/User';
+import { ToastContext, ToastStore } from './ToastContext';
 
 export const AccountContext = createContext<AccountStore>(null);
 
@@ -15,7 +15,7 @@ export class AccountStore {
 
   public loginState = localStorage.getItem('user') ? 'LOGGED_IN' : 'LOGGED_OUT';
 
-  constructor(public sensorContext: any) {
+  constructor(public sensorContext: SensorStore, public toastStore: ToastStore) {
     makeAutoObservable(this);
   }
 
@@ -71,17 +71,17 @@ export class AccountStore {
     this.setLoginState('LOGGED_OUT');
     this.setUser(undefined);
 
-    if (this.sensorContext.clearMySensors) {
-      this.sensorContext.clearMySensors();
-    }
-
-    addToast(new Toast({ message: 'Logout successful', type: 'success' }));
+    this.toastStore.addToast(new Toast({ message: 'Logout successful', type: 'success' }));
   };
 }
 
 export function AccountContextProvider(props) {
   const sensorContext = useContext(SensorContext);
-  const accountStore = useMemo(() => new AccountStore(sensorContext), []);
+  const toastStore = useContext(ToastContext);
+  const accountStore = useMemo(
+    () => new AccountStore(sensorContext, toastStore),
+    [sensorContext, toastStore],
+  );
 
   return <AccountContext.Provider value={accountStore}>{props.children}</AccountContext.Provider>;
 }

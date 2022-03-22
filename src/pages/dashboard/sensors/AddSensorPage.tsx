@@ -79,14 +79,16 @@ const AddSensorPage: React.FunctionComponent<
   const submitForm = async (e) => {
     e.preventDefault();
 
+    let sensor;
     try {
-      const sensor = await sensorContext.addSensor(data);
-      if (sensor) {
-        setSuccess(true);
-        history.push(getSensorRoute(sensor.id));
-      }
+      sensor = await sensorContext.addSensor(data);
     } catch (err) {
       setErrors(err);
+    }
+
+    if (sensor) {
+      setSuccess(true);
+      history.push(getSensorRoute(sensor.id));
     }
   };
 

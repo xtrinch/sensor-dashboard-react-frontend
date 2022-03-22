@@ -4,9 +4,10 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
-import { removeToast, ToastContext } from 'context/ToastContext';
+import { ToastContext } from 'context/ToastContext';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
+import { observer } from 'mobx-react-lite';
 
 const styles = () =>
   createStyles({
@@ -17,6 +18,7 @@ const styles = () =>
       color: ColorsEnum.WHITE,
       zIndex: 10000,
       alignItems: 'center',
+      justifyContent: 'center',
       width: 'fit-content',
       borderRadius: '3px',
     },
@@ -25,7 +27,7 @@ const styles = () =>
 const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const [toastContext] = useContext(ToastContext);
+  const toastContext = useContext(ToastContext);
 
   return (
     <>
@@ -43,7 +45,7 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => 
           <Grid item>{toast.type === 'success' && <Check />}</Grid>
           <Grid item>{toast.message}</Grid>
           <Grid item>
-            <IconButton onClick={() => removeToast(toast)} size="small">
+            <IconButton onClick={() => toastContext.removeToast(toast.id)} size="small">
               <Close />
             </IconButton>
           </Grid>
@@ -53,4 +55,4 @@ const ToastBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => 
   );
 };
 
-export default withStyles(styles)(ToastBox);
+export default withStyles(styles)(observer(ToastBox));

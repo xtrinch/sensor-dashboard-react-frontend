@@ -1,9 +1,9 @@
-import { addToast } from 'context/ToastContext';
 import { makeAutoObservable } from 'mobx';
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User, { UserId } from 'types/User';
+import { ToastContext, ToastStore } from './ToastContext';
 
 const UserContext = createContext<UserStore>(null);
 
@@ -18,7 +18,7 @@ class UserStore {
 
   public limit: number = 20;
 
-  constructor() {
+  constructor(public toastStore: ToastStore) {
     makeAutoObservable(this);
   }
 
@@ -42,7 +42,9 @@ class UserStore {
     const userIndex = this.users.findIndex((s) => s.id === id);
     this.users[userIndex] = s;
 
-    addToast(new Toast({ message: 'Successfully updated the user', type: 'success' }));
+    this.toastStore.addToast(
+      new Toast({ message: 'Successfully updated the user', type: 'success' }),
+    );
 
     return s;
   };
@@ -53,14 +55,17 @@ class UserStore {
     const idx = this.users.findIndex((s) => s.id === id);
     this.users.splice(idx, 1);
 
-    addToast(new Toast({ message: 'Successfully deleted the user', type: 'success' }));
+    this.toastStore.addToast(
+      new Toast({ message: 'Successfully deleted the user', type: 'success' }),
+    );
 
     return true;
   };
 }
 
 function UserContextProvider(props) {
-  const userStore = useMemo(() => new UserStore(), []);
+  const toastStore = useContext(ToastContext);
+  const userStore = useMemo(() => new UserStore(toastStore), []);
 
   return <UserContext.Provider value={userStore}>{props.children}</UserContext.Provider>;
 }

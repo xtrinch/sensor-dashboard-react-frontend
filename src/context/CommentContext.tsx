@@ -1,5 +1,4 @@
 import { CategoryContext } from 'context/CategoryContext';
-import { addToast } from 'context/ToastContext';
 import { TopicContext } from 'context/TopicContext';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import CommentService from 'services/CommentService';
@@ -7,6 +6,7 @@ import { CategoryId } from 'types/Category';
 import Comment, { CommentId } from 'types/Comment';
 import { Toast } from 'types/Toast';
 import { TopicId } from 'types/Topic';
+import { ToastContext } from './ToastContext';
 
 const CommentContext = createContext<{
   state?: {
@@ -26,6 +26,8 @@ function CommentContextProvider(props: {
   topicId: TopicId;
   children: any;
 }) {
+  const toastStore = useContext(ToastContext);
+
   const { categoryId, topicId } = props;
   const { reload: reloadCategories } = useContext(CategoryContext);
   const { reload: reloadTopics } = useContext(TopicContext);
@@ -68,7 +70,7 @@ function CommentContextProvider(props: {
     comments[commentIndex] = s;
     setState({ ...state, comments: [...comments] });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully updated the comment',
         type: 'success',
@@ -85,7 +87,7 @@ function CommentContextProvider(props: {
     state.comments.splice(idx, 1);
     setState({ ...state });
 
-    addToast(
+    toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the comment',
         type: 'success',
@@ -98,9 +100,8 @@ function CommentContextProvider(props: {
   const addComment = async (comment: Partial<Comment>): Promise<Comment> => {
     const s = await CommentService.addComment(comment);
     await listComments(state.totalPages || 1);
-    // setState({ ...state, comments: [...state.comments, s], page: state.totalPages || 1 });
 
-    addToast(new Toast({ message: 'Successfully added a comment', type: 'success' }));
+    toastStore.addToast(new Toast({ message: 'Successfully added a comment', type: 'success' }));
 
     reloadCategories();
     reloadTopics();

@@ -1,10 +1,10 @@
 import { AccountContext, AccountStore } from 'context/AccountContext';
-import { addToast } from 'context/ToastContext';
 import { makeAutoObservable } from 'mobx';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import SensorService from 'services/SensorService';
 import Sensor, { SensorId } from 'types/Sensor';
 import { Toast } from 'types/Toast';
+import { ToastContext, ToastStore } from './ToastContext';
 
 export const SensorContext = createContext<SensorStore>(null);
 
@@ -17,7 +17,7 @@ export class SensorStore {
 
   public mySensorsLoaded: boolean;
 
-  constructor(public accountStore: AccountStore) {
+  constructor(public accountStore: AccountStore, public toastStore: ToastStore) {
     makeAutoObservable(this);
   }
 
@@ -61,7 +61,9 @@ export class SensorStore {
     this.sensors.push(s);
     this.mySensors.push(s);
 
-    addToast(new Toast({ message: 'Successfully added a sensor', type: 'success' }));
+    this.toastStore.addToast(
+      new Toast({ message: 'Successfully added a sensor', type: 'success' }),
+    );
 
     return s;
   };
@@ -80,7 +82,7 @@ export class SensorStore {
     const sensorIndex = this.sensors.findIndex((sd) => sd.id === s.id);
     this.sensors[sensorIndex] = s;
 
-    addToast(
+    this.toastStore.addToast(
       new Toast({
         message: 'Successfully updated the sensor',
         type: 'success',
@@ -96,7 +98,7 @@ export class SensorStore {
     const idx = this.sensors.findIndex((s) => s.id === id);
     this.sensors.splice(idx, 1);
 
-    addToast(
+    this.toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the sensor',
         type: 'success',
@@ -119,7 +121,11 @@ export class SensorStore {
 
 export function SensorContextProvider(props) {
   const accountStore = useContext(AccountContext);
-  const sensorStore = useMemo(() => new SensorStore(accountStore), []);
+  const toastStore = useContext(ToastContext);
+  const sensorStore = useMemo(
+    () => new SensorStore(accountStore, toastStore),
+    [accountStore, toastStore],
+  );
 
   return <SensorContext.Provider value={sensorStore}>{props.children}</SensorContext.Provider>;
 }

@@ -12,13 +12,13 @@ import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import SettingsInputHdmiIcon from '@mui/icons-material/SettingsInputHdmi';
 import TopBar from 'components/TopBar';
 import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import SensorService from 'services/SensorService';
 import ColorsEnum from 'types/ColorsEnum';
 import Sensor, { SensorId } from 'types/Sensor';
 import { Port, Serial } from 'utils/serial';
-import { addToast } from 'context/ToastContext';
+import { ToastContext } from 'context/ToastContext';
 import { Toast } from 'types/Toast';
 
 const styles = (theme) =>
@@ -73,6 +73,8 @@ const ConnectSensorPage: React.FunctionComponent<
     },
   } = props;
 
+  const toastStore = useContext(ToastContext);
+
   const [sensor, setSensor] = useState<Sensor>(null);
 
   const send = async () => {
@@ -98,14 +100,14 @@ const ConnectSensorPage: React.FunctionComponent<
         const read = await port.readLoop();
 
         if (read === 'success') {
-          addToast(
+          toastStore.addToast(
             new Toast({
               message: 'Successfully configured the device.',
               type: 'success',
             }),
           );
         } else if (read === 'failure') {
-          addToast(
+          toastStore.addToast(
             new Toast({
               message: 'Failed to configure the device.',
               type: 'failure',

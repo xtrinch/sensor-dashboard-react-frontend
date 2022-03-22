@@ -83,7 +83,7 @@ const SideMenuItem: React.FunctionComponent<
     }
 
     item.expanded = !item.expanded;
-    sensorContext.updateSensor(item.id, (item as unknown) as Sensor, true);
+    sensorContext.updateSensor(item.id, item as unknown as Sensor, true);
   };
 
   const { visibility, expandable, type } = props;

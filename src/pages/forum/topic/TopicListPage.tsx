@@ -55,7 +55,7 @@ const TopicListPage: React.FunctionComponent<
         <Typography component="h1" variant="h4" style={{ marginRight: '20px' }}>
           {category?.name}
         </Typography>
-        {(user?.isAllowed([PermissionsEnum.Topic__create]) || !category.protected) && (
+        {user && (user?.isAllowed([PermissionsEnum.Topic__create]) || !category.protected) && (
           <ColoredButton
             startIcon={<Plus />}
             onClick={() => history.push(getAddTopicRoute(category.id))}

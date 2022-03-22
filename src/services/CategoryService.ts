@@ -54,7 +54,7 @@ export default class CategoryService {
 
   public static updateCategory = async (
     id: CategoryId,
-    category: Partial<Category>
+    category: Partial<Category>,
   ): Promise<Category> => {
     const url = getUrl(`/categories/${id}`);
 

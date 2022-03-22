@@ -89,7 +89,7 @@ const ForwarderInfoPage: React.FunctionComponent<
 
   useEffect(() => {
     const getForwarder = async () => {
-      const s = await ForwarderService.getForwarder((id as unknown) as ForwarderId);
+      const s = await ForwarderService.getForwarder(id as unknown as ForwarderId);
       setForwarder(s);
       setData((d) => ({
         ...d,
@@ -106,7 +106,7 @@ const ForwarderInfoPage: React.FunctionComponent<
     e.preventDefault();
 
     try {
-      await updateForwarder((id as unknown) as ForwarderId, new Forwarder(data));
+      await updateForwarder(id as unknown as ForwarderId, new Forwarder(data));
     } catch (e) {
       setErrors(e);
     }
