@@ -1,4 +1,3 @@
-import DateFnsUtils from '@date-io/date-fns';
 import { Grid, IconButton, TextField } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import { WithStyles } from '@mui/styles';
