@@ -7,8 +7,6 @@ import SideMenuItem from 'components/SideMenuItem';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
 import { DisplayContext } from 'context/DisplayContext';
-import { ForwarderContext } from 'context/ForwarderContext';
-import { RadioContext } from 'context/RadioContext';
 import { SensorContext } from 'context/SensorContext';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import React, { useContext } from 'react';
@@ -71,27 +69,11 @@ const SensorsSideMenu: React.FunctionComponent<
   const {
     state: { displays },
   } = useContext(DisplayContext);
-  const {
-    state: { radios },
-  } = useContext(RadioContext);
-  const {
-    state: { forwarders },
-  } = useContext(ForwarderContext);
   const { loginState } = useContext(AccountContext);
 
   const goToDisplays = () => {
     appContext.drawerToggle();
     history.push(DashboardRoutes.DISPLAY_LIST);
-  };
-
-  const goToForwarders = () => {
-    appContext.drawerToggle();
-    history.push(DashboardRoutes.FORWARDER_LIST);
-  };
-
-  const goToRadios = () => {
-    appContext.drawerToggle();
-    history.push(DashboardRoutes.RADIO_LIST);
   };
 
   const { classes } = props;

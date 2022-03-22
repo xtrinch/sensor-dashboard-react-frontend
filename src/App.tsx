@@ -11,8 +11,6 @@ import { AppContextProvider } from 'context/AppContext';
 import { ConfirmationContextProvider } from 'context/ConfirmationContext';
 import { DisplayContextProvider } from 'context/DisplayContext';
 import { ErrorContextProvider } from 'context/ErrorContext';
-import { ForwarderContextProvider } from 'context/ForwarderContext';
-import { RadioContextProvider } from 'context/RadioContext';
 import { SensorContextProvider } from 'context/SensorContext';
 import { ToastContextProvider } from 'context/ToastContext';
 import { UserContextProvider } from 'context/UserContext';
@@ -69,51 +67,47 @@ const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
                   <ConfirmationContextProvider>
                     <DisplayContextProvider>
                       <UserContextProvider>
-                        <ForwarderContextProvider>
-                          <RadioContextProvider>
-                            <ErrorContextProvider>
-                              <Wrapper>
-                                <ToastBox />
-                                <ConfirmationBox />
-                                <ErrorBox />
-                                <Grid container className={classes.app}>
-                                  <Grid item>
-                                    <SideMenuWrapper />
-                                  </Grid>
-                                  <Grid item style={{ flex: '1' }}>
-                                    <Route exact path="/">
-                                      <Redirect to={DashboardRoutes.DASHBOARD} />
-                                    </Route>
-                                    <Route path={ForumRoutes.FORUM}>
-                                      <ForumIndexPage />
-                                    </Route>
-                                    <Route path={ForumRoutes.TOPIC_BY_TAG}>
-                                      <ForumIndexPage />
-                                    </Route>
-                                    <Route path={DashboardRoutes.DASHBOARD}>
-                                      <DashboardIndexPage />
-                                    </Route>
-                                    <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
-                                      <DashboardIndexPage />
-                                    </Route>
-                                    <Route path={DashboardRoutes.CANVAS}>
-                                      <DashboardIndexPage />
-                                    </Route>
-                                    <Route path={UserRoutes.USERS}>
-                                      <UserIndexPage />
-                                    </Route>
-                                    <Route exact path={Routes.LOGIN}>
-                                      <LoginPage />
-                                    </Route>
-                                    <Route exact path={Routes.REGISTER}>
-                                      <RegisterPage />
-                                    </Route>
-                                  </Grid>
-                                </Grid>
-                              </Wrapper>
-                            </ErrorContextProvider>
-                          </RadioContextProvider>
-                        </ForwarderContextProvider>
+                        <ErrorContextProvider>
+                          <Wrapper>
+                            <ToastBox />
+                            <ConfirmationBox />
+                            <ErrorBox />
+                            <Grid container className={classes.app}>
+                              <Grid item>
+                                <SideMenuWrapper />
+                              </Grid>
+                              <Grid item style={{ flex: '1' }}>
+                                <Route exact path="/">
+                                  <Redirect to={DashboardRoutes.DASHBOARD} />
+                                </Route>
+                                <Route path={ForumRoutes.FORUM}>
+                                  <ForumIndexPage />
+                                </Route>
+                                <Route path={ForumRoutes.TOPIC_BY_TAG}>
+                                  <ForumIndexPage />
+                                </Route>
+                                <Route path={DashboardRoutes.DASHBOARD}>
+                                  <DashboardIndexPage />
+                                </Route>
+                                <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
+                                  <DashboardIndexPage />
+                                </Route>
+                                <Route path={DashboardRoutes.CANVAS}>
+                                  <DashboardIndexPage />
+                                </Route>
+                                <Route path={UserRoutes.USERS}>
+                                  <UserIndexPage />
+                                </Route>
+                                <Route exact path={Routes.LOGIN}>
+                                  <LoginPage />
+                                </Route>
+                                <Route exact path={Routes.REGISTER}>
+                                  <RegisterPage />
+                                </Route>
+                              </Grid>
+                            </Grid>
+                          </Wrapper>
+                        </ErrorContextProvider>
                       </UserContextProvider>
                     </DisplayContextProvider>
                   </ConfirmationContextProvider>

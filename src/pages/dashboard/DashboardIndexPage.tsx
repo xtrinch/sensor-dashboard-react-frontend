@@ -6,11 +6,6 @@ import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import AddDisplayPage from 'pages/dashboard/displays/AddDisplayPage';
 import DisplayInfoPage from 'pages/dashboard/displays/DisplayInfoPage';
 import DisplayListPage from 'pages/dashboard/displays/DisplayListPage';
-import AddForwarderPage from 'pages/dashboard/forwarders/AddForwarderPage';
-import ForwarderInfoPage from 'pages/dashboard/forwarders/ForwarderInfoPage';
-import ForwarderListPage from 'pages/dashboard/forwarders/ForwarderListPage';
-import AddRadioPage from 'pages/dashboard/radios/AddRadioPage';
-import RadioListPage from 'pages/dashboard/radios/RadioListPage';
 import AddSensorPage from 'pages/dashboard/sensors/AddSensorPage';
 import SensorInfoPage from 'pages/dashboard/sensors/SensorInfoPage';
 import MySensorsPage from 'pages/dashboard/sensors/MySensorsPage';
@@ -41,35 +36,17 @@ const DashboardIndexPage = () => {
         <Route exact path={DashboardRoutes.ADD_DISPLAY}>
           <AddDisplayPage />
         </Route>
-        <Route exact path={DashboardRoutes.ADD_RADIO}>
-          <AddRadioPage />
-        </Route>
-        <Route exact path={DashboardRoutes.ADD_FORWARDER}>
-          <AddForwarderPage />
-        </Route>
         <Route exact path={DashboardRoutes.CONNECT_SENSOR}>
           <ConnectSensorPage />
         </Route>
         <Route exact path={DashboardRoutes.SENSOR}>
           <SensorInfoPage />
         </Route>
-        <Route exact path={DashboardRoutes.RADIO}>
-          <AddRadioPage />
-        </Route>
         <Route exact path={DashboardRoutes.DISPLAY}>
           <DisplayInfoPage />
         </Route>
-        <Route exact path={DashboardRoutes.FORWARDER}>
-          <ForwarderInfoPage />
-        </Route>
         <Route exact path={DashboardRoutes.DISPLAY_LIST}>
           <DisplayListPage />
-        </Route>
-        <Route exact path={DashboardRoutes.FORWARDER_LIST}>
-          <ForwarderListPage />
-        </Route>
-        <Route exact path={DashboardRoutes.RADIO_LIST}>
-          <RadioListPage />
         </Route>
         <Route path={DashboardRoutes.TOPIC_BY_TAG}>
           <TopicPageByTag />
