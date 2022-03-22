@@ -6,6 +6,7 @@ class Measurement {
     this.createdAt = m?.createdAt || undefined;
     this.measurement = m?.measurement || 0;
     this.sensorId = m?.sensorId;
+    this.measurementType = m?.measurementType;
   }
 
   public createdAt: string; // partial date

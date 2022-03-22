@@ -5,6 +5,7 @@ import BoardTypeEnum from 'types/BoardTypeEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import SensorTypeEnum from 'types/SensorTypeEnum';
 import User, { UserId } from 'types/User';
+import Measurement from './Measurement';
 
 export type SensorId = string;
 
@@ -28,7 +29,8 @@ class Sensor implements AbstractEntity {
     this.sensorTypes = s?.sensorTypes;
     this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
     this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
-
+    this.lastMeasurements = s?.lastMeasurements || [];
+    this.lastMeasurements = this.lastMeasurements.map((m) => new Measurement(m));
     makeAutoObservable(this);
   }
 
@@ -67,6 +69,8 @@ class Sensor implements AbstractEntity {
   public lastSeenAt: Date;
 
   public private: boolean;
+
+  public lastMeasurements?: Measurement[];
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {

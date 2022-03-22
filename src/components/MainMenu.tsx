@@ -143,7 +143,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
             history.push(DashboardRoutes.DASHBOARD);
           }}
           value={DashboardRoutes.DASHBOARD}
-          label={'Public'}
+          label={'Public graphs'}
         />
         {accountStore.loginState === 'LOGGED_IN' && (
           <Tab
@@ -152,7 +152,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
               history.push(DashboardRoutes.PERSONAL_DASHBOARD);
             }}
             value={DashboardRoutes.PERSONAL_DASHBOARD}
-            label={'Personal'}
+            label={'Personal graphs'}
           />
         )}
         {accountStore.loginState === 'LOGGED_IN' && (
@@ -162,7 +162,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
               history.push(DashboardRoutes.CANVAS);
             }}
             value={DashboardRoutes.CANVAS}
-            label={'Canvas'}
+            label={'Realtime data'}
           />
         )}
         <Tab

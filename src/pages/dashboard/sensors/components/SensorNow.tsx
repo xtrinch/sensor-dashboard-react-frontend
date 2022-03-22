@@ -5,23 +5,19 @@ import React from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import Sensor from 'types/Sensor';
 import { observer } from 'mobx-react-lite';
+import Measurement from 'types/Measurement';
+import { DATETIME_REGEX } from 'utils/date.range';
+import { format } from 'date-fns';
+import { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
 
 const styles = () =>
   createStyles({
     root: {
-      borderBottom: `1px solid ${ColorsEnum.BGLIGHTER}`,
+      border: `1px solid ${ColorsEnum.BGLIGHTER}`,
       boxShadow: 'none',
       borderRadius: '0px',
       backgroundColor: ColorsEnum.BGDARK,
       padding: '15px',
-      '& svg': {
-        overflow: 'visible',
-        position: 'relative',
-        top: '-1px',
-      },
-      '&:nth-of-type(2n + 1)': {
-        borderRight: `1px solid ${ColorsEnum.BGLIGHTER}`,
-      },
       backgroundImage: 'unset',
       fontSize: '12px',
     },
@@ -37,11 +33,30 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
   const { classes, sensor } = props;
 
   return (
-    <Card className={classes.root}>
-      <Typography variant="h6" style={{ marginBottom: '7px' }}>
+    <div className={classes.root}>
+      <Typography variant="h5" style={{ marginBottom: '7px', color: ColorsEnum.BLUE }}>
         {sensor.displayName}
       </Typography>
-    </Card>
+      <div>
+        <Typography variant="subtitle2">Last seen:</Typography>
+      </div>
+      <div style={{ marginBottom: '10px', color: ColorsEnum.BLUE }}>
+        {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
+      </div>
+      <div>
+        <Typography variant="subtitle2">Last measurements:</Typography>
+      </div>
+      {sensor.lastMeasurements.map((m: Measurement) => (
+        <div>
+          <span>
+            <u>{MeasurementTypeLabelsEnum[m.measurementType]}</u>
+          </span>
+          :&nbsp;
+          <span style={{ color: ColorsEnum.BLUE }}>{m.measurement}</span>&nbsp;
+          <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
+        </div>
+      ))}
+    </div>
   );
 };
 

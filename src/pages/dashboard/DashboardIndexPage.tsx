@@ -52,8 +52,8 @@ const DashboardIndexPage = () => {
           <TopicPageByTag />
         </Route>
       </Grid>
-      <Grid item style={{ width: '270px' }}>
-        {location.pathname.indexOf('canvas') < 0 && (
+      {location.pathname.indexOf('canvas') < 0 && (
+        <Grid item style={{ width: '270px' }}>
           <SensorsSideMenu
             style={{
               position: 'fixed',
@@ -66,8 +66,8 @@ const DashboardIndexPage = () => {
               overflow: 'auto',
             }}
           />
-        )}
-      </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 };
