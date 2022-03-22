@@ -82,8 +82,8 @@ class Sensor implements AbstractEntity {
       unit: '%',
     },
     [MeasurementTypeEnum.PRESSURE]: {
-      domain: [900, 1050],
-      unit: 'hPa',
+      domain: [90000, 105000],
+      unit: 'Pa',
     },
     [MeasurementTypeEnum.TEMPERATURE]: {
       domain: [-20, 40],

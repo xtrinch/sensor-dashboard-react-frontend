@@ -79,13 +79,8 @@ const ConnectSensorPage: React.FunctionComponent<
     if (!port) return;
 
     const data: Uint8Array[] = [];
-    const {
-      timeBetweenMeasurements,
-      wifiPassword,
-      wifiSSID,
-      accessToken,
-      maxRtcRecords,
-    } = formik.values;
+    const { timeBetweenMeasurements, wifiPassword, wifiSSID, accessToken, maxRtcRecords } =
+      formik.values;
 
     const stringified = JSON.stringify({
       timeBetweenMeasurements,
@@ -140,7 +135,7 @@ const ConnectSensorPage: React.FunctionComponent<
 
   useEffect(() => {
     const getSensor = async () => {
-      const s = await SensorService.getSensor((id as unknown) as SensorId);
+      const s = await SensorService.getSensor(id as unknown as SensorId);
       setSensor(s);
     };
 
@@ -159,7 +154,7 @@ const ConnectSensorPage: React.FunctionComponent<
     try {
       await p.connect();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -169,7 +164,7 @@ const ConnectSensorPage: React.FunctionComponent<
     try {
       await port.disconnect();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     setPort(null);
   };
