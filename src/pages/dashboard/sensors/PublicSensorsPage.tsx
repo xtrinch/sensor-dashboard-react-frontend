@@ -14,6 +14,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import Sensor from 'types/Sensor';
 import { observer } from 'mobx-react-lite';
+import SensorsSideMenu from '../components/SensorsSideMenu';
 
 const styles = (theme) =>
   createStyles({
@@ -106,33 +107,49 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
   return (
     <div style={{ width: '100%' }}>
       <TopMenu />
-      {!sensorStore.sensors?.length && (
-        <Box style={{ textAlign: 'center', marginTop: '50px' }}>
-          <Typography variant="h5">No sensors found. Try adding some.</Typography>
-        </Box>
-      )}
-      {!measurements && (
-        <Box style={{ textAlign: 'center', marginTop: '50px' }}>
-          <CircularProgress></CircularProgress>
-        </Box>
-      )}
-      {measurements && (
-        <div className={classes.root}>
-          {sensorTypes.map((type: MeasurementTypeEnum) => {
-            return (
-              <SensorCanvas
-                key={type}
-                type={type}
-                date={appContext.date}
-                groupBy={appContext.groupBy}
-                domain={appContext.domain}
-                measurements={measurements[type]}
-              />
-            );
-          })}
-          {!sensorTypes.length && <div style={{ padding: '20px' }}>No results</div>}
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ flex: '1' }}>
+          {!sensorStore.sensors?.length && (
+            <Box style={{ textAlign: 'center', marginTop: '50px' }}>
+              <Typography variant="h5">No sensors found. Try adding some.</Typography>
+            </Box>
+          )}
+          {!measurements && (
+            <Box style={{ textAlign: 'center', marginTop: '50px' }}>
+              <CircularProgress></CircularProgress>
+            </Box>
+          )}
+          {measurements && (
+            <div className={classes.root}>
+              {sensorTypes.map((type: MeasurementTypeEnum) => {
+                return (
+                  <SensorCanvas
+                    key={type}
+                    type={type}
+                    date={appContext.date}
+                    groupBy={appContext.groupBy}
+                    domain={appContext.domain}
+                    measurements={measurements[type]}
+                  />
+                );
+              })}
+              {!sensorTypes.length && <div style={{ padding: '20px' }}>No results</div>}
+            </div>
+          )}
         </div>
-      )}
+        <div style={{ width: '270px' }}>
+          <SensorsSideMenu
+            style={{
+              right: '0',
+              backgroundColor: 'rgb(58,65,73)',
+              zIndex: 1000,
+              width: '270px',
+              height: '100vh',
+              overflow: 'auto',
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 };

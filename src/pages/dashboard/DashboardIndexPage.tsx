@@ -52,22 +52,6 @@ const DashboardIndexPage = () => {
           <TopicPageByTag />
         </Route>
       </Grid>
-      {location.pathname.indexOf('canvas') < 0 && (
-        <Grid item style={{ width: '270px' }}>
-          <SensorsSideMenu
-            style={{
-              position: 'fixed',
-              right: '0',
-              paddingTop: '65px',
-              backgroundColor: 'rgb(58,65,73)',
-              zIndex: 1000,
-              width: '270px',
-              height: 'calc(100vh)',
-              overflow: 'auto',
-            }}
-          />
-        </Grid>
-      )}
     </Grid>
   );
 };
