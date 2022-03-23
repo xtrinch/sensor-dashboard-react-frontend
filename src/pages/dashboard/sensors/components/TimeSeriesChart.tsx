@@ -26,7 +26,9 @@ export interface ChartData {
   name: string;
   ordering: number;
   label: string;
+  color: string;
 }
+
 interface TimeSeriesChartInterface {
   ticks: number[];
   chartData: ChartData[]; // info about sensors - one in array per each sensor
@@ -85,16 +87,16 @@ const TimeSeriesChart = (props: TimeSeriesChartInterface) => {
             }}
           />
         )}
-        {chartData.map((line, index) => (
+        {chartData.map((line: ChartData, index) => (
           <Line
             key={line.name}
             dataKey={line.name}
             name={chartData[index]?.label}
             strokeWidth={1}
             isAnimationActive={false}
-            fill={GraphColors[line.ordering] || 'white'} // dot color
+            fill={line.color} // dot color
             id={`${line.name}`}
-            stroke={GraphColors[line.ordering]}
+            stroke={line.color} // stroke color
             dot={{ r: 1.5 }}
             connectNulls={true}
           />

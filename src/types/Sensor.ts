@@ -31,6 +31,7 @@ class Sensor implements AbstractEntity {
     this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
     this.lastMeasurements = s?.lastMeasurements || [];
     this.lastMeasurements = this.lastMeasurements.map((m) => new Measurement(m));
+    this.color = s?.color || '#ffffff';
     makeAutoObservable(this);
   }
 
@@ -71,6 +72,8 @@ class Sensor implements AbstractEntity {
   public private: boolean;
 
   public lastMeasurements?: Measurement[];
+
+  public color: string;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {

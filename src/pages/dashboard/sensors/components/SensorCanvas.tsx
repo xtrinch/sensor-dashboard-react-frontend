@@ -127,7 +127,7 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
 
   const chartData: ChartData[] = compact(
     allSensors.map((s, index) => {
-      // filter out sensor without any measurements
+      // filter out sensors without any measurements
       if (!measurements.find((m) => m.sensorId === s.id)) {
         return null;
       }
@@ -136,6 +136,7 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
         sensorId: s.id,
         ordering: index,
         label: s.name,
+        color: s.color,
       };
     }),
   );

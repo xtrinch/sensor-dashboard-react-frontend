@@ -1,3 +1,4 @@
+import { BlockPicker } from 'react-color';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,7 +20,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import SensorService from 'services/SensorService';
 import { listTimeZones } from 'timezone-support';
 import BoardTypeEnum from 'types/BoardTypeEnum';
-import ColorsEnum from 'types/ColorsEnum';
+import ColorsEnum, { GraphColors } from 'types/ColorsEnum';
 import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
 import Sensor, { SensorId } from 'types/Sensor';
 import SensorTypeEnum from 'types/SensorTypeEnum';
@@ -82,7 +83,7 @@ const SensorInfoPage: React.FunctionComponent<
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
-  const [data, setData] = useState({
+  const [data, setData] = useState<Partial<Sensor>>({
     name: '',
     displayName: '',
     location: '',
@@ -91,6 +92,7 @@ const SensorInfoPage: React.FunctionComponent<
     private: false,
     sensorTypes: [],
     measurementTypes: [],
+    color: '#ffffff',
   });
 
   const [sensor, setSensor] = useState(null);
@@ -113,14 +115,7 @@ const SensorInfoPage: React.FunctionComponent<
       setSensor(s);
       setData((d) => ({
         ...d,
-        name: s.name,
-        displayName: s.displayName,
-        location: s.location,
-        boardType: s.boardType,
-        timezone: s.timezone,
-        private: s.private,
-        measurementTypes: s.measurementTypes,
-        sensorTypes: s.sensorTypes,
+        ...s,
       }));
     };
 
@@ -268,6 +263,13 @@ const SensorInfoPage: React.FunctionComponent<
               }
               label="Private"
             />
+            <div style={{ marginTop: '20px' }}>
+              <BlockPicker
+                color={data.color}
+                colors={Object.values(GraphColors)}
+                onChange={(color) => fieldChange(color.hex, 'color')}
+              />
+            </div>
             <div style={{ textAlign: 'center' }}>
               <ColoredButton
                 type="submit"

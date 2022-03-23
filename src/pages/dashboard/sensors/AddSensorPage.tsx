@@ -16,9 +16,11 @@ import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { listTimeZones } from 'timezone-support';
 import BoardTypeEnum from 'types/BoardTypeEnum';
-import ColorsEnum from 'types/ColorsEnum';
+import ColorsEnum, { GraphColors } from 'types/ColorsEnum';
 import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
 import SensorTypeEnum from 'types/SensorTypeEnum';
+import Sensor from 'types/Sensor';
+import { BlockPicker } from 'react-color';
 
 const styles = (theme) =>
   createStyles({
@@ -64,7 +66,7 @@ const AddSensorPage: React.FunctionComponent<
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
-  const [data, setData] = useState({
+  const [data, setData] = useState<Partial<Sensor>>({
     name: '',
     displayName: '',
     measurementTypes: [],
@@ -73,6 +75,7 @@ const AddSensorPage: React.FunctionComponent<
     boardType: '' as BoardTypeEnum,
     timezone: null,
     private: false,
+    color: GraphColors[0],
   });
 
   const [success, setSuccess] = useState(false);
@@ -196,6 +199,13 @@ const AddSensorPage: React.FunctionComponent<
                   }
                   label="Private"
                 />
+                <div style={{ marginTop: '20px' }}>
+                  <BlockPicker
+                    color={data.color}
+                    colors={Object.values(GraphColors)}
+                    onChange={(color) => fieldChange(color.hex, 'color')}
+                  />
+                </div>
                 <div style={{ textAlign: 'center' }}>
                   <ColoredButton
                     type="submit"
