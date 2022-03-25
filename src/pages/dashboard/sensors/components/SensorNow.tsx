@@ -16,10 +16,10 @@ const styles = () =>
       border: `1px solid ${ColorsEnum.BGLIGHTER}`,
       boxShadow: 'none',
       borderRadius: '0px',
-      backgroundColor: ColorsEnum.BGDARK,
       padding: '15px',
       backgroundImage: 'unset',
       fontSize: '12px',
+      backgroundColor: ColorsEnum.BGDARK,
     },
   });
 
@@ -33,18 +33,22 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
   const { classes, sensor } = props;
 
   return (
-    <div className={classes.root}>
-      <Typography variant="h5" style={{ marginBottom: '7px', color: ColorsEnum.BLUE }}>
+    <div className={classes.root} style={{ color: sensor.color }}>
+      <Typography variant="h5" style={{ marginBottom: '7px', color: sensor.color }}>
         {sensor.displayName}
       </Typography>
       <div>
-        <Typography variant="subtitle2">Last seen:</Typography>
+        <Typography variant="subtitle2" style={{ color: 'white' }}>
+          Last seen:
+        </Typography>
       </div>
-      <div style={{ marginBottom: '10px', color: ColorsEnum.BLUE }}>
+      <div style={{ marginBottom: '10px' }}>
         {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
       </div>
       <div>
-        <Typography variant="subtitle2">Last measurements:</Typography>
+        <Typography variant="subtitle2" style={{ color: 'white' }}>
+          Last measurements:
+        </Typography>
       </div>
       {sensor.lastMeasurements.map((m: Measurement) => (
         <div>
@@ -52,7 +56,7 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
             <u>{MeasurementTypeLabelsEnum[m.measurementType]}</u>
           </span>
           :&nbsp;
-          <span style={{ color: ColorsEnum.BLUE }}>{m.measurement}</span>&nbsp;
+          <span>{m.measurement}</span>&nbsp;
           <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
         </div>
       ))}

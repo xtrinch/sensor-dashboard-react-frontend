@@ -52,6 +52,7 @@ const styles = (theme) =>
       },
       '& >.MuiFormControl-root, >.MuiAutocomplete-root': {
         width: 'calc(50% - 10px)',
+        marginTop: '20px',
         '&:nth-of-type(2n+1)': {
           marginRight: '20px',
         },
