@@ -4,6 +4,7 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ConfirmationBox from 'components/ConfirmationBox';
 import ErrorBox from 'components/ErrorBox';
+import { LazySuspense } from 'components/LazySuspense';
 import SideMenuWrapper from 'components/SideMenuWrapper';
 import ToastBox from 'components/ToastBox';
 import { AccountContextProvider } from 'context/AccountContext';
@@ -16,15 +17,10 @@ import { ToastContextProvider } from 'context/ToastContext';
 import { UserContextProvider } from 'context/UserContext';
 import theme from 'layout/Theme';
 import { observer } from 'mobx-react-lite';
-import DashboardIndexPage from 'pages/dashboard/DashboardIndexPage';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
-import ForumIndexPage from 'pages/forum/ForumIndexPage';
 import { ForumRoutes } from 'pages/forum/ForumRoutes';
-import LoginPage from 'pages/LoginPage';
-import RegisterPage from 'pages/RegisterPage';
-import UserIndexPage from 'pages/users/UserIndexPage';
 import { UserRoutes } from 'pages/users/UserRoutes';
-import React from 'react';
+import React, { lazy } from 'react';
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import { Routes } from 'utils/Routes';
@@ -53,6 +49,12 @@ const styles = () =>
       flex: '1',
     },
   });
+
+const ForumIndexPage = LazySuspense(lazy(() => import('pages/forum/ForumIndexPage')));
+const DashboardIndexPage = LazySuspense(lazy(() => import('pages/dashboard/DashboardIndexPage')));
+const UserIndexPage = LazySuspense(lazy(() => import('pages/users/UserIndexPage')));
+const LoginPage = LazySuspense(lazy(() => import('pages/LoginPage')));
+const RegisterPage = LazySuspense(lazy(() => import('pages/RegisterPage')));
 
 const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
