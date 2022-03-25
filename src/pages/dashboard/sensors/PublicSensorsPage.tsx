@@ -138,16 +138,7 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
           )}
         </div>
         <div style={{ width: '270px' }}>
-          <SensorsSideMenu
-            style={{
-              right: '0',
-              backgroundColor: 'rgb(58,65,73)',
-              zIndex: 1000,
-              width: '270px',
-              height: '100vh',
-              overflow: 'auto',
-            }}
-          />
+          <SensorsSideMenu />
         </div>
       </div>
     </div>

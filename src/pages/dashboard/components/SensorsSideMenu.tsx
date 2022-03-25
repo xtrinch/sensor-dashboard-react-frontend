@@ -17,6 +17,16 @@ import { observer } from 'mobx-react-lite';
 
 const styles = () =>
   createStyles({
+    root: {
+      right: '0',
+      backgroundColor: 'rgb(58,65,73)',
+      zIndex: 1000,
+      width: '270px',
+      overflow: 'auto',
+      position: 'fixed',
+      top: '66px',
+      height: 'calc(100vh - 66px)',
+    },
     subheader: {
       textTransform: 'none',
       fontSize: '12px',
@@ -78,7 +88,7 @@ const SensorsSideMenu: React.FunctionComponent<
 
   const { classes } = props;
   return (
-    <div style={props.style}>
+    <div style={props.style} className={classes.root}>
       {loginState === 'LOGGED_IN' && location.pathname.includes('personal') && (
         <>
           <Grid container className={classes.listTitle} alignItems="center">
