@@ -8,7 +8,8 @@ import { observer } from 'mobx-react-lite';
 import Measurement from 'types/Measurement';
 import { DATETIME_REGEX } from 'utils/date.range';
 import { format } from 'date-fns';
-import { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
+import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
+import { BatteryChargingFull, Circle, Compress, Opacity, Thermostat } from '@mui/icons-material';
 
 const styles = () =>
   createStyles({
@@ -20,6 +21,30 @@ const styles = () =>
       backgroundImage: 'unset',
       fontSize: '12px',
       backgroundColor: ColorsEnum.BGDARK,
+    },
+    measurements: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gridAutoRows: '60px',
+      gridGap: '10px',
+    },
+    measurement: {
+      border: `1px solid ${ColorsEnum.BGLIGHTER}`,
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingLeft: '10px',
+      fontSize: '18px',
+      '& svg': {
+        position: 'relative',
+        top: '3px',
+      },
+    },
+    name: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
   });
 
@@ -34,9 +59,21 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
 
   return (
     <div className={classes.root} style={{ color: sensor.color }}>
-      <Typography variant="h5" style={{ marginBottom: '7px', color: sensor.color }}>
-        {sensor.displayName}
-      </Typography>
+      <div className={classes.name}>
+        <Typography variant="h5" style={{ marginBottom: '7px', color: sensor.color }}>
+          {sensor.displayName}
+        </Typography>
+        <Typography variant="subtitle2" style={{ color: 'white' }}>
+          <Circle
+            style={{
+              color: sensor.lastMeasurements?.length > 0 ? ColorsEnum.GREEN : ColorsEnum.RED,
+              fontSize: '12px',
+              marginRight: '5px',
+            }}
+          />
+          {sensor.lastMeasurements?.length > 0 ? 'Online' : 'Offline'}
+        </Typography>
+      </div>
       <div>
         <Typography variant="subtitle2" style={{ color: 'white' }}>
           Last seen:
@@ -45,21 +82,22 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
       <div style={{ marginBottom: '10px' }}>
         {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
       </div>
-      <div>
-        <Typography variant="subtitle2" style={{ color: 'white' }}>
-          Last measurements:
-        </Typography>
+      <div className={classes.measurements}>
+        {sensor.lastMeasurements.map((m: Measurement) => (
+          <div className={classes.measurement}>
+            <span style={{ paddingRight: '8px' }}>
+              {m.measurementType === MeasurementTypeEnum.TEMPERATURE && <Thermostat />}
+              {m.measurementType === MeasurementTypeEnum.HUMIDITY && <Opacity />}
+              {m.measurementType === MeasurementTypeEnum.PRESSURE && <Compress />}
+              {m.measurementType === MeasurementTypeEnum.BATTERY_VOLTAGE && <BatteryChargingFull />}
+            </span>
+            <span>
+              <span>{m.measurement}</span>&nbsp;
+              <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
+            </span>
+          </div>
+        ))}
       </div>
-      {sensor.lastMeasurements.map((m: Measurement) => (
-        <div>
-          <span>
-            <u>{MeasurementTypeLabelsEnum[m.measurementType]}</u>
-          </span>
-          :&nbsp;
-          <span>{m.measurement}</span>&nbsp;
-          <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
-        </div>
-      ))}
     </div>
   );
 };

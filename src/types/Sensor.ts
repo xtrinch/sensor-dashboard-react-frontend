@@ -29,7 +29,10 @@ class Sensor implements AbstractEntity {
     this.sensorTypes = s?.sensorTypes;
     this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
     this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
-    this.lastMeasurements = s?.lastMeasurements || [];
+    this.lastMeasurements =
+      s?.lastMeasurements.filter(
+        (s) => s.measurementType !== MeasurementTypeEnum.RAW_BATTERY_VOLTAGE,
+      ) || [];
     this.lastMeasurements = this.lastMeasurements.map((m) => new Measurement(m));
     this.color = s?.color || '#ffffff';
     makeAutoObservable(this);

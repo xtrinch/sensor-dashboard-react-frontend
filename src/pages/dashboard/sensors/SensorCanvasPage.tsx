@@ -17,10 +17,10 @@ const styles = (theme) =>
     root: {
       padding: '10px',
       display: 'grid',
-      gridTemplateColumns: 'repeat(3, minmax(100px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
       gridGap: '10px',
       backgroundColor: ColorsEnum.BGDARK,
-      gridAutoRows: 'calc(33vh - 10px)',
+      gridAutoRows: '250px',
       width: '100%',
       boxSizing: 'border-box',
       overflow: 'auto',
@@ -49,8 +49,15 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
       <div className={classes.root}>
         {sensorContext.mySensors
           .slice()
-          .filter((s) => s.lastMeasurements?.length > 0)
-          .sort((a, b) => (isBefore(a.lastSeenAt, b.lastSeenAt) ? 1 : -1))
+          .sort((a, b) => {
+            if (!a.lastSeenAt) {
+              return 1;
+            }
+            if (isBefore(a.lastSeenAt, b.lastSeenAt)) {
+              return 1;
+            }
+            return -1;
+          })
           .map((s) => (
             <SensorNow sensor={s} key={s.id} />
           ))}
