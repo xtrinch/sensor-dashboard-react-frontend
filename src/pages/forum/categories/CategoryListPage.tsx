@@ -15,6 +15,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import Category from 'types/Category';
 import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
+import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
@@ -34,9 +35,7 @@ const CategoryListPage: React.FunctionComponent<
   const { classes, history } = props;
   const { user } = useContext(AccountContext);
 
-  const {
-    state: { categories },
-  } = useContext(CategoryContext);
+  const categoryStore = useContext(CategoryContext);
 
   return (
     <>
@@ -56,7 +55,7 @@ const CategoryListPage: React.FunctionComponent<
         )}
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
-        {categories.length !== 0 && (
+        {categoryStore.categories.length !== 0 && (
           <Table>
             <TableHead>
               <TableRow>
@@ -71,13 +70,13 @@ const CategoryListPage: React.FunctionComponent<
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories?.map((category: Category, index: number) => (
+              {categoryStore.categories?.map((category: Category, index: number) => (
                 <CategoryItem category={category} key={index} />
               ))}
             </TableBody>
           </Table>
         )}
-        {categories.length === 0 && (
+        {categoryStore.categories.length === 0 && (
           <Typography variant="body2" component="p" style={{ margin: '30px 0px' }}>
             No categories added
           </Typography>
@@ -87,4 +86,4 @@ const CategoryListPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(CategoryListPage));
+export default withRouter(withStyles(styles)(observer(CategoryListPage)));

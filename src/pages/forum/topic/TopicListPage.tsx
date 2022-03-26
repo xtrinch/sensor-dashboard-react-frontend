@@ -16,6 +16,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import Topic from 'types/Topic';
+import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
@@ -43,11 +44,9 @@ const TopicListPage: React.FunctionComponent<
     state: { topics },
   } = useContext(TopicContext);
 
-  const {
-    state: { categories },
-  } = useContext(CategoryContext);
+  const categoryStore = useContext(CategoryContext);
 
-  const category = categories.find((c) => c.id === params.id);
+  const category = categoryStore.categories.find((c) => c.id === params.id);
 
   return (
     <>
@@ -94,4 +93,4 @@ const TopicListPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(TopicListPage));
+export default withRouter(withStyles(styles)(observer(TopicListPage)));

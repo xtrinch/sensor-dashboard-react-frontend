@@ -4,6 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import { CategoryContext } from 'context/CategoryContext';
 import { CommentContextProvider } from 'context/CommentContext';
 import { TopicContextProvider } from 'context/TopicContext';
+import { observer } from 'mobx-react-lite';
 import { ForumRoutes } from 'pages/forum/ForumRoutes';
 import AddTopicPage from 'pages/forum/topic/AddTopicPage';
 import TopicListPage from 'pages/forum/topic/TopicListPage';
@@ -20,11 +21,9 @@ const ForumIndexPage: React.FunctionComponent<
     match: { params },
   } = props;
 
-  const {
-    state: { categories },
-  } = useContext(CategoryContext);
+  const categoryStore = useContext(CategoryContext);
 
-  const category = categories.find((c) => c.id === params.id);
+  const category = categoryStore.categories.find((c) => c.id === params.id);
 
   if (!category) {
     return null;
@@ -54,4 +53,4 @@ const ForumIndexPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(ForumIndexPage));
+export default withRouter(withStyles(styles)(observer(ForumIndexPage)));

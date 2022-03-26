@@ -1,60 +1,52 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { makeAutoObservable } from 'mobx';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import CategoryService from 'services/CategoryService';
 import Category, { CategoryId } from 'types/Category';
 import { Toast } from 'types/Toast';
-import { ToastContext } from './ToastContext';
+import { ToastContext, ToastStore } from './ToastContext';
 
-const CategoryContext = createContext<{
-  state?: {
-    categoriesLoaded: boolean;
-    categories: Category[];
+export class CategoryStore {
+  public categoriesLoaded: boolean = false;
+
+  public categories: Category[] = [];
+
+  constructor(public toastStore: ToastStore) {
+    makeAutoObservable(this);
+  }
+
+  public updateCategory = async (
+    id: CategoryId,
+    category: Partial<Category>,
+  ): Promise<Category> => {
+    const s = await CategoryService.updateCategory(id, category);
+
+    const categoryIndex = this.categories.findIndex((s) => s.id === id);
+    this.categories[categoryIndex] = s;
+
+    this.toastStore.addToast(
+      new Toast({
+        message: 'Successfully updated the category',
+        type: 'success',
+      }),
+    );
+
+    return s;
   };
-  updateCategory?: (id: CategoryId, category: Category) => Promise<Category>;
-  addCategory?: (category: Category) => Promise<Category>;
-  deleteCategory?: (id: CategoryId) => Promise<boolean>;
-  increaseInSequence?: (id: CategoryId) => Promise<Category>;
-  decreaseInSequence?: (id: CategoryId) => Promise<Category>;
-  reload?: () => Promise<void>;
-}>({});
 
-function CategoryContextProvider(props) {
-  const [state, setState] = useState({
-    categories: [],
-    categoriesLoaded: false,
-  });
-  const toastStore = useContext(ToastContext);
-
-  const reload = async (): Promise<void> => {
+  public reload = async (): Promise<void> => {
     const resp = await CategoryService.listCategories();
     const categoryData = resp.items;
 
-    setState({ ...state, categories: categoryData, categoriesLoaded: true });
+    this.categories = categoryData;
+    this.categoriesLoaded = true;
   };
 
-  const updateCategory = async (id: CategoryId, category: Partial<Category>): Promise<Category> => {
-    const s = await CategoryService.updateCategory(id, category);
-
-    const { categories } = state;
-    const categoryIndex = categories.findIndex((s) => s.id === id);
-    categories[categoryIndex] = s;
-    setState({ ...state, categories: [...categories] });
-
-    toastStore.addToast(
-      new Toast({
-        message: 'Successfully updated the category',
-        type: 'success',
-      }),
-    );
-
-    return s;
-  };
-
-  const increaseInSequence = async (id: CategoryId): Promise<Category> => {
+  public increaseInSequence = async (id: CategoryId): Promise<Category> => {
     const s = await CategoryService.increaseInSequence(id);
 
-    reload();
+    this.reload();
 
-    toastStore.addToast(
+    this.toastStore.addToast(
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
@@ -64,12 +56,12 @@ function CategoryContextProvider(props) {
     return s;
   };
 
-  const decreaseInSequence = async (id: CategoryId): Promise<Category> => {
+  public decreaseInSequence = async (id: CategoryId): Promise<Category> => {
     const s = await CategoryService.decreaseInSequence(id);
 
-    reload();
+    this.reload();
 
-    toastStore.addToast(
+    this.toastStore.addToast(
       new Toast({
         message: 'Successfully updated the category',
         type: 'success',
@@ -79,14 +71,13 @@ function CategoryContextProvider(props) {
     return s;
   };
 
-  const deleteCategory = async (id: CategoryId): Promise<boolean> => {
+  public deleteCategory = async (id: CategoryId): Promise<boolean> => {
     await CategoryService.deleteCategory(id);
 
-    const idx = state.categories.findIndex((s) => s.id === id);
-    state.categories.splice(idx, 1);
-    setState({ ...state });
+    const idx = this.categories.findIndex((s) => s.id === id);
+    this.categories.splice(idx, 1);
 
-    toastStore.addToast(
+    this.toastStore.addToast(
       new Toast({
         message: 'Successfully deleted the category',
         type: 'success',
@@ -96,35 +87,31 @@ function CategoryContextProvider(props) {
     return true;
   };
 
-  const addCategory = async (category: Partial<Category>): Promise<Category> => {
+  public addCategory = async (category: Partial<Category>): Promise<Category> => {
     const s = await CategoryService.addCategory(category);
-    setState({ ...state, categories: [...state.categories, s] });
+    this.categories.push(s);
 
-    toastStore.addToast(new Toast({ message: 'Successfully added a category', type: 'success' }));
+    this.toastStore.addToast(
+      new Toast({ message: 'Successfully added a category', type: 'success' }),
+    );
 
     return s;
   };
+}
 
+const CategoryContext = createContext<CategoryStore>(null);
+
+function CategoryContextProvider(props) {
+  const toastStore = useContext(ToastContext);
+  const categoryStore = useMemo(() => new CategoryStore(toastStore), []);
   useEffect(() => {
-    if (!state.categoriesLoaded) {
-      reload();
+    if (!categoryStore.categoriesLoaded) {
+      categoryStore.reload();
     }
-  }, [state]);
+  }, []);
 
   return (
-    <CategoryContext.Provider
-      value={{
-        state,
-        updateCategory,
-        deleteCategory,
-        addCategory,
-        reload,
-        increaseInSequence,
-        decreaseInSequence,
-      }}
-    >
-      {props.children}
-    </CategoryContext.Provider>
+    <CategoryContext.Provider value={categoryStore}>{props.children}</CategoryContext.Provider>
   );
 }
 
