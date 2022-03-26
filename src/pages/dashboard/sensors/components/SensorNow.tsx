@@ -10,6 +10,7 @@ import { DATETIME_REGEX } from 'utils/date.range';
 import { format } from 'date-fns';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import { BatteryChargingFull, Circle, Compress, Opacity, Thermostat } from '@mui/icons-material';
+import { round } from 'lodash';
 
 const styles = () =>
   createStyles({
@@ -92,7 +93,13 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
               {m.measurementType === MeasurementTypeEnum.BATTERY_VOLTAGE && <BatteryChargingFull />}
             </span>
             <span>
-              <span>{m.measurement}</span>&nbsp;
+              <span style={{ color: 'white' }}>
+                {round(
+                  m.measurement,
+                  Sensor.measurementTypeProperties[m.measurementType].decimalPlaces,
+                )}
+              </span>
+              &nbsp;
               <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
             </span>
           </div>
