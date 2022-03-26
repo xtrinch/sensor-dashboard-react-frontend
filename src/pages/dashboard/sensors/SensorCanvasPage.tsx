@@ -67,6 +67,16 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
     });
   }, [sensorContext.mySensors]);
 
+  const pinnedSensors = useMemo(
+    () => sortedSensors.filter((s) => s.lastMeasurements?.length),
+    [sortedSensors],
+  );
+
+  const sidebarSensors = useMemo(
+    () => sortedSensors.filter((s) => !s.lastMeasurements?.length),
+    [sortedSensors],
+  );
+
   return (
     <div className={classes.container}>
       {sensorContext.mySensors.length === 0 && (
@@ -75,18 +85,14 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
         </Box>
       )}
       <div className={classes.root}>
-        {sortedSensors
-          .filter((s) => s.lastMeasurements?.length)
-          .map((s) => (
-            <SensorNow sensor={s} key={s.id} />
-          ))}
+        {pinnedSensors.map((s) => (
+          <SensorNow sensor={s} key={s.id} />
+        ))}
       </div>
       <div className={classes.rightbar}>
-        {sortedSensors
-          .filter((s) => !s.lastMeasurements?.length)
-          .map((s) => (
-            <SensorNow sensor={s} key={s.id} />
-          ))}
+        {sidebarSensors.map((s) => (
+          <SensorNow sensor={s} key={s.id} />
+        ))}
       </div>
     </div>
   );
