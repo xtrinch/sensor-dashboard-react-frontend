@@ -15,7 +15,7 @@ import { round } from 'lodash';
 const styles = () =>
   createStyles({
     root: {
-      border: `1px solid ${ColorsEnum.BGLIGHTER}`,
+      border: `2px solid ${ColorsEnum.BGLIGHTER}`,
       boxShadow: 'none',
       borderRadius: '0px',
       padding: '15px',
@@ -31,6 +31,7 @@ const styles = () =>
     },
     measurement: {
       border: `1px solid ${ColorsEnum.BGLIGHTER}`,
+      backgroundColor: ColorsEnum.BGLIGHT,
       display: 'flex',
       justifyContent: 'flex-start',
       alignItems: 'center',
@@ -46,6 +47,12 @@ const styles = () =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+    },
+    lastSeen: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: '15px',
     },
   });
 
@@ -75,13 +82,13 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
           {sensor.lastMeasurements?.length > 0 ? 'Online' : 'Offline'}
         </Typography>
       </div>
-      <div>
+      <div className={classes.lastSeen}>
         <Typography variant="subtitle2" style={{ color: 'white' }}>
           Last seen:
         </Typography>
-      </div>
-      <div style={{ marginBottom: '10px' }}>
-        {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
+        <Typography variant="subtitle2" style={{ marginBottom: '10px' }}>
+          {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
+        </Typography>
       </div>
       <div className={classes.measurements}>
         {sensor.lastMeasurements.map((m: Measurement) => (
