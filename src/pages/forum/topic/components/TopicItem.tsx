@@ -8,7 +8,6 @@ import { Settings } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'components/Link';
 import { AccountContext } from 'context/AccountContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { TopicContext } from 'context/TopicContext';
 import { format } from 'date-fns';
 import { getTopicEditRoute, getTopicListRoute, getTopicRoute } from 'pages/forum/ForumRoutes';
@@ -19,6 +18,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import Topic from 'types/Topic';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,13 +47,14 @@ const TopicItem: React.FunctionComponent<
   const { topic, classes, history } = props;
   const { deleteTopic } = useContext(TopicContext);
   const { user } = useContext(AccountContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const deleteWithConfirmation = (topic: Topic) => {
     const onConfirm = async () => {
       await deleteTopic(topic.id);
       history.push(getTopicListRoute(topic.categoryId));
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
+    confirmationContext.openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
   };
 
   return (

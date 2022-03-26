@@ -7,7 +7,6 @@ import withStyles from '@mui/styles/withStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Link from 'components/Link';
 import SelectInput from 'components/SelectInput';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { UserContext } from 'context/UserContext';
 import { format } from 'date-fns';
 import { getUserRoute } from 'pages/users/UserRoutes';
@@ -19,6 +18,7 @@ import User from 'types/User';
 import { DATETIME_REGEX } from 'utils/date.range';
 import { AccountContext } from 'context/AccountContext';
 import { PermissionsEnum } from 'types/PermissionEnum';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,12 +47,13 @@ const UserItem: React.FunctionComponent<
   const { user, classes } = props;
   const { deleteUser, updateUser } = useContext(UserContext);
   const accountContext = useContext(AccountContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const deleteWithConfirmation = (user: User) => {
     const onConfirm = async () => {
       await deleteUser(user.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete user?');
+    confirmationContext.openConfirmation(onConfirm, null, 'Are you sure you want to delete user?');
   };
 
   const groupChange = async (val) => {

@@ -8,7 +8,6 @@ import { ArrowDownward, ArrowUpward, Lock, Settings } from '@mui/icons-material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AccountContext } from 'context/AccountContext';
 import { CategoryContext } from 'context/CategoryContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { format } from 'date-fns';
 import { getCategoryEditRoute, getTopicListRoute, getTopicRoute } from 'pages/forum/ForumRoutes';
 import { getUserRoute } from 'pages/users/UserRoutes';
@@ -19,6 +18,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
 import Link from 'components/Link';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -52,12 +52,17 @@ const CategoryItem: React.FunctionComponent<
   const { category, classes, history } = props;
   const { deleteCategory, decreaseInSequence, increaseInSequence } = useContext(CategoryContext);
   const { user } = useContext(AccountContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const deleteWithConfirmation = (category: Category) => {
     const onConfirm = async () => {
       await deleteCategory(category.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete category?');
+    confirmationContext.openConfirmation(
+      onConfirm,
+      null,
+      'Are you sure you want to delete category?',
+    );
   };
 
   return (

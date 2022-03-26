@@ -3,7 +3,8 @@ import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
-import { close, confirm, ConfirmationContext } from 'context/ConfirmationContext';
+import { ConfirmationContext } from 'context/ConfirmationContext';
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 
@@ -21,11 +22,11 @@ const styles = () =>
 const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const [confirmationContext] = useContext(ConfirmationContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   return (
     <Dialog
-      onClose={() => close(confirmationContext)}
+      onClose={() => confirmationContext.close()}
       open={confirmationContext.open}
       className={classes.root}
       classes={{
@@ -41,7 +42,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (pro
       <Grid container justifyContent="center" spacing={10}>
         <Grid item>
           <ColoredButton
-            onClick={() => close(confirmationContext)}
+            onClick={() => confirmationContext.close()}
             fullWidth
             size="small"
             colorVariety={ColorsEnum.BGDARK}
@@ -51,7 +52,7 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (pro
         </Grid>
         <Grid item>
           <ColoredButton
-            onClick={() => confirm(confirmationContext)}
+            onClick={() => confirmationContext.confirm()}
             fullWidth
             colorVariety={ColorsEnum.BLUE}
             size="small"
@@ -64,4 +65,4 @@ const ConfirmationBox: React.FunctionComponent<WithStyles<typeof styles>> = (pro
   );
 };
 
-export default withStyles(styles)(ConfirmationBox);
+export default withStyles(styles)(observer(ConfirmationBox));

@@ -6,7 +6,6 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { format } from 'date-fns';
 import { getDisplayRoute } from 'pages/dashboard/DashboardRoutes';
@@ -15,6 +14,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import Display from 'types/Display';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -42,12 +42,17 @@ const DisplayItem: React.FunctionComponent<
 > = (props) => {
   const { display, classes } = props;
   const { deleteDisplay } = useContext(DisplayContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const deleteWithConfirmation = (display: Display) => {
     const onConfirm = async () => {
       await deleteDisplay(display.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete display?');
+    confirmationContext.openConfirmation(
+      onConfirm,
+      null,
+      'Are you sure you want to delete display?',
+    );
   };
 
   return (

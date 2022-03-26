@@ -12,7 +12,6 @@ import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { SensorContext } from 'context/SensorContext';
 import { format } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
@@ -26,6 +25,7 @@ import Sensor, { SensorId } from 'types/Sensor';
 import SensorTypeEnum from 'types/SensorTypeEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
 import { observer } from 'mobx-react-lite';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 import { getConnectSensorRoute } from '../DashboardRoutes';
 
 const styles = (theme) =>
@@ -81,6 +81,7 @@ const SensorInfoPage: React.FunctionComponent<
   } = props;
 
   const sensorContext = useContext(SensorContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const errs: { [key: string]: string } = {};
   const [errors, setErrors] = useState(errs);
@@ -103,7 +104,7 @@ const SensorInfoPage: React.FunctionComponent<
       await sensorContext.deleteSensor(sensor.id);
       history.push('/');
     };
-    openConfirmation(
+    confirmationContext.openConfirmation(
       onConfirm,
       null,
       'Are you sure you want to delete sensor? Action is irreversible and will delete all your measurements.',

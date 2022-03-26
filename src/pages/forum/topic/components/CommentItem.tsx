@@ -8,7 +8,6 @@ import { Delete, Settings } from '@mui/icons-material';
 import Link from 'components/Link';
 import { AccountContext } from 'context/AccountContext';
 import { CommentContext } from 'context/CommentContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { format } from 'date-fns';
 import WYSIGEditor from 'pages/forum/components/WYSIGEditor';
 import { getUserRoute } from 'pages/users/UserRoutes';
@@ -18,6 +17,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import Comment from 'types/Comment';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) => createStyles({});
 
@@ -27,12 +27,17 @@ const CommentItem: React.FunctionComponent<
   const { comment } = props;
   const { deleteComment } = useContext(CommentContext);
   const { user } = useContext(AccountContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const deleteWithConfirmation = (c: Comment) => {
     const onConfirm = async () => {
       await deleteComment(c.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete comment?');
+    confirmationContext.openConfirmation(
+      onConfirm,
+      null,
+      'Are you sure you want to delete comment?',
+    );
   };
 
   return (

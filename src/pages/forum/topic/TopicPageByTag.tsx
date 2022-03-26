@@ -6,7 +6,6 @@ import { Delete, Settings } from '@mui/icons-material';
 import Link from 'components/Link';
 import TopBar from 'components/TopBar';
 import { AccountContext } from 'context/AccountContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { TopicContext } from 'context/TopicContext';
 import { format } from 'date-fns';
 import WYSIGEditor from 'pages/forum/components/WYSIGEditor';
@@ -19,6 +18,7 @@ import ColorsEnum from 'types/ColorsEnum';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import Topic from 'types/Topic';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme) =>
   createStyles({
@@ -52,6 +52,7 @@ const TopicPage: React.FunctionComponent<
   } = props;
 
   const { deleteTopic } = useContext(TopicContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const { user } = useContext(AccountContext);
 
@@ -69,7 +70,7 @@ const TopicPage: React.FunctionComponent<
     const onConfirm = async () => {
       await deleteTopic(topic.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
+    confirmationContext.openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
   };
 
   if (!topic) {

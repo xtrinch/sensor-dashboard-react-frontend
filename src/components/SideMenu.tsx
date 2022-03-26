@@ -6,13 +6,13 @@ import Link from 'components/Link';
 import MainMenu from 'components/MainMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { getUserRoute } from 'pages/users/UserRoutes';
 import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import { Routes } from 'utils/Routes';
 import { observer } from 'mobx-react-lite';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = () =>
   createStyles({
@@ -62,6 +62,7 @@ const SideMenu: React.FunctionComponent<
   const { history } = props;
   const { logout, loginState, user } = useContext(AccountContext);
   const appContext = useContext(AppContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const logoutWithConfirmation = () => {
     const onConfirm = async () => {
@@ -69,7 +70,7 @@ const SideMenu: React.FunctionComponent<
       appContext.drawerToggle();
       history.push('/');
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to logout?');
+    confirmationContext.openConfirmation(onConfirm, null, 'Are you sure you want to logout?');
   };
 
   const { classes } = props;

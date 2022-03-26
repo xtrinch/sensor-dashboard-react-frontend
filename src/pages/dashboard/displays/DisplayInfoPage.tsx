@@ -11,7 +11,6 @@ import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
 import { format } from 'date-fns';
@@ -25,6 +24,7 @@ import Display, { DisplayId } from 'types/Display';
 import DisplayTypeEnum from 'types/DisplayTypeEnum';
 import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme) =>
   createStyles({
@@ -86,6 +86,8 @@ const DisplayInfoPage: React.FunctionComponent<
   });
 
   const sensorContext = useContext(SensorContext);
+  const confirmationContext = useContext(ConfirmationContext);
+
   const { deleteDisplay, updateDisplay } = useContext(DisplayContext);
 
   const [display, setDisplay] = useState(null);
@@ -95,7 +97,11 @@ const DisplayInfoPage: React.FunctionComponent<
       await deleteDisplay(display.id);
       history.push(DashboardRoutes.DISPLAY_LIST);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete display?');
+    confirmationContext.openConfirmation(
+      onConfirm,
+      null,
+      'Are you sure you want to delete display?',
+    );
   };
 
   useEffect(() => {

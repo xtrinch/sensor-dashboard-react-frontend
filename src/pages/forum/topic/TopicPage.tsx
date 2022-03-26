@@ -9,7 +9,6 @@ import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
 import { AccountContext } from 'context/AccountContext';
 import { CommentContext } from 'context/CommentContext';
-import { openConfirmation } from 'context/ConfirmationContext';
 import { TopicContext } from 'context/TopicContext';
 import { format } from 'date-fns';
 import { useFormik } from 'formik';
@@ -25,6 +24,7 @@ import Comment from 'types/Comment';
 import { PermissionsEnum } from 'types/PermissionEnum';
 import Topic from 'types/Topic';
 import { DATETIME_REGEX } from 'utils/date.range';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme) =>
   createStyles({
@@ -67,6 +67,7 @@ const TopicPage: React.FunctionComponent<
   } = useContext(CommentContext);
 
   const { user } = useContext(AccountContext);
+  const confirmationContext = useContext(ConfirmationContext);
 
   const [topic, setTopic] = useState(null);
 
@@ -89,7 +90,7 @@ const TopicPage: React.FunctionComponent<
     const onConfirm = async () => {
       await deleteTopic(t.id);
     };
-    openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
+    confirmationContext.openConfirmation(onConfirm, null, 'Are you sure you want to delete topic?');
   };
 
   const [comment, setComment] = useState(null);

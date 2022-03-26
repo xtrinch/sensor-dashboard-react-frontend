@@ -1,110 +1,68 @@
-import React, { Context, createContext, Dispatch, useReducer } from 'react';
+import { makeAutoObservable } from 'mobx';
+import React, { Context, createContext, Dispatch, useMemo, useReducer } from 'react';
 
-export const openConfirmation = (onConfirm: Function, onClose?: Function, content?: string) => {
-  ConfirmationContext.dispatch({
-    type: 'openConfirmation',
-    payload: {
-      onConfirm,
-      onClose,
-      content,
-    },
-  });
-};
+export class ConfirmationStore {
+  onConfirm: Function = null;
 
-export const closeConfirmation = () => {
-  ConfirmationContext.dispatch({ type: 'closeConfirmation' });
-};
+  onClose: Function = null;
 
-export const confirm = async (state: ConfirmationContextState) => {
-  ConfirmationContext.dispatch({ type: 'closing' });
+  loading: boolean = false;
 
-  if (state.onConfirm) {
-    try {
-      await state.onConfirm();
-    } catch (e) {
-      ConfirmationContext.dispatch({ type: 'closeConfirmation' });
-      throw e;
-    }
+  content: string = '';
+
+  open: boolean = false;
+
+  constructor() {
+    makeAutoObservable(this);
   }
 
-  ConfirmationContext.dispatch({ type: 'closeConfirmation' });
-};
+  public openConfirmation = (onConfirm: Function, onClose?: Function, content?: string) => {
+    this.onConfirm = onConfirm;
+    this.onClose = onClose;
+    this.content = content;
+    this.open = true;
+  };
 
-export const close = async (state: ConfirmationContextState) => {
-  ConfirmationContext.dispatch({ type: 'closing' });
+  public closeConfirmation = () => {
+    this.onConfirm = undefined;
+    this.onClose = undefined;
+    this.loading = false;
+    this.open = false;
+  };
 
-  if (state.onClose) {
-    await state.onClose();
-  }
+  public confirm = async () => {
+    this.loading = true;
 
-  ConfirmationContext.dispatch({ type: 'closeConfirmation' });
-};
-
-type ConfirmationContextState = {
-  onConfirm: Function;
-  onClose: Function;
-  loading: boolean;
-  content: string;
-  open: boolean;
-};
-
-const initialState: ConfirmationContextState = {
-  onConfirm: null,
-  onClose: null,
-  loading: false,
-  content: '',
-  open: false,
-};
-
-export type ConfirmationActionTypes =
-  | {
-      type: 'openConfirmation';
-      payload: { onConfirm: Function; onClose?: Function; content?: string };
+    if (this.onConfirm) {
+      try {
+        await this.onConfirm();
+      } catch (e) {
+        await this.closeConfirmation();
+        throw e;
+      }
     }
-  | { type: 'closeConfirmation' }
-  | { type: 'closing' };
 
-const ConfirmationContext = createContext<[ConfirmationContextState, React.Dispatch<any>]>(
-  null,
-) as Context<[ConfirmationContextState, Dispatch<any>]> & {
-  dispatch: React.Dispatch<any>;
-};
+    await this.closeConfirmation();
+  };
 
-const reducer = (
-  state: ConfirmationContextState,
-  action: ConfirmationActionTypes,
-): ConfirmationContextState => {
-  switch (action.type) {
-    case 'openConfirmation':
-      return {
-        ...state,
-        ...action.payload,
-        open: true,
-      };
-    case 'closeConfirmation':
-      return {
-        ...state,
-        onConfirm: undefined,
-        onClose: undefined,
-        loading: false,
-        open: false,
-      };
-    case 'closing':
-      return {
-        ...state,
-        loading: true,
-      };
-    default: {
-      return { ...state };
+  public close = async () => {
+    this.loading = true;
+
+    if (this.onClose) {
+      await this.onClose();
     }
-  }
-};
+
+    await this.closeConfirmation();
+  };
+}
+
+const ConfirmationContext = createContext<ConfirmationStore>(null);
 
 function ConfirmationContextProvider(props) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const confirmationStore = useMemo(() => new ConfirmationStore(), []);
 
   return (
-    <ConfirmationContext.Provider value={[state, dispatch]}>
+    <ConfirmationContext.Provider value={confirmationStore}>
       {props.children}
     </ConfirmationContext.Provider>
   );
