@@ -28,6 +28,7 @@ const styles = () =>
       gridTemplateColumns: '1fr 1fr',
       gridAutoRows: '60px',
       gridGap: '10px',
+      marginTop: '15px',
     },
     measurement: {
       border: `1px solid ${ColorsEnum.BGLIGHTER}`,
@@ -52,7 +53,7 @@ const styles = () =>
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: '15px',
+      flexWrap: 'wrap',
     },
   });
 
@@ -90,28 +91,32 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
           {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
         </Typography>
       </div>
-      <div className={classes.measurements}>
-        {sensor.lastMeasurements.map((m: Measurement) => (
-          <div className={classes.measurement}>
-            <span style={{ paddingRight: '8px' }}>
-              {m.measurementType === MeasurementTypeEnum.TEMPERATURE && <Thermostat />}
-              {m.measurementType === MeasurementTypeEnum.HUMIDITY && <Opacity />}
-              {m.measurementType === MeasurementTypeEnum.PRESSURE && <Compress />}
-              {m.measurementType === MeasurementTypeEnum.BATTERY_VOLTAGE && <BatteryChargingFull />}
-            </span>
-            <span>
-              <span style={{ color: 'white' }}>
-                {round(
-                  m.measurement,
-                  Sensor.measurementTypeProperties[m.measurementType].decimalPlaces,
+      {sensor.lastMeasurements?.length > 0 && (
+        <div className={classes.measurements}>
+          {sensor.lastMeasurements.map((m: Measurement) => (
+            <div className={classes.measurement}>
+              <span style={{ paddingRight: '8px' }}>
+                {m.measurementType === MeasurementTypeEnum.TEMPERATURE && <Thermostat />}
+                {m.measurementType === MeasurementTypeEnum.HUMIDITY && <Opacity />}
+                {m.measurementType === MeasurementTypeEnum.PRESSURE && <Compress />}
+                {m.measurementType === MeasurementTypeEnum.BATTERY_VOLTAGE && (
+                  <BatteryChargingFull />
                 )}
               </span>
-              &nbsp;
-              <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
-            </span>
-          </div>
-        ))}
-      </div>
+              <span>
+                <span style={{ color: 'white' }}>
+                  {round(
+                    m.measurement,
+                    Sensor.measurementTypeProperties[m.measurementType].decimalPlaces,
+                  )}
+                </span>
+                &nbsp;
+                <span>{Sensor.measurementTypeProperties[m.measurementType].unit}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
