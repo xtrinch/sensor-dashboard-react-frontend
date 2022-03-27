@@ -49,9 +49,9 @@ const styles = (theme) =>
     },
     rightbar: {
       height: '100vh',
-      // overflowX: 'visible',
-      // overflowY: 'auto',
-      overflow: 'visible',
+      overflowX: 'visible',
+      overflowY: 'scroll',
+      // overflow: 'visible',
       position: 'fixed',
       right: '0',
       top: '0',
@@ -196,8 +196,10 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
     if (dragPosition) {
       return;
     }
+
+    const parentScrollTop = data.node.parentElement.scrollTop;
     const parentOffsetLeft = data.node.offsetLeft;
-    const parentOffsetTop = data.node.offsetTop;
+    const parentOffsetTop = data.node.offsetTop - parentScrollTop; // subtract what we've scrolled
 
     console.log(parentOffsetLeft);
     console.log(parentOffsetTop);
