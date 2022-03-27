@@ -65,7 +65,9 @@
     "react/jsx-no-duplicate-props": "warn",
     "class-methods-use-this": "off",
     "no-undef": "warn",
-    "jsx-a11y/interactive-supports-focus": "off"
+    "jsx-a11y/interactive-supports-focus": "off",
+    "import/order": "off",
+    "spaced-comment": "warn"
   },
   "settings": {
     "import/resolver": {

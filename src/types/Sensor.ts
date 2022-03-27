@@ -35,6 +35,9 @@ class Sensor implements AbstractEntity {
       ) || [];
     this.lastMeasurements = this.lastMeasurements.map((m) => new Measurement(m));
     this.color = s?.color || '#ffffff';
+    this.offsetX = s?.offsetX ?? 0;
+    this.offsetY = s?.offsetY ?? 0;
+    this.isPinned = s?.isPinned ?? this.lastMeasurements?.length > 0;
     makeAutoObservable(this);
   }
 
@@ -77,6 +80,12 @@ class Sensor implements AbstractEntity {
   public lastMeasurements?: Measurement[];
 
   public color: string;
+
+  public isPinned: boolean;
+
+  public offsetX: number;
+
+  public offsetY: number;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {

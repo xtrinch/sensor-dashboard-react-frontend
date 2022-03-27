@@ -1,16 +1,17 @@
-import { Card, Typography } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
-import { withStyles, WithStyles } from '@mui/styles';
-import React from 'react';
-import ColorsEnum from 'types/ColorsEnum';
-import Sensor from 'types/Sensor';
-import { observer } from 'mobx-react-lite';
-import Measurement from 'types/Measurement';
-import { DATETIME_REGEX } from 'utils/date.range';
-import { format } from 'date-fns';
-import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import { BatteryChargingFull, Circle, Compress, Opacity, Thermostat } from '@mui/icons-material';
+import { Typography } from '@mui/material';
+import { withStyles, WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
+import clsx from 'clsx';
+import { format } from 'date-fns';
 import { round } from 'lodash';
+import { observer } from 'mobx-react-lite';
+import React, { CSSProperties } from 'react';
+import ColorsEnum from 'types/ColorsEnum';
+import Measurement from 'types/Measurement';
+import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
+import Sensor from 'types/Sensor';
+import { DATETIME_REGEX } from 'utils/date.range';
 
 const styles = () =>
   createStyles({
@@ -22,6 +23,7 @@ const styles = () =>
       backgroundImage: 'unset',
       fontSize: '12px',
       backgroundColor: ColorsEnum.BGDARK,
+      minHeight: '115px',
     },
     measurements: {
       display: 'grid',
@@ -59,15 +61,24 @@ const styles = () =>
 
 interface SensorCanvasProps {
   sensor: Sensor;
+  width: number;
+  height: number;
+  className?: string;
+  style?: CSSProperties;
+  hideMeasurements?: boolean;
 }
 
 const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeof styles>> = (
   props,
 ) => {
-  const { classes, sensor } = props;
+  const { classes, sensor, width, height, className, style, hideMeasurements, ...rest } = props;
 
   return (
-    <div className={classes.root} style={{ color: sensor.color }}>
+    <div
+      className={clsx(classes.root, className)}
+      style={{ ...style, color: sensor.color, width, height }}
+      {...rest}
+    >
       <div className={classes.name}>
         <Typography variant="h5" style={{ marginBottom: '7px', color: sensor.color }}>
           {sensor.displayName}
@@ -91,10 +102,10 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
           {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
         </Typography>
       </div>
-      {sensor.lastMeasurements?.length > 0 && (
+      {sensor.lastMeasurements?.length > 0 && !hideMeasurements && (
         <div className={classes.measurements}>
-          {sensor.lastMeasurements.map((m: Measurement) => (
-            <div className={classes.measurement}>
+          {sensor.lastMeasurements.map((m: Measurement, index) => (
+            <div className={classes.measurement} key={index}>
               <span style={{ paddingRight: '8px' }}>
                 {m.measurementType === MeasurementTypeEnum.TEMPERATURE && <Thermostat />}
                 {m.measurementType === MeasurementTypeEnum.HUMIDITY && <Opacity />}

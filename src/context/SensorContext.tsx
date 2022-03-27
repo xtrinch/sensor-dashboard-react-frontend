@@ -9,13 +9,13 @@ import { ToastContext, ToastStore } from './ToastContext';
 export const SensorContext = createContext<SensorStore>(null);
 
 export class SensorStore {
-  public sensorsLoaded: boolean;
+  public sensorsLoaded: boolean = false;
 
   public sensors: Sensor[] = [];
 
   public mySensors: Sensor[] = [];
 
-  public mySensorsLoaded: boolean;
+  public mySensorsLoaded: boolean = false;
 
   constructor(public accountStore: AccountStore, public toastStore: ToastStore) {
     makeAutoObservable(this);
