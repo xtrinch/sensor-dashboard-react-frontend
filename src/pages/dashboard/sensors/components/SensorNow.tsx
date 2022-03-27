@@ -23,7 +23,9 @@ const styles = () =>
       backgroundImage: 'unset',
       fontSize: '12px',
       backgroundColor: ColorsEnum.BGDARK,
-      minHeight: '115px',
+      pointerEvents: 'auto',
+      zIndex: '100000000000',
+      cursor: 'pointer',
     },
     measurements: {
       display: 'grid',

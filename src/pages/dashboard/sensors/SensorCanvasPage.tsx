@@ -49,19 +49,31 @@ const styles = (theme) =>
     },
     rightbar: {
       height: '100vh',
-      overflowX: 'visible',
-      overflowY: 'scroll',
-      // overflow: 'visible',
+      width: '100vw',
+      overflow: 'auto',
       position: 'fixed',
       right: '0',
       top: '0',
-      width: '200px',
-      minWidth: '200px',
+      // width: '300px',
+      // minWidth: '300px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+      // '& >div': {
+      //   marginBottom: '10px',
+      // },
+    },
+    innerRightbar: {
       backgroundColor: ColorsEnum.BGLIGHTER,
-      padding: '10px 10px 0px 10px',
-      '& >div': {
-        marginBottom: '10px',
-      },
+      padding: '5px 0px 0px 0px',
+      minHeight: '100vh',
+      height: '100%',
+    },
+    rightbarItem: {
+      borderWidth: '5px 10px 5px 10px',
+      borderColor: ColorsEnum.BGLIGHTER,
+      boxSizing: 'content-box',
+      borderStyle: 'solid',
     },
     absolute: {
       position: 'absolute',
@@ -189,6 +201,7 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
     });
 
     setDragPosition(null);
+    setInsideRightbar(false);
   };
 
   const onUnpinnedDrag = (e: DraggableEvent, data: DraggableData, item: Sensor) => {
@@ -197,7 +210,7 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
       return;
     }
 
-    const parentScrollTop = data.node.parentElement.scrollTop;
+    const parentScrollTop = data.node.parentElement.parentElement.parentElement.scrollTop;
     const parentOffsetLeft = data.node.offsetLeft;
     const parentOffsetTop = data.node.offsetTop - parentScrollTop; // subtract what we've scrolled
 
@@ -237,6 +250,15 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
       canvasX: canvasPositionState().positionX,
       canvasY: canvasPositionState().positionY,
     };
+  };
+
+  const [insideRightbar, setInsideRightbar] = useState<boolean>(false);
+  const rightbarEnter = () => {
+    setInsideRightbar(true);
+  };
+
+  const rightbarLeave = () => {
+    setInsideRightbar(false);
   };
 
   return (
@@ -316,25 +338,39 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
           )}
         </TransformWrapper>
       </div>
-      <div className={classes.rightbar} ref={rightbarRef}>
-        {sidebarSensors().map((s) => (
-          <Draggable
-            key={s.id}
-            position={{ x: 0, y: 0 }}
-            defaultClassName={`${classes.highZIndex} 
+      <div
+        className={classes.rightbar}
+        ref={rightbarRef}
+        style={{
+          pointerEvents: insideRightbar ? 'auto' : 'none',
+        }}
+      >
+        <div
+          className={classes.innerRightbar}
+          onMouseEnter={rightbarEnter}
+          onMouseLeave={rightbarLeave}
+        >
+          {sidebarSensors().map((s) => (
+            <div className={classes.rightbarItem}>
+              <Draggable
+                key={s.id}
+                position={{ x: 0, y: 0 }}
+                defaultClassName={`${classes.highZIndex} 
             `}
-            onDrag={(e, data) => onUnpinnedDrag(e, data, s)}
-            onStop={(e, data) => onUnpinnedDragStop(e, s)}
-          >
-            <SensorNow
-              sensor={s}
-              key={s.id}
-              width={dimensionConfig.previewConfig.width}
-              height={dimensionConfig.previewConfig.height}
-              hideMeasurements
-            />
-          </Draggable>
-        ))}
+                onDrag={(e, data) => onUnpinnedDrag(e, data, s)}
+                onStop={(e, data) => onUnpinnedDragStop(e, s)}
+              >
+                <SensorNow
+                  sensor={s}
+                  key={s.id}
+                  width={dimensionConfig.previewConfig.width - 30} // minus the border
+                  height={dimensionConfig.previewConfig.height - 34}
+                  hideMeasurements
+                />
+              </Draggable>
+            </div>
+          ))}
+        </div>
       </div>
       {pinnedSensors().map((s: Sensor) => (
         <ContextMenu id={s.id} key={s.id}>
