@@ -4,6 +4,7 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import clsx from 'clsx';
 import ColoredButton from 'components/ColoredButton';
+import { BoardContext } from 'context/BoardContext';
 import { SensorContext } from 'context/SensorContext';
 import { isBefore } from 'date-fns';
 import { observer } from 'mobx-react-lite';
@@ -41,7 +42,6 @@ const styles = (theme) =>
     },
     root: {
       height: 'calc(100vh - 20px)',
-      margin: '10px',
       backgroundColor: ColorsEnum.BGDARK,
       width: '100%',
       marginRight: '200px',
@@ -90,12 +90,21 @@ const styles = (theme) =>
       left: 0,
       top: 0,
     },
+    scale: {
+      position: 'absolute',
+      padding: '10px',
+      '& h4': {
+        color: `${ColorsEnum.BLUE}!important`,
+        textTransform: 'capitalize',
+      },
+    },
   });
 
 const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const sensorContext = useContext(SensorContext);
+  const boardStore = useContext(BoardContext);
+  const sensorStore = useContext(SensorContext);
 
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const rightbarRef = useRef<HTMLDivElement>(null);
@@ -114,14 +123,15 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
 
   useEffect(() => {
     const fetch = async () => {
-      await sensorContext.listMySensors();
+      await sensorStore.listMySensors();
+      await boardStore.getMyBoard();
     };
     fetch();
   }, []);
 
   const sidebarSensors = () => {
-    return sensorContext.mySensors
-      .filter((s) => !s.isPinned)
+    return sensorStore.mySensors
+      .filter((s) => !boardStore.myBoardSensors.find((ss) => ss.id === s.id))
       .sort((a, b) => {
         if (!a.lastSeenAt) {
           return 1;
@@ -133,8 +143,6 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
       });
   };
 
-  const pinnedSensors = () => sensorContext.mySensors.filter((s) => s.isPinned);
-
   // metadata about the unpinned drag
   const [dragMetadata, setDragMetadata] = useState<{
     x?: number; // offset of the top left point of the box
@@ -144,30 +152,23 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
     id?: SensorId;
   }>();
 
-  const board = {
-    scale: 1,
-    boardX: 0,
-    boardY: 0,
-  };
-
   const [insideRightbar, setInsideRightbar] = useState<boolean>(false);
 
   const updateSensor = (id: SensorId, newData: Partial<Sensor>) => {
-    // TODO API
-
-    const sensorToUpdate = sensorContext.mySensors.find((s) => s.id === id);
-    sensorToUpdate.offsetX = newData.offsetX ?? sensorToUpdate.offsetX;
-    sensorToUpdate.offsetY = newData.offsetY ?? sensorToUpdate.offsetY;
+    const sensorToUpdate = sensorStore.mySensors.find((s) => s.id === id);
+    sensorToUpdate.boardX = newData.boardX ?? sensorToUpdate.boardX;
+    sensorToUpdate.boardY = newData.boardY ?? sensorToUpdate.boardY;
     sensorToUpdate.isPinned = newData.isPinned ?? sensorToUpdate.isPinned;
+
+    boardStore.updateSensor(id, { ...newData, id }, sensorToUpdate);
   };
 
   const updateCanvas = () => {
-    // TODO API
-    const update = {
+    boardStore.updateBoard({
       scale: boardPositionState().scale,
-      boardX: boardPositionState().positionX,
-      boardY: boardPositionState().positionY,
-    };
+      boardX: Math.floor(boardPositionState().positionX),
+      boardY: Math.floor(boardPositionState().positionY),
+    });
   };
 
   // where in the board have we clicked - x and y
@@ -207,8 +208,8 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
       (dimensionConfig.elemConfig.height / dimensionConfig.previewConfig.height);
 
     updateSensor(dropPosition.id, {
-      offsetX: Math.ceil(defaultX),
-      offsetY: Math.ceil(defaultY),
+      boardX: Math.ceil(defaultX),
+      boardY: Math.ceil(defaultY),
       isPinned: true,
     });
 
@@ -247,9 +248,16 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
     });
   };
 
+  if (!boardStore.myBoard) {
+    return null;
+  }
+
   return (
     <div className={classes.container}>
-      {sensorContext.mySensors.length === 0 && (
+      <div className={classes.scale}>
+        <Typography variant="h4">Scale: {boardStore.myBoard?.scale}</Typography>
+      </div>
+      {sensorStore.mySensors.length === 0 && (
         <Box style={{ textAlign: 'center', marginTop: '50px' }}>
           <Typography variant="h4">No sensors found. Try adding some.</Typography>
         </Box>
@@ -257,7 +265,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
       <div className={classes.root} ref={boardContainerRef}>
         <TransformWrapper
           ref={transformRef}
-          initialScale={board?.scale}
+          initialScale={boardStore.myBoard?.scale}
           minScale={0.1}
           maxScale={2.5}
           doubleClick={{
@@ -279,8 +287,8 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
           onPinchingStop={updateCanvas}
           onPanningStop={updateCanvas}
           onWheelStop={updateCanvas}
-          initialPositionX={board?.boardX}
-          initialPositionY={board?.boardY}
+          initialPositionX={boardStore.myBoard?.boardX}
+          initialPositionY={boardStore.myBoard?.boardY}
           wheel={{
             step: 0.1,
           }}
@@ -290,7 +298,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
               wrapperClass={clsx(classes.fullWidth, classes.fullHeight)}
               contentClass={clsx(classes.fullWidth, classes.fullHeight)}
             >
-              {pinnedSensors().map((s: Sensor) => (
+              {boardStore.myBoardSensors.map((s: Sensor) => (
                 <ContextMenuTrigger id={s.id} key={s.id}>
                   <Draggable
                     key={s.id}
@@ -300,14 +308,14 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
                     }}
                     onStop={(e, data) => {
                       updateSensor(s.id, {
-                        offsetX: Math.floor(data.x),
-                        offsetY: Math.floor(data.y),
+                        boardX: Math.floor(data.x),
+                        boardY: Math.floor(data.y),
                       });
                     }}
                     scale={boardPositionState().scale}
                     defaultPosition={{
-                      x: s.offsetX,
-                      y: s.offsetY,
+                      x: s.boardX,
+                      y: s.boardY,
                     }}
                   >
                     <div className={classes.boardItem}>
@@ -357,7 +365,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
           ))}
         </div>
       </div>
-      {pinnedSensors().map((s: Sensor) => (
+      {boardStore.myBoardSensors.map((s: Sensor) => (
         <ContextMenu id={s.id} key={s.id}>
           <MenuItem onClick={() => updateSensor(s.id, { isPinned: false })}>
             <ColoredButton colorVariety={ColorsEnum.BLUE}>Remove item</ColoredButton>

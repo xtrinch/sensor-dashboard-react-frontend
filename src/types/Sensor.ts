@@ -30,13 +30,13 @@ class Sensor implements AbstractEntity {
     this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
     this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
     this.lastMeasurements =
-      s?.lastMeasurements.filter(
+      s?.lastMeasurements?.filter(
         (s) => s.measurementType !== MeasurementTypeEnum.RAW_BATTERY_VOLTAGE,
       ) || [];
     this.lastMeasurements = this.lastMeasurements.map((m) => new Measurement(m));
     this.color = s?.color || '#ffffff';
-    this.offsetX = s?.offsetX ?? 0;
-    this.offsetY = s?.offsetY ?? 0;
+    this.boardX = s?.boardX ?? 0;
+    this.boardY = s?.boardY ?? 0;
     this.isPinned = s?.isPinned ?? false;
     makeAutoObservable(this);
   }
@@ -83,9 +83,9 @@ class Sensor implements AbstractEntity {
 
   public isPinned: boolean;
 
-  public offsetX: number;
+  public boardX: number;
 
-  public offsetY: number;
+  public boardY: number;
 
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {
