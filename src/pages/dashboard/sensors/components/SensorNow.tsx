@@ -49,15 +49,15 @@ const styles = () =>
     },
     name: {
       display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
     },
     lastSeen: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
       flexWrap: 'wrap',
+      marginBottom: '5px',
     },
   });
 
@@ -82,8 +82,13 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
       {...rest}
     >
       <div className={classes.name}>
-        <Typography variant="h5" style={{ marginBottom: '7px', color: sensor.color }}>
+        <Typography variant="h6" style={{ marginBottom: '7px', color: sensor.color }}>
           {sensor.displayName}
+        </Typography>
+      </div>
+      <div className={classes.lastSeen}>
+        <Typography variant="subtitle2" style={{ color: 'white' }}>
+          Last seen:
         </Typography>
         <Typography variant="subtitle2" style={{ color: 'white' }}>
           <Circle
@@ -96,14 +101,9 @@ const SensorCanvas: React.FunctionComponent<SensorCanvasProps & WithStyles<typeo
           {sensor.lastMeasurements?.length > 0 ? 'Online' : 'Offline'}
         </Typography>
       </div>
-      <div className={classes.lastSeen}>
-        <Typography variant="subtitle2" style={{ color: 'white' }}>
-          Last seen:
-        </Typography>
-        <Typography variant="subtitle2" style={{ marginBottom: '10px' }}>
-          {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
-        </Typography>
-      </div>
+      <Typography variant="subtitle2" style={{ marginBottom: '10px' }}>
+        {sensor.lastSeenAt ? format(sensor.lastSeenAt, DATETIME_REGEX) : 'Never'}
+      </Typography>
       {sensor.lastMeasurements?.length > 0 && !hideMeasurements && (
         <div className={classes.measurements}>
           {sensor.lastMeasurements.map((m: Measurement, index) => (
