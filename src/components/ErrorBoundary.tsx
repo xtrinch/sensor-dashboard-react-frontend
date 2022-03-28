@@ -81,7 +81,7 @@ export function withErrorBoundary<Props = Record<string, unknown>>(
 ): FC<Props> {
   return (props: Props) => (
     <ErrorBoundaryContext>
-      <WrappedComponent key="WrappedComponent" {...props} />
+      <WrappedComponent {...props} />
     </ErrorBoundaryContext>
   );
 }

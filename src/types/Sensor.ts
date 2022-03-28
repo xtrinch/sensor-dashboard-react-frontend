@@ -37,7 +37,7 @@ class Sensor implements AbstractEntity {
     this.color = s?.color || '#ffffff';
     this.offsetX = s?.offsetX ?? 0;
     this.offsetY = s?.offsetY ?? 0;
-    this.isPinned = s?.isPinned ?? this.lastMeasurements?.length > 0;
+    this.isPinned = s?.isPinned ?? false;
     makeAutoObservable(this);
   }
 
