@@ -85,23 +85,23 @@ const styles = (theme) =>
     highZIndex: {
       zIndex: '10000!important',
     },
-    canvasItem: {
+    boardItem: {
       position: 'fixed',
       left: 0,
       top: 0,
     },
   });
 
-const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
+const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
   const sensorContext = useContext(SensorContext);
 
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
   const rightbarRef = useRef<HTMLDivElement>(null);
-  const canvasContainerRef = useRef<HTMLDivElement>(null);
+  const boardContainerRef = useRef<HTMLDivElement>(null);
 
-  const canvasPositionState = (): ReactZoomPanPinchState => {
+  const boardPositionState = (): ReactZoomPanPinchState => {
     return (
       transformRef.current?.state || {
         scale: 1,
@@ -144,10 +144,10 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
     id?: SensorId;
   }>();
 
-  const canvas = {
+  const board = {
     scale: 1,
-    canvasX: 0,
-    canvasY: 0,
+    boardX: 0,
+    boardY: 0,
   };
 
   const [insideRightbar, setInsideRightbar] = useState<boolean>(false);
@@ -164,16 +164,16 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
   const updateCanvas = () => {
     // TODO API
     const update = {
-      scale: canvasPositionState().scale,
-      canvasX: canvasPositionState().positionX,
-      canvasY: canvasPositionState().positionY,
+      scale: boardPositionState().scale,
+      boardX: boardPositionState().positionX,
+      boardY: boardPositionState().positionY,
     };
   };
 
-  // where in the canvas have we clicked - x and y
+  // where in the board have we clicked - x and y
   const getClickCoordinates = (e: MouseEvent) => ({
-    x: e.pageX - canvasContainerRef.current.offsetLeft,
-    y: e.pageY - canvasContainerRef.current.offsetTop,
+    x: e.pageX - boardContainerRef.current.offsetLeft,
+    y: e.pageY - boardContainerRef.current.offsetTop,
   });
 
   const onUnpinnedDragStop = (e: DraggableEvent, item: Sensor) => {
@@ -191,9 +191,9 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
 
     const {
       scale,
-      positionX, // top left x of visible canvas
+      positionX, // top left x of visible board
       positionY,
-    } = canvasPositionState();
+    } = boardPositionState();
 
     let defaultX = (-positionX + dropPosition.x) / scale;
     let defaultY = (-positionY + dropPosition.y) / scale;
@@ -254,10 +254,10 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
           <Typography variant="h4">No sensors found. Try adding some.</Typography>
         </Box>
       )}
-      <div className={classes.root} ref={canvasContainerRef}>
+      <div className={classes.root} ref={boardContainerRef}>
         <TransformWrapper
           ref={transformRef}
-          initialScale={canvas?.scale}
+          initialScale={board?.scale}
           minScale={0.1}
           maxScale={2.5}
           doubleClick={{
@@ -279,8 +279,8 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
           onPinchingStop={updateCanvas}
           onPanningStop={updateCanvas}
           onWheelStop={updateCanvas}
-          initialPositionX={canvas?.canvasX}
-          initialPositionY={canvas?.canvasY}
+          initialPositionX={board?.boardX}
+          initialPositionY={board?.boardY}
           wheel={{
             step: 0.1,
           }}
@@ -304,13 +304,13 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
                         offsetY: Math.floor(data.y),
                       });
                     }}
-                    scale={canvasPositionState().scale}
+                    scale={boardPositionState().scale}
                     defaultPosition={{
                       x: s.offsetX,
                       y: s.offsetY,
                     }}
                   >
-                    <div className={classes.canvasItem}>
+                    <div className={classes.boardItem}>
                       <SensorNow
                         sensor={s}
                         width={dimensionConfig.elemConfig.width}
@@ -368,4 +368,4 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
   );
 };
 
-export default withStyles(styles)(observer(SensorCanvasPage));
+export default withStyles(styles)(observer(SensorDraggablePage));

@@ -82,7 +82,7 @@ const Pages: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
             <DashboardIndexPage />
           </Route>
-          <Route path={DashboardRoutes.CANVAS}>
+          <Route path={DashboardRoutes.DRAGGABLE_BOARD}>
             <DashboardIndexPage />
           </Route>
           <Route path={UserRoutes.USERS}>

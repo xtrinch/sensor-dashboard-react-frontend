@@ -19,7 +19,7 @@ export const DashboardRoutes = {
   RADIO_LIST: '/dashboard-personal/radios',
   TOPIC_BY_TAG: '/dashboard/static/:tag',
   PERSONAL_DASHBOARD: '/dashboard-personal',
-  CANVAS: '/dashboard-canvas',
+  DRAGGABLE_BOARD: '/dashboard-draggable',
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard-personal/sensors/${id}`;

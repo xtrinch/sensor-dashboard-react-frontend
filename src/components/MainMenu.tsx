@@ -1,14 +1,14 @@
 import { Tab, Tabs, Theme } from '@mui/material';
 import createStyles from '@mui/styles/createStyles';
 import makeStyles from '@mui/styles/makeStyles';
+import clsx from 'clsx';
+import { AccountContext } from 'context/AccountContext';
 import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
 import { ForumRoutes, getTopicByTagRoute } from 'pages/forum/ForumRoutes';
 import { UserRoutes } from 'pages/users/UserRoutes';
 import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
-import clsx from 'clsx';
-import { AccountContext, AccountStore } from 'context/AccountContext';
 
 interface MainMenuProps {}
 
@@ -159,9 +159,9 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
           <Tab
             className={clsx(classes.subTab, classes.dashboard)}
             onClick={() => {
-              history.push(DashboardRoutes.CANVAS);
+              history.push(DashboardRoutes.DRAGGABLE_BOARD);
             }}
-            value={DashboardRoutes.CANVAS}
+            value={DashboardRoutes.DRAGGABLE_BOARD}
             label={'Realtime data'}
           />
         )}
