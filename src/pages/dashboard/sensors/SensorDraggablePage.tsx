@@ -62,6 +62,7 @@ const styles = (theme) =>
       padding: '5px 0px 0px 0px',
       minHeight: '100vh',
       height: '100%',
+      minWidth: '204px',
     },
     rightbarItem: {
       borderWidth: '5px 10px 5px 10px',
@@ -344,6 +345,9 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
           onMouseEnter={() => setInsideRightbar(true)}
           onMouseLeave={() => setInsideRightbar(false)}
         >
+          <Typography variant="h4" style={{ padding: '5px 10px' }}>
+            Unpinned:
+          </Typography>
           {sidebarSensors().map((s) => (
             <div className={classes.rightbarItem} key={s.id}>
               <Draggable
