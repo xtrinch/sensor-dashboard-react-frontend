@@ -1,5 +1,5 @@
 import { AccountContext } from 'context/AccountContext';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import DisplayService from 'services/DisplayService';
 import Display, { DisplayId } from 'types/Display';
 import { Toast } from 'types/Toast';

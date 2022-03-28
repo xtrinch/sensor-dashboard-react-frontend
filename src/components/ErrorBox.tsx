@@ -3,7 +3,8 @@ import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
-import { clearError, ErrorContext } from 'context/ErrorContext';
+import { ErrorContext } from 'context/ErrorContext';
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 
@@ -21,12 +22,12 @@ const styles = () =>
 const ErrorBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const [errorContext, dispatchErrorContext] = useContext(ErrorContext);
+  const errorStore = useContext(ErrorContext);
 
   return (
     <Dialog
-      onClose={() => clearError(dispatchErrorContext)}
-      open={!!errorContext.error}
+      onClose={() => errorStore.clearError()}
+      open={!!errorStore.error}
       className={classes.root}
       classes={{
         paper: classes.paper,
@@ -36,10 +37,10 @@ const ErrorBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => 
         Error
       </Typography>
       <Typography variant="body2" style={{ marginBottom: '30px' }}>
-        {errorContext.error?.statusCode} {errorContext.error?.message}
+        {errorStore.error?.statusCode} {errorStore.error?.message}
       </Typography>
       <ColoredButton
-        onClick={() => clearError(dispatchErrorContext)}
+        onClick={() => errorStore.clearError()}
         fullWidth
         colorVariety={ColorsEnum.BLUE}
       >
@@ -49,4 +50,4 @@ const ErrorBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => 
   );
 };
 
-export default withStyles(styles)(ErrorBox);
+export default withStyles(styles)(observer(ErrorBox));

@@ -1,6 +1,6 @@
 import { AccountContext, AccountStore } from 'context/AccountContext';
 import { makeAutoObservable } from 'mobx';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import SensorService from 'services/SensorService';
 import Sensor, { SensorId } from 'types/Sensor';
 import { Toast } from 'types/Toast';
@@ -65,6 +65,7 @@ export class SensorStore {
       this.mySensorsLoaded = true;
     } catch (error) {
       this.mySensorsLoaded = true;
+      throw error;
     }
   };
 

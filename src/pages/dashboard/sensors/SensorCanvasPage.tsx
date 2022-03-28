@@ -45,23 +45,17 @@ const styles = (theme) =>
       backgroundColor: ColorsEnum.BGDARK,
       width: '100%',
       marginRight: '200px',
-      // flex: '1',
     },
     rightbar: {
       height: '100vh',
-      width: '100vw',
+      width: '100vw', // make it 100% wide so we don't have to "pop out of hidden overflow" when dragging
       overflow: 'auto',
       position: 'fixed',
       right: '0',
       top: '0',
-      // width: '300px',
-      // minWidth: '300px',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-end',
-      // '& >div': {
-      //   marginBottom: '10px',
-      // },
     },
     innerRightbar: {
       backgroundColor: ColorsEnum.BGLIGHTER,
@@ -141,40 +135,58 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
 
   const pinnedSensors = () => sensorContext.mySensors.filter((s) => s.isPinned);
 
-  // metadata about the preview drag, relative to popover container
-  const [dragPosition, setDragPosition] = useState<{
+  // metadata about the unpinned drag
+  const [dragMetadata, setDragMetadata] = useState<{
     x?: number; // offset of the top left point of the box
     y?: number;
-    innerDivOffsetX?: number; // left offset within the draggable
-    innerDivOffsetY?: number; // top offset within the draggable
-    id?: string;
+    innerOffsetX?: number; // left offset within the draggable
+    innerOffsetY?: number; // top offset within the draggable
+    id?: SensorId;
   }>();
 
-  const updateItem = (id: SensorId, newData: Partial<Sensor>) => {
+  const canvas = {
+    scale: 1,
+    canvasX: 0,
+    canvasY: 0,
+  };
+
+  const [insideRightbar, setInsideRightbar] = useState<boolean>(false);
+
+  const updateSensor = (id: SensorId, newData: Partial<Sensor>) => {
+    // TODO API
+
     const sensorToUpdate = sensorContext.mySensors.find((s) => s.id === id);
     sensorToUpdate.offsetX = newData.offsetX ?? sensorToUpdate.offsetX;
     sensorToUpdate.offsetY = newData.offsetY ?? sensorToUpdate.offsetY;
     sensorToUpdate.isPinned = newData.isPinned ?? sensorToUpdate.isPinned;
   };
 
+  const updateCanvas = () => {
+    // TODO API
+    const update = {
+      scale: canvasPositionState().scale,
+      canvasX: canvasPositionState().positionX,
+      canvasY: canvasPositionState().positionY,
+    };
+  };
+
   // where in the canvas have we clicked - x and y
   const getClickCoordinates = (e: MouseEvent) => ({
-    x: (e as any as MouseEvent).pageX - canvasContainerRef.current.offsetLeft,
-    y: (e as any as MouseEvent).pageY - canvasContainerRef.current.offsetTop,
+    x: e.pageX - canvasContainerRef.current.offsetLeft,
+    y: e.pageY - canvasContainerRef.current.offsetTop,
   });
 
   const onUnpinnedDragStop = (e: DraggableEvent, item: Sensor) => {
-    if (!dragPosition) {
+    if (!dragMetadata) {
       return;
     }
 
     const clickCoordinates = getClickCoordinates(e as any);
-    console.log(clickCoordinates);
     const dropPosition = {
       ...clickCoordinates,
       id: item.id,
-      innerDivOffsetX: dragPosition.innerDivOffsetX,
-      innerDivOffsetY: dragPosition.innerDivOffsetY,
+      innerOffsetX: dragMetadata.innerOffsetX,
+      innerOffsetY: dragMetadata.innerOffsetY,
     };
 
     const {
@@ -188,25 +200,25 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
 
     // scale the inner offsets by ration preview/actual item
     defaultX -=
-      dropPosition.innerDivOffsetX *
+      dropPosition.innerOffsetX *
       (dimensionConfig.elemConfig.width / dimensionConfig.previewConfig.width);
     defaultY -=
-      dropPosition.innerDivOffsetY *
+      dropPosition.innerOffsetY *
       (dimensionConfig.elemConfig.height / dimensionConfig.previewConfig.height);
 
-    updateItem(dropPosition.id, {
+    updateSensor(dropPosition.id, {
       offsetX: Math.ceil(defaultX),
       offsetY: Math.ceil(defaultY),
       isPinned: true,
     });
 
-    setDragPosition(null);
+    setDragMetadata(null);
     setInsideRightbar(false);
   };
 
   const onUnpinnedDrag = (e: DraggableEvent, data: DraggableData, item: Sensor) => {
-    // this will be called multiple times, so we do it only the first time around
-    if (dragPosition) {
+    // this will be called multiple times, so only acknowledge the first time around
+    if (dragMetadata) {
       return;
     }
 
@@ -214,51 +226,25 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
     const parentOffsetLeft = data.node.offsetLeft;
     const parentOffsetTop = data.node.offsetTop - parentScrollTop; // subtract what we've scrolled
 
-    console.log(parentOffsetLeft);
-    console.log(parentOffsetTop);
-    const innerDivOffsetX =
-      (e as any as MouseEvent).pageX -
+    const innerOffsetX =
+      (e as MouseEvent).pageX -
       window.innerWidth +
       rightbarRef.current.clientWidth -
       parentOffsetLeft;
 
-    const innerDivOffsetY =
-      (e as any as MouseEvent).pageY -
+    const innerOffsetY =
+      (e as MouseEvent).pageY -
       window.innerHeight +
       rightbarRef.current.clientHeight -
       parentOffsetTop;
 
-    setDragPosition({
+    setDragMetadata({
       x: parentOffsetLeft + 10, // account for padding
       y: parentOffsetTop + 10,
-      innerDivOffsetX,
-      innerDivOffsetY,
+      innerOffsetX,
+      innerOffsetY,
       id: item.id,
     });
-  };
-
-  const canvas = {
-    scale: 1,
-    canvasX: 0,
-    canvasY: 0,
-  };
-
-  const updateCanvas = () => {
-    // TODO
-    const update = {
-      scale: canvasPositionState().scale,
-      canvasX: canvasPositionState().positionX,
-      canvasY: canvasPositionState().positionY,
-    };
-  };
-
-  const [insideRightbar, setInsideRightbar] = useState<boolean>(false);
-  const rightbarEnter = () => {
-    setInsideRightbar(true);
-  };
-
-  const rightbarLeave = () => {
-    setInsideRightbar(false);
   };
 
   return (
@@ -313,7 +299,7 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
                       e.stopPropagation();
                     }}
                     onStop={(e, data) => {
-                      updateItem(s.id, {
+                      updateSensor(s.id, {
                         offsetX: Math.floor(data.x),
                         offsetY: Math.floor(data.y),
                       });
@@ -342,18 +328,17 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
         className={classes.rightbar}
         ref={rightbarRef}
         style={{
-          pointerEvents: insideRightbar ? 'auto' : 'none',
+          pointerEvents: insideRightbar ? 'auto' : 'none', // only allow events when we're actively inside the right bar
         }}
       >
         <div
           className={classes.innerRightbar}
-          onMouseEnter={rightbarEnter}
-          onMouseLeave={rightbarLeave}
+          onMouseEnter={() => setInsideRightbar(true)}
+          onMouseLeave={() => setInsideRightbar(false)}
         >
           {sidebarSensors().map((s) => (
-            <div className={classes.rightbarItem}>
+            <div className={classes.rightbarItem} key={s.id}>
               <Draggable
-                key={s.id}
                 position={{ x: 0, y: 0 }}
                 defaultClassName={`${classes.highZIndex} 
             `}
@@ -374,7 +359,7 @@ const SensorCanvasPage: React.FunctionComponent<WithStyles<typeof styles>> = (pr
       </div>
       {pinnedSensors().map((s: Sensor) => (
         <ContextMenu id={s.id} key={s.id}>
-          <MenuItem onClick={() => updateItem(s.id, { isPinned: false })}>
+          <MenuItem onClick={() => updateSensor(s.id, { isPinned: false })}>
             <ColoredButton colorVariety={ColorsEnum.BLUE}>Remove item</ColoredButton>
           </MenuItem>
         </ContextMenu>

@@ -1,5 +1,3 @@
-import { setError } from 'context/ErrorContext';
-
 export const serializeQuery = (params, prefix = ''): string => {
   if (!params) {
     return '';
@@ -47,7 +45,7 @@ export const processResponse = async (response) => {
     return responseData;
   }
   if (response.status !== 400) {
-    setError(responseData);
+    throw new Error(responseData);
   }
   throw responseData;
 };

@@ -1,12 +1,7 @@
-import { Grid, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import ConfirmationBox from 'components/ConfirmationBox';
-import ErrorBox from 'components/ErrorBox';
-import { LazySuspense } from 'components/LazySuspense';
-import SideMenuWrapper from 'components/SideMenuWrapper';
-import ToastBox from 'components/ToastBox';
 import { AccountContextProvider } from 'context/AccountContext';
 import { AppContextProvider } from 'context/AppContext';
 import { ConfirmationContextProvider } from 'context/ConfirmationContext';
@@ -17,14 +12,10 @@ import { ToastContextProvider } from 'context/ToastContext';
 import { UserContextProvider } from 'context/UserContext';
 import theme from 'layout/Theme';
 import { observer } from 'mobx-react-lite';
-import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
-import { ForumRoutes } from 'pages/forum/ForumRoutes';
-import { UserRoutes } from 'pages/users/UserRoutes';
-import React, { lazy } from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import Pages from 'pages/Pages';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
-import { Routes } from 'utils/Routes';
-import Wrapper from 'Wrapper';
 
 const styles = () =>
   createStyles({
@@ -50,14 +41,7 @@ const styles = () =>
     },
   });
 
-const ForumIndexPage = LazySuspense(lazy(() => import('pages/forum/ForumIndexPage')));
-const DashboardIndexPage = LazySuspense(lazy(() => import('pages/dashboard/DashboardIndexPage')));
-const UserIndexPage = LazySuspense(lazy(() => import('pages/users/UserIndexPage')));
-const LoginPage = LazySuspense(lazy(() => import('pages/LoginPage')));
-const RegisterPage = LazySuspense(lazy(() => import('pages/RegisterPage')));
-
 const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
-  const { classes } = props;
   return (
     <BrowserRouter>
       <StyledEngineProvider injectFirst>
@@ -70,45 +54,7 @@ const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     <DisplayContextProvider>
                       <UserContextProvider>
                         <ErrorContextProvider>
-                          <Wrapper>
-                            <ToastBox />
-                            <ConfirmationBox />
-                            <ErrorBox />
-                            <Grid container className={classes.app}>
-                              <Grid item>
-                                <SideMenuWrapper />
-                              </Grid>
-                              <Grid item style={{ flex: '1' }}>
-                                <Route exact path="/">
-                                  <Redirect to={DashboardRoutes.DASHBOARD} />
-                                </Route>
-                                <Route path={ForumRoutes.FORUM}>
-                                  <ForumIndexPage />
-                                </Route>
-                                <Route path={ForumRoutes.TOPIC_BY_TAG}>
-                                  <ForumIndexPage />
-                                </Route>
-                                <Route path={DashboardRoutes.DASHBOARD}>
-                                  <DashboardIndexPage />
-                                </Route>
-                                <Route path={DashboardRoutes.PERSONAL_DASHBOARD}>
-                                  <DashboardIndexPage />
-                                </Route>
-                                <Route path={DashboardRoutes.CANVAS}>
-                                  <DashboardIndexPage />
-                                </Route>
-                                <Route path={UserRoutes.USERS}>
-                                  <UserIndexPage />
-                                </Route>
-                                <Route exact path={Routes.LOGIN}>
-                                  <LoginPage />
-                                </Route>
-                                <Route exact path={Routes.REGISTER}>
-                                  <RegisterPage />
-                                </Route>
-                              </Grid>
-                            </Grid>
-                          </Wrapper>
+                          <Pages />
                         </ErrorContextProvider>
                       </UserContextProvider>
                     </DisplayContextProvider>

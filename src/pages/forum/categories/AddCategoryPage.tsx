@@ -1,9 +1,9 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
 import ColoredButton from 'components/ColoredButton';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
@@ -59,7 +59,6 @@ const AddCategoryPage: React.FunctionComponent<
         history.push(ForumRoutes.FORUM);
       }
     } catch (e) {
-      console.error(e);
       setStatus(e);
     }
   };

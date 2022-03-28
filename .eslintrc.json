@@ -67,7 +67,8 @@
     "no-undef": "warn",
     "jsx-a11y/interactive-supports-focus": "off",
     "import/order": "off",
-    "spaced-comment": "warn"
+    "spaced-comment": "warn",
+    "react/sort-comp": "off"
   },
   "settings": {
     "import/resolver": {
