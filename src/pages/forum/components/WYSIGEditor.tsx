@@ -13,8 +13,15 @@ const styles = (theme) =>
       backgroundColor: 'transparent',
       border: (props: WYSIGEditorProps) =>
         props.readOnly ? undefined : '1px solid rgba(255, 255, 255, 0.12)',
-      borderWidth: '0px',
+      borderWidth: '0px!important',
       width: '100%',
+      '& .mde-header': {
+        backgroundColor: 'transparent',
+        borderWidth: '0px',
+        border: (props: WYSIGEditorProps) =>
+          props.readOnly ? undefined : '1px solid rgba(255, 255, 255, 0.12)',
+        display: (props: WYSIGEditorProps) => (props.readOnly ? 'none' : 'flex'),
+      },
     },
     preview: {
       borderWidth: '0px',
@@ -85,6 +92,7 @@ const WYSIGEditor: React.FunctionComponent<WithStyles<typeof styles> & WYSIGEdit
         toolbar: classes.toolbar,
         preview: classes.preview,
         textArea: classes.textArea,
+        // mdeHeader: classes.mdeHeader,
       }}
     />
   );
