@@ -34,10 +34,10 @@ const ErrorBox: React.FunctionComponent<WithStyles<typeof styles>> = (props) => 
       }}
     >
       <Typography variant="h6" style={{ marginBottom: '25px' }}>
-        Error
+        {errorStore.type === 'error' ? 'Error' : 'Info'}
       </Typography>
       <Typography variant="body2" style={{ marginBottom: '30px' }}>
-        {errorStore.error?.statusCode} {errorStore.error?.message}
+        {errorStore.error?.statusCode} {errorStore.error?.message || errorStore.error}
       </Typography>
       <ColoredButton
         onClick={() => errorStore.clearError()}

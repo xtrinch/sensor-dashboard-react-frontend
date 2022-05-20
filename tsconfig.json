@@ -17,7 +17,8 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": false
   },
   "include": ["src"]
 }

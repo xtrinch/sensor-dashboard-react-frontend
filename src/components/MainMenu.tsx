@@ -162,7 +162,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
               history.push(DashboardRoutes.DRAGGABLE_BOARD);
             }}
             value={DashboardRoutes.DRAGGABLE_BOARD}
-            label={'Realtime data'}
+            label={'Canvas assembly'}
           />
         )}
         <Tab

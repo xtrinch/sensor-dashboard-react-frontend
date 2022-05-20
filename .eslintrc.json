@@ -68,7 +68,9 @@
     "jsx-a11y/interactive-supports-focus": "off",
     "import/order": "off",
     "spaced-comment": "warn",
-    "react/sort-comp": "off"
+    "react/sort-comp": "off",
+    "prefer-arrow-callback": "off",
+    "no-underscore-dangle": "off"
   },
   "settings": {
     "import/resolver": {

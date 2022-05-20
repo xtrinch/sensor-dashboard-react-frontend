@@ -1,22 +1,23 @@
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ColoredButton from 'components/ColoredButton';
+import Link from 'components/Link';
 import TextInput from 'components/TextInput';
 import { AccountContext } from 'context/AccountContext';
+import { ErrorContext } from 'context/ErrorContext';
+import { ToastContext } from 'context/ToastContext';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
-import { Routes } from 'utils/Routes';
-import Link from 'components/Link';
 import { Toast } from 'types/Toast';
-import { ToastContext } from 'context/ToastContext';
+import { Routes } from 'utils/Routes';
 
 const styles = (theme) =>
   createStyles({
@@ -44,6 +45,7 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
   const { classes, history } = props;
   const { register } = useContext(AccountContext);
   const toastStore = useContext(ToastContext);
+  const errorModalStore = useContext(ErrorContext);
 
   const [data, setData] = useState({
     name: '',
@@ -69,10 +71,11 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
       const user = await register(data);
 
       if (user) {
+        errorModalStore.setError('Registration successful. You can now login' as any, 'info');
         toastStore.addToast(
           new Toast({ message: 'Registration successful. You can now login', type: 'success' }),
         );
-        history.push('/');
+        history.push('/login');
       }
     } catch (e) {
       setErrors(e);
@@ -136,7 +139,11 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
                   id="username"
                   label="Username"
                   name="username"
-                  autoComplete="username"
+                  inputProps={{
+                    form: {
+                      autocomplete: 'off',
+                    },
+                  }}
                   value={data.username}
                   error={!!errors.username}
                   helperText={errors.username}

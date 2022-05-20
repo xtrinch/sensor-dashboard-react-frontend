@@ -9,12 +9,15 @@ export interface Error {
 export class ErrorStore {
   error: Error = null;
 
+  type: 'error' | 'info';
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  setError = (error: Error) => {
+  setError = (error: Error, type?: 'error' | 'info') => {
     this.error = error;
+    this.type = type || 'error';
   };
 
   clearError = () => {
