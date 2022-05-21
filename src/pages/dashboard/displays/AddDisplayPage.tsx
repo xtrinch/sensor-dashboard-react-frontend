@@ -1,11 +1,11 @@
+import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import { Grid } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
@@ -13,7 +13,7 @@ import TopBar from 'components/TopBar';
 import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
 import { getDisplayRoute } from 'pages/dashboard/DashboardRoutes';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import BoardTypeEnum from 'types/BoardTypeEnum';
 import ColorsEnum from 'types/ColorsEnum';
@@ -88,6 +88,10 @@ const AddDisplayPage: React.FunctionComponent<
     setData({ ...data });
   };
 
+  useEffect(() => {
+    sensorContext.listMySensors();
+  }, []);
+
   return (
     <>
       <TopBar alignItems="center">
@@ -129,26 +133,6 @@ const AddDisplayPage: React.FunctionComponent<
                   onChange={(e) => fieldChange(e.target.value, 'location')}
                   error={!!errors.location}
                   helperText={errors.location}
-                />
-                <SelectInput
-                  id="boardType"
-                  value={data.boardType}
-                  fullWidth
-                  options={Object.keys(BoardTypeEnum)}
-                  onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
-                  label="Board type"
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
-                />
-                <SelectInput
-                  id="displayType"
-                  value={data.displayType}
-                  fullWidth
-                  options={Object.keys(DisplayTypeEnum)}
-                  onChange={(e, newVal) => fieldChange(newVal, 'displayType')}
-                  label="Display type"
-                  error={!!errors.displayType}
-                  helperText={errors.displayType}
                 />
                 <SelectInput
                   multiple

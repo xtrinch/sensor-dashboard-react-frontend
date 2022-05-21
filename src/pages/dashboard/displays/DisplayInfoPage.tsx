@@ -1,16 +1,17 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
 import { format } from 'date-fns';
@@ -24,7 +25,6 @@ import Display, { DisplayId } from 'types/Display';
 import DisplayTypeEnum from 'types/DisplayTypeEnum';
 import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
-import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme) =>
   createStyles({
@@ -204,25 +204,6 @@ const DisplayInfoPage: React.FunctionComponent<
               onChange={(e) => fieldChange(e.target.value, 'location')}
               error={!!errors.location}
               helperText={errors.location}
-            />
-            <SelectInput
-              value={data.boardType}
-              onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
-              fullWidth
-              options={Object.keys(BoardTypeEnum)}
-              error={!!errors.boardType}
-              helperText={errors.boardType}
-            />
-            <SelectInput
-              value={data.displayType}
-              onChange={(e, newVal) => fieldChange(newVal, 'displayType')}
-              fullWidth
-              options={Object.keys(DisplayTypeEnum)}
-              label="Display type"
-              variant="outlined"
-              margin="normal"
-              error={!!errors.displayType}
-              helperText={errors.displayType}
             />
             <SelectInput
               multiple

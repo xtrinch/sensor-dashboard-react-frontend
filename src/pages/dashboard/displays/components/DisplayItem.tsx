@@ -1,11 +1,12 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { TableCell, TableRow } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { Theme } from '@mui/material/styles';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { format } from 'date-fns';
 import { getDisplayRoute } from 'pages/dashboard/DashboardRoutes';
@@ -14,7 +15,6 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import Display from 'types/Display';
 import { DATETIME_REGEX } from 'utils/date.range';
-import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,7 +58,6 @@ const DisplayItem: React.FunctionComponent<
   return (
     <TableRow className={classes.root}>
       <TableCell>{display.name}</TableCell>
-      <TableCell>{display.boardType}</TableCell>
       <TableCell>{format(display.createdAt, DATETIME_REGEX)}</TableCell>
       <TableCell>
         {display.lastSeenAt ? format(display.lastSeenAt, DATETIME_REGEX) : 'Never'}
