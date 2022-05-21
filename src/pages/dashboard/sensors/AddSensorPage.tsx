@@ -1,11 +1,11 @@
+import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
@@ -13,14 +13,14 @@ import TopBar from 'components/TopBar';
 import { SensorContext } from 'context/SensorContext';
 import { getSensorRoute } from 'pages/dashboard/DashboardRoutes';
 import React, { useContext, useState } from 'react';
+import { BlockPicker } from 'react-color';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { listTimeZones } from 'timezone-support';
 import BoardTypeEnum from 'types/BoardTypeEnum';
 import ColorsEnum, { GraphColors } from 'types/ColorsEnum';
 import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/MeasurementTypeEnum';
-import SensorTypeEnum from 'types/SensorTypeEnum';
 import Sensor from 'types/Sensor';
-import { BlockPicker } from 'react-color';
+import SensorTypeEnum from 'types/SensorTypeEnum';
 
 const styles = (theme) =>
   createStyles({
@@ -145,15 +145,6 @@ const AddSensorPage: React.FunctionComponent<
                   onChange={(e) => fieldChange(e.target.value, 'location')}
                   error={!!errors.location}
                   helperText={errors.location}
-                />
-                <SelectInput
-                  id="select"
-                  value={data.boardType}
-                  onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
-                  options={Object.keys(BoardTypeEnum)}
-                  label="Board type"
-                  error={!!errors.boardType}
-                  helperText={errors.boardType}
                 />
                 <SelectInput
                   id="timezone"

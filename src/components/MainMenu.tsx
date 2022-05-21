@@ -143,7 +143,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
             history.push(DashboardRoutes.DASHBOARD);
           }}
           value={DashboardRoutes.DASHBOARD}
-          label={'Public graphs'}
+          label={'Public dashboard'}
         />
         {accountStore.loginState === 'LOGGED_IN' && (
           <Tab
@@ -152,7 +152,7 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
               history.push(DashboardRoutes.PERSONAL_DASHBOARD);
             }}
             value={DashboardRoutes.PERSONAL_DASHBOARD}
-            label={'Personal graphs'}
+            label={'Personal dashboard'}
           />
         )}
         {accountStore.loginState === 'LOGGED_IN' && (

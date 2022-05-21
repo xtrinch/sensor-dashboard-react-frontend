@@ -1,20 +1,22 @@
-import { BlockPicker } from 'react-color';
+import { Settings } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import { Settings } from '@mui/icons-material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ColoredButton from 'components/ColoredButton';
 import SelectInput from 'components/SelectInput';
 import TextInput from 'components/TextInput';
 import TopBar from 'components/TopBar';
+import { ConfirmationContext } from 'context/ConfirmationContext';
 import { SensorContext } from 'context/SensorContext';
 import { format } from 'date-fns';
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useState } from 'react';
+import { BlockPicker } from 'react-color';
 import { RouteComponentProps, withRouter } from 'react-router';
 import SensorService from 'services/SensorService';
 import { listTimeZones } from 'timezone-support';
@@ -24,8 +26,6 @@ import MeasurementTypeEnum, { MeasurementTypeLabelsEnum } from 'types/Measuremen
 import Sensor, { SensorId } from 'types/Sensor';
 import SensorTypeEnum from 'types/SensorTypeEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
-import { observer } from 'mobx-react-lite';
-import { ConfirmationContext } from 'context/ConfirmationContext';
 import { getConnectSensorRoute } from '../DashboardRoutes';
 
 const styles = (theme) =>
@@ -210,17 +210,6 @@ const SensorInfoPage: React.FunctionComponent<
               onChange={(e) => fieldChange(e.target.value, 'location')}
               error={!!errors.location}
               helperText={errors.location}
-            />
-            <SelectInput
-              id="boardType"
-              value={data.boardType}
-              options={Object.keys(BoardTypeEnum)}
-              onChange={(e, newVal) => fieldChange(newVal, 'boardType')}
-              label="Board type"
-              variant="outlined"
-              margin="normal"
-              error={!!errors.boardType}
-              helperText={errors.boardType}
             />
             <SelectInput
               id="timezone"
