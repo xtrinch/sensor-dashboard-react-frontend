@@ -1,28 +1,27 @@
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ColoredButton from 'components/ColoredButton';
+import Link from 'components/Link';
+import LoginWithGoogle from 'components/LoginWithGoogle';
 import TextInput from 'components/TextInput';
 import { AccountContext } from 'context/AccountContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
+import useQuery from 'hooks/useQuery';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import User from 'types/User';
-import Link from 'components/Link';
 import { Routes } from 'utils/Routes';
-import config from 'config/Config';
-import useQuery from 'hooks/useQuery';
-import GoogleLogo from 'assets/google-logo.svg'; // with import
 
 const styles = (theme) =>
   createStyles({
@@ -181,15 +180,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
             </Grid>
           </Grid>
         </form>
-        <div style={{ marginTop: '30px' }}>
-          <a
-            href={`${config.sensorDashboardUrl}/google/redirect`}
-            className={classes.loginWithGoogle}
-          >
-            Login with Google{' '}
-            <img src={GoogleLogo} alt="google-logo" style={{ marginLeft: '5px' }} />
-          </a>
-        </div>
+        <LoginWithGoogle style={{ marginTop: '30px' }} />
       </div>
     </Container>
   );

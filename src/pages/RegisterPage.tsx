@@ -9,6 +9,7 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
 import Link from 'components/Link';
+import LoginWithGoogle from 'components/LoginWithGoogle';
 import TextInput from 'components/TextInput';
 import { AccountContext } from 'context/AccountContext';
 import { ErrorContext } from 'context/ErrorContext';
@@ -90,8 +91,9 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
+          <LoginWithGoogle style={{ margin: '30px 0px' }} text="Sign up with Google" />
           <Typography component="h1" variant="h5">
-            Sign up
+            Or sign up using the form below{' '}
           </Typography>
           <form
             onSubmit={submitForm}
@@ -198,7 +200,7 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
             <Grid container justifyContent="flex-end" style={{ marginTop: '10px' }}>
               <Grid item>
                 <Link to={Routes.LOGIN} color={ColorsEnum.BLUE}>
-                  Already have an account or want to use google login? Sign in
+                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
