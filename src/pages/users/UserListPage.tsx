@@ -8,10 +8,10 @@ import { UserContext } from 'context/UserContext';
 import { observer } from 'mobx-react-lite';
 import UserItem from 'pages/users/components/UserItem';
 import React, { useContext, useEffect } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
 import User from 'types/User';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const styles = (theme) =>
   createStyles({
@@ -50,7 +50,7 @@ const UserListPage: React.FunctionComponent<
       </TopBar>
       <Container component="main" maxWidth="md" className={classes.root}>
         <InfiniteScroll
-          dataLength={userContext.totalItems}
+          dataLength={userContext.users?.length}
           next={() => userContext.reload({ page: userContext.page + 1 })}
           hasMore={userContext.totalItems > userContext.users?.length}
           loader={<h4>Loading...</h4>}

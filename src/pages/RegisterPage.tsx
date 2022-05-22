@@ -17,7 +17,6 @@ import { ToastContext } from 'context/ToastContext';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ColorsEnum from 'types/ColorsEnum';
-import { Toast } from 'types/Toast';
 import { Routes } from 'utils/Routes';
 
 const styles = (theme) =>
@@ -73,9 +72,6 @@ const RegisterPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCom
 
       if (user) {
         errorModalStore.setError('Registration successful. You can now login' as any, 'info');
-        toastStore.addToast(
-          new Toast({ message: 'Registration successful. You can now login', type: 'success' }),
-        );
         history.push('/login');
       }
     } catch (e) {
