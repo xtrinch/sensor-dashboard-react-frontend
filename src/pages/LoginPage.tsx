@@ -127,7 +127,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email address or username"
             name="email"
             autoComplete="email"
             autoFocus
