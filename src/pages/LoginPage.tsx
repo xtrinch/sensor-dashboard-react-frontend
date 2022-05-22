@@ -15,7 +15,6 @@ import LoginWithGoogle from 'components/LoginWithGoogle';
 import TextInput from 'components/TextInput';
 import { AccountContext } from 'context/AccountContext';
 import { DisplayContext } from 'context/DisplayContext';
-import { SensorContext } from 'context/SensorContext';
 import useQuery from 'hooks/useQuery';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -39,7 +38,7 @@ const styles = (theme) =>
     },
     form: {
       width: '100%', // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
+      padding: '20px 0 0 0',
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -71,7 +70,6 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
   });
 
   const accountContext = useContext(AccountContext);
-  const sensorContext = useContext(SensorContext);
   const query = useQuery();
 
   const getUserDataAndRedirect = async () => {
@@ -118,8 +116,9 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+        <LoginWithGoogle style={{ margin: '30px 0px' }} />
         <Typography component="h1" variant="h5">
-          Sign in
+          Or sign in using the form below
         </Typography>
         <form className={classes.form} noValidate onSubmit={submitForm}>
           <TextInput
@@ -180,7 +179,6 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
             </Grid>
           </Grid>
         </form>
-        <LoginWithGoogle style={{ marginTop: '30px' }} />
       </div>
     </Container>
   );
