@@ -114,7 +114,7 @@ class Sensor implements AbstractEntity {
       decimalPlaces: 1,
     },
     [MeasurementTypeEnum.BATTERY_VOLTAGE]: {
-      domain: [0, 5],
+      domain: [2.8, 4.4],
       unit: 'V',
       decimalPlaces: 2,
     },
