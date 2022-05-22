@@ -135,6 +135,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
             onChange={(e) => fieldChange(e.target.value, 'email')}
             error={!!errors.email}
             helperText={errors.email}
+            style={{ marginBottom: '10px' }}
           />
           <TextInput
             variant="outlined"

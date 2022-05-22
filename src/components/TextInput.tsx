@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, TextField } from '@mui/material';
+import { TextFieldProps } from '@mui/material/TextField';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import { TextFieldProps } from '@mui/material/TextField';
 import React from 'react';
 
 const styles = (theme) =>
@@ -20,7 +20,7 @@ const TextInput: React.FunctionComponent<
   const { classes, colorVariety, children, label, ...rest } = props;
 
   return (
-    <FormControl {...(rest.fullWidth ? { style: { width: '100%' } } : {})}>
+    <FormControl style={{ ...(props.style || {}), ...(rest.fullWidth ? { width: '100%' } : {}) }}>
       <InputLabel shrink style={{ fontSize: '17px' }}>
         {label}
       </InputLabel>
