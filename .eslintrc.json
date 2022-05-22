@@ -70,7 +70,8 @@
     "spaced-comment": "warn",
     "react/sort-comp": "off",
     "prefer-arrow-callback": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-unreachable": "warn"
   },
   "settings": {
     "import/resolver": {
