@@ -19,6 +19,19 @@ export default class UserService {
     };
   };
 
+  public static changePassword = async (newPassword: string, repeatNewPassword: string) => {
+    const url = getUrl('/auth/change-password');
+
+    const resp = await fetch(url, {
+      method: 'POST',
+      credentials: 'include',
+      headers: getHeaders({ contentType: 'application/json' }),
+      body: JSON.stringify({ newPassword, repeatNewPassword }),
+    });
+
+    await processResponse(resp);
+  };
+
   public static logout = async () => {
     const url = getUrl('/auth/logout');
 

@@ -92,6 +92,7 @@ const LoginPage: React.FunctionComponent<WithStyles<typeof styles> & RouteCompon
 
   const submitForm = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     try {
       const user = await accountContext.login(data.email, data.password);

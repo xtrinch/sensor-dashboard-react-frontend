@@ -1,18 +1,18 @@
 import { Grid, ListSubheader } from '@mui/material';
-import createStyles from '@mui/styles/createStyles';
 import { withStyles, WithStyles } from '@mui/styles';
+import createStyles from '@mui/styles/createStyles';
 import Logo from 'assets/transistor.svg'; // with import
 import Link from 'components/Link';
 import MainMenu from 'components/MainMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
+import { ConfirmationContext } from 'context/ConfirmationContext';
+import { observer } from 'mobx-react-lite';
 import { getUserRoute } from 'pages/users/UserRoutes';
 import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import { Routes } from 'utils/Routes';
-import { observer } from 'mobx-react-lite';
-import { ConfirmationContext } from 'context/ConfirmationContext';
 
 const styles = () =>
   createStyles({
@@ -98,7 +98,7 @@ const SideMenu: React.FunctionComponent<
             <Grid item>
               <div>
                 Logged in as{' '}
-                <Link to={getUserRoute(user?.id)} color={ColorsEnum.YELLOW}>
+                <Link to={getUserRoute('me')} color={ColorsEnum.YELLOW}>
                   {user?.username}
                 </Link>
               </div>

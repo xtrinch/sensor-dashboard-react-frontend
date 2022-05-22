@@ -50,6 +50,13 @@ export class AccountStore {
     return null;
   };
 
+  public changePassword = async (newPassword: string, repeatNewPassword: string): Promise<void> => {
+    await UserService.changePassword(newPassword, repeatNewPassword);
+    this.toastStore.addToast(
+      new Toast({ message: 'Password changed successfully', type: 'success' }),
+    );
+  };
+
   public getMyData = async (): Promise<User> => {
     try {
       const user = await UserService.getMe();

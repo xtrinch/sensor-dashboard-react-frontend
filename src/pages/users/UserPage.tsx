@@ -1,8 +1,8 @@
 import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import Typography from '@mui/material/Typography';
 import TopBar from 'components/TopBar';
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import UserService from 'services/UserService';
 import ColorsEnum from 'types/ColorsEnum';
 import { DATETIME_REGEX } from 'utils/date.range';
+import ChangePasswordForm from './components/ChangePasswordForm';
 
 const styles = (theme) =>
   createStyles({
@@ -55,6 +56,7 @@ const UserPage: React.FunctionComponent<
             Joined at: {user?.createdAt ? format(user?.createdAt, DATETIME_REGEX) : ''}
           </Typography>
           <Typography variant="subtitle1">User group: {user?.group || '/'}</Typography>
+          {params.id === 'me' && <ChangePasswordForm />}
         </div>
       </Container>
     </>
