@@ -8,7 +8,6 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
 import { DisplayContext } from 'context/DisplayContext';
-import { SensorContext } from 'context/SensorContext';
 import { fabric } from 'fabric';
 import { debounce, isEqual } from 'lodash';
 import { observer } from 'mobx-react-lite';
@@ -84,7 +83,6 @@ const styles = (theme) =>
 const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const sensorStore = useContext(SensorContext);
   const displayStore = useContext(DisplayContext);
 
   const [display, setDisplay] = useState<Display>(null);
@@ -202,7 +200,6 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
     const fetch = async () => {
       const s = await DisplayService.getDisplay(params.id as unknown as DisplayId);
       setDisplay(s);
-      await sensorStore.listMySensors();
     };
 
     fetch();
@@ -214,7 +211,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
 
   return (
     <div className={classes.container}>
-      {sensorStore.mySensors.length === 0 && (
+      {display?.sensors.length === 0 && (
         <Box style={{ textAlign: 'center', marginTop: '50px' }}>
           <Typography variant="h4">No sensors found. Try adding some.</Typography>
         </Box>
@@ -254,7 +251,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
             display: coords.visible ? 'flex' : 'none',
           }}
         >
-          {sensorStore.mySensors.map((s: Sensor) => (
+          {display?.sensors.map((s: Sensor) => (
             <ColoredButton
               colorVariety={coords.target?.sensorId === s.id ? ColorsEnum.GREEN : ColorsEnum.BLUE}
               size="small"
