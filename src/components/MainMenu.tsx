@@ -155,16 +155,6 @@ const MainMenu: React.FunctionComponent<MainMenuProps & RouteComponentProps<{}>>
             label={'Personal dashboard'}
           />
         )}
-        {accountStore.loginState === 'LOGGED_IN' && (
-          <Tab
-            className={clsx(classes.subTab, classes.dashboard)}
-            onClick={() => {
-              history.push(DashboardRoutes.DRAGGABLE_BOARD);
-            }}
-            value={DashboardRoutes.DRAGGABLE_BOARD}
-            label={'Canvas assembly'}
-          />
-        )}
         <Tab
           label="Forum"
           className={clsx(classes.tab, classes.forum)}

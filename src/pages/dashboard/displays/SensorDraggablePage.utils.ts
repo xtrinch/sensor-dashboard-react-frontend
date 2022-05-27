@@ -11,6 +11,7 @@ export const useFabric = (
   onChange: (ref: fabric.Canvas) => fabric.Canvas,
   options: fabric.ICanvasOptions,
   onRightClick: (coordinates: { x: number; y: number }, target: any) => void,
+  reaction: any[],
 ) => {
   const fabricRef = useRef<fabric.Canvas>();
   const disposeRef = useRef<fabric.Canvas>();
@@ -200,7 +201,7 @@ export const useFabric = (
         }
       }
     }
-  }, []);
+  }, reaction);
 };
 
 export const addWall = (canvas: fabric.Canvas, x: number, y: number) => {

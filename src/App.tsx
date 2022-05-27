@@ -4,7 +4,6 @@ import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import { AccountContextProvider } from 'context/AccountContext';
 import { AppContextProvider } from 'context/AppContext';
-import { BoardContextProvider } from 'context/BoardContext';
 import { ConfirmationContextProvider } from 'context/ConfirmationContext';
 import { DisplayContextProvider } from 'context/DisplayContext';
 import { ErrorContextProvider } from 'context/ErrorContext';
@@ -51,17 +50,15 @@ const App: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
             <AccountContextProvider>
               <AppContextProvider>
                 <SensorContextProvider>
-                  <BoardContextProvider>
-                    <ConfirmationContextProvider>
-                      <DisplayContextProvider>
-                        <UserContextProvider>
-                          <ErrorContextProvider>
-                            <Pages />
-                          </ErrorContextProvider>
-                        </UserContextProvider>
-                      </DisplayContextProvider>
-                    </ConfirmationContextProvider>
-                  </BoardContextProvider>
+                  <ConfirmationContextProvider>
+                    <DisplayContextProvider>
+                      <UserContextProvider>
+                        <ErrorContextProvider>
+                          <Pages />
+                        </ErrorContextProvider>
+                      </UserContextProvider>
+                    </DisplayContextProvider>
+                  </ConfirmationContextProvider>
                 </SensorContextProvider>
               </AppContextProvider>
             </AccountContextProvider>

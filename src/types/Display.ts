@@ -8,6 +8,10 @@ import User, { UserId } from 'types/User';
 
 export type DisplayId = string;
 
+export interface BoardState {
+  objects: any[]; // TODO
+}
+
 class Display implements AbstractEntity {
   constructor(s) {
     this.name = s?.name || '';
@@ -21,9 +25,10 @@ class Display implements AbstractEntity {
     this.sensors = s?.sensors ? s.sensors.map((sensor) => new Sensor(sensor)) : [];
     this.sensorIds = s?.sensorIds || [];
     this.measurementTypes = s?.measurementTypes || [];
-    this.displayType = s?.displayType;
     this.createdAt = s?.createdAt ? parseISO(s.createdAt) : new Date();
     this.updatedAt = s?.updatedAt ? parseISO(s.updatedAt) : null;
+    this.state = s?.state;
+    this.type = s?.type;
   }
 
   public createdAt: Date;
@@ -42,7 +47,7 @@ class Display implements AbstractEntity {
 
   public boardType: BoardTypeEnum;
 
-  public displayType: DisplayTypeEnum;
+  public type: DisplayTypeEnum;
 
   public accessToken: string;
 
@@ -59,6 +64,8 @@ class Display implements AbstractEntity {
   public expanded: boolean;
 
   public private: boolean;
+
+  public state: BoardState;
 }
 
 export default Display;

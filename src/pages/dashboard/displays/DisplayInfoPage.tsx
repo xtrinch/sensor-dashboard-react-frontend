@@ -1,3 +1,4 @@
+import { Settings } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SettingsInputAntennaIcon from '@mui/icons-material/SettingsInputAntenna';
 import Avatar from '@mui/material/Avatar';
@@ -15,7 +16,8 @@ import { ConfirmationContext } from 'context/ConfirmationContext';
 import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
 import { format } from 'date-fns';
-import { DashboardRoutes } from 'pages/dashboard/DashboardRoutes';
+import { observer } from 'mobx-react-lite';
+import { DashboardRoutes, getDisplayCanvasRoute } from 'pages/dashboard/DashboardRoutes';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import DisplayService from 'services/DisplayService';
@@ -82,7 +84,7 @@ const DisplayInfoPage: React.FunctionComponent<
     timezone: '',
     measurementTypes: [],
     sensorIds: [],
-    displayType: '' as DisplayTypeEnum,
+    type: '' as DisplayTypeEnum,
   });
 
   const sensorContext = useContext(SensorContext);
@@ -115,7 +117,7 @@ const DisplayInfoPage: React.FunctionComponent<
         boardType: s.boardType,
         measurementTypes: s.measurementTypes,
         sensorIds: s.sensorIds,
-        displayType: s.displayType,
+        type: s.type,
       }));
     };
 
@@ -137,9 +139,25 @@ const DisplayInfoPage: React.FunctionComponent<
     setData({ ...data });
   };
 
+  useEffect(() => {
+    sensorContext.listMySensors();
+  }, []);
+
   return (
     <>
       <TopBar alignItems="flex-end">
+        {data?.type === DisplayTypeEnum.canvas && (
+          <ColoredButton
+            variant="contained"
+            startIcon={<Settings />}
+            onClick={() => history.push(getDisplayCanvasRoute(id))}
+            colorVariety={ColorsEnum.GREEN}
+            style={{ marginRight: '20px' }}
+            size="small"
+          >
+            Canvas assembly
+          </ColoredButton>
+        )}
         <ColoredButton
           startIcon={<DeleteIcon />}
           onClick={deleteWithConfirmation}
@@ -206,6 +224,17 @@ const DisplayInfoPage: React.FunctionComponent<
               helperText={errors.location}
             />
             <SelectInput
+              value={data.type}
+              onChange={(e, newVal) => fieldChange(newVal, 'type')}
+              fullWidth
+              options={Object.keys(DisplayTypeEnum)}
+              label="Display type"
+              variant="outlined"
+              margin="normal"
+              error={!!errors.type}
+              helperText={errors.type}
+            />
+            <SelectInput
               multiple
               id="measurementTypes"
               value={data.measurementTypes}
@@ -246,4 +275,4 @@ const DisplayInfoPage: React.FunctionComponent<
   );
 };
 
-export default withRouter(withStyles(styles)(DisplayInfoPage));
+export default withRouter(withStyles(styles)(observer(DisplayInfoPage)));

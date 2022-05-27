@@ -11,8 +11,8 @@ import SensorInfoPage from 'pages/dashboard/sensors/SensorInfoPage';
 import TopicPageByTag from 'pages/forum/topic/TopicPageByTag';
 import React from 'react';
 import { Route, useLocation } from 'react-router-dom';
+import SensorDraggablePage from './displays/SensorDraggablePage';
 import PublicSensorsPage from './sensors/PublicSensorsPage';
-import SensorDraggablePage from './sensors/SensorDraggablePage';
 
 const DashboardIndexPage = () => {
   const location = useLocation();
@@ -25,9 +25,6 @@ const DashboardIndexPage = () => {
         </Route>
         <Route exact path={DashboardRoutes.PERSONAL_DASHBOARD}>
           <MySensorsPage />
-        </Route>
-        <Route exact path={DashboardRoutes.DRAGGABLE_BOARD}>
-          <SensorDraggablePage />
         </Route>
         <Route exact path={DashboardRoutes.ADD_SENSOR}>
           <AddSensorPage />
@@ -43,6 +40,9 @@ const DashboardIndexPage = () => {
         </Route>
         <Route exact path={DashboardRoutes.DISPLAY}>
           <DisplayInfoPage />
+        </Route>
+        <Route exact path={DashboardRoutes.DISPLAY_CANVAS}>
+          <SensorDraggablePage />
         </Route>
         <Route exact path={DashboardRoutes.DISPLAY_LIST}>
           <DisplayListPage />

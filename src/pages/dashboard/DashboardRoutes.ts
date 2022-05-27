@@ -8,6 +8,7 @@ export const DashboardRoutes = {
   ADD_SENSOR: '/dashboard-personal/add-sensor',
   CONNECT_SENSOR: '/dashboard-personal/sensors/:id/connect',
   ADD_DISPLAY: '/dashboard-personal/add-display',
+  DISPLAY_CANVAS: '/dashboard-personal/displays/:id/canvas',
   ADD_FORWARDER: '/dashboard-personal/add-forwarder',
   ADD_RADIO: '/dashboard-personal/add-radio',
   SENSOR: '/dashboard-personal/sensors/:id',
@@ -19,11 +20,11 @@ export const DashboardRoutes = {
   RADIO_LIST: '/dashboard-personal/radios',
   TOPIC_BY_TAG: '/dashboard/static/:tag',
   PERSONAL_DASHBOARD: '/dashboard-personal',
-  DRAGGABLE_BOARD: '/dashboard-draggable',
 };
 
 export const getSensorRoute = (id: SensorId) => `/dashboard-personal/sensors/${id}`;
 export const getConnectSensorRoute = (id: SensorId) => `/dashboard-personal/sensors/${id}/connect`;
 export const getDisplayRoute = (id: DisplayId) => `/dashboard-personal/displays/${id}`;
+export const getDisplayCanvasRoute = (id: DisplayId) => `/dashboard-personal/displays/${id}/canvas`;
 export const getForwarderRoute = (id: ForwarderId) => `/dashboard-personal/forwarders/${id}`;
 export const getRadioRoute = (id: RadioId) => `/dashboard-personal/radios/${id}`;

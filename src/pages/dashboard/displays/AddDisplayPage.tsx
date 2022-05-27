@@ -61,7 +61,7 @@ const AddDisplayPage: React.FunctionComponent<
     timezone: '',
     measurementTypes: [],
     sensorIds: [],
-    displayType: null as DisplayTypeEnum,
+    type: null as DisplayTypeEnum,
   });
 
   const sensorContext = useContext(SensorContext);
@@ -133,6 +133,16 @@ const AddDisplayPage: React.FunctionComponent<
                   onChange={(e) => fieldChange(e.target.value, 'location')}
                   error={!!errors.location}
                   helperText={errors.location}
+                />
+                <SelectInput
+                  id="type"
+                  value={data.type}
+                  fullWidth
+                  options={Object.keys(DisplayTypeEnum)}
+                  onChange={(e, newVal) => fieldChange(newVal, 'type')}
+                  label="Display type"
+                  error={!!errors.type}
+                  helperText={errors.type}
                 />
                 <SelectInput
                   multiple

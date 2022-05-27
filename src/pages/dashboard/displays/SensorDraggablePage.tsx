@@ -7,14 +7,17 @@ import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
 import ColoredButton from 'components/ColoredButton';
-import { BoardContext } from 'context/BoardContext';
+import { DisplayContext } from 'context/DisplayContext';
 import { SensorContext } from 'context/SensorContext';
 import { fabric } from 'fabric';
 import { debounce, isEqual } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import Draggable, { DraggableEvent } from 'react-draggable';
+import { useParams } from 'react-router';
+import DisplayService from 'services/DisplayService';
 import ColorsEnum from 'types/ColorsEnum';
+import Display, { DisplayId } from 'types/Display';
 import Sensor from 'types/Sensor';
 import {
   addBorderRect,
@@ -81,9 +84,13 @@ const styles = (theme) =>
 const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
 
-  const boardStore = useContext(BoardContext);
   const sensorStore = useContext(SensorContext);
-  const [canvas, setCanvas] = useState<fabric.Canvas>();
+  const displayStore = useContext(DisplayContext);
+
+  const [display, setDisplay] = useState<Display>(null);
+  const params = useParams<{ id: DisplayId }>();
+
+  const [canvas, setCanvas] = useState<fabric.Canvas>(null);
 
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
@@ -97,10 +104,15 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
   const onObjectModified = (canv: fabric.Canvas) => {
     const newState = canv?.toJSON(additionalPropertiesToSave);
 
-    if (newState && !isEqual(newState, boardStore.myBoard?.state)) {
-      boardStore.updateBoard({
-        state: newState as any,
-      });
+    if (newState && !isEqual(newState, display?.state)) {
+      displayStore.updateDisplay(
+        params.id,
+        {
+          ...display,
+          state: newState as any,
+        },
+        true,
+      );
     }
   };
 
@@ -111,9 +123,6 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
     target: null,
   });
   const onRightClick = (coordinates: { x: number; y: number }, target: fabric.Group) => {
-    console.log('on right click');
-    console.log(target);
-
     setCoords({
       x: coordinates.x,
       y: coordinates.y,
@@ -124,6 +133,10 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
 
   const canvasRef = useFabric(
     (fabricCanvas: fabric.Canvas) => {
+      if (!display) {
+        return null;
+      }
+
       setCanvas(fabricCanvas);
       addBorderRect(
         fabricCanvas,
@@ -132,11 +145,8 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
         canvasConfig.innerWidth,
         canvasConfig.innerHeight,
       );
-      if (
-        Object.keys(boardStore.myBoard.state).length !== 0 &&
-        boardStore.myBoard.state.objects?.length !== 0
-      ) {
-        fabricCanvas.loadFromJSON(boardStore.myBoard.state, () => {});
+      if (Object.keys(display?.state).length !== 0 && display?.state.objects?.length !== 0) {
+        fabricCanvas.loadFromJSON(display.state, () => {});
       }
       fabricCanvas.on(
         'after:render',
@@ -150,15 +160,8 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
       height: canvasConfig.height,
     },
     onRightClick,
+    [display],
   );
-
-  useEffect(() => {
-    const fetch = async () => {
-      await sensorStore.listMySensors();
-      await boardStore.getMyBoard();
-    };
-    fetch();
-  }, []);
 
   // metadata about the unpinned drag
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -190,14 +193,24 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
     setIsDragging(true);
   };
 
-  if (!boardStore.myBoard) {
-    return null;
-  }
-
   const onSensorSelect = (s: Sensor) => {
     (coords.target as fabric.Group & Metadata).sensorId = s.id;
     setCoords({ x: 0, y: 0, visible: false, target: null });
   };
+
+  useEffect(() => {
+    const fetch = async () => {
+      const s = await DisplayService.getDisplay(params.id as unknown as DisplayId);
+      setDisplay(s);
+      await sensorStore.listMySensors();
+    };
+
+    fetch();
+  }, [params.id]);
+
+  if (!display) {
+    return null;
+  }
 
   return (
     <div className={classes.container}>
@@ -206,9 +219,11 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
           <Typography variant="h4">No sensors found. Try adding some.</Typography>
         </Box>
       )}
-      <div className={classes.root} ref={boardContainerRef}>
-        <canvas id="canvas" ref={canvasRef} />
-      </div>
+      {display && (
+        <div className={classes.root} ref={boardContainerRef}>
+          <canvas id="canvas" ref={canvasRef} />
+        </div>
+      )}
       <div className={classes.bottomBar}>
         {[
           { id: 'wall', icon: <HorizontalRuleIcon /> },

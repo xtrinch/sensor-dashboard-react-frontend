@@ -10,7 +10,7 @@ const DisplayContext = createContext<{
     displaysLoaded: boolean;
     displays: Display[];
   };
-  updateDisplay?: (id: DisplayId, display: Display) => Promise<Display>;
+  updateDisplay?: (id: DisplayId, display: Display, skipToast?: boolean) => Promise<Display>;
   deleteDisplay?: (id: DisplayId) => Promise<boolean>;
   addDisplay?: (display: Partial<Display>) => Promise<Display>;
   reloadDisplays?: (loginState: string) => Promise<void>;
@@ -44,19 +44,25 @@ function DisplayContextProvider(props) {
     return s;
   };
 
-  const updateDisplay = async (id: DisplayId, display: Partial<Display>): Promise<Display> => {
+  const updateDisplay = async (
+    id: DisplayId,
+    display: Partial<Display>,
+    skipToast?: boolean,
+  ): Promise<Display> => {
     const s = await DisplayService.updateDisplay(id, display);
     const { displays } = state;
     const displayIndex = displays.findIndex((sd) => sd.id === s.id);
     displays[displayIndex] = s;
     setState({ ...state, displays: [...displays] });
 
-    toastStore.addToast(
-      new Toast({
-        message: 'Successfully updated the display',
-        type: 'success',
-      }),
-    );
+    if (!skipToast) {
+      toastStore.addToast(
+        new Toast({
+          message: 'Successfully updated the display',
+          type: 'success',
+        }),
+      );
+    }
 
     return s;
   };
