@@ -5,6 +5,7 @@ import Sensor from 'types/Sensor';
 
 export interface Metadata {
   sensorId?: Sensor['id'];
+  subType?: 'humidity' | 'temperature';
 }
 
 export const useFabric = (
@@ -257,6 +258,7 @@ export const addTemperature = (canvas: fabric.Canvas, x: number, y: number) => {
     editable: true,
   });
   const group1 = new fabric.Group([rect, itext], { left: x, top: y, hasControls: false });
+  (group1 as fabric.Group & Metadata).subType = 'temperature';
   canvas.add(group1);
 };
 
@@ -275,6 +277,7 @@ export const addHumidity = (canvas: fabric.Canvas, x: number, y: number) => {
     fontSize: 16,
   });
   const group1 = new fabric.Group([rect, itext], { left: x, top: y, hasControls: false });
+  (group1 as fabric.Group & Metadata).subType = 'humidity';
   canvas.add(group1);
 };
 
@@ -310,5 +313,5 @@ export const additionalPropertiesToSave = [
   'snapAngle',
   'editable',
   'sensorId',
-  // 'on',
+  'subType',
 ];
