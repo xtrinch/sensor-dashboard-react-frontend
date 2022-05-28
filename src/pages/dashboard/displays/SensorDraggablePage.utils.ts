@@ -1,11 +1,19 @@
 import { fabric } from 'fabric';
 import { useCallback, useRef } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
+import { BoardState } from 'types/Display';
 import Sensor from 'types/Sensor';
 
 export interface Metadata {
   sensorId?: Sensor['id'];
   subType?: 'humidity' | 'temperature';
+}
+
+export interface CanvasConfig {
+  innerWidth: number;
+  innerHeight: number;
+  width: number;
+  height: number;
 }
 
 export const useFabric = (
@@ -25,6 +33,7 @@ export const useFabric = (
         fireRightClick: true, // <-- enable firing of right click events
         fireMiddleClick: true, // <-- enable firing of middle click events
         stopContextMenu: true, // <--  prevent context menu from showing
+        viewportTransform: [1, 0, 0, 1, window.innerWidth / 4, window.innerHeight / 4],
       });
       fabricRef.current = fabricCanvas;
 
@@ -238,6 +247,7 @@ export const addText = (canvas: fabric.Canvas, x: number, y: number) => {
     fill: ColorsEnum.PINK,
     hasControls: false,
     fontSize: 16,
+    fontFamily: 'Roboto',
   });
   canvas.add(itext);
 };
@@ -256,6 +266,7 @@ export const addTemperature = (canvas: fabric.Canvas, x: number, y: number) => {
     fill: ColorsEnum.WHITE,
     fontSize: 16,
     editable: true,
+    fontFamily: 'Roboto',
   });
   const group1 = new fabric.Group([rect, itext], { left: x, top: y, hasControls: false });
   (group1 as fabric.Group & Metadata).subType = 'temperature';
@@ -275,6 +286,7 @@ export const addHumidity = (canvas: fabric.Canvas, x: number, y: number) => {
     top: 5,
     fill: ColorsEnum.WHITE,
     fontSize: 16,
+    fontFamily: 'Roboto',
   });
   const group1 = new fabric.Group([rect, itext], { left: x, top: y, hasControls: false });
   (group1 as fabric.Group & Metadata).subType = 'humidity';
@@ -288,19 +300,37 @@ export const addBorderRect = (
   innerWidth: number,
   innerHeight: number,
 ) => {
+  const borderWidth = 7;
   const borderRect = new fabric.Rect({
-    left: width / 2 - innerWidth / 2,
-    top: height / 2 - innerHeight / 2,
+    left: -borderWidth,
+    top: -borderWidth,
     width: innerWidth,
     height: innerHeight,
     hasControls: false,
     selectable: false,
     hoverCursor: 'default',
     stroke: ColorsEnum.BGLIGHTER,
-    strokeWidth: 7,
+    strokeWidth: borderWidth,
     fill: ColorsEnum.BGLIGHT,
   });
   canvas.add(borderRect);
+};
+
+export const initialize = (
+  fabricCanvas: fabric.Canvas,
+  canvasConfig: CanvasConfig,
+  state: BoardState,
+) => {
+  addBorderRect(
+    fabricCanvas,
+    canvasConfig.width,
+    canvasConfig.height,
+    canvasConfig.innerWidth,
+    canvasConfig.innerHeight,
+  );
+  if (Object.keys(state).length !== 0 && state.objects?.length !== 0) {
+    fabricCanvas.loadFromJSON(state, () => {});
+  }
 };
 
 export const additionalPropertiesToSave = [

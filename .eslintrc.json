@@ -71,7 +71,8 @@
     "react/sort-comp": "off",
     "prefer-arrow-callback": "off",
     "no-underscore-dangle": "off",
-    "no-unreachable": "warn"
+    "no-unreachable": "warn",
+    "no-restricted-globals": "off"
   },
   "settings": {
     "import/resolver": {

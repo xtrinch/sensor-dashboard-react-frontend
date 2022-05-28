@@ -19,12 +19,13 @@ import ColorsEnum from 'types/ColorsEnum';
 import Display, { DisplayId } from 'types/Display';
 import Sensor from 'types/Sensor';
 import {
-  addBorderRect,
   addHumidity,
   additionalPropertiesToSave,
   addTemperature,
   addText,
   addWall,
+  CanvasConfig,
+  initialize,
   Metadata,
   useFabric,
 } from './SensorDraggablePage.utils';
@@ -92,7 +93,7 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
 
   const boardContainerRef = useRef<HTMLDivElement>(null);
 
-  const canvasConfig = {
+  const canvasConfig: CanvasConfig = {
     innerWidth: 420,
     innerHeight: 380,
     width: window.innerWidth - 270,
@@ -136,16 +137,8 @@ const SensorDraggablePage: React.FunctionComponent<WithStyles<typeof styles>> = 
       }
 
       setCanvas(fabricCanvas);
-      addBorderRect(
-        fabricCanvas,
-        canvasConfig.width,
-        canvasConfig.height,
-        canvasConfig.innerWidth,
-        canvasConfig.innerHeight,
-      );
-      if (Object.keys(display?.state).length !== 0 && display?.state.objects?.length !== 0) {
-        fabricCanvas.loadFromJSON(display.state, () => {});
-      }
+      initialize(fabricCanvas, canvasConfig, display?.state);
+
       fabricCanvas.on(
         'after:render',
         debounce(() => onObjectModified(fabricCanvas), 1000),
