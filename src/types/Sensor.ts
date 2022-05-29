@@ -87,6 +87,7 @@ class Sensor implements AbstractEntity {
 
   public boardY: number;
 
+  // also check BE, should match
   public static measurementTypeProperties = {
     [MeasurementTypeEnum.ALTITUDE]: {
       domain: [0, 2000],
