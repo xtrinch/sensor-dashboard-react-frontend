@@ -1,6 +1,6 @@
 {
-  "short_name": "Sensor dashboard",
-  "name": "Sensor dashboard",
+  "short_name": "Iotfreezer",
+  "name": "Sensor dashboard - IOT freezer",
   "icons": [
     {
       "src": "favicon.ico",

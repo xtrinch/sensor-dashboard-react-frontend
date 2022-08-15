@@ -1,24 +1,20 @@
-import { Collapse, Fab, Grid, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import LockIcon from '@mui/icons-material/Lock';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Collapse, Fab, Grid, List, ListItem, ListItemText } from '@mui/material';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LockIcon from '@mui/icons-material/Lock';
-import SettingsIcon from '@mui/icons-material/Settings';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import Link from 'components/Link';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
 import { SensorContext } from 'context/SensorContext';
 import { differenceInMinutes } from 'date-fns';
-import React, { Context, Fragment, useContext } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
 import { IotDeviceInterface } from 'types/IotDeviceInterface';
 import Sensor from 'types/Sensor';
-import { observer } from 'mobx-react-lite';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface SideMenuItemProps {
   item: IotDeviceInterface;
@@ -111,7 +107,7 @@ const SideMenuItem: React.FunctionComponent<
               </Grid>
             )}
             <Grid item>
-              {item.name},{item.location}
+              {item.name}, {item.location}
             </Grid>
           </Grid>
           {item.userId !== user?.id && <>({item.user?.username})</>}

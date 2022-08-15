@@ -8,6 +8,8 @@ export const AppContext = createContext<AppStore>(null);
 class AppStore {
   public menuOpen: boolean = false;
 
+  public rightbarOpen: boolean = false;
+
   public groupBy: DateRangeEnum = DateRangeEnum.day;
 
   public date: DateRegex = DateRange.getDateString(new Date(), DateRangeEnum.day);
@@ -20,6 +22,10 @@ class AppStore {
 
   public drawerToggle = () => {
     this.menuOpen = !this.menuOpen;
+  };
+
+  public rightbarToggle = () => {
+    this.rightbarOpen = !this.rightbarOpen;
   };
 
   public setDate = (date: DateRegex) => {

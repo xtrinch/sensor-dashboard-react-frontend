@@ -1,14 +1,16 @@
+import MenuIcon from '@mui/icons-material/Menu';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import TocIcon from '@mui/icons-material/Toc';
+
 import { AppBar, Fab, Grid, IconButton } from '@mui/material';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
-import MenuIcon from '@mui/icons-material/Menu';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { AppContext } from 'context/AppContext';
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import ColorsEnum from 'types/ColorsEnum';
-import { observer } from 'mobx-react-lite';
 
 const styles = (theme) =>
   createStyles({
@@ -49,10 +51,6 @@ const TopBar: React.FunctionComponent<
 
   const appContext = useContext(AppContext);
 
-  const handleDrawerToggle = () => {
-    appContext.drawerToggle();
-  };
-
   return (
     <AppBar
       position="sticky"
@@ -72,7 +70,7 @@ const TopBar: React.FunctionComponent<
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             <IconButton
               aria-label="open drawer"
-              onClick={handleDrawerToggle}
+              onClick={() => appContext.drawerToggle()}
               size="medium"
               color="secondary"
               style={{ padding: '6px' }}
@@ -97,6 +95,20 @@ const TopBar: React.FunctionComponent<
             {props.children}
           </Grid>
         )}
+        <Grid item className={classes.menuIcon} xs={1}>
+          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+            <IconButton
+              aria-label="open drawer"
+              onClick={() => appContext.rightbarToggle()}
+              size="medium"
+              color="secondary"
+              style={{ padding: '6px' }}
+              edge={false}
+            >
+              <TocIcon />
+            </IconButton>
+          </div>
+        </Grid>
       </Grid>
     </AppBar>
   );

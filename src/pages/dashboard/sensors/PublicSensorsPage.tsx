@@ -2,18 +2,19 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { WithStyles } from '@mui/styles';
 import createStyles from '@mui/styles/createStyles';
 import withStyles from '@mui/styles/withStyles';
+import clsx from 'clsx';
 import TopMenu from 'components/TopMenu';
 import { AccountContext } from 'context/AccountContext';
 import { AppContext } from 'context/AppContext';
 import { SensorContext } from 'context/SensorContext';
 import { compact, uniq } from 'lodash';
+import { observer } from 'mobx-react-lite';
 import SensorCanvas from 'pages/dashboard/sensors/components/SensorCanvas';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import MeasurementService from 'services/MeasurementService';
 import ColorsEnum from 'types/ColorsEnum';
 import MeasurementTypeEnum from 'types/MeasurementTypeEnum';
 import Sensor from 'types/Sensor';
-import { observer } from 'mobx-react-lite';
 import SensorsSideMenu from '../components/SensorsSideMenu';
 
 const styles = (theme) =>
@@ -30,6 +31,15 @@ const styles = (theme) =>
       overflow: 'auto',
       [theme.breakpoints.up('md')]: {
         gridTemplateColumns: 'repeat(2, 1fr)',
+      },
+    },
+    rightMenu: {
+      width: '270px',
+      maxWidth: '270px',
+    },
+    fixedRightMenu: {
+      [theme.breakpoints.down('md')]: {
+        display: 'none',
       },
     },
   });
@@ -137,9 +147,14 @@ const PublicSensorsPage: React.FunctionComponent<WithStyles<typeof styles>> = (p
             </div>
           )}
         </div>
-        <div style={{ width: '270px' }}>
+        <div className={clsx(classes.rightMenu, classes.fixedRightMenu)}>
           <SensorsSideMenu />
         </div>
+        {appContext.rightbarOpen && (
+          <div className={classes.rightMenu}>
+            <SensorsSideMenu />
+          </div>
+        )}
       </div>
     </div>
   );

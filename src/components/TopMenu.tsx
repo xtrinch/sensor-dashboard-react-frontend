@@ -5,11 +5,11 @@ import withStyles from '@mui/styles/withStyles';
 import DateInput from 'components/DateInput';
 import TopBar from 'components/TopBar';
 import { AppContext } from 'context/AppContext';
+import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react';
 import ColorsEnum from 'types/ColorsEnum';
 import DomainTypeEnum from 'types/DomainTypeEnum';
 import { DateRangeEnum } from 'utils/date.range';
-import { observer } from 'mobx-react-lite';
 import TimeInput from './TimeInput';
 
 const styles = (theme) =>
@@ -128,7 +128,6 @@ const TopMenu: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           </Button>
         </ButtonGroup>
       </Grid>
-      {/* </Grid> */}
     </TopBar>
   );
 };
