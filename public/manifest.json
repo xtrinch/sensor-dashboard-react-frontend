@@ -11,6 +11,11 @@
       "src": "logo.svg",
       "type": "image/svg",
       "sizes": "192x192"
+    },
+    {
+      "src": "logo-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
     }
   ],
   "start_url": ".",
