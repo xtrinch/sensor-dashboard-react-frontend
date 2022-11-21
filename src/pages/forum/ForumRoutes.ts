@@ -7,7 +7,7 @@ export const ForumRoutes = {
   EDIT_CATEGORY: '/forum/category/:id/edit',
   TOPIC_LIST: '/forum/category/:id',
   TOPIC: '/forum/category/:id/topic/:topicId',
-  TOPIC_BY_TAG: '/dashboard/static/:tag',
+  TOPIC_BY_TAG: '/forum/static/:tag',
   ADD_TOPIC: '/forum/category/:id/add-topic',
   EDIT_TOPIC: '/forum/category/:id/topic/:topicId/edit',
 };
@@ -15,7 +15,7 @@ export const ForumRoutes = {
 export const getTopicListRoute = (id: CategoryId) => `/forum/category/${id}`;
 export const getTopicRoute = (categoryId: CategoryId, id: TopicId) =>
   `/forum/category/${categoryId}/topic/${id}`;
-export const getTopicByTagRoute = (tag: string) => `/dashboard/static/${tag}`;
+export const getTopicByTagRoute = (tag: string) => `/forum/static/${tag}`;
 export const getAddTopicRoute = (id: TopicId) => `/forum/category/${id}/add-topic`;
 export const getCategoryEditRoute = (id: CategoryId) => `/forum/category/${id}/edit`;
 export const getTopicEditRoute = (categoryId: CategoryId, id: TopicId) =>

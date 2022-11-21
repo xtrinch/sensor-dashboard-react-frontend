@@ -7,6 +7,7 @@ import { ForumRoutes } from 'pages/forum/ForumRoutes';
 import TopicIndexPage from 'pages/forum/topic/TopicIndexPage';
 import React from 'react';
 import { Route, RouteComponentProps, withRouter } from 'react-router';
+import TopicPageByTag from './topic/TopicPageByTag';
 
 const styles = (theme) => createStyles({});
 
@@ -15,6 +16,9 @@ const ForumIndexPage: React.FunctionComponent<
 > = (props) => {
   return (
     <CategoryContextProvider>
+      <Route path={ForumRoutes.TOPIC_BY_TAG}>
+        <TopicPageByTag />
+      </Route>
       <Route path={ForumRoutes.FORUM}>
         <CategoryIndexPage />
       </Route>

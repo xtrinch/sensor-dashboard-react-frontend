@@ -73,9 +73,6 @@ const Pages: React.FunctionComponent<WithStyles<typeof styles>> = (props) => {
           <Route path={ForumRoutes.FORUM}>
             <ForumIndexPage />
           </Route>
-          <Route path={ForumRoutes.TOPIC_BY_TAG}>
-            <ForumIndexPage />
-          </Route>
           <Route path={DashboardRoutes.DASHBOARD}>
             <DashboardIndexPage />
           </Route>

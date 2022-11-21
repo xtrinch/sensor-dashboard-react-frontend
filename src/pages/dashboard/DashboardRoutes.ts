@@ -18,7 +18,6 @@ export const DashboardRoutes = {
   DISPLAY_LIST: '/dashboard-personal/displays',
   FORWARDER_LIST: '/dashboard-personal/forwarders',
   RADIO_LIST: '/dashboard-personal/radios',
-  TOPIC_BY_TAG: '/dashboard/static/:tag',
   PERSONAL_DASHBOARD: '/dashboard-personal',
 };
 
