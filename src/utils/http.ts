@@ -1,3 +1,5 @@
+import { getCookie } from 'react-use-cookie';
+
 export const serializeQuery = (params, prefix = ''): string => {
   if (!params) {
     return '';
@@ -29,7 +31,7 @@ export const getUrl = (urlString: string, queryParams: object = {}): string => {
 };
 
 export const getHeaders = (params: { contentType?: string }): { [key: string]: string } => ({
-  Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+  Authorization: `Bearer ${getCookie('accessToken')}`,
   Accept: 'application/json',
   ...(params.contentType ? { 'Content-Type': params.contentType } : undefined),
 });

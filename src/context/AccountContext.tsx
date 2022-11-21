@@ -1,6 +1,7 @@
 import { SensorContext, SensorStore } from 'context/SensorContext';
 import { makeAutoObservable } from 'mobx';
 import React, { createContext, useContext, useMemo } from 'react';
+import { getCookie, setCookie } from 'react-use-cookie';
 import UserService from 'services/UserService';
 import { Toast } from 'types/Toast';
 import User from 'types/User';
@@ -9,11 +10,9 @@ import { ToastContext, ToastStore } from './ToastContext';
 export const AccountContext = createContext<AccountStore>(null);
 
 export class AccountStore {
-  public user: User = localStorage.getItem('user')
-    ? new User(JSON.parse(localStorage.getItem('user')))
-    : null;
+  public user: User = getCookie('user') ? new User(JSON.parse(getCookie('user'))) : null;
 
-  public loginState = localStorage.getItem('user') ? 'LOGGED_IN' : 'LOGGED_OUT';
+  public loginState = getCookie('user') ? 'LOGGED_IN' : 'LOGGED_OUT';
 
   constructor(public sensorContext: SensorStore, public toastStore: ToastStore) {
     makeAutoObservable(this);
@@ -22,7 +21,7 @@ export class AccountStore {
   private setUser = (user: User) => {
     this.user = user;
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      setCookie('user', JSON.stringify(user));
     }
   };
 
@@ -77,6 +76,7 @@ export class AccountStore {
 
     this.setLoginState('LOGGED_OUT');
     this.setUser(undefined);
+    setCookie('user', undefined, { days: 0 }); // clear cookie
 
     this.toastStore.addToast(new Toast({ message: 'Logout successful', type: 'success' }));
   };
