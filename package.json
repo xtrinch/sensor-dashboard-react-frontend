@@ -17,7 +17,7 @@
     "@types/fabric": "^4.5.7",
     "@types/react-color": "^3.0.6",
     "@types/react-infinite-scroll-component": "^5.0.0",
-    "class-validator": "^0.12.2",
+    "class-validator": "^0.14.0",
     "clsx": "^1.1.1",
     "date-fns": "^2.28.0",
     "fabric": "^5.2.1",
